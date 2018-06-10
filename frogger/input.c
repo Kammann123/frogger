@@ -49,5 +49,5 @@ void input_close(void){
 
 /* get_input_status */
 uint16_t get_input_status(void){
-    // El codigo va aqui xD
+    return eventStatus;
 }
