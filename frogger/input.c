@@ -36,10 +36,9 @@ static void* input_thread(void* none){
 /* update_input_status */
 static void update_input_status(void){
 #if PLATFORM_MODE == RPI
-	
+	input_joystick();
 #elif PLATFORM_MODE == PC_ALLEGRO
-#else 
-	//no mode set
+	input_jeyboard();
 #endif
     // El codigo va aqui xD
 }
