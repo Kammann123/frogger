@@ -58,7 +58,34 @@ void main_menu_rpi(void){
 
 /* print_frogger_rpi */
 void print_frogger_rpi(FROG_CLASS* frog, LANE_LIST* lanes, uint16_t listSize){
-    // Pon aqui tu codigo xD
+ 
+    display_write(x,y, D_ON);
+    uint8_t i, laneVehiclesI, posxI;
+    bool somethingFound = false;
+    
+    for (i=0; i<listSize; i++){
+        
+        for (posxI = MAP_X_MIN; posxI < MAP_X_MAX; posxI++){
+            
+            for (laneVehiclesI = 0; laneVehiclesI < lanes[i].vehiclesQty; laneVehiclesI++){
+                
+                if ( lanes[i].vehicles[laneVehiclesI].x == posxI){
+                    somethingFound= true;
+                }         
+            }
+            
+            if (somethingFound){
+                display_write(posxI,lanes[i].vehicles[0].y, D_ON);
+                somethingFound = false;
+                
+            } else{
+                display_write(posxI,lanes[i].vehicles[0].y, D_OFF);
+            }  
+        } 
+    }
+    
+    display_write(frog->pos.x,frog->pos.y, D_ON);
+  
 }
 
 /* pause_menu_rpi */
@@ -72,7 +99,7 @@ jcoord_t input_joystick(void){
     jcoord_t joyCoordinates;
     
     joystick_update();
-    joy_coordinates = joystick_get_coord();
+    joyCoordinates = joystick_get_coord();
     return joyCoordinates;
 }
 
