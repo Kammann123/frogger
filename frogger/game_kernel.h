@@ -26,7 +26,7 @@
 #define FROG_Y_MIN      0
 #define FROG_Y_MAX      10
 #define MAP_X_MIN       -3
-#define MAP_Y_MAX       18
+#define MAP_X_MAX       18
 
 /* Velocidades, tiempos en mS por casillero */
 #define M_BIKE_SPEED_BASE   300
