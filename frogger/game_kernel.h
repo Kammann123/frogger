@@ -175,7 +175,7 @@ bool has_lost(FROG_CLASS* frog);
  * type: Tipo de vehiculo
  * level: Nivel del juego
  */
-uint32_t calculate_speed(uint16_t type, uint16_t level);
+uint16_t calculate_speed(uint16_t type, uint16_t level);
 
 /* calculate_score
  * Calcula el score final de la partida segun el nivel y el tiempo tardado
