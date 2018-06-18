@@ -1,29 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   input.h
- * Author: lucas
- *
- * Created on June 18, 2018, 8:29 PM
- */
-
 #ifndef INPUT_H
 #define INPUT_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <stdbool.h>
+#include <stdint.h>
 
+/**************/
+/* Constantes */
+/**************/
 
+/* Valores del estado del evento */
+#define MOVE_LEFT   0
+#define MOVE_RIGHT  1
+#define MOVE_UP     2
+#define MOVE_DOWN   3
+#define ENTER       4
+#define NO_EVENT    5
 
+/**********************/
+/* Funciones publicas */
+/**********************/
 
-#ifdef __cplusplus
-}
-#endif
+/* input_init 
+ * Inicializa el hardware o software necesario para
+ * tomar las entradas de las plataformas configuradas, 
+ * asi como el thread
+ */
+bool input_init(void);
+
+/* input_close 
+ * Cierra los accesos de las entradas
+ */
+void input_close(void);
+
+/* get_input_status
+ * Devuelve el estado de la entrada del usuario
+ */
+uint16_t get_input_status(void);
 
 #endif /* INPUT_H */
 
