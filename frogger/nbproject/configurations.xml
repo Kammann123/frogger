@@ -4,6 +4,16 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>allegro_gui.h</itemPath>
+      <itemPath>disdrv.h</itemPath>
+      <itemPath>display.h</itemPath>
+      <itemPath>game_kernel.h</itemPath>
+      <itemPath>input.h</itemPath>
+      <itemPath>joydrv.h</itemPath>
+      <itemPath>rpi_gui.h</itemPath>
+      <itemPath>settings.h</itemPath>
+      <itemPath>termlib.h</itemPath>
+      <itemPath>timer.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -36,7 +46,27 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path="allegro_gui.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="disdrv.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="display.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_kernel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="input.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="joydrv.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="rpi_gui.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="settings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="termlib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="timer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -59,7 +89,27 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="allegro_gui.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="disdrv.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="display.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_kernel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="input.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="joydrv.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="rpi_gui.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="settings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="termlib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="timer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
