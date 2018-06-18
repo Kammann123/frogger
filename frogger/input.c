@@ -26,3 +26,28 @@ static void* input_thread(void*);
 /***************************/
 /* Definicion de funciones */
 /***************************/
+
+/* input_thread */
+static void* input_thread(void* none){
+    // El codigo va aqui xD
+}
+
+/* update_input_status */
+static void update_input_status(void){
+    // El codigo va aqui xD
+}
+
+/* input_init */
+bool input_init(void){
+    // El codigo va aqui xD
+}
+
+/* input_close */
+void input_close(void){
+    // El codigo va aqui xD
+}
+
+/* get_input_status */
+uint16_t get_input_status(void){
+    // El codigo va aqui xD
+}
