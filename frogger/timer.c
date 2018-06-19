@@ -31,6 +31,25 @@ static void timer_destroy(void);
 /* Definicion de funciones */
 /***************************/
 
+/* new_event */
+int16_t new_event(uint32_t time, void* (*callback)(void*), void* args){
+    
+    /* Reasigo mas memoria */
+    queue.events = realloc(queue.events, sizeof(TIMER_EVENT) * (queue.length+1));
+    if( queue.events == NULL ){
+        return -1;
+    }
+    
+    /* Inicializo los parametros nuevos */
+    queue.events[queue.length].id = queue.length++;
+    queue.events[queue.length].timerCounter = 0;
+    queue.events[queue.length].timerMax = time;
+    queue.events[queue.length].callback = callback;
+    queue.events[queue.length].args = args;
+    
+    return queue.length-1;
+}
+
 /* wait_timer */
 void wait_timer(){
     pthread_join(timerThread, NULL);
