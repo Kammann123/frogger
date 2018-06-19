@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <unistd.h>
 
 /************************/
 /* Estructuras de datos */
@@ -29,7 +30,7 @@ typedef struct{
 /**********************/
 
 /* start_timer
- * Inicia el timer y su thread, ejecutar UNA vezx 
+ * Inicia el timer y su thread, ejecutar UNA vez
  */
 void start_timer(void);
 

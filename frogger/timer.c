@@ -26,6 +26,28 @@ static bool queue_init(void);
 /* Definicion de funciones */
 /***************************/
 
+/* timer_thread */
+static void* timer_thread(){
+    uint16_t i;
+    
+    while( true ){
+        /* Espera un milisegundo */
+        usleep(1000);
+        
+        /* Actualizo estado de eventos */
+        if( queue.enable ){
+            for(i = 0;i < queue.length;i++){
+                queue.events[i].timerCounter++;
+                if(queue.events[i].timerCounter >= queue.events[i].timerMax){
+                    queue.events[i].timerCounter = 0;
+                    queue.events[i].callback(queue.events[i].args);
+                }
+            }
+        }
+    }
+    
+}
+
 /* queue_init */
 static bool queue_init(void){
     
