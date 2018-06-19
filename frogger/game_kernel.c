@@ -35,6 +35,19 @@ void kernel_close(void){
 /* lane_init */
 bool lane_init(LANE* lane, uint16_t id, uint16_t type, uint16_t direction, uint16_t qty, uint16_t speed){
     // Pon aqui tu codigo xD
+    lane->id = id;
+    lane->type = type;
+    lane->direction = direction;
+    lane->vehiclesQty = qty;
+    lane->speed = speed;
+    
+    POSITION *vehicles = (POSITION*) malloc(qty*sizeof(POSITION));
+    if(vehicles!=NULL){
+        lane->vehicles = vehicles;
+    }
+    else{
+        printf("No se pudo crear el carril %d", id);
+    }
 }
 
 /* lane_close
@@ -83,6 +96,15 @@ void move_frog(uint16_t event, FROG_CLASS* frog){
 /* collision */
 bool collision(FROG_CLASS* frog, LANE_LIST* lanes){
     // Pon aqui tu codigo xD
+    int i, j;
+    for(i = 0; i<(NUMBER_OF_LANES/2); i++){                     //me desplazo por los carriles de vehiculos terrestres
+        for(j = 0; j<lanes->vehiclesQty && frog->pos->y == lanes->vehicles->y; j++){        //comparo las posiciones relativas de los vehiculos que se encuentran en el carril de la rana
+            if(frog->pos->x == ((lanes->vehicles)+j)->x){
+                return TRUE;
+            }
+        }    
+    }
+    return FALSE;
 }
 
 /* drown */
@@ -93,11 +115,23 @@ bool drown(FROG_CLASS* frog, LANE_LIST* lanes){
 /* has_won */
 bool has_won(FROG_CLASS* frog){
     // Pon aqui tu codigo xD
+    if(frog->pos->y == FROG_Y_MAX){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
 }
 
 /* has_lost */
 bool has_lost(FROG_CLASS* frog){
     // Pon aqui tu codigo xD
+    if(!frog->lifes){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
 }
 
 /* calculate_speed */
