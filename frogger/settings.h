@@ -2,8 +2,8 @@
 #define SETTINGS_H
 
 /* Platform options */
-#define RPI 
-#define PC_ALLEGRO
+#define RPI         0
+#define PC_ALLEGRO  1
 
 #define PLATFORM_MODE RPI
 

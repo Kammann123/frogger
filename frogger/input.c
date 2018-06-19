@@ -35,13 +35,13 @@ static void* input_thread(void* none){
 
 /* update_input_status */
 static void update_input_status(void){
-#if PLATFORM_MODE == RPI
-	
-#elif PLATFORM_MODE == PC_ALLEGRO
-#else 
-	//no mode set
-#endif
-    // El codigo va aqui xD
+    #if PLATFORM_MODE == RPI
+
+    #elif PLATFORM_MODE == PC_ALLEGRO
+
+    #else 
+
+    #endif
 }
 
 /* input_init */

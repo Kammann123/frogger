@@ -45,18 +45,6 @@
 /* Carriles y parametros */
 #define NUMBER_OF_LANES 8
 
-/* Cantidad de objetos */
-#define FROG        1
-#define ROW_QTY_1   3
-#define ROW_QTY_2   4
-#define ROW_QTY_3   3
-#define ROW_QTY_4   4
-#define ROW_QTY_6   3
-#define ROW_QTY_7   3
-#define ROW_QTY_8   4
-#define ROW_QTY_9   4
-#define TOTAL_QTY   FROG+ROW_QTY_1+ROW_QTY_2+ROW_QTY_3+ROW_QTY_4+ROW_QTY_6+ROW_QTY_7+ROW_QTY_8+ROW_QTY_9
-
 /************************/
 /* Estructuras de datos */
 /************************/

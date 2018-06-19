@@ -2,6 +2,8 @@
 #define TIMER_H
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <pthread.h>
 
 /************************/
 /* Estructuras de datos */
@@ -15,9 +17,47 @@ typedef struct{
     void* args;
 } TIMER_EVENT;
 
+typedef struct{
+    TIMER_EVENT* events;
+    uint16_t length;
+    bool enable;
+} TIMER_QUEUE;
+
 /**********************/
 /* Funciones publicas */
 /**********************/
+
+/* start_timer
+ * Reanuda el timer 
+ */
+void start_timer(void);
+
+/* pause_timer 
+ * Pausa el timer 
+ */
+void pause_timer(void);
+
+/* new_event
+ * Crea e inicia un nuevo */
+int16_t new_event(uint32_t time, void* (*callback)(void*), void* args); 
+
+/* del_event_by_id
+ * Elimina un evento segun su id
+ *
+ * id: Identificador del evento 
+ */
+void del_event_by_id(uint16_t id);
+
+/* del_all_events
+ * Elimina todos los eventos de timer
+ */
+void del_all_events(void);
+
+/* wait_timer 
+ * Hace que el hilo principal espere al timer
+ * antes de terminar de funcionar 
+ */
+void wait_timer(void);
 
 #endif /* TIMER_H */
 
