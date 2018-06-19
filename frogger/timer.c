@@ -26,6 +26,16 @@ static bool queue_init(void);
 /* Definicion de funciones */
 /***************************/
 
+/* pause_timer */
+void pause_timer(){
+    queue.enable = false;
+}
+
+/* resume_timer */
+void resume_timer(){
+    queue.enable = true;
+}
+
 /* timer_thread */
 static void* timer_thread(){
     uint16_t i;
@@ -45,7 +55,6 @@ static void* timer_thread(){
             }
         }
     }
-    
 }
 
 /* queue_init */
