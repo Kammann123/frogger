@@ -22,6 +22,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>game_kernel.c</itemPath>
       <itemPath>input.c</itemPath>
       <itemPath>main.c</itemPath>
     </logicalFolder>
@@ -52,6 +53,8 @@
       <item path="disdrv.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="display.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_kernel.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="game_kernel.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -97,6 +100,8 @@
       <item path="disdrv.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="display.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_kernel.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="game_kernel.h" ex="false" tool="3" flavor2="0">
       </item>
