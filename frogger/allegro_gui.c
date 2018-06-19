@@ -10,7 +10,7 @@ void main_menu_allegro(void){
 }
 
 /* print_frogger_allegro */
-void print_frogger_allegro(OBJECT* list, uint16_t listSize){
+void print_frogger_allegro(FROG_CLASS* frog, LANE_LIST* lanes, uint16_t listSize){
     // Pon aqui tu codigo xD
 }
 

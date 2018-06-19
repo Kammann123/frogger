@@ -43,6 +43,9 @@
 #define BOAT    5
 #define YACHT   6
 
+/* Carriles y parametros */
+#define NUMBER_OF_LANES 8
+
 /* Cantidad de objetos */
 #define FROG        1
 #define ROW_QTY_1   3
@@ -66,32 +69,22 @@ typedef struct{
 
 typedef struct{
     POSITION pos;
-    uint16_t type;
-    uint16_t speed;
-} OBJECT;
-
-typedef OBJECT OBJECT_LIST[TOTAL_QTY];
-
-typedef struct{
-    uint16_t vehiclesQty;
-    uint16_t type;
-    uint16_t rowNumber;
-    uint16_t direction;
-} ROW;
-
-typedef struct{
     uint16_t level;
     uint32_t score;
     uint32_t time;
     uint16_t lifes;
-} GAME_DATA;
+} FROG_CLASS;
 
 typedef struct{
-    OBJECT* objects;
-    ROW* rows;
-    uint16_t rowSize;
+    uint16_t id;
     uint16_t type;
-} MOVE_DATA;
+    uint16_t direction;
+    uint16_t vehiclesQty;
+    uint16_t speed;
+    POSITION* vehicles;
+} LANE;
+
+typedef LANE LANE_LIST[NUMBER_OF_LANES];
 
 /**********************/
 /* Funciones publicas */
@@ -108,71 +101,77 @@ bool kernel_init(void);
  */
 void kernel_close(void);
 
-/* object_init
- * Inicializa el arreglo con objetos, para 
- * tener primero el frog y sus datos
+/* lane_init
+ * Inicializa un carril con sus parametros y le reserva memoria
  *
- * list: Puntero a la lista de objetos
+ * lane: Puntero al carril
+ * id: Numero de posicion del carril en Y
+ * type: Tipo de vehiculos que maneja
+ * direction: Direccion en que se mueven vehiculos
+ * qty: Cantidad de vehiculos
+ * speed: Velocidad de desplazamiento
  */
-void object_init(OBJECT* list);
+bool lane_init(LANE* lane, uint16_t id, uint16_t type, uint16_t direction, uint16_t qty, uint16_t speed);
+
+/* lane_close
+ * Cierra y libera memoria del carril
+ */
+void lane_close(LANE* lane);
 
 /* generate_level
  * Genera los objetos del nuevo nivel
  * 
- * rowSettings: Arreglo con la configuracion de cada carril
- * rowSize: Cantidad de carriles en el rowSetting
- * list: Arreglo con los objetos
+ * lanes: Lista con los carriles y sus configuraciones
  * level: Nivel, para configurar las velocidades 
  */
-void generate_level(ROW* rowSettings, uint16_t rowSize, OBJECT* list, uint16_t level);
+void generate_level(LANE_LIST* lanes, uint16_t level);
 
 /* move_vehicles
- * Mueve los vehiculos, se configura con un parametro de tipo
- * MOVE_DATA con sus respectivos campos.
+ * Mueve los vehiculos de un carril
  * 
- * param: Puntero a un MOVE_DATA con quienes y como moverlos
+ * param: Se le va a pasar LANE* para manejar cada carril
  */
 void move_vehicles(void* param);
 
 /* move_frog
- * Mueve la rana dentro de una lista de objetos, segun el evento
+ * Mueve la rana segun el evento del usuario
  * 
  * event: Tipo de movimiento segun evento
- * list: Arreglo con los objetos
+ * frog: Objeto de la rana
  */
-void move_frog(uint16_t event, OBJECT* list);
+void move_frog(uint16_t event, FROG_CLASS* frog);
 
 /* collision
  * Devuelve true si detecta que hubo una colision entre la rana
  * y alguno de los vehiculos
  * 
- * list: Arreglo con los objetos
- * listSize: Cantidad de objetos, contando la rana 
+ * frog: El objeto rana
+ * lanes: La lista con los carriles
  */
-bool collision(OBJECT* list, uint16_t listSize);
+bool collision(FROG_CLASS* frog, LANE_LIST* lanes);
 
 /* drown
  * Devuelve true si detecta que se cayo la rana al agua
  * 
- * list: Arreglo con los objetos
- * listSize: Cantidad de objetos de la lista 
+ * frog: El objeto rana
+ * lanes: La lista con los carriles
  */
-bool drown(OBJECT* list, uint16_t listSize);
+bool drown(FROG_CLASS* frog, LANE_LIST* lanes);
 
 /* has_won
  * Devuelve true si detecta que gano, por llegar
  * a la linea final o carril final
  * 
- * list: Arreglo con los objetos 
+ * frog: El objeto rana
  */
-bool has_won(OBJECT* list);
+bool has_won(FROG_CLASS* frog);
 
 /* has_lost
  * Devuelve true si detecta que perdio todas las vidas
  * 
- * data: Puntero con los datos del juego
+ * frog: El objeto rana
  */
-bool has_lost(GAME_DATA* data);
+bool has_lost(FROG_CLASS* frog);
 
 /* calculate_speed
  * Calcula la velocidad o tiempo de movimiento entre casilleros
@@ -194,17 +193,16 @@ uint32_t calculate_score(uint16_t level, uint32_t time);
 /* level_up
  * Cambia los datos del juego para subir un nivel
  * 
- * data: Contiene la data principal del juego
+ * frog: Objeto de la rana
  */
-void level_up(GAME_DATA* data);
+void level_up(FROG_CLASS* frog);
 
 /* start_level
- * Empieza el nivel actual, generando todo con la GAME_DATA
+ * Empieza el nivel actual, generando los nuevos carriles
  *
- * list: Arreglo con los objetos
- * listSize: Cantidad de objetos
+ * lanes: Lista de carriles
  */
-void start_level(OBJECT* list, uint16_t listSize);
+void start_level(LANE_LIST* lanes);
 
 /* reset_level 
  * Reinicia el nivel actual sin regenerar todo

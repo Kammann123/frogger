@@ -4,19 +4,18 @@
 /* Objetos de la libreria */
 /**************************/
 
-const ROW rowSettings[] = {
-    {.rowNumber=1, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
-    {.rowNumber=2, .type=YACHT, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
-    {.rowNumber=3, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
-    {.rowNumber=4, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
-    {.rowNumber=6, .type=TRUCK, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
-    {.rowNumber=7, .type=CAR, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
-    {.rowNumber=8, .type=M_BIKE, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
-    {.rowNumber=9, .type=CAR, .vehiclesQty=3, .direction=MOVE_TO_LEFT}
-};
+FROG_CLASS frog;
 
-OBJECT_LIST kernel_objects;
-GAME_DATA kernel_data;
+LANE_LIST lanes = {
+    {.id=1, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
+    {.id=2, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
+    {.id=3, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
+    {.id=4, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
+    {.id=6, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
+    {.id=7, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
+    {.id=8, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
+    {.id=9, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE}
+};
 
 /***************************/
 /* Definicion de funciones */
@@ -32,13 +31,20 @@ void kernel_close(void){
     // Pon aqui tu codigo xD
 }
 
-/* object_init */
-void object_init(OBJECT* list){
+/* lane_init */
+bool lane_init(LANE* lane, uint16_t id, uint16_t type, uint16_t direction, uint16_t qty, uint16_t speed){
+    // Pon aqui tu codigo xD
+}
+
+/* lane_close
+ * Cierra y libera memoria del carril
+ */
+void lane_close(LANE* lane){
     // Pon aqui tu codigo xD
 }
 
 /* generate_level */
-void generate_level(ROW* rowSettings, uint16_t rowSize, OBJECT* list, uint16_t level){
+void generate_level(LANE_LIST* lanes, uint16_t level){
     // Pon aqui tu codigo xD
 }
 
@@ -48,27 +54,27 @@ void move_vehicles(void* param){
 }
 
 /* move_frog */
-void move_frog(uint16_t event, OBJECT* list){
+void move_frog(uint16_t event, FROG_CLASS* frog){
     // Pon aqui tu codigo xD
 }
 
 /* collision */
-bool collision(OBJECT* list, uint16_t listSize){
+bool collision(FROG_CLASS* frog, LANE_LIST* lanes){
     // Pon aqui tu codigo xD
 }
 
 /* drown */
-bool drown(OBJECT* list, uint16_t listSize){
+bool drown(FROG_CLASS* frog, LANE_LIST* lanes){
     // Pon aqui tu codigo xD
 }
 
 /* has_won */
-bool has_won(OBJECT* list){
+bool has_won(FROG_CLASS* frog){
     // Pon aqui tu codigo xD
 }
 
 /* has_lost */
-bool has_lost(GAME_DATA* data){
+bool has_lost(FROG_CLASS* frog){
     // Pon aqui tu codigo xD
 }
 
@@ -83,12 +89,12 @@ uint32_t calculate_score(uint16_t level, uint32_t time){
 }
 
 /* level_up */
-void level_up(GAME_DATA* data){
+void level_up(FROG_CLASS* frog){
     // Pon aqui tu codigo xD
 }
 
 /* start_level */
-void start_level(OBJECT* list, uint16_t listSize){
+void start_level(LANE_LIST* lanes){
     // Pon aqui tu codigo xD
 }
 

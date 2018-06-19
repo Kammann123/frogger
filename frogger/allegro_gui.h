@@ -19,10 +19,10 @@ void main_menu_allegro(void);
  * Muestra en la plataforma rpi el juego
  * con todos sus elementos
  *
- * list: Arreglo con los objetos
- * listSize: Cantidad de objetos
+ * frog: Objeto de la rana
+ * lanes: Lista de carriles
  */
-void print_frogger_allegro(OBJECT* list, uint16_t listSize);
+void print_frogger_allegro(FROG_CLASS* frog, LANE_LIST* lanes, uint16_t listSize);
 
 /* pause_menu_allegro
  * Muestra un menu de pausa del juego

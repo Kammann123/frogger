@@ -1,6 +1,7 @@
 #ifndef RPI_GUI_H
 #define RPI_GUI_H
 
+#include <stdint.h>
 #include "disdrv.h"
 #include "joydrv.h"
 #include "game_kernel.h"
@@ -19,10 +20,10 @@ void main_menu_rpi(void);
  * Muestra en la plataforma rpi el juego
  * con todos sus elementos
  *
- * list: Arreglo con los objetos
- * listSize: Cantidad de objetos
+ * frog: Objeto de la rana
+ * lanes: Lista de carriles
  */
-void print_frogger_rpi(OBJECT* list, uint16_t listSize);
+void print_frogger_rpi(FROG_CLASS* frog, LANE_LIST* lanes, uint16_t listSize);
 
 /* pause_menu_rpi
  * Muestra un menu de pausa del juego
