@@ -25,3 +25,18 @@ static bool queue_init(void);
 /***************************/
 /* Definicion de funciones */
 /***************************/
+
+/* queue_init */
+static bool queue_init(void){
+    
+    /* Parametros iniciales */
+    queue.enable = false;
+    queue.length = 0;
+    
+    /* Reservo memoria */
+    queue.events = malloc( sizeof(TIMER_EVENT) );
+    if( queue.events == NULL ){
+        return false;
+    }
+    return true;
+}

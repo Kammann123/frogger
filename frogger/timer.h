@@ -1,6 +1,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <pthread.h>
@@ -28,7 +29,7 @@ typedef struct{
 /**********************/
 
 /* start_timer
- * Inicia el timer y su thread, ejecutar UNA vez 
+ * Inicia el timer y su thread, ejecutar UNA vezx 
  */
 void start_timer(void);
 
@@ -63,6 +64,11 @@ void del_all_events(void);
  * antes de terminar de funcionar 
  */
 void wait_timer(void);
+
+/* timer_destroy
+ * Libera la memoria reservada
+ */
+void timer_destroy(void);
 
 #endif /* TIMER_H */
 
