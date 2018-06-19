@@ -31,9 +31,15 @@ static void timer_destroy(void);
 /* Definicion de funciones */
 /***************************/
 
+/* wait_timer */
+void wait_timer(){
+    pthread_join(timerThread, NULL);
+}
+
 /* start_timer */
 void start_timer(){
     queue.enable = true;
+    pthread_create(&timerThread, NULL, timer_thread, NULL);
 }
 
 /* pause_timer */
