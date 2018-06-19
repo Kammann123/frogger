@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "rpi_gui.h"
+#include "allegro_gui.h"
 
 /**************/
 /* Constantes */
