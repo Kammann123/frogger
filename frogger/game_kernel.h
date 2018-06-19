@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "input.h"
 
 /**************/
 /* Constantes */
@@ -45,6 +46,12 @@
 
 /* Carriles y parametros */
 #define NUMBER_OF_LANES 8
+
+/*Condiciones inciales*/
+#define INICIAL_LEVEL 0
+#define INICIAL_SCORE 0
+#define INICIAL_TIME 0
+#define INICIAL_LIFES 3
 
 /************************/
 /* Estructuras de datos */
