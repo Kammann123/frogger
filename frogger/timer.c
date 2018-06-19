@@ -40,3 +40,8 @@ static bool queue_init(void){
     }
     return true;
 }
+
+/* timer_destroy */
+void timer_destroy(void){
+    free(queue.events);
+}
