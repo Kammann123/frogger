@@ -4,6 +4,7 @@
 /* Objetos de la libreria */
 /**************************/
 
+// TODO ESTO VA EN EL MAIN DEL GAME KERNEL kernel_main
 FROG_CLASS frog;
 
 LANE_LIST lanes = {
@@ -94,7 +95,7 @@ void level_up(FROG_CLASS* frog){
 }
 
 /* start_level */
-void start_level(LANE_LIST* lanes){
+void start_level(FROG_CLASS* frog, LANE_LIST* lanes){
     // Pon aqui tu codigo xD
 }
 

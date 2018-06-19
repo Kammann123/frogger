@@ -187,9 +187,10 @@ void level_up(FROG_CLASS* frog);
 /* start_level
  * Empieza el nivel actual, generando los nuevos carriles
  *
+ * frog: Objeto ranita
  * lanes: Lista de carriles
  */
-void start_level(LANE_LIST* lanes);
+void start_level(FROG_CLASS* frog, LANE_LIST* lanes);
 
 /* reset_level 
  * Reinicia el nivel actual sin regenerar todo

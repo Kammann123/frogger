@@ -28,7 +28,7 @@ typedef struct{
 /**********************/
 
 /* start_timer
- * Reanuda el timer 
+ * Inicia el timer y su thread, ejecutar UNA vez 
  */
 void start_timer(void);
 
@@ -36,6 +36,11 @@ void start_timer(void);
  * Pausa el timer 
  */
 void pause_timer(void);
+
+/* resume_timer
+ * Reanuda el timer que estaba pausado
+ */
+void resume_timer(void);
 
 /* new_event
  * Crea e inicia un nuevo */
