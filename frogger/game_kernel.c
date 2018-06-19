@@ -100,11 +100,11 @@ void start_level(FROG_CLASS* frog, LANE_LIST* lanes){
 }
 
 /* reset_level */
-void reset_level(void){
+void reset_level(FROG_CLASS* frog){
     // Pon aqui tu codigo xD
 }
 
 /* restart */
-void restart(void){
+void restart(FROG_CLASS* frog, LANE_LIST* lanes){
     // Pon aqui tu codigo xD
 }

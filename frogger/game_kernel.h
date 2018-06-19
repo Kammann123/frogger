@@ -194,13 +194,18 @@ void start_level(FROG_CLASS* frog, LANE_LIST* lanes);
 
 /* reset_level 
  * Reinicia el nivel actual sin regenerar todo
+ * 
+ * frog: Objeto ranita
  */
-void reset_level(void);
+void reset_level(FROG_CLASS* frog);
 
 /* restart
  * Reinicia la partida, con vidas y todo desde el principio
+ * 
+ * frog: Objeto ranita
+ * lanes: Lista de carriles
  */
-void restart(void);
+void restart(FROG_CLASS* frog, LANE_LIST* lanes);
 
 #endif /* GAME_KERNEL_H */
 
