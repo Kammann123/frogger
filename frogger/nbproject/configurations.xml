@@ -8,6 +8,7 @@
       <itemPath>disdrv.h</itemPath>
       <itemPath>display.h</itemPath>
       <itemPath>game_kernel.h</itemPath>
+      <itemPath>game_types.h</itemPath>
       <itemPath>input.h</itemPath>
       <itemPath>joydrv.h</itemPath>
       <itemPath>rpi_gui.h</itemPath>
@@ -80,6 +81,8 @@
       </item>
       <item path="game_kernel.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="game_types.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="input.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="input.h" ex="false" tool="3" flavor2="0">
@@ -132,6 +135,8 @@
       <item path="game_kernel.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="game_kernel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_types.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="input.c" ex="false" tool="0" flavor2="0">
       </item>

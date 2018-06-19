@@ -33,7 +33,7 @@ typedef struct{
 /* start_timer
  * Inicia el timer y su thread, ejecutar UNA vez
  */
-void start_timer(void);
+void start_timer(void); 
 
 /* pause_timer 
  * Pausa el timer 

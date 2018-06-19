@@ -7,16 +7,7 @@
 // TODO ESTO VA EN EL MAIN DEL GAME KERNEL kernel_main
 FROG_CLASS frog;
 
-LANE_LIST lanes = {
-    {.id=1, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
-    {.id=2, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
-    {.id=3, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
-    {.id=4, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
-    {.id=6, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
-    {.id=7, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
-    {.id=8, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE},
-    {.id=9, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT, .speed=BOAT_SPEED_BASE}
-};
+LANE_LIST lanes;
 
 /***************************/
 /* Definicion de funciones */

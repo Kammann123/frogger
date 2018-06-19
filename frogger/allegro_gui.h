@@ -4,6 +4,8 @@
 // Poner aqui todos los benditos includes de allegro
 
 #include "game_kernel.h"
+#include "game_types.h"
+#include <allegro5/allegro.h>
 
 /**********************/
 /* Funciones publicas */
@@ -38,7 +40,7 @@ uint16_t input_keyboard(void);
 /* allegro_init
  * Inicializa lo necesario para utilizar la plataforma rpi
  */
-void allegro_init(void);
+bool allegro_init(void);
 
 /* allegro_close
  * Cierra la plataforma

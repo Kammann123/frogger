@@ -1,10 +1,10 @@
 #ifndef RPI_GUI_H
 #define RPI_GUI_H
 
-#include <stdint.h>
+#include "game_kernel.h"
 #include "disdrv.h"
 #include "joydrv.h"
-#include "game_kernel.h"
+#include "game_types.h"
 
 /**********************/
 /* Funciones publicas */

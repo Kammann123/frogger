@@ -14,11 +14,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "allegro_gui.h"
+
 /*
  * 
  */
 int main(int argc, char** argv) {
-
-    return (EXIT_SUCCESS);
+    if( !allegro_init() ){
+        return 0;
+    }
+    
+    /* Codigo test */
+    
+    allegro_close();
 }
 
