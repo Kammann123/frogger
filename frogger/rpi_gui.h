@@ -3,6 +3,7 @@
 
 #include "disdrv.h"
 #include "joydrv.h"
+#include "game_kernel.h"
 
 /**********************/
 /* Funciones publicas */
