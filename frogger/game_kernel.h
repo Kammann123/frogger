@@ -76,6 +76,7 @@ typedef struct{
     uint16_t vehiclesQty;
     uint16_t type;
     uint16_t rowNumber;
+    uint16_t direction;
 } ROW;
 
 typedef struct{
@@ -87,9 +88,9 @@ typedef struct{
 
 typedef struct{
     OBJECT* objects;
-    uint16_t listSize;
+    ROW* rows;
+    uint16_t rowSize;
     uint16_t type;
-    uint16_t direction;
 } MOVE_DATA;
 
 /**********************/

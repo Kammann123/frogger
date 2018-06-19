@@ -39,7 +39,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/game_kernel.o \
 	${OBJECTDIR}/input.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/rpi_gui.o
+	${OBJECTDIR}/rpi_gui.o \
+	${OBJECTDIR}/timer.o
 
 
 # C Compiler Flags
@@ -90,6 +91,11 @@ ${OBJECTDIR}/rpi_gui.o: rpi_gui.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rpi_gui.o rpi_gui.c
+
+${OBJECTDIR}/timer.o: timer.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/timer.o timer.c
 
 # Subprojects
 .build-subprojects:

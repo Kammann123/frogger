@@ -5,14 +5,14 @@
 /**************************/
 
 const ROW rowSettings[] = {
-    {.rowNumber=1, .type=BOAT, .vehiclesQty=3},
-    {.rowNumber=2, .type=YACHT, .vehiclesQty=3},
-    {.rowNumber=3, .type=BOAT, .vehiclesQty=3},
-    {.rowNumber=4, .type=BOAT, .vehiclesQty=3},
-    {.rowNumber=6, .type=TRUCK, .vehiclesQty=3},
-    {.rowNumber=7, .type=CAR, .vehiclesQty=3},
-    {.rowNumber=8, .type=M_BIKE, .vehiclesQty=3},
-    {.rowNumber=9, .type=CAR, .vehiclesQty=3}
+    {.rowNumber=1, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
+    {.rowNumber=2, .type=YACHT, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
+    {.rowNumber=3, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
+    {.rowNumber=4, .type=BOAT, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
+    {.rowNumber=6, .type=TRUCK, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
+    {.rowNumber=7, .type=CAR, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
+    {.rowNumber=8, .type=M_BIKE, .vehiclesQty=3, .direction=MOVE_TO_LEFT},
+    {.rowNumber=9, .type=CAR, .vehiclesQty=3, .direction=MOVE_TO_LEFT}
 };
 
 OBJECT_LIST kernel_objects;

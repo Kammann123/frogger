@@ -27,6 +27,7 @@
       <itemPath>input.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>rpi_gui.c</itemPath>
+      <itemPath>timer.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -78,6 +79,8 @@
       </item>
       <item path="termlib.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="timer.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="timer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
@@ -128,6 +131,8 @@
       <item path="settings.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="termlib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="timer.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="timer.h" ex="false" tool="3" flavor2="0">
       </item>
