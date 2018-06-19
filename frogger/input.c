@@ -1,4 +1,5 @@
 #include "input.h"
+#include "settings.h"
 
 /**************************/
 /* Objetos de la libreria */
@@ -34,6 +35,12 @@ static void* input_thread(void* none){
 
 /* update_input_status */
 static void update_input_status(void){
+#if PLATFORM_MODE == RPI
+	
+#elif PLATFORM_MODE == PC_ALLEGRO
+#else 
+	//no mode set
+#endif
     // El codigo va aqui xD
 }
 
@@ -49,5 +56,5 @@ void input_close(void){
 
 /* get_input_status */
 uint16_t get_input_status(void){
-    // El codigo va aqui xD
+    return eventStatus;
 }
