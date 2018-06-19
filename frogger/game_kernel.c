@@ -56,7 +56,28 @@ void move_vehicles(void* param){
 
 /* move_frog */
 void move_frog(uint16_t event, FROG_CLASS* frog){
-    // Pon aqui tu codigo xD
+    switch (event) {
+		case MOVE_LEFT:
+			if (frog->pos.x > FROG_X_MIN){
+				frog->pos.x --;
+			}
+			break;
+		case MOVE_RIGHT:
+			if (frog->pos.x < FROG_X_MAX){
+				frog->pos.x ++;
+			}
+			break;
+		case MOVE_DOWN:
+			if (frog->pos.y > FROG_Y_MIN){
+				frog->pos.y --;
+			}
+			break;
+		case MOVE_UP:
+			if (frog->pos.y < FROG_Y_MAX){
+				frog->pos.y ++;
+			}
+			break;
+	}
 }
 
 /* collision */
@@ -91,20 +112,28 @@ uint32_t calculate_score(uint16_t level, uint32_t time){
 
 /* level_up */
 void level_up(FROG_CLASS* frog){
-    // Pon aqui tu codigo xD
+    frog->level++;
+	frog->pos.x = FROG_X_DEFAULT;
+	frog->pos.y = FROG_X_DEFAULT;
 }
 
 /* start_level */
 void start_level(FROG_CLASS* frog, LANE_LIST* lanes){
-    // Pon aqui tu codigo xD
+	
 }
 
 /* reset_level */
 void reset_level(FROG_CLASS* frog){
-    // Pon aqui tu codigo xD
+    frog->pos.x = FROG_X_DEFAULT;
+	frog->pos.y = FROG_X_DEFAULT;
 }
 
 /* restart */
 void restart(FROG_CLASS* frog, LANE_LIST* lanes){
-    // Pon aqui tu codigo xD
+    frog->pos.x = FROG_X_DEFAULT;
+	frog->pos.y = FROG_X_DEFAULT;
+	frog->level = INICIAL_LEVEL;
+	frog->lifes = INICIAL_LIFES;
+	frog->score = INICIAL_SCORE;
+	frog->time = INICIAL_TIME;
 }
