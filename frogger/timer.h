@@ -49,17 +49,10 @@ void resume_timer(void);
  * Crea e inicia un nuevo */
 int16_t new_event(uint32_t time, void* (*callback)(void*), void* args); 
 
-/* del_event_by_id
- * Elimina un evento segun su id
- *
- * id: Identificador del evento 
- */
-void del_event_by_id(uint16_t id);
-
 /* del_all_events
  * Elimina todos los eventos de timer
  */
-void del_all_events(void);
+bool del_all_events(void);
 
 /* wait_timer 
  * Hace que el hilo principal espere al timer

@@ -31,6 +31,19 @@ static void timer_destroy(void);
 /* Definicion de funciones */
 /***************************/
 
+/* del_all_events */
+bool del_all_events(void){
+    
+    queue.events = realloc(queue.events, sizeof(TIMER_EVENT));
+    if(queue.events == NULL){
+        return false;
+    }
+    
+    queue.length = 0;
+    
+    return true;
+}
+
 /* new_event */
 int16_t new_event(uint32_t time, void* (*callback)(void*), void* args){
     
@@ -72,7 +85,7 @@ void resume_timer(){
 }
 
 /* timer_thread */
-static void* timer_thread(){
+static void* timer_thread(void* none){
     uint16_t i;
     
     while( !queue.shutdown ){
