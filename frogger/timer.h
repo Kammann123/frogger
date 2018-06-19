@@ -23,6 +23,7 @@ typedef struct{
     TIMER_EVENT* events;
     uint16_t length;
     bool enable;
+    bool shutdown;
 } TIMER_QUEUE;
 
 /**********************/
@@ -66,10 +67,10 @@ void del_all_events(void);
  */
 void wait_timer(void);
 
-/* timer_destroy
- * Libera la memoria reservada
+/* timer_close
+ * Cierra el timer y apaga el thread
  */
-void timer_destroy(void);
+void timer_close(void);
 
 #endif /* TIMER_H */
 
