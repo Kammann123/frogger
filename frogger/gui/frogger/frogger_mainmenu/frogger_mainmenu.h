@@ -35,6 +35,11 @@
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* frogger_mainmenu_close 
+ * Cierra el menuprincipal de frogger
+ */
+void frogger_mainmenu_close(void);
+
 /* frogger_mainmenu_update
  * Actualiza el menu en la interfaz
  */

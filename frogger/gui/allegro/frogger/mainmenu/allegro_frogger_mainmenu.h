@@ -37,5 +37,10 @@ extern char* MAINMENU_OPTIONS[];
  */
 void allegro_frogger_mainmenu(char** options, uint16_t optionSelected);
 
+/* allegro_frogger_mainmenu_close 
+ * Cierra el menu principal de allegro
+ */
+void allegro_frogger_mainmenu_close(void);
+
 #endif /* ALLEGRO_FROGGER_MAINMENU_H */
 

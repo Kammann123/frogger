@@ -22,10 +22,19 @@ static uint16_t optionSelected = DEFAULT_SELECTION;
 /* Definicion de funciones publicas */
 /************************************/
 
+/* frogger_mainmenu_close */
+void frogger_mainmenu_close(void){
+#if PLATFORM_MODE == PC_ALLEGRO
+    allegro_frogger_mainmenu_close();
+#elif PLATFORM_MODE == RPI
+    
+#endif    
+}
+
 /* frogger_mainmenu_update */
 void frogger_mainmenu_update(void){
 #if PLATFORM_MODE == PC_ALLEGRO
-    
+    allegro_frogger_mainmenu(NULL, optionSelected);
 #elif PLATFORM_MODE == RPI
     
 #endif

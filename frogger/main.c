@@ -20,6 +20,7 @@
 #include "gui/gui_events/gui_events.h"
 #include "gui/gui_timer/gui_timer.h"
 #include "gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h"
+#include "gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
 
 #define CAMBIAR_COLOR 1
 
@@ -39,9 +40,6 @@ int main(int argc, char** argv){
         return 0;
     }
     
-    allegro_frogger_mainmenu(NULL, 0);
-    getchar();
-    
     /* Inicializo las entradas */
     if( !gui_input_init() ){
         return 0;
@@ -54,7 +52,7 @@ int main(int argc, char** argv){
     }
     
     /* Agrego un evento de timer */
-    if( !gui_timer_new_event(timer, 1000, CAMBIAR_COLOR) ){
+    if( !gui_timer_new_event(timer, 100, CAMBIAR_COLOR) ){
         return 0;
     }
     
@@ -84,38 +82,16 @@ int main(int argc, char** argv){
         if( queue_next_event(queue, &event) ){
             if( event.source == ALLEGRO_INPUT_SOURCE ){
                 switch( event.data ){
-                    case MOVE_UP:
-                        al_clear_to_color( al_map_rgb(0, 0, 0) );
-                        al_flip_display();
-                        break;
-                    case MOVE_DOWN:
-                        al_clear_to_color( al_map_rgb(255, 0, 0) );
-                        al_flip_display();
-                        break;
-                    case MOVE_LEFT:
-                        al_clear_to_color( al_map_rgb(0, 255, 0) );
-                        al_flip_display();
-                        break;
-                    case MOVE_RIGHT:
-                        al_clear_to_color( al_map_rgb(0, 0, 255) );
-                        al_flip_display();
-                        break;
                     case ENTER:
-                        al_clear_to_color( al_map_rgb(255, 255, 255) );
-                        al_flip_display();
+                        break;
+                    default:
+                        frogger_mainmenu_move(event.data);
                         break;
                 }
             }else if( event.source == TIMER_SOURCE ){
                 if( event.data == CAMBIAR_COLOR ){
-                    if( state ){
-                        al_clear_to_color( al_map_rgb(255, 0, 255) );
-                        al_flip_display();
-                        state = false;                        
-                    }else{
-                        al_clear_to_color( al_map_rgb(0, 255, 255) );
-                        al_flip_display();
-                        state = true;
-                    }
+                    
+                    frogger_mainmenu_update();
                 }
             }
         }
