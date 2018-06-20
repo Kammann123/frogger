@@ -26,6 +26,19 @@ void kernel_close(void){
 /* lane_init */
 bool lane_init(LANE* lane, uint16_t id, uint16_t type, uint16_t direction, uint16_t qty, uint16_t speed){
     // Pon aqui tu codigo xD
+    lane->id = id;
+    lane->type = type;
+    lane->direction = direction;
+    lane->vehiclesQty = qty;
+    lane->speed = speed;
+    
+    POSITION *vehicles = (POSITION*) malloc(qty*sizeof(POSITION));
+    if(vehicles!=NULL){
+        lane->vehicles = vehicles;
+    }
+    else{
+        printf("No se pudo crear el carril %d", id);
+    }
 }
 
 /* lane_close
@@ -43,6 +56,27 @@ void generate_level(LANE_LIST* lanes, uint16_t level){
 /* move_vehicles */
 void move_vehicles(void* param){
     // Pon aqui tu codigo xD
+    uint8_t i;
+    LANE * laneToMove = (LANE *) param;
+    for (i=0; i < laneToMove->vehiclesQty; i++){
+        if (laneToMove->direction == MOVE_TO_RIGHT){
+            
+            laneToMove->vehicles[i].x ++;
+            
+            if (laneToMove->vehicles[i].x == MAP_X_MAX) {       //LLEGO AL FINAL?
+                
+                laneToMove->vehicles[i].x = MAP_X_MIN;
+            }
+        } else{
+            
+            laneToMove->vehicles[i].x --;
+            
+             if (laneToMove->vehicles[i].x == MAP_X_MIN) {      //LLEGO AL INICIO?
+                
+                laneToMove->vehicles[i].x = MAP_X_MAX;
+            }
+        }
+    } 
 }
 
 /* move_frog */
@@ -74,6 +108,15 @@ void move_frog(uint16_t event, FROG_CLASS* frog){
 /* collision */
 bool collision(FROG_CLASS* frog, LANE_LIST* lanes){
     // Pon aqui tu codigo xD
+    int i, j;
+    for(i = 0; i<(NUMBER_OF_LANES/2); i++){                                                 //me desplazo por los carriles de vehiculos terrestres
+        for(j = 0; j<lanes->vehiclesQty && frog->pos->y == lanes->vehicles->y; j++){        //comparo las posiciones relativas de los vehiculos que se encuentran en el carril de la rana
+            if(frog->pos->x == ((lanes->vehicles)+j)->x){
+                return TRUE;
+            }
+        }    
+    }
+    return FALSE;
 }
 
 /* drown */
@@ -84,11 +127,23 @@ bool drown(FROG_CLASS* frog, LANE_LIST* lanes){
 /* has_won */
 bool has_won(FROG_CLASS* frog){
     // Pon aqui tu codigo xD
+    if(frog->pos->y == FROG_Y_MAX){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
 }
 
 /* has_lost */
 bool has_lost(FROG_CLASS* frog){
     // Pon aqui tu codigo xD
+    if(!frog->lifes){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
 }
 
 /* calculate_speed */
@@ -98,7 +153,12 @@ uint32_t calculate_speed(uint16_t type, uint16_t level){
 
 /* calculate_score */
 uint32_t calculate_score(uint16_t level, uint32_t time){
-    // Pon aqui tu codigo xD
+    //(NIVEL * 20) AL CUADRADO MENOS 5 POR CADA SEGUNDO QUE PASE.
+    uint32_t score;
+    uint32_t level_base = 20;
+    uint32_t time_base = 10;
+    score = pow (level_base * level, 2) - 5 * time;
+    return score;
 }
 
 /* level_up */
