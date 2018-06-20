@@ -18,6 +18,6 @@
  * Wrapper para inicializar todos los modulos de
  * la libreria init que se usan 
  */
-bool allegro_init(void);
+bool allegro_wrapped_init(void);
 
 #endif /* ALLEGRO_INIT_H */

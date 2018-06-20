@@ -77,7 +77,7 @@ static bool raise_event(EVENT_QUEUE* queue, EVENT* event){
     uint32_t queueLength;
     
     /* Calculo largo de la cola */
-    queueLength = queue->lastEvent - queue->events + 1;
+    queueLength = queue->lastEvent + 1;
     
     /* Compruebo el largo de memoria */
     if( queue->length == queueLength ){
@@ -90,7 +90,7 @@ static bool raise_event(EVENT_QUEUE* queue, EVENT* event){
     }
     
     /* Guardo el nuevo elemento */
-    *(queue->lastEvent) = *event;
+    queue->events[queue->lastEvent] = *event;
     
     /* Muevo al terminador */
     queue->lastEvent++;
@@ -131,7 +131,7 @@ bool queue_next_event(EVENT_QUEUE* queue, EVENT* event){
     
     /* Compruebo si hay un evento en la cola */
     if( queue->nextEvent != queue->lastEvent ){
-        *event = *(queue->nextEvent);
+        *event = queue->events[queue->nextEvent];
         queue->nextEvent++;
         return true;
     }
@@ -206,8 +206,8 @@ EVENT_QUEUE* create_queue(void){
     }
     
     /* Inicializo parametros */
-    queue->nextEvent = queue->events;
-    queue->lastEvent = queue->events;
+    queue->nextEvent = 0;
+    queue->lastEvent = 0;
     queue->shutdown = false;
     queue->length = 1;
     

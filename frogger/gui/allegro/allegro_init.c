@@ -5,7 +5,7 @@
 /************************************/
 
 /* allegro_init */
-bool allegro_init(void){
+bool allegro_wrapped_init(void){
     
     /* Inicializo el modulo general */
     if( !al_init() ){

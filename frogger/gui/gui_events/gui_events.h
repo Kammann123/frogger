@@ -41,9 +41,9 @@ typedef struct{
     /* Puntero a la cola */
     EVENT* events;
     
-    /* Puntero al proximo y ultimo elemento */
-    EVENT* nextEvent;
-    EVENT* lastEvent;
+    /* Indices al proximo y ultimo elemento */
+    uint32_t nextEvent;
+    uint32_t lastEvent;
     
     /* Largo de la cola actual */
     uint32_t length;

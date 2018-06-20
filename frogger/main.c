@@ -13,38 +13,76 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "allegro_gui.h"
 #include <unistd.h>
+
+#include "gui/gui_init.h"
+#include "gui/gui_input/gui_input.h"
+#include "gui/gui_events/gui_events.h"
 
 /*
  * 
  */
 int main(int argc, char** argv){
-    POSITION defPos = {.x = FROG_X_DEFAULT, .y = 9};
-    POSITION autos[] = {{.x = 0, .y = 6 }, {.x = 1, .y = 6 }};
-    POSITION moto[] = {{.x = 2, .y = 7 }, {.x = 3, .y = 7 }};
-    POSITION camion[] = {{.x = 0, .y = 8 }, {.x = 1, .y = 8 }};
-    POSITION autos2[] = {{.x = 0, .y = 9 }, {.x = 1, .y = 9 }};
-    POSITION boat[] = {{.x = 0, .y = 2 }, {.x = 1, .y = 2 }};
-    POSITION yacht[] = {{.x = 2, .y = 4 }, {.x = 3, .y = 4 }};
-    FROG_CLASS frog = {.lifes = 3, .level = 0, .time = 10, .score = 0, .pos=defPos};
-    LANE_LIST lanes = {
-        {.id=0, .type=CAR, .direction=MOVE_TO_LEFT, .vehiclesQty=2, .speed=10, .vehicles=autos},
-        {.id=1, .type=M_BIKE, .direction=MOVE_TO_LEFT, .vehiclesQty=2, .speed=10, .vehicles=moto},
-        {.id=2, .type=TRUCK, .direction=MOVE_TO_LEFT, .vehiclesQty=2, .speed=10, .vehicles=camion},
-        {.id=3, .type=CAR, .direction=MOVE_TO_LEFT, .vehiclesQty=2, .speed=10, .vehicles=autos2},
-        {.id=4, .type=BOAT, .direction=MOVE_TO_LEFT, .vehiclesQty=2, .speed=10, .vehicles=boat},
-        {.id=5, .type=YACHT, .direction=MOVE_TO_LEFT, .vehiclesQty=2, .speed=10, .vehicles=yacht},
-    };
-    if( !allegro_init() ){
+    EVENT_QUEUE* queue;
+    EVENT event;
+    ALLEGRO_DISPLAY* display;
+    
+    /* Inicializo la interfaz */
+    if( !gui_init() ){
         return 0;
     }
     
-    /* Codigo test */
-    print_frogger_allegro(&frog, lanes);
-    getchar();
+    /* Inicializo las entradas */
+    if( !gui_input_init() ){
+        return 0;
+    }
     
-    allegro_close();
+    /* Display */
+    display = al_create_display(300, 300);
+    
+    /* Inicializo los eventos */
+    queue = create_queue();
+    if( !register_source(queue, gui_input_event) ){
+        return 0;
+    }
+    
+    /* Inicio la cola de eventos */
+    queue_start(queue);
+    
+    /* Veo los eventos */
+    while( true ){
+        if( queue_next_event(queue, &event) ){
+            switch( event.data ){
+                case MOVE_UP:
+                    al_clear_to_color( al_map_rgb(0, 0, 0) );
+                    al_flip_display();
+                    break;
+                case MOVE_DOWN:
+                    al_clear_to_color( al_map_rgb(255, 0, 0) );
+                    al_flip_display();
+                    break;
+                case MOVE_LEFT:
+                    al_clear_to_color( al_map_rgb(0, 255, 0) );
+                    al_flip_display();
+                    break;
+                case MOVE_RIGHT:
+                    al_clear_to_color( al_map_rgb(0, 0, 255) );
+                    al_flip_display();
+                    break;
+                case ENTER:
+                    al_clear_to_color( al_map_rgb(255, 255, 255) );
+                    al_flip_display();
+                    break;
+            }
+        }
+    }
+    
+    /* Cierro la cola de eventos */
+    queue_close(queue);
+    
+    /* Cierro las entradas */
+    gui_input_close();
+    
+    al_destroy_display(display);
 }
 

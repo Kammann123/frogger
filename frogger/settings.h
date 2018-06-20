@@ -7,6 +7,10 @@
 
 #define PLATFORM_MODE PC_ALLEGRO
 
+#ifndef PLATFORM_MODE
+#error "No se encuentra la configuracion de plataforma PLATFORM_MODE"
+#endif
+
 #if ((PLATFORM_MODE != RPI) && (PLATFORM_MODE != PC_ALLEGRO))
 #error "No se encuentra seleccionada una plataforma valida"
 #endif
