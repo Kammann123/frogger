@@ -1,10 +1,6 @@
 #include "gui_events.h"
 #include <stdlib.h>
 
-/**********************/
-/* Objetos del modulo */
-/**********************/
-
 /********************************/
 /* Prototipo funciones privadas */
 /********************************/
@@ -16,6 +12,29 @@
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* create_sources */
+QUEUE_SOURCES* create_sources(void){
+    QUEUE_SOURCES* sources;
+    
+    /* Reservo memoria para el handler */
+    sources = malloc( sizeof(QUEUE_SOURCES) );
+    if( sources == NULL ){
+        return NULL;
+    }
+    
+    /* Reservo memoria para el arreglo */
+    sources->array = malloc( sizeof(EVENT_SOURCE) );
+    if( sources->array == NULL ){
+        return NULL;
+    }
+    
+    /* Inicializo parametros */
+    sources->length = 0;
+    
+    /* Devuelvo */
+    return sources;
+}
 
 /* create_queue */
 EVENT_QUEUE* create_queue(void){
@@ -33,15 +52,16 @@ EVENT_QUEUE* create_queue(void){
         return NULL;
     }
     
+    /* Creo la lista de fuentes de eventos */
+    queue->sources = create_sources();
+    if( queue->sources == NULL ){
+        return NULL;
+    }
+    
     /* Inicializo parametros */
     queue->nextEvent = queue->events;
     queue->lastEvent = queue->events;
     
     /* Devuelvo cola creada */
     return queue;
-}
-
-/* raise_event */
-bool raise_event(uint32_t type, uint32_t data, uint32_t source){
-    
 }

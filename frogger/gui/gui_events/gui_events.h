@@ -45,27 +45,23 @@ typedef struct{
     EVENT* lastEvent;
     
     /* Fuentes de eventos para la cola */
-    QUEUE_SOURCES sources; 
+    QUEUE_SOURCES* sources; 
 } EVENT_QUEUE;
 
 /********************************/
 /* Prototipo funciones publicas */
 /********************************/
 
+/* create_sources 
+ * Crea el arreglo con fuentes de eventos para la 
+ * cola 
+ */
+QUEUE_SOURCES* create_sources(void);
+
 /* create_queue 
  * Reserva memoria inicial para trabajar con
  * la cola de eventos y devuelve puntero 
  */
 EVENT_QUEUE* create_queue(void);
-
-/* raise_event
- * Agrega un evento a la cola de eventos, informando el tipo y dato
- * asi como quien esta generandolo 
- *
- * type: Tipo del evento
- * data: Dato del evento
- * source: Fuente que genera el evento
- */
-bool raise_event(uint32_t type, uint32_t data, uint32_t source);
 
 #endif /* GUI_EVENTS_H */
