@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 #ifndef GUI_EVENTS_H
 #define GUI_EVENTS_H
@@ -56,6 +57,9 @@ typedef struct{
     
     /* Thread */
     pthread_t queueThread;
+    
+    /* Mutex */
+    pthread_mutex_t queueMutex;
 } EVENT_QUEUE;
 
 /********************************/

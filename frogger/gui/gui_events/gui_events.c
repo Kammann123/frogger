@@ -66,7 +66,9 @@ static void* queue_thread(void* queue){
             
             /* Busco actualizacion del evento */
             if( callback(&event) ){
+                pthread_mutex_lock(&(eventQueue->queueMutex));
                 raise_event(eventQueue, &event);
+                pthread_mutex_unlock(&(eventQueue->queueMutex));
             }
         }
     }
@@ -75,6 +77,12 @@ static void* queue_thread(void* queue){
 /* raise_event */
 static bool raise_event(EVENT_QUEUE* queue, EVENT* event){
     uint32_t queueLength;
+    
+    /* Reutilizo la memoria */
+    if( queue->nextEvent == queue->lastEvent ){
+        queue->nextEvent = 0;
+        queue->lastEvent = 0;
+    }
     
     /* Calculo largo de la cola */
     queueLength = queue->lastEvent + 1;
@@ -131,13 +139,15 @@ bool queue_next_event(EVENT_QUEUE* queue, EVENT* event){
     
     /* Compruebo si hay un evento en la cola */
     if( queue->nextEvent != queue->lastEvent ){
+        pthread_mutex_lock(&(queue->queueMutex));
         *event = queue->events[queue->nextEvent];
         queue->nextEvent++;
+        pthread_mutex_unlock(&(queue->queueMutex));
         return true;
+    }else{
+        /* No habia eventos */
+        return false;
     }
-    
-    /* No habia eventos */
-    return false;
 }
 
 /* queue_close */
@@ -145,6 +155,9 @@ void queue_close(EVENT_QUEUE* queue){
     
     /* Apago el thread */
     queue->shutdown = true;
+    
+    /* Elimino el mutex */
+    pthread_mutex_destroy(&(queue->queueMutex));
     
     /* Libero memoria de las fuentes */
     source_destroy(queue->sources);
@@ -204,6 +217,9 @@ EVENT_QUEUE* create_queue(void){
     if( queue->sources == NULL ){
         return NULL;
     }
+    
+    /* Inicializo el mutex */
+    pthread_mutex_init(&(queue->queueMutex), NULL);
     
     /* Inicializo parametros */
     queue->nextEvent = 0;
