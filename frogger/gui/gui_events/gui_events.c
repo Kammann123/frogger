@@ -133,8 +133,13 @@ bool queue_next_event(EVENT_QUEUE* queue, EVENT* event){
     
     /* Compruebo si hay un evento en la cola */
     if( queue->nextEvent != queue->lastEvent ){
-        
+        *event = *(queue->nextEvent);
+        queue->nextEvent++;
+        return true;
     }
+    
+    /* No habia eventos */
+    return false;
 }
 
 /* queue_close */
