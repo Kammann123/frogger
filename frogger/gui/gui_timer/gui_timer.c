@@ -33,12 +33,14 @@ bool gui_timer_source(EVENT* event, void* timerQueue){
         /* Compruebo timer overflow */
         if( queue->timers[i].timerCounter >= queue->timers[i].timerMax ){
             
+            pthread_mutex_lock(&(queue->timerMutex));
             /* Reinicio el timer */
             queue->timers[i].timerCounter = 0;
             
             /* Raise event */
             event->type = TIMER_OVERFLOW;
             event->data = queue->timers[i].id;
+            pthread_mutex_unlock(&(queue->timerMutex));
             
             return true;
         }
@@ -57,6 +59,7 @@ static void* timer_thread(void* timerQueue){
         usleep(1000);
         
         /* Actualizo estado de eventos */
+        pthread_mutex_lock(&(queue->timerMutex));
         if( queue->enable ){
             for(i = 0;i < queue->length;i++){
                 if(queue->timers[i].timerCounter < queue->timers[i].timerMax){
@@ -66,6 +69,7 @@ static void* timer_thread(void* timerQueue){
                 }
             }
         }
+        pthread_mutex_unlock(&(queue->timerMutex));
     }
 }
 
