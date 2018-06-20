@@ -3,7 +3,6 @@
  */
 
 /* Librerias utilizadas */
-#include "../../gui_input/gui_input.h"
 #include "../../gui_events/gui_events.h"
 
 #include <stdbool.h>

@@ -10,5 +10,6 @@
 #if ((PLATFORM_MODE != RPI) && (PLATFORM_MODE != PC_ALLEGRO))
 #error "No se encuentra seleccionada una plataforma valida"
 #endif
+
 #endif /* SETTINGS_H */
 

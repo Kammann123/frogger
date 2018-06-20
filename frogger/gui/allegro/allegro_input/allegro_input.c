@@ -4,6 +4,8 @@
 #include <allegro5/events.h>
 #include <allegro5/keyboard.h>
 
+#include "../../gui_input/gui_input.h"
+
 /**************************/
 /* Objetos de la libreria */
 /**************************/

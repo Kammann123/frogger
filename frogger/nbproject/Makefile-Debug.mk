@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/allegro/allegro_init.o \
 	${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
+	${OBJECTDIR}/gui/gui_input/gui_input.o \
 	${OBJECTDIR}/input.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/rpi_gui.o \
@@ -94,6 +95,11 @@ ${OBJECTDIR}/gui/gui_events/gui_events.o: gui/gui_events/gui_events.c
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_events
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_events/gui_events.o gui/gui_events/gui_events.c
+
+${OBJECTDIR}/gui/gui_input/gui_input.o: gui/gui_input/gui_input.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/gui_input
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_input/gui_input.o gui/gui_input/gui_input.c
 
 ${OBJECTDIR}/input.o: input.c 
 	${MKDIR} -p ${OBJECTDIR}

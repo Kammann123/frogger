@@ -33,6 +33,7 @@
       <itemPath>gui/allegro/allegro_input/allegro_input.c</itemPath>
       <itemPath>game_kernel.c</itemPath>
       <itemPath>gui/gui_events/gui_events.c</itemPath>
+      <itemPath>gui/gui_input/gui_input.c</itemPath>
       <itemPath>input.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>rpi_gui.c</itemPath>
@@ -111,6 +112,8 @@
       </item>
       <item path="gui/gui_events/source_codes.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="gui/gui_input/gui_input.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="gui/gui_input/gui_input.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="input.c" ex="false" tool="0" flavor2="0">
@@ -187,6 +190,8 @@
       <item path="gui/gui_events/gui_events.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="gui/gui_events/source_codes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/gui_input/gui_input.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/gui_input/gui_input.h" ex="false" tool="3" flavor2="0">
       </item>
