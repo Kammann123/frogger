@@ -23,7 +23,7 @@ void main_menu_rpi(void);
  * frog: Objeto de la rana
  * lanes: Lista de carriles
  */
-void print_frogger_rpi(FROG_CLASS* frog, LANE_LIST* lanes, uint16_t listSize);
+void print_frogger_rpi(FROG_CLASS* frog, LANE* lanes);
 
 /* pause_menu_rpi
  * Muestra un menu de pausa del juego

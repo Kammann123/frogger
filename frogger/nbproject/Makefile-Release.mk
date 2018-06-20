@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/allegro_gui.o \
 	${OBJECTDIR}/game_kernel.o \
+	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/input.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/rpi_gui.o \
@@ -76,6 +77,11 @@ ${OBJECTDIR}/game_kernel.o: game_kernel.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/game_kernel.o game_kernel.c
+
+${OBJECTDIR}/gui/gui_events/gui_events.o: gui/gui_events/gui_events.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/gui_events
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_events/gui_events.o gui/gui_events/gui_events.c
 
 ${OBJECTDIR}/input.o: input.c 
 	${MKDIR} -p ${OBJECTDIR}

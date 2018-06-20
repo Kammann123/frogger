@@ -6,6 +6,64 @@
 #include "game_kernel.h"
 #include "game_types.h"
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_color.h>
+
+/**************/
+/* Constantes */
+/**************/
+
+/* Parametros del display */
+#define DISPLAY_WIDTH   640
+#define DISPLAY_HEIGHT  480
+
+#define DISPLAY_X_MAX   15
+#define DISPLAY_Y_MAX   10
+
+#define DISPLAY_X_STEP  DISPLAY_WIDTH / (DISPLAY_X_MAX + 1)
+#define DISPLAY_Y_STEP  DISPLAY_HEIGHT / (DISPLAY_Y_MAX + 2)
+
+/* Colores predefinidos */
+#define CLEAR_COLOR     al_map_rgb(0, 0, 0)
+#define WATER_COLOR     al_map_rgb(11, 15, 70)
+#define LANE_COLOR      al_map_rgb(0, 0, 0)
+
+/* Posiciones de elementos fijos */
+#define ARRIVAL_X   0
+#define ARRIVAL_Y   0
+#define WATER_X     0
+#define WATER_Y     1
+#define STREET_X    0
+#define STREET_Y    5
+#define LANE_X      0
+#define LANE_Y      9
+#define START_X     0
+#define START_Y     10
+#define INFO_X      0
+#define INFO_Y      11
+
+/* Parametros de fuente */
+#define FONT_FILENAME   "font.ttf"
+#define FONT_SIZE       15
+#define FONT_COLOR      al_map_rgb(255, 255, 255)
+#define FONT_MARGIN     20
+
+/* Archivos con imagenes del juego */
+#define FIELD_IMAGE     "field.bmp"
+#define FROG_IMAGE      "frog.png"
+#define BIKE_IMAGE      "motorbike.png"
+#define CAR_IMAGE       "car.png"
+#define TRUCK_IMAGE     "truck.png"
+#define BOAT_IMAGE      "boat.png"
+#define YACHT_IMAGE     "yacht.png"
+
+/* Mensajes de pantalla */
+#define MAX_LENGTH      30
+
+#define TIME_MESSAGE    "Tiempo: "
 
 /**********************/
 /* Funciones publicas */
@@ -24,7 +82,7 @@ void main_menu_allegro(void);
  * frog: Objeto de la rana
  * lanes: Lista de carriles
  */
-void print_frogger_allegro(FROG_CLASS* frog, LANE_LIST* lanes, uint16_t listSize);
+void print_frogger_allegro(FROG_CLASS* frog, LANE* lanes);
 
 /* pause_menu_allegro
  * Muestra un menu de pausa del juego

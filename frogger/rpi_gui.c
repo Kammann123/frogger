@@ -10,7 +10,7 @@ void main_menu_rpi(void){
 }
 
 /* print_frogger_rpi */
-void print_frogger_rpi(FROG_CLASS* frog, LANE_LIST* lanes, uint16_t listSize){
+void print_frogger_rpi(FROG_CLASS* frog, LANE* lanes){
     // Pon aqui tu codigo xD
 }
 
