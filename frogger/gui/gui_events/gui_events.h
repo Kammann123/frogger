@@ -52,11 +52,15 @@ typedef struct{
 /* Prototipo funciones publicas */
 /********************************/
 
-/* create_sources 
- * Crea el arreglo con fuentes de eventos para la 
- * cola 
+/* register_source
+ * Agrega un generador de eventos a una cola especifica
+ * permite agregar un generador que se ejecuta en busca de eventos
+ *
+ * queue: Cola de eventos 
+ * callback: Funcion para buscar esos eventos
+ * args: Parametros opcionales necesarios 
  */
-QUEUE_SOURCES* create_sources(void);
+bool register_source(EVENT_QUEUE* queue, EVENT* (*callback)(void*), void* args);
 
 /* create_queue 
  * Reserva memoria inicial para trabajar con
