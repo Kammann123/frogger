@@ -5,11 +5,14 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>allegro_gui.h</itemPath>
+      <itemPath>gui/allegro/allegro_init.h</itemPath>
+      <itemPath>gui/allegro/allegro_input/allegro_input.h</itemPath>
       <itemPath>disdrv.h</itemPath>
       <itemPath>display.h</itemPath>
       <itemPath>game_kernel.h</itemPath>
       <itemPath>game_types.h</itemPath>
       <itemPath>gui/gui_events/gui_events.h</itemPath>
+      <itemPath>gui/gui_input/gui_input.h</itemPath>
       <itemPath>input.h</itemPath>
       <itemPath>joydrv.h</itemPath>
       <itemPath>rpi_gui.h</itemPath>
@@ -25,6 +28,8 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>allegro_gui.c</itemPath>
+      <itemPath>gui/allegro/allegro_init.c</itemPath>
+      <itemPath>gui/allegro/allegro_input/allegro_input.c</itemPath>
       <itemPath>game_kernel.c</itemPath>
       <itemPath>gui/gui_events/gui_events.c</itemPath>
       <itemPath>input.c</itemPath>
@@ -85,9 +90,25 @@
       </item>
       <item path="game_types.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="gui/allegro/allegro_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="gui/allegro/allegro_init.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/allegro/allegro_input/allegro_input.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/allegro_input/allegro_input.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="gui/gui_events/gui_events.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/gui_events/gui_events.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/gui_input/gui_input.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="input.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -144,9 +165,25 @@
       </item>
       <item path="game_types.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="gui/allegro/allegro_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="gui/allegro/allegro_init.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/allegro/allegro_input/allegro_input.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/allegro_input/allegro_input.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="gui/gui_events/gui_events.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/gui_events/gui_events.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/gui_input/gui_input.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="input.c" ex="false" tool="0" flavor2="0">
       </item>
