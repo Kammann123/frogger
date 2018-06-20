@@ -46,5 +46,13 @@ void rpi_init(void);
  */
 void rpi_close(void);
 
+/* print_display_menu
+ * imprime en el display el menu
+ */
+
+void print_display_menu();
+
+
+
 #endif /* RPI_GUI_H */
 
