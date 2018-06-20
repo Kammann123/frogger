@@ -38,29 +38,44 @@ void allegro_input_close(void){
 }
 
 /* allegro_input_event */
-EVENT* allegro_input_event(void* null){
+bool allegro_input_event(EVENT* event){
     ALLEGRO_EVENT allegroEvent;
     
     /* Inicializo el evento */
+    event->source = ALLEGRO_INPUT_SOURCE;
     
     /* Busco un nuevo evento */
     if( al_get_next_event(allegroEventQueue, &allegroEvent) ){
         if( allegroEvent.type == ALLEGRO_EVENT_KEY_DOWN ){
             switch( allegroEvent.keyboard.keycode ){
                 case ALLEGRO_KEY_UP:
+                    event->type = MOVEMENT_EVENT;
+                    event->data = MOVE_UP;
                     break;
                 case ALLEGRO_KEY_DOWN:
+                    event->type = MOVEMENT_EVENT;
+                    event->data = MOVE_DOWN;
                     break;
                 case ALLEGRO_KEY_LEFT:
+                    event->type = MOVEMENT_EVENT;
+                    event->data = MOVE_LEFT;
                     break;
                 case ALLEGRO_KEY_RIGHT:
+                    event->type = MOVEMENT_EVENT;
+                    event->data = MOVE_RIGHT;
                     break;
                 case ALLEGRO_KEY_ENTER:
+                    event->type = ACTION_EVENT;
+                    event->data = ENTER;
+                    break;
+                default:
+                    return false;
                     break;
             }
+            return true;
         }
     }
     
     /* No hubo evento */
-    return NULL;
+    return false;
 }

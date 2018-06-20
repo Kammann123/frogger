@@ -28,10 +28,11 @@ void allegro_input_close(void);
 
 /* allegro_input_event
  * Generador de eventos por teclado, verifica si hay
- * algun evento en la cola de eventos de allegro y luego
- * devuelve un evento del tipo EVENT, toma NULL de parametro
+ * algun evento en la cola de eventos de allegro
+ * 
+ * event: Evento donde se guarda
  */
-EVENT* allegro_input_event(void*);
+bool allegro_input_event(EVENT* event);
 
 #endif /* ALLEGRO_INPUT_H */
 
