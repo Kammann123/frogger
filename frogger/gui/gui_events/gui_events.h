@@ -23,10 +23,8 @@ typedef struct{
 
 typedef struct{
     /* Callback del generador de evento */
-    EVENT* (*callback)(void*);
+    bool (*callback)(EVENT*);
     
-    /* Argumento opcional para el callback */
-    void* args;
 } EVENT_SOURCE;
 
 typedef struct{
@@ -93,7 +91,7 @@ void queue_close(EVENT_QUEUE* queue);
  * callback: Funcion para buscar esos eventos
  * args: Parametros opcionales necesarios 
  */
-bool register_source(EVENT_QUEUE* queue, EVENT* (*callback)(void*), void* args);
+bool register_source(EVENT_QUEUE* queue, bool (*callback)(EVENT*));
 
 /* create_queue 
  * Reserva memoria inicial para trabajar con

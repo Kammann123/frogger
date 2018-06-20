@@ -51,9 +51,9 @@ static void source_destroy(QUEUE_SOURCES* sources){
 static void* queue_thread(void* queue){
     uint32_t i;
     EVENT_QUEUE* eventQueue = queue;
-    EVENT* event;
+    EVENT event;
     
-    EVENT* (*callback)(void*);
+    bool (*callback)(EVENT*);
     void* args;
     
     /* Habilito funcionamiento de la cola */
@@ -63,12 +63,10 @@ static void* queue_thread(void* queue){
         for(i = 0;i < eventQueue->sources->length;i++){
             /* Busco los datos de la fuente */
             callback = eventQueue->sources->array[i].callback;
-            args = eventQueue->sources->array[i].args;
             
             /* Busco actualizacion del evento */
-            event = callback(args);
-            if( event ){
-                raise_event(eventQueue, event);
+            if( callback(&event) ){
+                raise_event(eventQueue, &event);
             }
         }
     }
@@ -166,7 +164,7 @@ void queue_start(EVENT_QUEUE* queue){
 }
 
 /* register_source */
-bool register_source(EVENT_QUEUE* queue, EVENT* (*callback)(void*), void* args){
+bool register_source(EVENT_QUEUE* queue, bool (*callback)(EVENT*)){
     EVENT_SOURCE newEventSource;
     
     /* Reservo mas memoria para agregar */
@@ -177,7 +175,6 @@ bool register_source(EVENT_QUEUE* queue, EVENT* (*callback)(void*), void* args){
     
     /* Inicializo la nueve fuente de eventos */
     newEventSource.callback = callback;
-    newEventSource.args = args;
     
     /* La agrego al arreglo */
     queue->sources->array[queue->sources->length++] = newEventSource;
