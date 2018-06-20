@@ -11,28 +11,89 @@
  */
 static QUEUE_SOURCES* create_sources(void);
 
+/* raise_event
+ * Agrega un evento a la cola de eventos
+ *
+ * queue: Cola de eventos
+ * event: Evento
+ */
+static bool raise_event(EVENT_QUEUE* queue, EVENT* event);
+
+/* queue_thread
+ * Maneja la cola de eventos
+ *
+ * queue: La cola que tiene que manejar 
+ */
+static void* queue_thread(void* queue);
+
+/* source_destroy
+ * Libera la memoria de una lista de fuentes
+ *
+ * sources: Fuentes de eventos 
+ */
+static void source_destroy(QUEUE_SOURCES* sources);
+
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
 
-/* register_source */
-bool register_source(EVENT_QUEUE* queue, EVENT* (*callback)(void*), void* args){
-    EVENT_SOURCE newEventSource;
+/* source_destroy */
+static void source_destroy(QUEUE_SOURCES* sources){
     
-    /* Reservo mas memoria para agregar */
-    queue->sources->array = realloc(queue->sources->array, sizeof(EVENT_SOURCE) * (queue->sources->length+1));
-    if( queue->sources->array == NULL ){
+    /* Libero memoria del arreglo */
+    free(sources->array);
+    
+    /* Libero memoria del handler */
+    free(sources);
+}
+
+/* queue_thread */
+static void* queue_thread(void* queue){
+    uint32_t i;
+    EVENT_QUEUE* eventQueue = queue;
+    EVENT* event;
+    
+    EVENT* (*callback)(void*);
+    void* args;
+    
+    /* Habilito funcionamiento de la cola */
+    while( !eventQueue->shutdown ){
+        
+        /* Reviso todas las fuentes de eventos */
+        for(i = 0;i < eventQueue->sources->length;i++){
+            /* Busco los datos de la fuente */
+            callback = eventQueue->sources->array[i].callback;
+            args = eventQueue->sources->array[i].args;
+            
+            /* Busco actualizacion del evento */
+            event = callback(args);
+            if( event ){
+                raise_event(eventQueue, event);
+            }
+        }
+    }
+}
+
+/* raise_event */
+static bool raise_event(EVENT_QUEUE* queue, EVENT* event){
+    uint32_t queueLength;
+    
+    /* Calculo largo de la cola */
+    queueLength = queue->lastEvent - queue->events + 1;
+    
+    /* Reservo memoria para el nuevo evento */
+    queue->events = realloc(queue->events, sizeof(EVENT) * (queueLength+1));
+    if( queue->events == NULL ){
         return false;
     }
     
-    /* Inicializo la nueve fuente de eventos */
-    newEventSource.callback = callback;
-    newEventSource.args = args;
+    /* Muevo el ultimo puntero */
+    queue->lastEvent++;
     
-    /* La agrego al arreglo */
-    queue->sources->array[queue->sources->length++] = newEventSource;
+    /* Guardo el nuevo elemento */
+    *(queue->lastEvent) = *event;
     
-    /* Registro exitoso */
+    /* Proceso exitoso */
     return true;
 }
 
@@ -63,6 +124,50 @@ static QUEUE_SOURCES* create_sources(void){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* queue_close */
+void queue_close(EVENT_QUEUE* queue){
+    
+    /* Apago el thread */
+    queue->shutdown = true;
+    
+    /* Libero memoria de las fuentes */
+    source_destroy(queue->sources);
+    
+    /* Libero memoria de la cola */
+    free(queue->events);
+}
+
+/* queue_start */
+void queue_start(EVENT_QUEUE* queue){
+    
+    /* Habilito */
+    queue->shutdown = false;
+    
+    /* Inicio el thread */
+    pthread_create(&(queue->queueThread), NULL, queue_thread, queue);
+}
+
+/* register_source */
+bool register_source(EVENT_QUEUE* queue, EVENT* (*callback)(void*), void* args){
+    EVENT_SOURCE newEventSource;
+    
+    /* Reservo mas memoria para agregar */
+    queue->sources->array = realloc(queue->sources->array, sizeof(EVENT_SOURCE) * (queue->sources->length+1));
+    if( queue->sources->array == NULL ){
+        return false;
+    }
+    
+    /* Inicializo la nueve fuente de eventos */
+    newEventSource.callback = callback;
+    newEventSource.args = args;
+    
+    /* La agrego al arreglo */
+    queue->sources->array[queue->sources->length++] = newEventSource;
+    
+    /* Registro exitoso */
+    return true;
+}
+
 /* create_queue */
 EVENT_QUEUE* create_queue(void){
     EVENT_QUEUE* queue;
@@ -88,6 +193,7 @@ EVENT_QUEUE* create_queue(void){
     /* Inicializo parametros */
     queue->nextEvent = queue->events;
     queue->lastEvent = queue->events;
+    queue->shutdown = false;
     
     /* Devuelvo cola creada */
     return queue;

@@ -5,6 +5,7 @@
 /* Librerias utilizadas */
 #include <stdint.h>
 #include <stdbool.h>
+#include <pthread.h>
 
 #ifndef GUI_EVENTS_H
 #define GUI_EVENTS_H
@@ -45,12 +46,32 @@ typedef struct{
     EVENT* lastEvent;
     
     /* Fuentes de eventos para la cola */
-    QUEUE_SOURCES* sources; 
+    QUEUE_SOURCES* sources;
+    
+    /* Habilitadores */
+    bool shutdown;
+    
+    /* Thread */
+    pthread_t queueThread;
 } EVENT_QUEUE;
 
 /********************************/
 /* Prototipo funciones publicas */
 /********************************/
+
+/* queue_start
+ * Inicia el funcionamiento de la cola
+ *
+ * queue: Cola de eventos
+ */
+void queue_start(EVENT_QUEUE* queue);
+
+/* queue_close
+ * Apaga la cola de eventos y la destruye
+ * 
+ * queue: Cola de eventos
+ */
+void queue_close(EVENT_QUEUE* queue);
 
 /* register_source
  * Agrega un generador de eventos a una cola especifica
