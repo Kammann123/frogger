@@ -9,6 +9,7 @@
       <itemPath>gui/allegro/allegro_input/allegro_input.h</itemPath>
       <itemPath>disdrv.h</itemPath>
       <itemPath>display.h</itemPath>
+      <itemPath>gui/frogger/frogger_mainmenu.h</itemPath>
       <itemPath>game_kernel.h</itemPath>
       <itemPath>game_types.h</itemPath>
       <itemPath>gui/gui_events/gui_events.h</itemPath>
@@ -54,6 +55,8 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>gui/frogger/frogger_mainmenu/frogger_mainmenu.c</itemPath>
+    <itemPath>gui/frogger/frogger_mainmenu/frogger_mainmenu.h</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -106,6 +109,18 @@
             flavor2="0">
       </item>
       <item path="gui/allegro/allegro_input/allegro_input.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_mainmenu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_mainmenu/frogger_mainmenu.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -193,6 +208,18 @@
             flavor2="0">
       </item>
       <item path="gui/allegro/allegro_input/allegro_input.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_mainmenu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_mainmenu/frogger_mainmenu.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
             ex="false"
             tool="3"
             flavor2="0">

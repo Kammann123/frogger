@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/game_kernel.o \
 	${OBJECTDIR}/gui/allegro/allegro_init.o \
 	${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o \
+	${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/gui/gui_init.o \
 	${OBJECTDIR}/gui/gui_input/gui_input.o \
@@ -92,6 +93,11 @@ ${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o: gui/allegro/allegro_inpu
 	${MKDIR} -p ${OBJECTDIR}/gui/allegro/allegro_input
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o gui/allegro/allegro_input/allegro_input.c
+
+${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o: gui/frogger/frogger_mainmenu/frogger_mainmenu.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_mainmenu
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o gui/frogger/frogger_mainmenu/frogger_mainmenu.c
 
 ${OBJECTDIR}/gui/gui_events/gui_events.o: gui/gui_events/gui_events.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_events
