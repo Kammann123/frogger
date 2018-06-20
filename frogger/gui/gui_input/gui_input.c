@@ -22,8 +22,8 @@ void gui_input_close(void){
 #endif
 }
 
-/* gui_input_event */
-bool gui_input_event(EVENT* event, void* none){
+/* gui_input_source */
+bool gui_input_source(EVENT* event, void* none){
 #if PLATFORM_MODE == PC_ALLEGRO
     return allegro_input_source(event, none);
 #elif PLATFORM_MODE == RPI

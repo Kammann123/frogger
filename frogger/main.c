@@ -18,6 +18,9 @@
 #include "gui/gui_init.h"
 #include "gui/gui_input/gui_input.h"
 #include "gui/gui_events/gui_events.h"
+#include "gui/gui_timer/gui_timer.h"
+
+#define CAMBIAR_COLOR 1
 
 /*
  * 
@@ -26,6 +29,9 @@ int main(int argc, char** argv){
     EVENT_QUEUE* queue;
     EVENT event;
     ALLEGRO_DISPLAY* display;
+    TIMER_QUEUE* timer;
+    
+    bool state = false;
     
     /* Inicializo la interfaz */
     if( !gui_init() ){
@@ -37,12 +43,32 @@ int main(int argc, char** argv){
         return 0;
     }
     
+    /* Inicializo el timer */
+    timer = gui_timer_create();
+    if( timer == NULL ){
+        return 0;
+    }
+    
+    /* Agrego un evento de timer */
+    if( !gui_timer_new_event(timer, 1000, CAMBIAR_COLOR) ){
+        return 0;
+    }
+    
+    /* Inicio el timer */
+    gui_timer_start(timer);
+    
     /* Display */
     display = al_create_display(300, 300);
-    
+    if( display == NULL ){
+        return 0;
+        
+    }
     /* Inicializo los eventos */
     queue = create_queue();
-    if( !register_source(queue, gui_input_event, NULL) ){
+    if( !register_source(queue, gui_input_source, NULL) ){
+        return 0;
+    }
+    if( !register_source(queue, gui_timer_source, timer) ){
         return 0;
     }
     
@@ -52,27 +78,41 @@ int main(int argc, char** argv){
     /* Veo los eventos */
     while( true ){
         if( queue_next_event(queue, &event) ){
-            switch( event.data ){
-                case MOVE_UP:
-                    al_clear_to_color( al_map_rgb(0, 0, 0) );
-                    al_flip_display();
-                    break;
-                case MOVE_DOWN:
-                    al_clear_to_color( al_map_rgb(255, 0, 0) );
-                    al_flip_display();
-                    break;
-                case MOVE_LEFT:
-                    al_clear_to_color( al_map_rgb(0, 255, 0) );
-                    al_flip_display();
-                    break;
-                case MOVE_RIGHT:
-                    al_clear_to_color( al_map_rgb(0, 0, 255) );
-                    al_flip_display();
-                    break;
-                case ENTER:
-                    al_clear_to_color( al_map_rgb(255, 255, 255) );
-                    al_flip_display();
-                    break;
+            if( event.source == ALLEGRO_INPUT_SOURCE ){
+                switch( event.data ){
+                    case MOVE_UP:
+                        al_clear_to_color( al_map_rgb(0, 0, 0) );
+                        al_flip_display();
+                        break;
+                    case MOVE_DOWN:
+                        al_clear_to_color( al_map_rgb(255, 0, 0) );
+                        al_flip_display();
+                        break;
+                    case MOVE_LEFT:
+                        al_clear_to_color( al_map_rgb(0, 255, 0) );
+                        al_flip_display();
+                        break;
+                    case MOVE_RIGHT:
+                        al_clear_to_color( al_map_rgb(0, 0, 255) );
+                        al_flip_display();
+                        break;
+                    case ENTER:
+                        al_clear_to_color( al_map_rgb(255, 255, 255) );
+                        al_flip_display();
+                        break;
+                }
+            }else if( event.source == TIMER_SOURCE ){
+                if( event.data == CAMBIAR_COLOR ){
+                    if( state ){
+                        al_clear_to_color( al_map_rgb(255, 0, 255) );
+                        al_flip_display();
+                        state = false;                        
+                    }else{
+                        al_clear_to_color( al_map_rgb(0, 255, 255) );
+                        al_flip_display();
+                        state = true;
+                    }
+                }
             }
         }
     }
@@ -82,6 +122,9 @@ int main(int argc, char** argv){
     
     /* Cierro las entradas */
     gui_input_close();
+    
+    /* Destruyo el timer */
+    gui_timer_destroy(timer);
     
     al_destroy_display(display);
 }

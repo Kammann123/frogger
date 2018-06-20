@@ -40,12 +40,12 @@ bool gui_input_init(void);
  */
 void gui_input_close(void);
 
-/* gui_input_event
+/* gui_input_source
  * Devuelve un evento de entrada del usuario
  *
  * event: Evento a guardar
  * none: NULL
  */
-bool gui_input_event(EVENT* event, void* none);
+bool gui_input_source(EVENT* event, void* none);
 
 #endif /* GUI_INPUT_H */

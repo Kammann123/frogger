@@ -33,6 +33,9 @@ bool gui_timer_source(EVENT* event, void* timerQueue){
         /* Compruebo timer overflow */
         if( queue->timers[i].timerCounter >= queue->timers[i].timerMax ){
             
+            /* Reinicio el timer */
+            queue->timers[i].timerCounter = 0;
+            
             /* Raise event */
             event->type = TIMER_OVERFLOW;
             event->data = queue->timers[i].id;
@@ -58,6 +61,8 @@ static void* timer_thread(void* timerQueue){
             for(i = 0;i < queue->length;i++){
                 if(queue->timers[i].timerCounter < queue->timers[i].timerMax){
                     queue->timers[i].timerCounter++;
+                }else{
+                    
                 }
             }
         }
