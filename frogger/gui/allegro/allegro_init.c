@@ -1,5 +1,7 @@
 #include "allegro_init.h"
 
+#include <allegro5/allegro_image.h>
+
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
@@ -9,6 +11,10 @@ bool allegro_wrapped_init(void){
     
     /* Inicializo el modulo general */
     if( !al_init() ){
+        return false;
+    }
+    
+    if( !al_init_image_addon() ){
         return false;
     }
     

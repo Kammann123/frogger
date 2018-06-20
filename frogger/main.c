@@ -19,6 +19,7 @@
 #include "gui/gui_input/gui_input.h"
 #include "gui/gui_events/gui_events.h"
 #include "gui/gui_timer/gui_timer.h"
+#include "gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h"
 
 #define CAMBIAR_COLOR 1
 
@@ -37,6 +38,9 @@ int main(int argc, char** argv){
     if( !gui_init() ){
         return 0;
     }
+    
+    allegro_frogger_mainmenu(NULL, 0);
+    getchar();
     
     /* Inicializo las entradas */
     if( !gui_input_init() ){
