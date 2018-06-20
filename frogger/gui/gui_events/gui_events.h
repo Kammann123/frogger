@@ -45,6 +45,9 @@ typedef struct{
     EVENT* nextEvent;
     EVENT* lastEvent;
     
+    /* Largo de la cola actual */
+    uint32_t length;
+    
     /* Fuentes de eventos para la cola */
     QUEUE_SOURCES* sources;
     
@@ -58,6 +61,15 @@ typedef struct{
 /********************************/
 /* Prototipo funciones publicas */
 /********************************/
+
+/* queue_next_event
+ * Devuelve true si hay un evento en la cola y lo retorna
+ * en el respectivo parametro
+ *
+ * queue: Cola de eventos 
+ * event: Evento a retornar
+ */
+bool queue_next_event(EVENT_QUEUE* queue, EVENT* event);
 
 /* queue_start
  * Inicia el funcionamiento de la cola

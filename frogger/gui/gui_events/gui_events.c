@@ -81,17 +81,21 @@ static bool raise_event(EVENT_QUEUE* queue, EVENT* event){
     /* Calculo largo de la cola */
     queueLength = queue->lastEvent - queue->events + 1;
     
-    /* Reservo memoria para el nuevo evento */
-    queue->events = realloc(queue->events, sizeof(EVENT) * (queueLength+1));
-    if( queue->events == NULL ){
-        return false;
+    /* Compruebo el largo de memoria */
+    if( queue->length == queueLength ){
+        /* Reservo memoria para el nuevo evento */
+        queue->events = realloc(queue->events, sizeof(EVENT) * (queueLength+1));
+        if( queue->events == NULL ){
+            return false;
+        }
+        queue->length++;
     }
-    
-    /* Muevo el ultimo puntero */
-    queue->lastEvent++;
     
     /* Guardo el nuevo elemento */
     *(queue->lastEvent) = *event;
+    
+    /* Muevo al terminador */
+    queue->lastEvent++;
     
     /* Proceso exitoso */
     return true;
@@ -123,6 +127,15 @@ static QUEUE_SOURCES* create_sources(void){
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* queue_next_event */
+bool queue_next_event(EVENT_QUEUE* queue, EVENT* event){
+    
+    /* Compruebo si hay un evento en la cola */
+    if( queue->nextEvent != queue->lastEvent ){
+        
+    }
+}
 
 /* queue_close */
 void queue_close(EVENT_QUEUE* queue){
@@ -194,6 +207,7 @@ EVENT_QUEUE* create_queue(void){
     queue->nextEvent = queue->events;
     queue->lastEvent = queue->events;
     queue->shutdown = false;
+    queue->length = 1;
     
     /* Devuelvo cola creada */
     return queue;
