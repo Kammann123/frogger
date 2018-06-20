@@ -2,6 +2,10 @@
  * Este modulo permite manejar colas de eventos de forma dinamica.
  */
 
+
+#ifndef GUI_EVENTS_H
+#define GUI_EVENTS_H
+
 /* Librerias utilizadas */
 #include "source_codes.h"
 
@@ -9,9 +13,6 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <semaphore.h>
-
-#ifndef GUI_EVENTS_H
-#define GUI_EVENTS_H
 
 /******************/
 /* Tipos de datos */
@@ -26,8 +27,10 @@ typedef struct{
 
 typedef struct{
     /* Callback del generador de evento */
-    bool (*callback)(EVENT*);
+    bool (*callback)(EVENT*, void*);
     
+    /* Parametros adicionales */
+    void* args;
 } EVENT_SOURCE;
 
 typedef struct{
@@ -97,7 +100,7 @@ void queue_close(EVENT_QUEUE* queue);
  * callback: Funcion para buscar esos eventos
  * args: Parametros opcionales necesarios 
  */
-bool register_source(EVENT_QUEUE* queue, bool (*callback)(EVENT*));
+bool register_source(EVENT_QUEUE* queue, bool (*callback)(EVENT*, void*), void* args);
 
 /* create_queue 
  * Reserva memoria inicial para trabajar con

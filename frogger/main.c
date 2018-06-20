@@ -42,7 +42,7 @@ int main(int argc, char** argv){
     
     /* Inicializo los eventos */
     queue = create_queue();
-    if( !register_source(queue, gui_input_event) ){
+    if( !register_source(queue, gui_input_event, NULL) ){
         return 0;
     }
     

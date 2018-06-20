@@ -39,8 +39,8 @@ void allegro_input_close(void){
     al_destroy_event_queue(allegroEventQueue);
 }
 
-/* allegro_input_event */
-bool allegro_input_event(EVENT* event){
+/* allegro_input_source */
+bool allegro_input_source(EVENT* event, void* none){
     ALLEGRO_EVENT allegroEvent;
     
     /* Inicializo el evento */

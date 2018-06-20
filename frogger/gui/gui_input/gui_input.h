@@ -44,7 +44,8 @@ void gui_input_close(void);
  * Devuelve un evento de entrada del usuario
  *
  * event: Evento a guardar
+ * none: NULL
  */
-bool gui_input_event(EVENT* event);
+bool gui_input_event(EVENT* event, void* none);
 
 #endif /* GUI_INPUT_H */

@@ -25,13 +25,14 @@ bool allegro_input_init(void);
  */
 void allegro_input_close(void);
 
-/* allegro_input_event
+/* allegro_input_source
  * Generador de eventos por teclado, verifica si hay
  * algun evento en la cola de eventos de allegro
  * 
  * event: Evento donde se guarda
+ * none: NULL
  */
-bool allegro_input_event(EVENT* event);
+bool allegro_input_source(EVENT* event, void* none);
 
 #endif /* ALLEGRO_INPUT_H */
 

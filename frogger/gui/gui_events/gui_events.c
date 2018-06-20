@@ -53,7 +53,7 @@ static void* queue_thread(void* queue){
     EVENT_QUEUE* eventQueue = queue;
     EVENT event;
     
-    bool (*callback)(EVENT*);
+    bool (*callback)(EVENT*, void*);
     void* args;
     
     /* Habilito funcionamiento de la cola */
@@ -63,9 +63,10 @@ static void* queue_thread(void* queue){
         for(i = 0;i < eventQueue->sources->length;i++){
             /* Busco los datos de la fuente */
             callback = eventQueue->sources->array[i].callback;
+            args = eventQueue->sources->array[i].args;
             
             /* Busco actualizacion del evento */
-            if( callback(&event) ){
+            if( callback(&event, args) ){
                 pthread_mutex_lock(&(eventQueue->queueMutex));
                 raise_event(eventQueue, &event);
                 pthread_mutex_unlock(&(eventQueue->queueMutex));
@@ -177,7 +178,7 @@ void queue_start(EVENT_QUEUE* queue){
 }
 
 /* register_source */
-bool register_source(EVENT_QUEUE* queue, bool (*callback)(EVENT*)){
+bool register_source(EVENT_QUEUE* queue, bool (*callback)(EVENT*, void*), void* args){
     EVENT_SOURCE newEventSource;
     
     /* Reservo mas memoria para agregar */
@@ -188,6 +189,7 @@ bool register_source(EVENT_QUEUE* queue, bool (*callback)(EVENT*)){
     
     /* Inicializo la nueve fuente de eventos */
     newEventSource.callback = callback;
+    newEventSource.args = args;
     
     /* La agrego al arreglo */
     queue->sources->array[queue->sources->length++] = newEventSource;

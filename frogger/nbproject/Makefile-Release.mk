@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/gui/gui_init.o \
 	${OBJECTDIR}/gui/gui_input/gui_input.o \
+	${OBJECTDIR}/gui/gui_timer/gui_timer.o \
 	${OBJECTDIR}/input.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/rpi_gui.o \
@@ -106,6 +107,11 @@ ${OBJECTDIR}/gui/gui_input/gui_input.o: gui/gui_input/gui_input.c
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_input
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_input/gui_input.o gui/gui_input/gui_input.c
+
+${OBJECTDIR}/gui/gui_timer/gui_timer.o: gui/gui_timer/gui_timer.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/gui_timer
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_timer/gui_timer.o gui/gui_timer/gui_timer.c
 
 ${OBJECTDIR}/input.o: input.c 
 	${MKDIR} -p ${OBJECTDIR}
