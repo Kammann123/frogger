@@ -26,36 +26,33 @@ void main_menu_rpi(void){
     const uint8_t index_mode[] = {PLAY, RANK, HOWTO, EXIT};
     mode_selected = index_mode;
     jcoord_t joyCoordinates;
-    
+    jswitch_t button;    
     
     joyCoordinates = input_joystick();
     
-    if(joyCoordinates.x > 0){            //muevo el joystick a la derecha
-        if(*mode_selected < EXIT){
-            mode_selected++;
-            display_clear();
-            print_display_menu();
+    while(button == J_NOPRESS){
+        if(joyCoordinates.x > 0){            //muevo el joystick a la derecha
+            if(*mode_selected < EXIT){
+              mode_selected++;
+              display_clear();
+              print_display_menu();
+            }
+        }
+        else if(joyCoordinates.x < 0){      //muevo el joystick a la izquierda
+           if(*mode_selected > PLAY){
+              mode_selected--;
+              display_clear();
+              print_display_menu();
+            }
+        }
+        else{                               //caso en que no muevo el joystick (me fijo si lo presiono
+            button = joystick_get_switch_value();
         }
     }
-    else if(joyCoordinates.x < 0){      //muevo el joystick a la izquierda
-        if(*mode_selected > PLAY){
-            mode_selected--;
-            display_clear();
-            print_display_menu();
-        }
-    }
-    else{                               //caso en que no muevo el joystick (me fijo si lo presiono
-        jswitch_t button;
-        button = joystick_get_switch_value();
-        switch(button){
-            case J_NOPRESS:
-                break;
-            case J_PRESS:
-                display_clear();
-                display_write(9,9,D_ON);            //cuelaquiera solo prueba
-                display_update();
-        }
-    }
+    
+    display_clear();
+    display_write(9,9,D_ON);
+    display_update();
     
 }
 
