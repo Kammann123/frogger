@@ -5,7 +5,7 @@
 #define RPI         0
 #define PC_ALLEGRO  1
 
-#define PLATFORM_MODE RPI
+#define PLATFORM_MODE PC_ALLEGRO
 
 #if ((PLATFORM_MODE != RPI) && (PLATFORM_MODE != PC_ALLEGRO))
 #error "No se encuentra seleccionada una plataforma valida"

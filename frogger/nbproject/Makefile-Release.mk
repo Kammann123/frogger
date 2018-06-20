@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/allegro/allegro_init.o \
 	${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
+	${OBJECTDIR}/gui/gui_init.o \
 	${OBJECTDIR}/gui/gui_input/gui_input.o \
 	${OBJECTDIR}/input.o \
 	${OBJECTDIR}/main.o \
@@ -95,6 +96,11 @@ ${OBJECTDIR}/gui/gui_events/gui_events.o: gui/gui_events/gui_events.c
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_events
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_events/gui_events.o gui/gui_events/gui_events.c
+
+${OBJECTDIR}/gui/gui_init.o: gui/gui_init.c 
+	${MKDIR} -p ${OBJECTDIR}/gui
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_init.o gui/gui_init.c
 
 ${OBJECTDIR}/gui/gui_input/gui_input.o: gui/gui_input/gui_input.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_input
