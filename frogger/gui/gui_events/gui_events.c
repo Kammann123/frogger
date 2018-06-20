@@ -40,3 +40,8 @@ EVENT_QUEUE* create_queue(void){
     /* Devuelvo cola creada */
     return queue;
 }
+
+/* raise_event */
+bool raise_event(uint32_t type, uint32_t data, uint32_t source){
+    
+}
