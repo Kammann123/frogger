@@ -20,6 +20,7 @@
       <itemPath>gui/gui_init.h</itemPath>
       <itemPath>gui/gui_input/gui_input.h</itemPath>
       <itemPath>gui/gui_timer/gui_timer.h</itemPath>
+      <itemPath>gui/gui_types.h</itemPath>
       <itemPath>input.h</itemPath>
       <itemPath>joydrv.h</itemPath>
       <itemPath>rpi_gui.h</itemPath>
@@ -179,6 +180,8 @@
       </item>
       <item path="gui/gui_timer/gui_timer.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="gui/gui_types.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="input.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="input.h" ex="false" tool="3" flavor2="0">
@@ -307,6 +310,8 @@
       <item path="gui/gui_timer/gui_timer.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/gui_timer/gui_timer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/gui_types.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="input.c" ex="false" tool="0" flavor2="0">
       </item>

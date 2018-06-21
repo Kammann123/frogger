@@ -23,5 +23,9 @@
 /* Tipos de datos */
 /******************/
 
+typedef struct{
+    
+} ANIMATED_OBJECT;
+
 #endif /* GUI_ANIMATION_H */
 
