@@ -17,7 +17,7 @@ extern const char* PAUSEMENU_OPTIONS[];
 /**************/
 
 #define PAUSEMENU_WIDTH  640
-#define PAUSEMENU_HEIGHT 480
+#define PAUSEMENU_HEIGHT 400
 
 #define PAUSEMENU_OPTION_0   "gui/allegro/frogger/pausemenu/images/pausemenu_0.png"
 #define PAUSEMENU_OPTION_1   "gui/allegro/frogger/pausemenu/images/pausemenu_1.png"

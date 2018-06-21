@@ -17,9 +17,9 @@
 /**************/
 
 /* Opciones del menu */
-#define RESUME_OPTION     0
-#define RESTART_OPTION    1
-#define EXIT_OPTION       2  
+#define PAUSEMENU_RESUME_OPTION     0
+#define PAUSEMENU_RESTART_OPTION    1
+#define PAUSEMENU_EXIT_OPTION       2  
 
 /* Opcion seleccionada default */
 #define DEFAULT_SELECTION   0

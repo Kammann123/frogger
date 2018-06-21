@@ -17,10 +17,10 @@
 /**************/
 
 /* Opciones del menu */
-#define PLAY_OPTION     0
-#define RANK_OPTION     1
-#define HOWTO_OPTION    2   
-#define EXIT_OPTION     3
+#define MAINMENU_PLAY_OPTION     0
+#define MAINMENU_RANK_OPTION     1
+#define MAINMENU_HOWTO_OPTION    2   
+#define MAINMENU_EXIT_OPTION     3
 
 /* Opcion seleccionada default */
 #define DEFAULT_SELECTION   0

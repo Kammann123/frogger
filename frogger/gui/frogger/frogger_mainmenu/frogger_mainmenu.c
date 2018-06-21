@@ -45,12 +45,12 @@ void frogger_mainmenu_update(void){
 void frogger_mainmenu_move(uint16_t input){
     switch(input){
         case MOVE_UP:
-            if( optionSelected != PLAY_OPTION ){
+            if( optionSelected != MAINMENU_PLAY_OPTION ){
                 optionSelected--;
             }
             break;
         case MOVE_DOWN:
-            if( optionSelected != EXIT_OPTION ){
+            if( optionSelected != MAINMENU_EXIT_OPTION ){
                 optionSelected++;
             }
             break;

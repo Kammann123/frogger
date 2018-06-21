@@ -44,12 +44,12 @@ void frogger_pausemenu_update(void){
 void frogger_pausemenu_move(uint16_t input){
     switch(input){
         case MOVE_UP:
-            if( optionSelected != RESUME_OPTION ){
+            if( optionSelected != PAUSEMENU_RESUME_OPTION ){
                 optionSelected--;
             }
             break;
         case MOVE_DOWN:
-            if( optionSelected != EXIT_OPTION ){
+            if( optionSelected != PAUSEMENU_EXIT_OPTION ){
                 optionSelected++;
             }
             break;

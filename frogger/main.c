@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   main.c
- * Author: lucas
- *
- * Created on June 18, 2018, 6:54 PM
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,19 +8,64 @@
 #include "gui/gui_timer/gui_timer.h"
 #include "gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h"
 #include "gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
+#include "gui/frogger/frogger_pausemenu/frogger_pausemenu.h"
 
-#define CAMBIAR_COLOR 1
+/**************/
+/* Constantes */
+/**************/
 
-/*
- * 
+/* Etapas del flujo del programa */
+
+typedef enum {
+    MAINMENU_STAGE, 
+    RANKING_STAGE,
+    HOWTO_STAGE, 
+    FROGGER_STAGE,
+    PAUSEMENU_STAGE
+} GAME_STAGE;
+
+#define DEFAULT_STAGE MAINMENU_STAGE
+
+/* Eventos del timer */
+#define TIMER_DEFINITION    1000
+#define REFRESH_FPS         60
+#define REFRESH_DISPLAY     0
+#define REFRESH_TIME        TIMER_DEFINITION/REFRESH_FPS
+
+/**************/
+/* Prototipos */
+/**************/
+
+/* switch_input_target 
+ * Maneja quien recibe un evento de entrada
+ * segun la etapa del flujo del juego
+ *
+ * stage: Etapa del programa
+ * event: Evento de entrada
  */
+void switch_input_target(GAME_STAGE stage, EVENT event);
+
+/* switch_update_target
+ * Maneja quien maneja la actualizacion de la pantalla
+ * segun la etapa del juego
+ * 
+ * stage: Etapa del programa
+ */
+void switch_update_target(GAME_STAGE stage);
+
+/* *******************************
+ * main
+ * Funcion principal del programa.
+ * *******************************/
 int main(int argc, char** argv){
+    
+    /* Variables */
+    TIMER_QUEUE* timer;
     EVENT_QUEUE* queue;
     EVENT event;
-    ALLEGRO_DISPLAY* display;
-    TIMER_QUEUE* timer;
     
-    bool state = false;
+    /* Game stage variable */
+    GAME_STAGE stage = DEFAULT_STAGE;
     
     /* Inicializo la interfaz */
     if( !gui_init() ){
@@ -52,19 +84,10 @@ int main(int argc, char** argv){
     }
     
     /* Agrego un evento de timer */
-    if( !gui_timer_new_event(timer, 100, CAMBIAR_COLOR) ){
+    if( !gui_timer_new_event(timer, REFRESH_TIME, REFRESH_DISPLAY) ){
         return 0;
     }
     
-    /* Inicio el timer */
-    gui_timer_start(timer);
-    
-    /* Display */
-    display = al_create_display(300, 300);
-    if( display == NULL ){
-        return 0;
-        
-    }
     /* Inicializo los eventos */
     queue = create_queue();
     if( !register_source(queue, gui_input_source, NULL) ){
@@ -74,24 +97,21 @@ int main(int argc, char** argv){
         return 0;
     }
     
+    /* Inicio el timer */
+    gui_timer_start(timer);
+    
     /* Inicio la cola de eventos */
     queue_start(queue);
     
-    /* Veo los eventos */
+    /* Main loop */
     while( true ){
+        /* Pregunto por eventos en la queue */
         if( queue_next_event(queue, &event) ){
             if( event.source == ALLEGRO_INPUT_SOURCE ){
-                switch( event.data ){
-                    case ENTER:
-                        break;
-                    default:
-                        frogger_mainmenu_move(event.data);
-                        break;
-                }
+                switch_input_target(stage, event);
             }else if( event.source == TIMER_SOURCE ){
-                if( event.data == CAMBIAR_COLOR ){
-                    
-                    frogger_mainmenu_update();
+                if( event.data == REFRESH_DISPLAY ){
+                    switch_update_target(stage);
                 }
             }
         }
@@ -105,7 +125,52 @@ int main(int argc, char** argv){
     
     /* Destruyo el timer */
     gui_timer_destroy(timer);
-    
-    al_destroy_display(display);
 }
 
+/***************************/
+/* Definicion de funciones */
+/***************************/
+
+/* switch_update_target */
+void switch_update_target(GAME_STAGE stage){
+    switch(stage){
+        case MAINMENU_STAGE:
+            frogger_mainmenu_update();
+            break;
+        case RANKING_STAGE:
+            break;
+        case HOWTO_STAGE:
+            break;
+        case FROGGER_STAGE:
+            break;
+        case PAUSEMENU_STAGE:
+            frogger_pausemenu_update();
+            break;
+    }
+}
+
+/* switch_input_target */
+void switch_input_target(GAME_STAGE stage, EVENT event){
+    switch(stage){
+        case MAINMENU_STAGE:
+            if( event.type == MOVEMENT_EVENT ){
+                frogger_mainmenu_move(event.data);
+            }else if( event.type == ACTION_EVENT ){
+                // SELECCIONO OPCION
+            }
+            break;
+        case RANKING_STAGE:
+            break;
+        case HOWTO_STAGE:
+            break;
+        case FROGGER_STAGE:
+            break;
+        case PAUSEMENU_STAGE:
+            if( event.type == MOVEMENT_EVENT ){
+                frogger_pausemenu_move(event.data);
+            }else if( event.type == ACTION_EVENT ){
+                // SELECCIONO OPCION                
+            }
+            break;
+    }
+}
