@@ -21,14 +21,27 @@
 #define GUI_ANIMATION_STATE_LOOP    1
 #define GUI_ANIMATION_STATE_MOVE    2
 
+/* Orientaciones de la animacion */
+#define GUI_ANIMATION_HORIZONTAL_LEFT   0
+#define GUI_ANIMATION_HORIZONTAL_RIGHT  1
+#define GUI_ANIMATION_VERTICAL_UP       2
+#define GUI_ANIMATION_VERTICAL_DOWN     3
+
+#define NUMBER_OF_ORIENTATIONS          4
+
 /******************/
 /* Tipos de datos */
 /******************/
 
-/* FRAME: Contiene un filename con el frame, interpretable segun
- * en que interfaz se ejecute el modulo
- */
-typedef char* FRAME;
+typedef struct{
+    /* Archivos de cada frame */
+    char** files;
+    /* Orientacion de los frames */
+    uint16_t orientation;
+    /* Parametros de desplazamiento */
+    uint32_t timeDelta;
+    uint32_t spaceDelta;
+} FRAMES;
 
 typedef struct{
     /* Posiciones del objeto */
@@ -37,14 +50,13 @@ typedef struct{
     
     /* Estado de la animacion */
     uint16_t status;
+    uint16_t orientation;
     
     /* Indice frame actual */
     uint16_t frameIndex;
     
     /* Configuracion de la animacion */
-    FRAME*  frames;
-    uint32_t timeDelta;
-    uint32_t spaceDelta;
+    FRAMES frames[NUMBER_OF_ORIENTATIONS];
 } ANIMATED_OBJECT;
 
 typedef struct{

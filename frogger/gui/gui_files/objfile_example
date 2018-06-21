@@ -1,0 +1,39 @@
+[attributes]
+timedelta: 500
+spacedelta: 10
+[orientation]
+orientation: HORIZONTAL_RIGHT
+[frames]
+0: filename_0
+1: filename_1
+2: filename_2
+
+[attributes]
+timedelta: 500
+spacedelta: 10
+[orientation]
+orientation: HORIZONTAL_LEFT
+[frames]
+0: filename_0
+1: filename_1
+2: filename_2
+
+[attributes]
+timedelta: 500
+spacedelta: 10
+[orientation]
+orientation: VERTICAL_UP
+[frames]
+0: filename_0
+1: filename_1
+2: filename_2
+
+[attributes]
+timedelta: 500
+spacedelta: 10
+[orientation]
+orientation: VERTICAL_DOWN
+[frames]
+0: filename_0
+1: filename_1
+2: filename_2
