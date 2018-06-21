@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "gui_files.h"
 
 /***********************/
@@ -17,6 +20,13 @@
 /***********************************/
 /* Prototipo de funciones privadas */
 /***********************************/
+
+/* is_numeric_string
+ * Verifica que sea un string numerico
+ * 
+ * str: String a comprobar
+ */
+static bool is_numeric_string(char* str);
 
 /* is_setting
  * Devuelve true si es una configuracion bien formateada
@@ -58,9 +68,174 @@ static bool is_number(char number);
  */
 static bool is_valid_character(char character);
 
+/* section_verify
+ * Verifica que no haya error en el formato de la seccion
+ *
+ * line: Linea leida
+ * sectionName: Nombre de la seccion esperado
+ */
+static bool section_verify(char* line, char* sectionName);
+
+/* setting_verify
+ * Verifica que no haya error en el formato de la configuracion
+ *
+ * line: Linea leida del archivo
+ * setting: Donde se guarda la configuracion
+ * settingName: Nombre de la configuracion esperada
+ */
+static bool setting_verify(char* line, SETTING* setting, char* settingName);
+
+/************************************/
+/* Definicion de funciones publicas */
+/************************************/
+
+/* gui_files_read_objfile */
+bool gui_files_read_objfile(char* objFile, ANIMATED_OBJECT* object){
+    FILE* file;
+    char fileLine[MAX_LINE];
+    
+    uint16_t state = OBJFILE_STATE_ATTRIBUTE;
+    bool error = false;
+    
+    ANIMATION animation;
+    SETTING settings;
+    
+    /* Abro el archivo a leer */
+    file = fopen(objFile, "r");
+    if( file == NULL ){
+        return false;
+    }
+    
+    /* Leo linea por linea */
+    while( (fgets(fileLine, MAX_LINE, file) != NULL) && !error ){
+        /* Verifico que sea linea completa */
+        if( fileLine[ strlen(fileLine)-1 ] == '\n' ){
+            switch( state ){
+                case OBJFILE_STATE_ATTRIBUTE:
+                    if( section_verify(fileLine, OBJFILE_ATTRIBUTES) ){
+                            state = OBJFILE_STATE_TIMEDELTA;
+                    }else{
+                        error = true;
+                    }
+                    break;
+                case OBJFILE_STATE_TIMEDELTA:
+                    if( setting_verify(fileLine, &settings, OBJFILE_TIMEDELTA) ){
+                        if( is_numeric_string(settings.value) ){
+                            animation.timeDelta = atoi(settings.value);
+                            state = OBJFILE_STATE_SPACEDELTA;
+                        }else{
+                            error = true;
+                        }                        
+                    }else{
+                        error = true;
+                    }
+                    break;
+                case OBJFILE_STATE_SPACEDELTA:
+                    if( setting_verify(fileLine, &settings, OBJFILE_SPACEDELTA) ){
+                        if( is_numeric_string(settings.value) ){
+                            animation.spaceDelta = atoi(settings.value);
+                            state = OBJFILE_STATE_ORIENTATION;
+                        }else{
+                            error = true;
+                        }                        
+                    }else{
+                        error = true;
+                    }
+                    break;
+                case OBJFILE_STATE_ORIENTATION:
+                    if( setting_verify(fileLine, &settings, OBJFILE_ORIENTATION) ){
+                        if( !(strcmp(settings.value, OBJFILE_ORIENTATION_HORIZONTAL_LEFT)) ){
+                            animation.orientation = GUI_ANIMATION_HORIZONTAL_LEFT;
+                            state = OBJFILE_STATE_QUANTITY;
+                        }else if( !(strcmp(settings.value, OBJFILE_ORIENTATION_HORIZONTAL_RIGHT)) ){
+                            animation.orientation = GUI_ANIMATION_HORIZONTAL_RIGHT;
+                            state = OBJFILE_STATE_QUANTITY;
+                        }else if( !(strcmp(settings.value, OBJFILE_ORIENTATION_VERTICAL_UP)) ){
+                            animation.orientation = GUI_ANIMATION_VERTICAL_UP;
+                            state = OBJFILE_STATE_QUANTITY;
+                        }else if( !(strcmp(settings.value, OBJFILE_ORIENTATION_VERTICAL_DOWN)) ){
+                            animation.orientation = GUI_ANIMATION_VERTICAL_DOWN;
+                            state = OBJFILE_STATE_QUANTITY;
+                        }else{
+                            error = true;
+                        }
+                    }else{
+                        error = true;
+                    }
+                    break;
+                case OBJFILE_STATE_QUANTITY:
+                    if( setting_verify(fileLine, &settings, OBJFILE_QUANTITY) ){
+                        if( is_numeric_string(settings.value) ){
+                            animation.framesQty = atoi(settings.value);
+                            animation.frames = gui_animation_create_framelist(animation.framesQty);
+                            state = OBJFILE_STATE_FRAME_SECTION;
+                        }else{
+                            error = true;
+                        }
+                    }else{
+                        error = true;
+                    }
+                    break;
+                case OBJFILE_STATE_FRAME_SECTION:
+                    if( section_verify(fileLine, OBJFILE_FRAMES) ){
+                            state = OBJFILE_STATE_FRAMES;
+                    }else{
+                        error = true;
+                    }
+                    break;
+                case OBJFILE_STATE_FRAMES:
+                    break;
+            }
+        }else{
+            error = true;
+        }
+    }
+    
+    /* Cierro el archivo */
+    fclose(file);
+    
+    /* Si hubo error y llego a reservar memoria, la libera */
+    if( error ){
+        if( state >= OBJFILE_STATE_FRAME_SECTION ){
+            gui_animation_destroy_framelist(animation.frames);
+        }
+    }
+    
+    /* Devuelve si el proceso fue exitoso */
+    return !error;
+}
+
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
+
+/* setting_verify */
+static bool setting_verify(char* line, SETTING* setting, char* settingName){ 
+    if( is_setting(line, setting) ){
+        if( !(strcmp(setting->key, settingName)) ){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+} 
+
+/* section_verify */
+static bool section_verify(char* line, char* sectionName){
+    char section[MAX_STRING];
+    
+    if( is_section(line, section) ){
+        if( !(strcmp(section, sectionName)) ){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
 
 /* is_setting */
 static bool is_setting(char* str, SETTING* setting){
@@ -70,7 +245,10 @@ static bool is_setting(char* str, SETTING* setting){
     while( str ){
         switch(state){
             case IS_SETTING_KEY:
-                if( is_letter(*str) ){
+                if( is_letter(*str) || is_number(*str) ){
+                    if( i >= MAX_STRING ){
+                        return false;
+                    }
                     setting->key[i++] = *str;
                 }else if( *str == ':' ){
                     setting->key[i] = '\0';
@@ -89,6 +267,9 @@ static bool is_setting(char* str, SETTING* setting){
                 break;
             case IS_SETTING_VALUE:
                 if( is_number(*str) || is_letter(*str) || is_valid_character(*str) ){
+                    if( i >= MAX_STRING ){
+                        return false;
+                    }
                     setting->value[i++] = *str;
                 }else{
                     return false;
@@ -106,6 +287,7 @@ static bool is_setting(char* str, SETTING* setting){
 /* is_section */
 static bool is_section(char* str, char* section){
     uint16_t state = IS_SECTION_OPEN;
+    uint16_t i = 0;
     
     while( str ){
         switch(state){
@@ -118,8 +300,12 @@ static bool is_section(char* str, char* section){
                 break;
             case IS_SECTION_CHAR:
                 if( is_letter(*str) ){
+                    if(i >= MAX_STRING){
+                        return false;
+                    }
                     *section = *str;
                     section++;
+                    i++;
                 }else if( *str == ']' ){
                     *section = '\0';
                     state = IS_SECTION_CLOSE;
@@ -161,4 +347,15 @@ static bool is_valid_character(char character){
         return true;
     }
     return false;
+}
+
+/* is_numeric_string */
+static bool is_numeric_string(char* str){
+    if( is_number(*str) ){
+        return is_numeric_string( str+1);
+    }else if( !(*str) ){
+        return true;
+    }else{
+        return false;
+    }
 }

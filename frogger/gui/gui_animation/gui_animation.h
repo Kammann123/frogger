@@ -26,6 +26,7 @@
 #define GUI_ANIMATION_HORIZONTAL_RIGHT  1
 #define GUI_ANIMATION_VERTICAL_UP       2
 #define GUI_ANIMATION_VERTICAL_DOWN     3
+#define GUI_ANIMATION_ORIENTATION_NULL  4
 
 #define NUMBER_OF_ORIENTATIONS          4
 
@@ -33,15 +34,22 @@
 /* Tipos de datos */
 /******************/
 
+typedef char* FRAME;
+
 typedef struct{
     /* Archivos de cada frame */
-    char** files;
+    FRAME* frames;
+    
+    /* Cantidad de frames de la animacion */
+    uint16_t framesQty;
+    
     /* Orientacion de los frames */
     uint16_t orientation;
+    
     /* Parametros de desplazamiento */
     uint32_t timeDelta;
     uint32_t spaceDelta;
-} FRAMES;
+} ANIMATION;
 
 typedef struct{
     /* Posiciones del objeto */
@@ -56,7 +64,7 @@ typedef struct{
     uint16_t frameIndex;
     
     /* Configuracion de la animacion */
-    FRAMES frames[NUMBER_OF_ORIENTATIONS];
+    ANIMATION animations[NUMBER_OF_ORIENTATIONS];
 } ANIMATED_OBJECT;
 
 typedef struct{
@@ -89,6 +97,35 @@ ANIMATION_ENGINE* gui_animation_create_engine(void);
  * y: Posicion inicial en Y
  */
 ANIMATED_OBJECT* gui_animation_create_object(char* objFile, int32_t x, int32_t y);
+
+/* gui_animation_create_framelist
+ * Asigna memoria para crear una lista de frames
+ *
+ * frameQty: Cantidad de frames
+ */
+FRAME* gui_animation_create_framelist(uint16_t frameQty);
+
+/* gui_animation_destroy_framelist
+ * Libera la memoria usada por la framelist
+ *
+ * framelist: Lista de frames
+ */
+void gui_animation_destroy_framelist(FRAME* framelist);
+
+/* gui_animation_create_frame 
+ * Asigna memoria y guarda el contenido del frame
+ * en dicho bloque
+ * 
+ * str: Filename del frame
+ */
+FRAME gui_animation_create_frame(char* str);
+
+/* gui_animation_destroy_frame
+ * Destruye, libera la memoria usada por un frame
+ *
+ * frame: Frame a liberar
+ */
+void gui_animation_destroy_frame(FRAME frame);
 
 #endif /* GUI_ANIMATION_H */
 

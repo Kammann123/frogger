@@ -9,6 +9,7 @@
 #include "gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h"
 #include "gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
 #include "gui/frogger/frogger_pausemenu/frogger_pausemenu.h"
+#include "gui/gui_files/gui_files.h"
 
 /**************/
 /* Constantes */
@@ -64,8 +65,14 @@ int main(int argc, char** argv){
     EVENT_QUEUE* queue;
     EVENT event;
     
+    ANIMATED_OBJECT test;
+    
     /* Game stage variable */
     GAME_STAGE stage = DEFAULT_STAGE;
+    
+    if( gui_files_read_objfile("gui/gui_files/objfile_example", &test) ){
+        getchar();
+    }
     
     /* Inicializo la interfaz */
     if( !gui_init() ){

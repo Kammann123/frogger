@@ -17,6 +17,7 @@
       <itemPath>game_types.h</itemPath>
       <itemPath>gui/gui_animation/gui_animation.h</itemPath>
       <itemPath>gui/gui_events/gui_events.h</itemPath>
+      <itemPath>gui/gui_files/gui_files.h</itemPath>
       <itemPath>gui/gui_init.h</itemPath>
       <itemPath>gui/gui_input/gui_input.h</itemPath>
       <itemPath>gui/gui_timer/gui_timer.h</itemPath>
@@ -45,6 +46,7 @@
       <itemPath>gui/frogger/frogger_pausemenu/frogger_pausemenu.c</itemPath>
       <itemPath>gui/gui_animation/gui_animation.c</itemPath>
       <itemPath>gui/gui_events/gui_events.c</itemPath>
+      <itemPath>gui/gui_files/gui_files.c</itemPath>
       <itemPath>gui/gui_init.c</itemPath>
       <itemPath>gui/gui_input/gui_input.c</itemPath>
       <itemPath>gui/gui_timer/gui_timer.c</itemPath>
@@ -64,8 +66,6 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>gui/gui_files/gui_files.c</itemPath>
-    <itemPath>gui/gui_files/gui_files.h</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
