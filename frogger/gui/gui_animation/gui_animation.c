@@ -16,6 +16,33 @@
 /* Definicion de funciones publicas */
 /************************************/
 
+/* gui_animation_create_object */
+ANIMATED_OBJECT* gui_animation_create_object(int32_t x, int32_t y, uint16_t orientation){
+    ANIMATED_OBJECT* object;
+    uint16_t i;
+    
+    /* Reservo memoria para el objeto */
+    object = malloc( sizeof(ANIMATED_OBJECT) );
+    if( object == NULL ){
+        return NULL;
+    }
+    
+    /* Inicializo parametros */
+    object->currentPos.x = x;
+    object->currentPos.y = y;
+    object->status = GUI_ANIMATION_STATE_STATIC;
+    object->frameIndex = 0;
+    object->orientation;
+    
+    /* Inicializo con null los frames */
+    for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
+        object->animations[i].orientation = GUI_ANIMATION_ORIENTATION_NULL;
+    }
+    
+    /* Devuelvo la creacion */
+    return object;
+}
+
 /* gui_animation_create_framelist */
 FRAME* gui_animation_create_framelist(uint16_t frameQty){
     FRAME* framelist;

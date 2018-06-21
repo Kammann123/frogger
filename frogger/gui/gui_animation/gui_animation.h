@@ -92,11 +92,11 @@ ANIMATION_ENGINE* gui_animation_create_engine(void);
  * Instancia un objeto animado, precargando su configuracion
  * dada en el archivo
  *
- * objFile: Nombre del archivo de la animacion
  * x: Posicion inicial en X
  * y: Posicion inicial en Y
+ * orientation: Orientacion inicial del objeto 
  */
-ANIMATED_OBJECT* gui_animation_create_object(char* objFile, int32_t x, int32_t y);
+ANIMATED_OBJECT* gui_animation_create_object(int32_t x, int32_t y, uint16_t orientation);
 
 /* gui_animation_create_framelist
  * Asigna memoria para crear una lista de frames
