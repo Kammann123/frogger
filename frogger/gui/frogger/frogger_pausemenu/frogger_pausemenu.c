@@ -1,4 +1,4 @@
-#include "frogger_mainmenu.h"
+#include "frogger_pausemenu.h"
 
 #include <stdlib.h>
 
@@ -7,10 +7,9 @@
 /**************************/
 
 /* Mensajes en memoria */
-const char* MAINMENU_OPTIONS[] = {
-    PLAY_MSG,
-    RANK_MSG,
-    HOWTO_MSG,
+const char* PAUSEMENU_OPTIONS[] = {
+    RESUME_MSG,
+    RESTART_MSG,
     EXIT_MSG,
     NULL
 };
@@ -22,29 +21,29 @@ static uint16_t optionSelected = DEFAULT_SELECTION;
 /* Definicion de funciones publicas */
 /************************************/
 
-/* frogger_mainmenu_close */
-void frogger_mainmenu_close(void){
+/* frogger_pausemenu_close */
+void frogger_pausemenu_close(void){
 #if PLATFORM_MODE == PC_ALLEGRO
-    allegro_frogger_mainmenu_close();
+    
 #elif PLATFORM_MODE == RPI
     
 #endif    
 }
 
-/* frogger_mainmenu_update */
-void frogger_mainmenu_update(void){
+/* frogger_pausemenu_update */
+void frogger_pausemenu_update(void){
 #if PLATFORM_MODE == PC_ALLEGRO
-    allegro_frogger_mainmenu(MAINMENU_OPTIONS, optionSelected);
+    
 #elif PLATFORM_MODE == RPI
     
 #endif
 }
 
-/* frogger_mainmenu_move */
-void frogger_mainmenu_move(uint16_t input){
+/* frogger_pausemenu_move */
+void frogger_pausemenu_move(uint16_t input){
     switch(input){
         case MOVE_UP:
-            if( optionSelected != PLAY_OPTION ){
+            if( optionSelected != RESUME_OPTION ){
                 optionSelected--;
             }
             break;
@@ -56,7 +55,7 @@ void frogger_mainmenu_move(uint16_t input){
     }
 }
 
-/* frogger_mainmenu_selected */
-uint16_t frogger_mainmenu_selected(void){
+/* frogger_pausemenu_selected */
+uint16_t frogger_pausemenu_selected(void){
     return optionSelected;
 }

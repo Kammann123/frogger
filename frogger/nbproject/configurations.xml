@@ -12,6 +12,7 @@
       <itemPath>display.h</itemPath>
       <itemPath>gui/frogger/frogger_mainmenu.h</itemPath>
       <itemPath>gui/frogger/frogger_mainmenu/frogger_mainmenu.h</itemPath>
+      <itemPath>gui/frogger/frogger_pausemenu/frogger_pausemenu.h</itemPath>
       <itemPath>game_types.h</itemPath>
       <itemPath>gui/gui_events/gui_events.h</itemPath>
       <itemPath>gui/gui_init.h</itemPath>
@@ -37,6 +38,7 @@
       <itemPath>gui/allegro/allegro_init.c</itemPath>
       <itemPath>gui/allegro/allegro_input/allegro_input.c</itemPath>
       <itemPath>gui/frogger/frogger_mainmenu/frogger_mainmenu.c</itemPath>
+      <itemPath>gui/frogger/frogger_pausemenu/frogger_pausemenu.c</itemPath>
       <itemPath>gui/gui_events/gui_events.c</itemPath>
       <itemPath>gui/gui_init.c</itemPath>
       <itemPath>gui/gui_input/gui_input.c</itemPath>
@@ -127,6 +129,16 @@
             flavor2="0">
       </item>
       <item path="gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_pausemenu/frogger_pausemenu.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_pausemenu/frogger_pausemenu.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -232,6 +244,16 @@
             flavor2="0">
       </item>
       <item path="gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_pausemenu/frogger_pausemenu.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_pausemenu/frogger_pausemenu.h"
             ex="false"
             tool="3"
             flavor2="0">
