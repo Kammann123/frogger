@@ -99,6 +99,23 @@ static void* gui_animation_engine_thread(void* thisEngine){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* gui_animation_get_frame */
+FRAME gui_animation_get_frame(ANIMATED_OBJECT* object){
+    uint16_t i;
+    FRAME frame = NULL;
+    
+    /* Busco animacion correspondiente */
+    for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
+        
+        if( object->orientation == object->animations[i].orientation ){
+            frame = object->animations[i].frames[object->frameIndex];
+            break;
+        }
+    }
+    
+    return frame;
+}
+
 /* gui_animation_start_movement */
 void gui_animation_start_movement(ANIMATED_OBJECT* object, uint16_t orientation, int32_t x, int32_t y){
     

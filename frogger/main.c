@@ -45,7 +45,7 @@ typedef enum {
  * stage: Etapa del programa
  * event: Evento de entrada
  */
-void switch_input_target(GAME_STAGE stage, EVENT event);
+void switch_input_target(GAME_STAGE* stage, EVENT event);
 
 /* switch_update_target
  * Maneja quien maneja la actualizacion de la pantalla
@@ -53,7 +53,7 @@ void switch_input_target(GAME_STAGE stage, EVENT event);
  * 
  * stage: Etapa del programa
  */
-void switch_update_target(GAME_STAGE stage);
+void switch_update_target(GAME_STAGE* stage);
 
 /* *******************************
  * main
@@ -65,7 +65,6 @@ int main(int argc, char** argv){
     TIMER_QUEUE* timer;
     EVENT_QUEUE* queue;
     EVENT event;
-    
     /* Game stage variable */
     GAME_STAGE stage = DEFAULT_STAGE;
     
@@ -110,10 +109,10 @@ int main(int argc, char** argv){
         /* Pregunto por eventos en la queue */
         if( queue_next_event(queue, &event) ){
             if( event.source == ALLEGRO_INPUT_SOURCE ){
-                switch_input_target(stage, event);
+                switch_input_target(&stage, event);
             }else if( event.source == TIMER_SOURCE ){
                 if( event.data == REFRESH_DISPLAY ){
-                    switch_update_target(stage);
+                    switch_update_target(&stage);
                 }
             }
         }
@@ -127,6 +126,7 @@ int main(int argc, char** argv){
     
     /* Destruyo el timer */
     gui_timer_destroy(timer);
+    
 }
 
 /***************************/
@@ -134,8 +134,8 @@ int main(int argc, char** argv){
 /***************************/
 
 /* switch_update_target */
-void switch_update_target(GAME_STAGE stage){
-    switch(stage){
+void switch_update_target(GAME_STAGE* stage){
+    switch(*stage){
         case MAINMENU_STAGE:
             frogger_mainmenu_update();
             break;
@@ -152,13 +152,13 @@ void switch_update_target(GAME_STAGE stage){
 }
 
 /* switch_input_target */
-void switch_input_target(GAME_STAGE stage, EVENT event){
-    switch(stage){
+void switch_input_target(GAME_STAGE* stage, EVENT event){
+    switch(*stage){
         case MAINMENU_STAGE:
             if( event.type == MOVEMENT_EVENT ){
                 frogger_mainmenu_move(event.data);
             }else if( event.type == ACTION_EVENT ){
-                // SELECCIONO OPCION
+                
             }
             break;
         case RANKING_STAGE:

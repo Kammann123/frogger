@@ -376,7 +376,7 @@ static bool is_number(char number){
 
 /* is_valid_character */
 static bool is_valid_character(char character){
-    if( character == '_' ){
+    if( character == '_' || character == '/' || character == '.' ){
         return true;
     }
     return false;
