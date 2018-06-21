@@ -1,4 +1,5 @@
 #include "frogger_pausemenu.h"
+#include "../../allegro/frogger/pausemenu/allegro_frogger_pausemenu.h"
 
 #include <stdlib.h>
 
@@ -24,7 +25,7 @@ static uint16_t optionSelected = DEFAULT_SELECTION;
 /* frogger_pausemenu_close */
 void frogger_pausemenu_close(void){
 #if PLATFORM_MODE == PC_ALLEGRO
-    
+    allegro_frogger_pausemenu_close();
 #elif PLATFORM_MODE == RPI
     
 #endif    
@@ -33,7 +34,7 @@ void frogger_pausemenu_close(void){
 /* frogger_pausemenu_update */
 void frogger_pausemenu_update(void){
 #if PLATFORM_MODE == PC_ALLEGRO
-    
+    allegro_frogger_pausemenu(PAUSEMENU_OPTIONS, optionSelected);
 #elif PLATFORM_MODE == RPI
     
 #endif

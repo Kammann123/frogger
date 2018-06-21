@@ -1,4 +1,5 @@
 #include "frogger_mainmenu.h"
+#include "../../allegro/frogger/mainmenu/allegro_frogger_mainmenu.h"
 
 #include <stdlib.h>
 

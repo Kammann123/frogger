@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h</itemPath>
+      <itemPath>gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.h</itemPath>
       <itemPath>allegro_gui.h</itemPath>
       <itemPath>gui/allegro/allegro_init.h</itemPath>
       <itemPath>gui/allegro/allegro_input/allegro_input.h</itemPath>
@@ -34,6 +35,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.c</itemPath>
+      <itemPath>gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c</itemPath>
       <itemPath>allegro_gui.c</itemPath>
       <itemPath>gui/allegro/allegro_init.c</itemPath>
       <itemPath>gui/allegro/allegro_input/allegro_input.c</itemPath>
@@ -117,6 +119,16 @@
             flavor2="0">
       </item>
       <item path="gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -232,6 +244,16 @@
             flavor2="0">
       </item>
       <item path="gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.h"
             ex="false"
             tool="3"
             flavor2="0">

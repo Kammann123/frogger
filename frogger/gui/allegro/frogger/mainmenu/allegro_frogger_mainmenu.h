@@ -10,7 +10,7 @@
 #include <stdint.h>
 
 /* Variables externas */
-extern char* MAINMENU_OPTIONS[];
+extern const char* MAINMENU_OPTIONS[];
 
 /**************/
 /* Constantes */
@@ -35,7 +35,7 @@ extern char* MAINMENU_OPTIONS[];
  * options: Puntero al arreglo de mensajes
  * optionSelected: Opcion seleccionada actualmente
  */
-void allegro_frogger_mainmenu(char** options, uint16_t optionSelected);
+void allegro_frogger_mainmenu(const char** options, uint16_t optionSelected);
 
 /* allegro_frogger_mainmenu_close 
  * Cierra el menu principal de allegro

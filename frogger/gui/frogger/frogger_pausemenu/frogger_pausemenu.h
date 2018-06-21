@@ -3,8 +3,8 @@
  * con la interfaz grafica que corresponda en la configuracion
  */
 
-#ifndef NEWFILE_H
-#define NEWFILE_H
+#ifndef FROGGER_PAUSEMENU_H
+#define FROGGER_PAUSEMENU_H
 
 /* Librerias utilizadas */
 #include <stdint.h>
