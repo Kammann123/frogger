@@ -99,6 +99,8 @@ bool gui_files_read_objfile(char* objFile, ANIMATED_OBJECT* object){
     
     ANIMATION animation;
     SETTING settings;
+    uint16_t frameIndex = 0, i;
+    char indexStr[10] = "";
     
     /* Abro el archivo a leer */
     file = fopen(objFile, "r");
@@ -184,6 +186,28 @@ bool gui_files_read_objfile(char* objFile, ANIMATED_OBJECT* object){
                     }
                     break;
                 case OBJFILE_STATE_FRAMES:
+                    /* Compruebo que la linea sea un nuevo frame */
+                    if( fileLine[0] != '\n' ){
+                        /* Verifico que no se haya pasado */
+                        if( frameIndex < animation.framesQty ){
+                            /* Creo el string con el numero de indice de frame esperado */
+                            sprintf(indexStr, "%d", frameIndex);
+
+                            /* Verifico formato de linea y numero de indice */
+                            if( setting_verify(fileLine, &settings, indexStr) ){
+                                animation.frames[frameIndex] = gui_animation_create_frame(settings.value);
+                            }else{
+                                error = true;
+                            }
+
+                            /* Me muevo al proximo frame */
+                            frameIndex++;
+                        }else{
+                            error = true;
+                        }
+                    }else{
+                        error = true;
+                    }
                     break;
             }
         }else{
@@ -197,7 +221,14 @@ bool gui_files_read_objfile(char* objFile, ANIMATED_OBJECT* object){
     /* Si hubo error y llego a reservar memoria, la libera */
     if( error ){
         if( state >= OBJFILE_STATE_FRAME_SECTION ){
-            gui_animation_destroy_framelist(animation.frames);
+            gui_animation_destroy_framelist(animation.frames, animation.framesQty);
+        }
+    }else{
+        for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
+            if( object->animations[i].orientation == GUI_ANIMATION_ORIENTATION_NULL ){
+                object->animations[i] = animation;
+                break;
+            }
         }
     }
     
@@ -271,6 +302,10 @@ static bool is_setting(char* str, SETTING* setting){
                         return false;
                     }
                     setting->value[i++] = *str;
+                }else if( *str == '\n' ){
+                    /* Ok, comprobado */
+                    setting->value[i] = '\0';
+                    return true;
                 }else{
                     return false;
                 }
@@ -278,10 +313,6 @@ static bool is_setting(char* str, SETTING* setting){
         }
         str++;
     }
-    
-    /* Ok, comprobado */
-    setting->value[i] = '\0';
-    return true;
 }
 
 /* is_section */
@@ -314,13 +345,15 @@ static bool is_section(char* str, char* section){
                 }
                 break;
             case IS_SECTION_CLOSE:
-                return false;
+                if( *str == '\n' ){
+                    return true;
+                }else{
+                    return false;
+                }
                 break;
         }
         str++;
     }
-    
-    return true;
 }
 
 /* is_letter */

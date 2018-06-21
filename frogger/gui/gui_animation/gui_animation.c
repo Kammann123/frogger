@@ -19,6 +19,7 @@
 /* gui_animation_create_framelist */
 FRAME* gui_animation_create_framelist(uint16_t frameQty){
     FRAME* framelist;
+    uint16_t i;
     
     /* Reservo memoria */
     framelist = malloc( sizeof(FRAME) * frameQty );
@@ -28,11 +29,25 @@ FRAME* gui_animation_create_framelist(uint16_t frameQty){
         return NULL;
     }
     
+    /* Inicializo su contenido */
+    for(i = 0;i < frameQty;i++){
+        framelist[i] = NULL;
+    }
+    
     return framelist;
 }
 
 /* gui_animation_destroy_framelist */
-void gui_animation_destroy_framelist(FRAME* framelist){
+void gui_animation_destroy_framelist(FRAME* framelist, uint16_t framesQty){
+    uint16_t i;
+    
+    /* Libero memoria de los frames de la lista */
+    for(i = 0;i < framesQty;i++){
+        if( framelist[i] != NULL ){
+            gui_animation_destroy_frame(framelist[i]);
+        }
+    }
+    
     /* Libero la memoria reservada */
     free(framelist);
 }

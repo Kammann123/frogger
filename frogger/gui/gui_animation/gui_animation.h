@@ -109,8 +109,9 @@ FRAME* gui_animation_create_framelist(uint16_t frameQty);
  * Libera la memoria usada por la framelist
  *
  * framelist: Lista de frames
+ * framesQty: Cantidad de frames
  */
-void gui_animation_destroy_framelist(FRAME* framelist);
+void gui_animation_destroy_framelist(FRAME* framelist, uint16_t framesQty);
 
 /* gui_animation_create_frame 
  * Asigna memoria y guarda el contenido del frame
