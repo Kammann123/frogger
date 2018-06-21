@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o \
 	${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o \
 	${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o \
+	${OBJECTDIR}/gui/gui_animation/gui_animation.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/gui/gui_init.o \
 	${OBJECTDIR}/gui/gui_input/gui_input.o \
@@ -110,6 +111,11 @@ ${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o: gui/frogger/frog
 	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_pausemenu
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o gui/frogger/frogger_pausemenu/frogger_pausemenu.c
+
+${OBJECTDIR}/gui/gui_animation/gui_animation.o: gui/gui_animation/gui_animation.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/gui_animation
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_animation/gui_animation.o gui/gui_animation/gui_animation.c
 
 ${OBJECTDIR}/gui/gui_events/gui_events.o: gui/gui_events/gui_events.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_events

@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o \
 	${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o \
 	${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o \
+	${OBJECTDIR}/gui/gui_animation/gui_animation.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/gui/gui_init.o \
 	${OBJECTDIR}/gui/gui_input/gui_input.o \
@@ -110,6 +111,11 @@ ${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o: gui/frogger/frog
 	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_pausemenu
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o gui/frogger/frogger_pausemenu/frogger_pausemenu.c
+
+${OBJECTDIR}/gui/gui_animation/gui_animation.o: gui/gui_animation/gui_animation.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/gui_animation
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_animation/gui_animation.o gui/gui_animation/gui_animation.c
 
 ${OBJECTDIR}/gui/gui_events/gui_events.o: gui/gui_events/gui_events.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_events
