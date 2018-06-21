@@ -50,6 +50,13 @@ void lane_close(LANE* lane){
 
 /* generate_level */
 void generate_level(LANE_LIST* lanes, uint16_t level){
+    uint8_t i;
+    uint8_t lanesSize = sizeof (lanes) / sizeof (lanes[0]);
+    
+    for (i=0 ; i<lanesSize; i++){
+        lanes[i].speed = calculate_speed ( lanes[i].type , level);
+    }
+    
     // Pon aqui tu codigo xD
 }
 
@@ -147,8 +154,31 @@ bool has_lost(FROG_CLASS* frog){
 }
 
 /* calculate_speed */
-uint32_t calculate_speed(uint16_t type, uint16_t level){
-    // Pon aqui tu codigo xD
+uint16_t calculate_speed(uint16_t type, uint16_t level){
+    
+    uint16_t newSpeed, vehicleSpeedBase;
+    
+    switch (type){
+        case M_BIKE:
+            vehicleSpeedBase = M_BIKE_SPEED_BASE;
+            break;
+        case CAR:
+            vehicleSpeedBase = CAR_SPEED_BASE;
+            break;
+        case TRUCK:
+            vehicleSpeedBase = TRUCK_SPEED_BASE;
+            break;
+        case BOAT:
+            vehicleSpeedBase = BOAT_SPEED_BASE;
+            break;
+        case YACHT:
+            vehicleSpeedBase = YACHT_SPEED_BASE;
+            break;
+    }
+    
+    newSpeed = sqrt(level * vehicleSpeedBase);
+    return newSpeed;
+    
 }
 
 /* calculate_score */
