@@ -9,6 +9,7 @@
 /* Librerias utilizadas */
 #include <stdint.h>
 #include <stdbool.h>
+#include <pthread.h>
 
 #include "../gui_types.h"
 
@@ -63,30 +64,99 @@ typedef struct{
     /* Indice frame actual */
     uint16_t frameIndex;
     
+    /* Contador de tiempo */
+    uint32_t timeCounter;
+    
     /* Configuracion de la animacion */
     ANIMATION animations[NUMBER_OF_ORIENTATIONS];
 } ANIMATED_OBJECT;
 
+typedef ANIMATED_OBJECT* OBJECT_POINTER;
+
 typedef struct{
     /* Lista de objetos animados ligados */
-    ANIMATED_OBJECT** objects;
+    OBJECT_POINTER* objects;
     
     /* Cantidad de objetos vinculados */
     uint32_t length;
     
     /* Habilitadores del motor */
     bool shutdown;
+    
+    /* Thread */
+    pthread_t engineThread;
 } ANIMATION_ENGINE;
 
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* gui_animation_get_frame
+ * Devuelve el frame actual de un objeto
+ *
+ * object: Objeto 
+ */
+FRAME gui_animation_get_frame(ANIMATED_OBJECT* object);
+
+/* gui_animation_start_movement
+ * Activa la animacion de movimiento hacia una posicion final
+ *
+ * object: Objeto animado
+ * orientation: Orientacion de la animacion
+ * x: Posicion final X
+ * y: Posicion final Y
+ */
+void gui_animation_start_movement(ANIMATED_OBJECT* object, uint16_t orientation, int32_t x, int32_t y);
+
+/* gui_animation_stop_loop
+ * Para la animacion del objeto 
+ *
+ * object: Objeto
+ */
+void gui_animation_stop_loop(ANIMATED_OBJECT* object);
+
+/* gui_animation_start_loop 
+ * Activa el funcionamiento de la animacion en modo bucle del objeto
+ * 
+ * object: Objeto
+ * orientation: Orientacion de la animacion
+ */
+void gui_animation_start_loop(ANIMATED_OBJECT* object, uint16_t orientation);
+
+/* gui_animation_start_engine 
+ * Inicia el funcionamiento del motor de animaciones
+ * 
+ * engine: Motor de animaciones 
+ */
+void gui_animation_start_engine(ANIMATION_ENGINE* engine);
+
+/* gui_animation_attach_object
+ * Agrega un objeto a la lista de objetos del motor
+ * de animaciones para controlarlos 
+ *
+ * engine: Motor de animaciones 
+ * object: Objeto
+ */
+bool gui_animation_attach_object(ANIMATION_ENGINE* engine, ANIMATED_OBJECT* object);
+
+/* gui_animation_destroy_engine
+ * Libera la memoria ocupada por el engine
+ *
+ * engine: Motor de animaciones a liberar
+ */
+void gui_animation_destroy_engine(ANIMATION_ENGINE* engine);
+
 /* gui_animation_create_engine
  * Instancia un motor de animaciones para manejar
  * objetos animados
  */
 ANIMATION_ENGINE* gui_animation_create_engine(void);
+
+/* gui_animation_destroy_object 
+ * Libera objeto creado
+ *
+ * object: Objeto a destruir*/
+void gui_animation_destroy_object(ANIMATED_OBJECT* object);
 
 /* gui_animation_create_object
  * Instancia un objeto animado, precargando su configuracion
