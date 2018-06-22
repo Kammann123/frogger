@@ -33,9 +33,47 @@ static ANIMATION_ENGINE* engine = NULL;
  */
 static bool map_collision(uint16_t input, int32_t x, int32_t y);
 
+/* frog_init
+ * Inicializa el contenido del objeto animado de la rana
+ *
+ * frog: Objeto a inicializar
+ */
+static bool frog_init(FROG* frog);
+
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
+
+/* frog_init */
+static bool frog_init(FROG* frog){    
+    
+    /* Creo el objeto frog */
+    frog->object = gui_animation_create_object(DEFAULT_FROG_X * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_Y * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_ORIENTATION);
+    if( frog->object == NULL ){
+        return false;
+    }
+    
+    /* Cargo animaciones de frog */
+    if( !gui_files_read_objfile(FROGGER_PATH_FROG_UP_OBJFILE, frog->object) ){
+        gui_animation_destroy_object(frog->object);
+        return false;
+    }
+    if( !gui_files_read_objfile(FROGGER_PATH_FROG_DOWN_OBJFILE, frog->object) ){
+        gui_animation_destroy_object(frog->object);
+        return false;
+    }
+    if( !gui_files_read_objfile(FROGGER_PATH_FROG_LEFT_OBJFILE, frog->object) ){
+        gui_animation_destroy_object(frog->object);
+        return false;
+    }
+    if( !gui_files_read_objfile(FROGGER_PATH_FROG_RIGHT_OBJFILE, frog->object) ){
+        gui_animation_destroy_object(frog->object);
+        return false;
+    }
+    
+    /* Frog inicializada correctamente */
+    return true;
+}
 
 /* map_collision */
 static bool map_collision(uint16_t input, int32_t x, int32_t y){
@@ -146,9 +184,8 @@ void allegro_frogger_close(void){
 /* allegro_frogger_init */
 bool allegro_frogger_init(void){
     
-    /* Creo el objeto frog */
-    frog.object = gui_animation_create_object(DEFAULT_FROG_X * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_Y * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_ORIENTATION);
-    if( frog.object == NULL ){
+    /* Inicializo la rana */
+    if( !frog_init(&frog) ){
         return false;
     }
     
@@ -156,28 +193,6 @@ bool allegro_frogger_init(void){
     engine = gui_animation_create_engine();
     if( engine == NULL ){
         gui_animation_destroy_object(frog.object);
-        return false;
-    }
-    
-    /* Cargo animaciones de frog */
-    if( !gui_files_read_objfile(FROGGER_PATH_FROG_UP_OBJFILE, frog.object) ){
-        gui_animation_destroy_object(frog.object);
-        gui_animation_destroy_engine(engine);
-        return false;
-    }
-    if( !gui_files_read_objfile(FROGGER_PATH_FROG_DOWN_OBJFILE, frog.object) ){
-        gui_animation_destroy_object(frog.object);
-        gui_animation_destroy_engine(engine);
-        return false;
-    }
-    if( !gui_files_read_objfile(FROGGER_PATH_FROG_LEFT_OBJFILE, frog.object) ){
-        gui_animation_destroy_object(frog.object);
-        gui_animation_destroy_engine(engine);
-        return false;
-    }
-    if( !gui_files_read_objfile(FROGGER_PATH_FROG_RIGHT_OBJFILE, frog.object) ){
-        gui_animation_destroy_object(frog.object);
-        gui_animation_destroy_engine(engine);
         return false;
     }
     
