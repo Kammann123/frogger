@@ -20,8 +20,13 @@
 #define FROGGER_IMAGE_LIFES_1 "gui/allegro/frogger/game/images/lifes_1.png"
 #define FROGGER_IMAGE_LIFES_2 "gui/allegro/frogger/game/images/lifes_2.png"
 
+/* Paths para acceder a animaciones */
+#define FROGGER_PATH_OBJECTS        "gui/allegro/frogger/game/objects/"
+#define FROGGER_PATH_FROG           "frog/"
+#define FROGGER_PATH_FROG_OBJFILE   "animation/animation"
+
 /* Colores de allegro */
-#define CLEAR_COLOR     al_map_rgb(255, 255, 255)
+#define CLEAR_COLOR     al_map_rgb(0, 0, 0)
 
 /***********************************/
 /* Prototipo de funciones publicas */

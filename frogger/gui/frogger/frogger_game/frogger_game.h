@@ -13,6 +13,10 @@
 #include "../../../settings.h"
 #include "../../allegro/frogger/game/allegro_frogger_game.h"
 
+/******************/
+/* Tipos de datos */
+/******************/
+
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/

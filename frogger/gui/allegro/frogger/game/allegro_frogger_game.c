@@ -1,4 +1,5 @@
 #include "allegro_frogger_game.h"
+#include "../../../frogger/frogger_game/frogger_game.h"
 
 #include <allegro5/allegro.h>
 

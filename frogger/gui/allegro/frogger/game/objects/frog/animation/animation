@@ -1,0 +1,11 @@
+[attributes]
+timedelta: 200
+spacedelta: 8
+orientation: VERTICAL_UP
+quantity: 5
+[frames]
+0: sprites/frog_0.png
+1: sprites/frog_1.png
+2: sprites/frog_2.png
+3: sprites/frog_3.png
+4: sprites/frog_4.png
