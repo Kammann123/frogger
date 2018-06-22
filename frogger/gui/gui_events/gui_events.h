@@ -69,6 +69,13 @@ typedef struct{
 /* Prototipo funciones publicas */
 /********************************/
 
+/* queue_flush
+ * Limpia los eventos de la cola de eventos
+ * 
+ * queue: Cola de eventos 
+ */
+void queue_flush(EVENT_QUEUE* queue);
+
 /* queue_next_event
  * Devuelve true si hay un evento en la cola y lo retorna
  * en el respectivo parametro

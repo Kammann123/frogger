@@ -22,5 +22,11 @@
  */
 void frogger_game_screen_update(void);
 
+/* frogger_game_screen_close 
+ * Cierra la pantalla del juego del
+ * frogger 
+ */
+void frogger_game_screen_close(void);
+
 #endif /* FROGGER_GAME_H */
 

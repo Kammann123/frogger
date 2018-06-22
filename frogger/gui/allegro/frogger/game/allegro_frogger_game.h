@@ -32,5 +32,10 @@
  */
 void allegro_frogger_screen_update(void);
 
+/* allegro_frogger_screen_close 
+ * Cierra la pantalla del juego
+ */
+void allegro_frogger_screen_close(void);
+
 #endif /* ALLEGRO_FROGGER_GAME_H */
 

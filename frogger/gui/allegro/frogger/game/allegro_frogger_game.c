@@ -38,3 +38,11 @@ void allegro_frogger_screen_update(void){
     /* Mando el buffer al display */
     al_flip_display();
 }
+
+/* allegro_frogger_screen_close */
+void allegro_frogger_screen_close(void){
+    if( display != NULL ){
+        al_destroy_display(display);
+        display = NULL;
+    }
+}

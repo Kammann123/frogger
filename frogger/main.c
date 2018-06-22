@@ -6,9 +6,9 @@
 #include "gui/gui_input/gui_input.h"
 #include "gui/gui_events/gui_events.h"
 #include "gui/gui_timer/gui_timer.h"
-#include "gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h"
 #include "gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
 #include "gui/frogger/frogger_pausemenu/frogger_pausemenu.h"
+#include "gui/frogger/frogger_game/frogger_game.h"
 #include "gui/gui_files/gui_files.h"
 #include "gui/gui_animation/gui_animation.h"
 
@@ -23,10 +23,11 @@ typedef enum {
     RANKING_STAGE,
     HOWTO_STAGE, 
     FROGGER_STAGE,
-    PAUSEMENU_STAGE
+    PAUSEMENU_STAGE,
+    CLOSING_STAGE
 } GAME_STAGE;
 
-#define DEFAULT_STAGE PAUSEMENU_STAGE
+#define DEFAULT_STAGE MAINMENU_STAGE
 
 /* Eventos del timer */
 #define TIMER_DEFINITION    1000
@@ -54,6 +55,24 @@ void switch_input_target(GAME_STAGE* stage, EVENT event);
  * stage: Etapa del programa
  */
 void switch_update_target(GAME_STAGE* stage);
+
+/* on_mainmenu_enter 
+ * Maneja la direccion del programa desde el menu
+ * al seleccionar una opcion
+ */
+void on_mainmenu_enter(GAME_STAGE* stage);
+
+/* on_pausemenu_Enter
+ * Maneja la direccion del programa desde
+ * el menu de pausa segun la opcion elegida 
+ */
+void on_pausemenu_enter(GAME_STAGE* stage);
+
+/* on_game_enter
+ * Maneja la direccion del programa desde el juego
+ * al apretar enter
+ */
+void on_game_enter(GAME_STAGE* stage);
 
 /* *******************************
  * main
@@ -105,7 +124,7 @@ int main(int argc, char** argv){
     queue_start(queue);
     
     /* Main loop */
-    while( true ){
+    while( stage != CLOSING_STAGE ){
         /* Pregunto por eventos en la queue */
         if( queue_next_event(queue, &event) ){
             if( event.source == ALLEGRO_INPUT_SOURCE ){
@@ -133,6 +152,58 @@ int main(int argc, char** argv){
 /* Definicion de funciones */
 /***************************/
 
+/* on_pausemenu_enter */
+void on_pausemenu_enter(GAME_STAGE* stage){
+    /* Cambio de etapa el juego */
+    switch( frogger_pausemenu_selected() ){
+        case PAUSEMENU_RESUME_OPTION:
+            *stage = FROGGER_STAGE;
+            break;
+        case PAUSEMENU_RESTART_OPTION:
+            break;
+        case PAUSEMENU_EXIT_OPTION:
+            *stage = CLOSING_STAGE;
+            break;
+    }
+    
+    /* Cierro la ventana del menu */
+    frogger_pausemenu_close();
+}
+
+/* on_game_enter */
+void on_game_enter(GAME_STAGE* stage){
+    /* Cambio de etapa de juego */
+    *stage = PAUSEMENU_STAGE;
+    
+    /* Cierro la ventana del juego */
+    frogger_game_screen_close();
+}
+
+/* on_mainmenu_enter */
+void on_mainmenu_enter(GAME_STAGE* stage){
+    /* Cambio de etapa el programa */
+    switch( frogger_mainmenu_selected() ){
+        case MAINMENU_PLAY_OPTION:
+            *stage = FROGGER_STAGE;
+            break;
+        case MAINMENU_RANK_OPTION:
+            *stage = RANKING_STAGE;
+            break;
+        case MAINMENU_HOWTO_OPTION:
+            *stage = HOWTO_STAGE;
+            break;
+        case MAINMENU_EXIT_OPTION:
+            *stage = CLOSING_STAGE;
+            break;
+        default:
+            return;
+            break;
+    }
+    
+    /* Cierro el mainmenu */
+    frogger_mainmenu_close();
+}
+
 /* switch_update_target */
 void switch_update_target(GAME_STAGE* stage){
     switch(*stage){
@@ -144,6 +215,7 @@ void switch_update_target(GAME_STAGE* stage){
         case HOWTO_STAGE:
             break;
         case FROGGER_STAGE:
+            frogger_game_screen_update();
             break;
         case PAUSEMENU_STAGE:
             frogger_pausemenu_update();
@@ -158,7 +230,9 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
             if( event.type == MOVEMENT_EVENT ){
                 frogger_mainmenu_move(event.data);
             }else if( event.type == ACTION_EVENT ){
-                
+                if( event.data == ENTER ){
+                    on_mainmenu_enter(stage);                    
+                }
             }
             break;
         case RANKING_STAGE:
@@ -166,12 +240,19 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
         case HOWTO_STAGE:
             break;
         case FROGGER_STAGE:
+            if( event.type == ACTION_EVENT ){
+                if( event.data == ENTER ){
+                    on_game_enter(stage);
+                }
+            }
             break;
         case PAUSEMENU_STAGE:
             if( event.type == MOVEMENT_EVENT ){
                 frogger_pausemenu_move(event.data);
             }else if( event.type == ACTION_EVENT ){
-                // SELECCIONO OPCION                
+                if( event.data == ENTER ){
+                    on_pausemenu_enter(stage);
+                }
             }
             break;
     }
