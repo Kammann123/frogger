@@ -18,6 +18,11 @@
 
 /* Etapas del flujo del programa */
 
+typedef struct{
+    uint16_t value;
+    bool hasChanged;
+} GAME_STAGE;
+
 typedef enum {
     MAINMENU_STAGE, 
     RANKING_STAGE,
@@ -25,7 +30,7 @@ typedef enum {
     FROGGER_STAGE,
     PAUSEMENU_STAGE,
     CLOSING_STAGE
-} GAME_STAGE;
+} STAGE_VALUES;
 
 #define DEFAULT_STAGE MAINMENU_STAGE
 
@@ -74,6 +79,15 @@ void on_pausemenu_enter(GAME_STAGE* stage);
  */
 void on_game_enter(GAME_STAGE* stage);
 
+/* change_stage
+ * Permite modificar el estado del programa
+ * y realizar tareas secundarias de limpieza
+ *
+ * stage: Estado del programa
+ * newStage: Nuevo estado del programa
+ */
+void change_stage(GAME_STAGE* stage, uint16_t newStage);
+
 /* *******************************
  * main
  * Funcion principal del programa.
@@ -85,7 +99,10 @@ int main(int argc, char** argv){
     EVENT_QUEUE* queue;
     EVENT event;
     /* Game stage variable */
-    GAME_STAGE stage = DEFAULT_STAGE;
+    GAME_STAGE stage = {
+        .value = DEFAULT_STAGE,
+        .hasChanged = false
+    };
     
     /* Inicializo la interfaz */
     if( !gui_init() ){
@@ -124,7 +141,7 @@ int main(int argc, char** argv){
     queue_start(queue);
     
     /* Main loop */
-    while( stage != CLOSING_STAGE ){
+    while( stage.value != CLOSING_STAGE ){
         /* Pregunto por eventos en la queue */
         if( queue_next_event(queue, &event) ){
             if( event.source == ALLEGRO_INPUT_SOURCE ){
@@ -152,17 +169,26 @@ int main(int argc, char** argv){
 /* Definicion de funciones */
 /***************************/
 
+/* change_stage */
+void change_stage(GAME_STAGE* stage, uint16_t newStage){
+    /* Cambio el valor del estado */
+    stage->value = newStage;
+    
+    /* Activo flag */
+    stage->hasChanged = true;
+}
+
 /* on_pausemenu_enter */
 void on_pausemenu_enter(GAME_STAGE* stage){
     /* Cambio de etapa el juego */
     switch( frogger_pausemenu_selected() ){
         case PAUSEMENU_RESUME_OPTION:
-            *stage = FROGGER_STAGE;
+            change_stage(stage, FROGGER_STAGE);
             break;
         case PAUSEMENU_RESTART_OPTION:
             break;
         case PAUSEMENU_EXIT_OPTION:
-            *stage = CLOSING_STAGE;
+            change_stage(stage, CLOSING_STAGE);
             break;
     }
     
@@ -173,7 +199,7 @@ void on_pausemenu_enter(GAME_STAGE* stage){
 /* on_game_enter */
 void on_game_enter(GAME_STAGE* stage){
     /* Cambio de etapa de juego */
-    *stage = PAUSEMENU_STAGE;
+    change_stage(stage, PAUSEMENU_STAGE);
     
     /* Cierro la ventana del juego */
     frogger_game_screen_close();
@@ -184,16 +210,16 @@ void on_mainmenu_enter(GAME_STAGE* stage){
     /* Cambio de etapa el programa */
     switch( frogger_mainmenu_selected() ){
         case MAINMENU_PLAY_OPTION:
-            *stage = FROGGER_STAGE;
+            change_stage(stage, FROGGER_STAGE);
             break;
         case MAINMENU_RANK_OPTION:
-            *stage = RANKING_STAGE;
+            change_stage(stage, RANKING_STAGE);
             break;
         case MAINMENU_HOWTO_OPTION:
-            *stage = HOWTO_STAGE;
+            change_stage(stage, HOWTO_STAGE);
             break;
         case MAINMENU_EXIT_OPTION:
-            *stage = CLOSING_STAGE;
+            change_stage(stage, CLOSING_STAGE);
             break;
         default:
             return;
@@ -206,7 +232,7 @@ void on_mainmenu_enter(GAME_STAGE* stage){
 
 /* switch_update_target */
 void switch_update_target(GAME_STAGE* stage){
-    switch(*stage){
+    switch(stage->value){
         case MAINMENU_STAGE:
             frogger_mainmenu_update();
             break;
@@ -225,7 +251,7 @@ void switch_update_target(GAME_STAGE* stage){
 
 /* switch_input_target */
 void switch_input_target(GAME_STAGE* stage, EVENT event){
-    switch(*stage){
+    switch(stage->value){
         case MAINMENU_STAGE:
             if( event.type == MOVEMENT_EVENT ){
                 frogger_mainmenu_move(event.data);
