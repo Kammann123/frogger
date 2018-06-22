@@ -192,6 +192,7 @@ void on_pausemenu_enter(GAME_STAGE* stage){
     /* Cambio de etapa el juego */
     switch( frogger_pausemenu_selected() ){
         case PAUSEMENU_RESUME_OPTION:
+            frogger_game_continue();
             change_stage(stage, FROGGER_STAGE);
             break;
         case PAUSEMENU_RESTART_OPTION:
@@ -213,6 +214,9 @@ void on_game_enter(GAME_STAGE* stage){
     
     /* Cierro la ventana del juego */
     frogger_game_screen_close();
+    
+    /* Pauso el juego */
+    frogger_game_pause();
 }
 
 /* on_mainmenu_enter */

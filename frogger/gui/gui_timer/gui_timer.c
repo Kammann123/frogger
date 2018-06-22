@@ -101,8 +101,11 @@ void gui_timer_start(TIMER_QUEUE* timerQueue){
 
 /* gui_timer_destroy */
 void gui_timer_destroy(TIMER_QUEUE* timerQueue ){
+    
+    pthread_mutex_lock(&(timerQueue->timerMutex));
     /* Apago el thread */
     timerQueue->shutdown = true;
+    pthread_mutex_unlock(&(timerQueue->timerMutex));
     
     /* Destruyo el mutex */
     pthread_mutex_destroy(&(timerQueue->timerMutex));

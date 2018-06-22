@@ -162,8 +162,10 @@ bool queue_next_event(EVENT_QUEUE* queue, EVENT* event){
 /* queue_close */
 void queue_close(EVENT_QUEUE* queue){
     
+    pthread_mutex_lock(&(queue->queueMutex));
     /* Apago el thread */
     queue->shutdown = true;
+    pthread_mutex_unlock(&(queue->queueMutex));
     
     /* Elimino el mutex */
     pthread_mutex_destroy(&(queue->queueMutex));

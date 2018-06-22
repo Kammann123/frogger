@@ -20,16 +20,19 @@
 #define ALLEGRO_DISPLAY_STEP    40
 
 /* Imagenes para la pantalla */
-#define FROGGER_IMAGE_FIELD "gui/allegro/frogger/game/images/field.png"
-#define FROGGER_IMAGE_LIFES_0 "gui/allegro/frogger/game/images/lifes_0.png"
-#define FROGGER_IMAGE_LIFES_1 "gui/allegro/frogger/game/images/lifes_1.png"
-#define FROGGER_IMAGE_LIFES_2 "gui/allegro/frogger/game/images/lifes_2.png"
+#define FROGGER_IMAGE_FIELD     "gui/allegro/frogger/game/images/field.png"
+#define FROGGER_IMAGE_LIFES_0   "gui/allegro/frogger/game/images/lifes_0.png"
+#define FROGGER_IMAGE_LIFES_1   "gui/allegro/frogger/game/images/lifes_1.png"
+#define FROGGER_IMAGE_LIFES_2   "gui/allegro/frogger/game/images/lifes_2.png"
 
 /* Paths para acceder a animaciones */
 #define FROGGER_PATH_OBJECTS        "gui/allegro/frogger/game/objects/"
 
 #define FROGGER_PATH_FROG           "frog/"
-#define FROGGER_PATH_FROG_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "animation/animation"
+#define FROGGER_PATH_FROG_UP_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_up"
+#define FROGGER_PATH_FROG_DOWN_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_down"
+#define FROGGER_PATH_FROG_LEFT_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_left"
+#define FROGGER_PATH_FROG_RIGHT_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_right"
 
 /* Colores de allegro */
 #define CLEAR_COLOR     al_map_rgb(0, 0, 0)
