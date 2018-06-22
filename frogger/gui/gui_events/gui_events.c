@@ -223,7 +223,7 @@ EVENT_QUEUE* create_queue(void){
     }
     
     /* Reservo memoria para la cola de eventos */
-    queue->events = malloc( sizeof(EVENT) );
+    queue->events = malloc( sizeof(EVENT) * QUEUE_INITIAL_LENGTH );
     if( queue->events == NULL ){
         return NULL;
     }
@@ -241,7 +241,7 @@ EVENT_QUEUE* create_queue(void){
     queue->nextEvent = 0;
     queue->lastEvent = 0;
     queue->shutdown = false;
-    queue->length = 1;
+    queue->length = QUEUE_INITIAL_LENGTH;
     
     /* Devuelvo cola creada */
     return queue;

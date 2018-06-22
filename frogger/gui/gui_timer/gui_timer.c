@@ -34,9 +34,6 @@ bool gui_timer_source(EVENT* event, void* timerQueue){
         if( queue->timers[i].timerCounter >= queue->timers[i].timerMax ){
             
             pthread_mutex_lock(&(queue->timerMutex));
-            /* Reinicio el timer */
-            queue->timers[i].timerCounter = 0;
-            
             /* Raise event */
             event->type = TIMER_OVERFLOW;
             event->data = queue->timers[i].id;
@@ -78,6 +75,19 @@ static void* timer_thread(void* timerQueue){
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* gui_timer_clear */
+void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id){
+    uint32_t i;
+    
+    /* Busco el timer */
+    for(i = 0;i < timerQueue->length;i++){
+        if( timerQueue->timers[i].id == id ){
+            timerQueue->timers[i].timerCounter = 0;
+            break;
+        }
+    }
+}
 
 /* gui_timer_pause */
 void gui_timer_pause(TIMER_QUEUE* timerQueue){

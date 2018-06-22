@@ -19,12 +19,80 @@ static ALLEGRO_DISPLAY* display = NULL;
 /* Motor de animaciones */
 static ANIMATION_ENGINE* engine = NULL;
 
+/***********************************/
+/* Prototipo de funciones privadas */
+/***********************************/
+
+/* map_collision
+ * Devuelve true si el objeto frog se va
+ * a chocar contra el objeto en (x,y)
+ * 
+ * input: Orientacion de movimiento
+ * x: Posicion x del obstaculo
+ * y: Posicion y del obstaculo
+ */
+static bool map_collision(uint16_t input, int32_t x, int32_t y);
+
+/************************************/
+/* Definicion de funciones privadas */
+/************************************/
+
+/* map_collision */
+static bool map_collision(uint16_t input, int32_t x, int32_t y){
+    switch(input){
+        case MOVE_UP:
+            if( x == frog.object->currentPos.x ){
+                if( y == (frog.object->currentPos.y - ALLEGRO_DISPLAY_STEP) ){
+                    return true;
+                }
+            }
+            break;
+        case MOVE_DOWN:
+            if( x == frog.object->currentPos.x ){
+                if( y == (frog.object->currentPos.y + ALLEGRO_DISPLAY_STEP) ){
+                    return true;
+                }
+            }
+            break;
+        case MOVE_LEFT:
+            if( y == frog.object->currentPos.y ){
+                if( x == (frog.object->currentPos.x - ALLEGRO_DISPLAY_STEP) ){
+                    return true;
+                }
+            }
+            break;
+        case MOVE_RIGHT:
+            if( y == frog.object->currentPos.y ){
+                if( x == (frog.object->currentPos.x + ALLEGRO_DISPLAY_STEP) ){
+                    return true;
+                }
+            }
+            break;
+    }
+    
+    /* No hubo colision */
+    return false;
+}
+
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
 
 /* allegro_frogger_movement_valid */
 bool allegro_frogger_movement_valid(uint16_t input){
+    
+    /* Me fijo que no haya colision con obstaculos */
+    if( map_collision(input, TRASH_0_X, TRASH_0_Y) ){
+        return false;
+    }
+    if( map_collision(input, TRASH_1_X, TRASH_1_Y) ){
+        return false;
+    }
+    if( map_collision(input, PHONE_X, PHONE_Y) ){
+        return false;
+    }
+    
+    /* Me fijo que este en los limites */
     switch(input){
         case MOVE_UP:
             if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_UP ){
@@ -37,12 +105,12 @@ bool allegro_frogger_movement_valid(uint16_t input){
             }
             break;
         case MOVE_LEFT:
-            if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_LEFT ){
+            if( frog.object->currentPos.x == ALLEGRO_DISPLAY_BORDER_LEFT ){
                 return false;
             }
             break;
         case MOVE_RIGHT:
-            if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_RIGHT ){
+            if( frog.object->currentPos.x == ALLEGRO_DISPLAY_BORDER_RIGHT ){
                 return false;
             }
             break;

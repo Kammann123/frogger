@@ -95,7 +95,7 @@ static void* gui_animation_engine_thread(void* thisEngine){
                             break;
                         }
                     }
-                    pthread_mutex_unlock(&(object->objectMutex));;
+                    pthread_mutex_unlock(&(object->objectMutex));
                 }
             }
         }

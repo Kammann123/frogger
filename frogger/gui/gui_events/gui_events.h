@@ -14,6 +14,12 @@
 #include <pthread.h>
 #include <semaphore.h>
 
+/**************/
+/* Constantes */
+/**************/
+
+#define QUEUE_INITIAL_LENGTH    256
+
 /******************/
 /* Tipos de datos */
 /******************/

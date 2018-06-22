@@ -25,6 +25,14 @@
 
 #define ALLEGRO_DISPLAY_STEP    40
 
+/* Obstaculos del juego */
+#define TRASH_0_X 0
+#define TRASH_0_Y 400
+#define TRASH_1_X 40
+#define TRASH_1_Y 400
+#define PHONE_X 600
+#define PHONE_Y 400
+
 /* Imagenes para la pantalla */
 #define FROGGER_IMAGE_FIELD     "gui/allegro/frogger/game/images/field.png"
 #define FROGGER_IMAGE_LIFES_0   "gui/allegro/frogger/game/images/lifes_0.png"

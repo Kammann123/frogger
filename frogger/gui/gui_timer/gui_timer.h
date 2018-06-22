@@ -51,6 +51,15 @@ typedef struct{
 /* Funciones publicas */
 /**********************/
 
+/* gui_timer_clear 
+ * Limpia el timer despues de un overflow, avisando
+ * que se leyo y uso el evento
+ *
+ * timerQueue: Cola de timers
+ * id: Identificador del timer
+ */
+void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id);
+
 /* gui_timer_pause
  * Pausa el funcionamiento del timer queue
  * 

@@ -38,7 +38,7 @@ typedef enum {
 #define TIMER_DEFINITION    1000
 #define REFRESH_FPS         60
 #define REFRESH_DISPLAY     0
-#define REFRESH_TIME        10
+#define REFRESH_TIME        TIMER_DEFINITION/REFRESH_FPS
 
 /**************/
 /* Prototipos */
@@ -162,6 +162,8 @@ int main(int argc, char** argv){
             queue_flush(queue);
         }
     }
+    
+    printf("Largo: %d\n", queue->length);
     
     /* Cierro la cola de eventos */
     queue_close(queue);

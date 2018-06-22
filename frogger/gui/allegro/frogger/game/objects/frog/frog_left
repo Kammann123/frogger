@@ -1,6 +1,6 @@
 [attributes]
-timedelta: 100
-spacedelta: 8
+timedelta: 50
+spacedelta: 10
 orientation: HORIZONTAL_LEFT
 quantity: 3
 [frames]
