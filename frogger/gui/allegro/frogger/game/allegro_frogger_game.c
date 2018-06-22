@@ -3,6 +3,7 @@
 #include "../../../gui_animation/gui_animation.h"
 #include "../../../gui_files/gui_files.h"
 #include "../../../gui_input/gui_input.h"
+#include "../../../../logic/frogger/frogger_kernel.h"
 
 #include <allegro5/allegro.h>
 
@@ -12,6 +13,7 @@
 
 /* Objetos de acceso externo */
 extern FROG frog;
+extern FROGGER_GAME_DATA froggerGame;
 
 /* Display del juego */
 static ALLEGRO_DISPLAY* display = NULL;
@@ -227,6 +229,25 @@ void allegro_frogger_screen_update(void){
         return;
     }
     al_draw_bitmap(bitmap, 0, 0, 0);
+    
+    /* Pongo las vidas */
+    bitmap = NULL;
+    switch( froggerGame.lifes ){
+        case 1:
+            bitmap = al_load_bitmap(FROGGER_IMAGE_LIFES_1);
+            break;
+        case 2:
+            bitmap = al_load_bitmap(FROGGER_IMAGE_LIFES_2);
+            break;
+        case 3:
+            bitmap = al_load_bitmap(FROGGER_IMAGE_LIFES_3);
+            break;
+    }
+    if( bitmap != NULL ){
+        al_draw_bitmap(bitmap, ALLEGRO_DISPLAY_LIFES_X, ALLEGRO_DISPLAY_LIFES_Y, 0);
+    }else{
+        return;
+    }
     
     /* Pongo la ranita :) */
     bitmap = al_load_bitmap( gui_animation_get_frame(frog.object) );

@@ -1,6 +1,7 @@
 #include "allegro_init.h"
 
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_ttf.h>
 
 /************************************/
 /* Definicion de funciones publicas */

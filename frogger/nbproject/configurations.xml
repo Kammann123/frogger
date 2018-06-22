@@ -12,6 +12,7 @@
       <itemPath>disdrv.h</itemPath>
       <itemPath>display.h</itemPath>
       <itemPath>gui/frogger/frogger_game/frogger_game.h</itemPath>
+      <itemPath>logic/frogger/frogger_kernel.h</itemPath>
       <itemPath>gui/frogger/frogger_mainmenu/frogger_mainmenu.h</itemPath>
       <itemPath>gui/frogger/frogger_pausemenu/frogger_pausemenu.h</itemPath>
       <itemPath>gui/gui_animation/gui_animation.h</itemPath>
@@ -40,6 +41,7 @@
       <itemPath>gui/allegro/allegro_init.c</itemPath>
       <itemPath>gui/allegro/allegro_input/allegro_input.c</itemPath>
       <itemPath>gui/frogger/frogger_game/frogger_game.c</itemPath>
+      <itemPath>logic/frogger/frogger_kernel.c</itemPath>
       <itemPath>gui/frogger/frogger_mainmenu/frogger_mainmenu.c</itemPath>
       <itemPath>gui/frogger/frogger_pausemenu/frogger_pausemenu.c</itemPath>
       <itemPath>gui/gui_animation/gui_animation.c</itemPath>
@@ -198,6 +200,10 @@
       </item>
       <item path="joydrv.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="logic/frogger/frogger_kernel.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="logic/frogger/frogger_kernel.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="settings.h" ex="false" tool="3" flavor2="0">
@@ -336,6 +342,10 @@
       <item path="gui/gui_types.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="joydrv.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="logic/frogger/frogger_kernel.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="logic/frogger/frogger_kernel.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>

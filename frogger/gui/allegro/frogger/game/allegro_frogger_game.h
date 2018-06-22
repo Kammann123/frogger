@@ -18,6 +18,9 @@
 #define ALLEGRO_FROGGER_GAME_WIDTH  640
 #define ALLEGRO_FROGGER_GAME_HEIGHT 480
 
+#define ALLEGRO_DISPLAY_LIFES_X     10
+#define ALLEGRO_DISPLAY_LIFES_Y     440
+
 #define ALLEGRO_DISPLAY_BORDER_UP       0  
 #define ALLEGRO_DISPLAY_BORDER_DOWN     400
 #define ALLEGRO_DISPLAY_BORDER_LEFT     0
@@ -34,10 +37,17 @@
 #define PHONE_Y 400
 
 /* Imagenes para la pantalla */
-#define FROGGER_IMAGE_FIELD     "gui/allegro/frogger/game/images/field.png"
-#define FROGGER_IMAGE_LIFES_0   "gui/allegro/frogger/game/images/lifes_0.png"
-#define FROGGER_IMAGE_LIFES_1   "gui/allegro/frogger/game/images/lifes_1.png"
-#define FROGGER_IMAGE_LIFES_2   "gui/allegro/frogger/game/images/lifes_2.png"
+#define FROGGER_PATH_IMAGES     "gui/allegro/frogger/game/images/"
+
+#define FROGGER_IMAGE_FIELD     FROGGER_PATH_IMAGES "field.png"
+#define FROGGER_IMAGE_LIFES_1   FROGGER_PATH_IMAGES "lifes_1.png"
+#define FROGGER_IMAGE_LIFES_2   FROGGER_PATH_IMAGES "lifes_2.png"
+#define FROGGER_IMAGE_LIFES_3   FROGGER_PATH_IMAGES "lifes_3.png"
+
+/* Paths para acceder a fuentes */
+#define FROGGER_PATH_FONTS          "gui/allegro/frogger/game/fonts/"
+
+#define FROGGER_FONT_0              FROGGER_PATH_FONTS "font_0.ttf"
 
 /* Paths para acceder a animaciones */
 #define FROGGER_PATH_OBJECTS        "gui/allegro/frogger/game/objects/"
