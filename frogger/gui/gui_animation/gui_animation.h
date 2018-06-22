@@ -69,6 +69,9 @@ typedef struct{
     
     /* Configuracion de la animacion */
     ANIMATION animations[NUMBER_OF_ORIENTATIONS];
+
+    /* Mutex */
+    pthread_mutex_t objectMutex;
 } ANIMATED_OBJECT;
 
 typedef ANIMATED_OBJECT* OBJECT_POINTER;

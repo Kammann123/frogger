@@ -60,12 +60,14 @@ static void* timer_thread(void* timerQueue){
         
         /* Actualizo estado de eventos */
         pthread_mutex_lock(&(queue->timerMutex));
+        /* Verifico error de apagado */
+        if( queue->shutdown ){
+            pthread_exit(NULL);
+        }
         if( queue->enable ){
             for(i = 0;i < queue->length;i++){
                 if(queue->timers[i].timerCounter < queue->timers[i].timerMax){
                     queue->timers[i].timerCounter++;
-                }else{
-                    
                 }
             }
         }

@@ -40,6 +40,8 @@ static void* gui_animation_engine_thread(void* thisEngine){
 
                 /* Me fijo el estado del objeto */
                 if( object->status != GUI_ANIMATION_STATE_STATIC ){
+                    
+                    pthread_mutex_lock(&(object->objectMutex));
                     /* Incremento contador de tiempo */
                     object->timeCounter++;
 
@@ -83,6 +85,7 @@ static void* gui_animation_engine_thread(void* thisEngine){
                                     if( object->currentPos.x == object->finalPos.x ){
                                         if( object->currentPos.y == object->finalPos.y ){
                                             object->status = GUI_ANIMATION_STATE_STATIC;
+                                            object->frameIndex = 0;
                                         }
                                     }
                                 }
@@ -92,6 +95,7 @@ static void* gui_animation_engine_thread(void* thisEngine){
                             break;
                         }
                     }
+                    pthread_mutex_unlock(&(object->objectMutex));;
                 }
             }
         }
@@ -125,7 +129,9 @@ FRAME gui_animation_get_frame(ANIMATED_OBJECT* object){
     for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
         
         if( object->orientation == object->animations[i].orientation ){
+            pthread_mutex_lock(&(object->objectMutex));
             frame = object->animations[i].frames[object->frameIndex];
+            pthread_mutex_unlock(&(object->objectMutex));
             break;
         }
     }
@@ -234,11 +240,15 @@ ANIMATION_ENGINE* gui_animation_create_engine(void){
     engine->shutdown = false;
     engine->pause = false;
     engine->length = 0;
+    
 }
 
 /* gui_animation_destroy_object */
 void gui_animation_destroy_object(ANIMATED_OBJECT* object){
     uint16_t i;
+    
+    /* Elimino el mutex */
+    pthread_mutex_destroy(&(object->objectMutex));
     
     /* Libero memoria de framelists de animaciones */
     for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
@@ -269,6 +279,9 @@ ANIMATED_OBJECT* gui_animation_create_object(int32_t x, int32_t y, uint16_t orie
     object->frameIndex = 0;
     object->orientation = orientation;
     object->timeCounter = 0;
+    
+    /* Creo el mutex */
+    pthread_mutex_init(&(object->objectMutex), NULL);
     
     /* Inicializo con null los frames */
     for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){

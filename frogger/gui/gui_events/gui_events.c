@@ -76,6 +76,10 @@ static void* queue_thread(void* queue){
             /* Busco actualizacion del evento */
             if( callback(&event, args) ){
                 pthread_mutex_lock(&(eventQueue->queueMutex));
+                /* Verifico error */
+                if( eventQueue->shutdown ){
+                    pthread_exit(NULL);
+                }
                 raise_event(eventQueue, &event);
                 pthread_mutex_unlock(&(eventQueue->queueMutex));
             }

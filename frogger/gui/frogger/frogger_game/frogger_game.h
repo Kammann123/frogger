@@ -39,6 +39,13 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* move_frog
+ * Mueve el objeto frog en la direccion segun input
+ *
+ * input: Direccion ingresada por usuario 
+ */
+void frogger_game_move_frog(uint16_t input);
+
 /* frogger_game_pause
  * Pausa el juego
  */

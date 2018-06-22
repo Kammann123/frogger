@@ -8,6 +8,7 @@
 
 /* Librerias utilizadas */
 #include <stdbool.h>
+#include <stdint.h>
 
 /**************/
 /* Constantes */
@@ -16,6 +17,11 @@
 /* Parametros del display */
 #define ALLEGRO_FROGGER_GAME_WIDTH  640
 #define ALLEGRO_FROGGER_GAME_HEIGHT 480
+
+#define ALLEGRO_DISPLAY_BORDER_UP       0  
+#define ALLEGRO_DISPLAY_BORDER_DOWN     400
+#define ALLEGRO_DISPLAY_BORDER_LEFT     0
+#define ALLEGRO_DISPLAY_BORDER_RIGHT    600
 
 #define ALLEGRO_DISPLAY_STEP    40
 
@@ -40,6 +46,13 @@
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* allegro_frogger_movement_valid 
+ * Valida si el movimiento en dicha orientacion es valido
+ *
+ * input: Entrada del usuario
+ */
+bool allegro_frogger_movement_valid(uint16_t input);
 
 /* allegro_frogger_pause
  * Pausa el juego

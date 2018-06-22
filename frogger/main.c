@@ -38,7 +38,7 @@ typedef enum {
 #define TIMER_DEFINITION    1000
 #define REFRESH_FPS         60
 #define REFRESH_DISPLAY     0
-#define REFRESH_TIME        TIMER_DEFINITION/REFRESH_FPS
+#define REFRESH_TIME        10
 
 /**************/
 /* Prototipos */
@@ -171,7 +171,6 @@ int main(int argc, char** argv){
     
     /* Destruyo el timer */
     gui_timer_destroy(timer);
-    
 }
 
 /***************************/
@@ -285,6 +284,8 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
                 if( event.data == ENTER ){
                     on_game_enter(stage);
                 }
+            }else if( event.type == MOVEMENT_EVENT ){
+                frogger_game_move_frog( event.data );
             }
             break;
         case PAUSEMENU_STAGE:

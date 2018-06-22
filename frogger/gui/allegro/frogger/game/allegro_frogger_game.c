@@ -2,6 +2,7 @@
 #include "../../../frogger/frogger_game/frogger_game.h"
 #include "../../../gui_animation/gui_animation.h"
 #include "../../../gui_files/gui_files.h"
+#include "../../../gui_input/gui_input.h"
 
 #include <allegro5/allegro.h>
 
@@ -21,6 +22,35 @@ static ANIMATION_ENGINE* engine = NULL;
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* allegro_frogger_movement_valid */
+bool allegro_frogger_movement_valid(uint16_t input){
+    switch(input){
+        case MOVE_UP:
+            if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_UP ){
+                return false;
+            }
+            break;
+        case MOVE_DOWN:
+            if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_DOWN ){
+                return false;
+            }
+            break;
+        case MOVE_LEFT:
+            if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_LEFT ){
+                return false;
+            }
+            break;
+        case MOVE_RIGHT:
+            if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_RIGHT ){
+                return false;
+            }
+            break;
+    }
+    
+    /* No hubo caso invalido */
+    return true;
+}
 
 /* allegro_frogger_continue */
 void allegro_frogger_continue(void){
@@ -91,7 +121,6 @@ bool allegro_frogger_init(void){
     /* Inicio el motor */
     gui_animation_start_engine(engine);
     
-    gui_animation_start_loop(frog.object, GUI_ANIMATION_HORIZONTAL_LEFT);
 }
 
 /* allegro_frogger_screen_update */
