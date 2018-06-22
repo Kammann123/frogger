@@ -11,6 +11,22 @@ FROG frog = { .object=NULL };
 /* Definicion de funciones publicas */
 /************************************/
 
+/* frogger_game_continue */
+void frogger_game_continue(void){
+#if PLATFORM_MODE == PC_ALLEGRO
+    allegro_frogger_continue();
+#elif PLATFORM_MODE == RPI
+#endif    
+}
+
+/* frogger_game_pause */
+void frogger_game_pause(void){
+#if PLATFORM_MODE == PC_ALLEGRO
+    allegro_frogger_pause();
+#elif PLATFORM_MODE == RPI
+#endif    
+}
+
 /* frogger_game_close */
 void frogger_game_close(void){
 #if PLATFORM_MODE == PC_ALLEGRO

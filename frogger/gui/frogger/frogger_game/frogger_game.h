@@ -39,6 +39,16 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* frogger_game_pause
+ * Pausa el juego
+ */
+void frogger_game_pause(void);
+
+/* frogger_game_continue
+ * Reanuda el juego
+ */
+void frogger_game_continue(void);
+
 /* frogger_game_close 
  * Cierra y libera los objetos del juego creados
  */

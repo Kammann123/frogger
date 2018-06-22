@@ -38,6 +38,16 @@
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* allegro_frogger_pause
+ * Pausa el juego
+ */
+void allegro_frogger_pause(void);
+
+/* allegro_frogger_continue
+ * Reanuda el juego
+ */
+void allegro_frogger_continue(void);
+
 /* allegro_frogger_close *
  * Cierra y libera objetos creados en allegro para el juego
  */

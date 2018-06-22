@@ -28,67 +28,70 @@ static void* gui_animation_engine_thread(void* thisEngine){
     
     /* Me fijo si esta habilitado el motor de animaciones */
     while( !engine->shutdown ){
-        /* Retardo temporal de 1mS */
-        usleep(1000);
         
-        /* Veo objeto por objeto */
-        for(i = 0;i < engine->length;i++){
-            /* Cargo el objeto */
-            object = engine->objects[i];
-            
-            /* Me fijo el estado del objeto */
-            if( object->status != GUI_ANIMATION_STATE_STATIC ){
-                /* Incremento contador de tiempo */
-                object->timeCounter++;
-                
-                /* Me fijo en que animacion esta orientado el objeto */
-                for(ii = 0;ii < NUMBER_OF_ORIENTATIONS;ii++){
-                    
-                    /* Encuentro la animacion en dicha orientacion */
-                    if( object->animations[ii].orientation == object->orientation ){
-                        
-                        /* Me fijo si paso el tiempo */
-                        if( object->timeCounter >= object->animations[ii].timeDelta ){
-                            
-                            /* Reinicio el tiempo */
-                            object->timeCounter = 0;
-                            
-                            /* Cambio la animacion */
-                            object->frameIndex++;
-                            if( object->frameIndex >= object->animations[ii].framesQty ){
-                                object->frameIndex = 0;
-                            }
-                            
-                            /* Me fijo si hay que cambiar la posicion */
-                            if( object->status == GUI_ANIMATION_STATE_MOVE ){
-                                /* Muevo la posicion */
-                                switch(object->orientation){
-                                    case GUI_ANIMATION_HORIZONTAL_LEFT:
-                                        object->currentPos.x -= object->animations[ii].spaceDelta;
-                                        break;
-                                    case GUI_ANIMATION_HORIZONTAL_RIGHT:
-                                        object->currentPos.x += object->animations[ii].spaceDelta;
-                                        break;
-                                    case GUI_ANIMATION_VERTICAL_UP:
-                                        object->currentPos.y -= object->animations[ii].spaceDelta;
-                                        break;
-                                    case GUI_ANIMATION_VERTICAL_DOWN:
-                                        object->currentPos.y += object->animations[ii].spaceDelta;
-                                        break;
+        if( !engine->pause ){
+            /* Retardo temporal de 1mS */
+            usleep(1000);
+
+            /* Veo objeto por objeto */
+            for(i = 0;i < engine->length;i++){
+                /* Cargo el objeto */
+                object = engine->objects[i];
+
+                /* Me fijo el estado del objeto */
+                if( object->status != GUI_ANIMATION_STATE_STATIC ){
+                    /* Incremento contador de tiempo */
+                    object->timeCounter++;
+
+                    /* Me fijo en que animacion esta orientado el objeto */
+                    for(ii = 0;ii < NUMBER_OF_ORIENTATIONS;ii++){
+
+                        /* Encuentro la animacion en dicha orientacion */
+                        if( object->animations[ii].orientation == object->orientation ){
+
+                            /* Me fijo si paso el tiempo */
+                            if( object->timeCounter >= object->animations[ii].timeDelta ){
+
+                                /* Reinicio el tiempo */
+                                object->timeCounter = 0;
+
+                                /* Cambio la animacion */
+                                object->frameIndex++;
+                                if( object->frameIndex >= object->animations[ii].framesQty ){
+                                    object->frameIndex = 0;
                                 }
-                                
-                                /* Me fijo si ya llego */
-                                if( object->currentPos.x == object->finalPos.x ){
-                                    if( object->currentPos.y == object->finalPos.y ){
-                                        object->status = GUI_ANIMATION_STATE_STATIC;
+
+                                /* Me fijo si hay que cambiar la posicion */
+                                if( object->status == GUI_ANIMATION_STATE_MOVE ){
+                                    /* Muevo la posicion */
+                                    switch(object->orientation){
+                                        case GUI_ANIMATION_HORIZONTAL_LEFT:
+                                            object->currentPos.x -= object->animations[ii].spaceDelta;
+                                            break;
+                                        case GUI_ANIMATION_HORIZONTAL_RIGHT:
+                                            object->currentPos.x += object->animations[ii].spaceDelta;
+                                            break;
+                                        case GUI_ANIMATION_VERTICAL_UP:
+                                            object->currentPos.y -= object->animations[ii].spaceDelta;
+                                            break;
+                                        case GUI_ANIMATION_VERTICAL_DOWN:
+                                            object->currentPos.y += object->animations[ii].spaceDelta;
+                                            break;
+                                    }
+
+                                    /* Me fijo si ya llego */
+                                    if( object->currentPos.x == object->finalPos.x ){
+                                        if( object->currentPos.y == object->finalPos.y ){
+                                            object->status = GUI_ANIMATION_STATE_STATIC;
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        /* Cierro el loop */
+                        break;
                     }
-                    
-                    /* Cierro el loop */
-                    break;
                 }
             }
         }
@@ -167,7 +170,7 @@ void gui_animation_start_loop(ANIMATED_OBJECT* object, uint16_t orientation){
 /* gui_animation_start_engine */
 void gui_animation_start_engine(ANIMATION_ENGINE* engine){
     
-    if( engine->pause ){
+    if( !engine->pause ){
         /* Habilito el thread */
         engine->shutdown = false;
 

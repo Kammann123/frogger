@@ -22,6 +22,16 @@ static ANIMATION_ENGINE* engine = NULL;
 /* Definicion de funciones publicas */
 /************************************/
 
+/* allegro_frogger_continue */
+void allegro_frogger_continue(void){
+    gui_animation_continue_engine(engine);
+}
+
+/* allegro_frogger_pause */
+void allegro_frogger_pause(void){
+    gui_animation_pause_engine(engine);
+}
+
 /* allegro_frogger_close */
 void allegro_frogger_close(void){
     /* Libero el objeto frog */

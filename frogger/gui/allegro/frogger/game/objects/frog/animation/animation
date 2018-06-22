@@ -1,5 +1,5 @@
 [attributes]
-timedelta: 200
+timedelta: 100
 spacedelta: 8
 orientation: VERTICAL_UP
 quantity: 5
