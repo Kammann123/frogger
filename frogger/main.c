@@ -152,6 +152,15 @@ int main(int argc, char** argv){
                 }
             }
         }
+        
+        /* Hago una limpieza si hubo un cambio */
+        if( stage.hasChanged ){
+            /* Limpio el flag */
+            stage.hasChanged = false;
+        
+            /* Limpio la cola de eventos */
+            queue_flush(queue);
+        }
     }
     
     /* Cierro la cola de eventos */
