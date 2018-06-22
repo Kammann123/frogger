@@ -4,17 +4,16 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>gui/allegro/frogger/game/allegro_frogger_game.h</itemPath>
       <itemPath>gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h</itemPath>
       <itemPath>gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.h</itemPath>
-      <itemPath>allegro_gui.h</itemPath>
       <itemPath>gui/allegro/allegro_init.h</itemPath>
       <itemPath>gui/allegro/allegro_input/allegro_input.h</itemPath>
       <itemPath>disdrv.h</itemPath>
       <itemPath>display.h</itemPath>
-      <itemPath>gui/frogger/frogger_mainmenu.h</itemPath>
+      <itemPath>gui/frogger/frogger_game/frogger_game.h</itemPath>
       <itemPath>gui/frogger/frogger_mainmenu/frogger_mainmenu.h</itemPath>
       <itemPath>gui/frogger/frogger_pausemenu/frogger_pausemenu.h</itemPath>
-      <itemPath>game_types.h</itemPath>
       <itemPath>gui/gui_animation/gui_animation.h</itemPath>
       <itemPath>gui/gui_events/gui_events.h</itemPath>
       <itemPath>gui/gui_files/gui_files.h</itemPath>
@@ -22,9 +21,7 @@
       <itemPath>gui/gui_input/gui_input.h</itemPath>
       <itemPath>gui/gui_timer/gui_timer.h</itemPath>
       <itemPath>gui/gui_types.h</itemPath>
-      <itemPath>input.h</itemPath>
       <itemPath>joydrv.h</itemPath>
-      <itemPath>rpi_gui.h</itemPath>
       <itemPath>settings.h</itemPath>
       <itemPath>gui/gui_events/source_codes.h</itemPath>
       <itemPath>termlib.h</itemPath>
@@ -37,11 +34,12 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>gui/allegro/frogger/game/allegro_frogger_game.c</itemPath>
       <itemPath>gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.c</itemPath>
       <itemPath>gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c</itemPath>
-      <itemPath>allegro_gui.c</itemPath>
       <itemPath>gui/allegro/allegro_init.c</itemPath>
       <itemPath>gui/allegro/allegro_input/allegro_input.c</itemPath>
+      <itemPath>gui/frogger/frogger_game/frogger_game.c</itemPath>
       <itemPath>gui/frogger/frogger_mainmenu/frogger_mainmenu.c</itemPath>
       <itemPath>gui/frogger/frogger_pausemenu/frogger_pausemenu.c</itemPath>
       <itemPath>gui/gui_animation/gui_animation.c</itemPath>
@@ -50,9 +48,7 @@
       <itemPath>gui/gui_init.c</itemPath>
       <itemPath>gui/gui_input/gui_input.c</itemPath>
       <itemPath>gui/gui_timer/gui_timer.c</itemPath>
-      <itemPath>input.c</itemPath>
       <itemPath>main.c</itemPath>
-      <itemPath>rpi_gui.c</itemPath>
       <itemPath>timer.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -94,15 +90,9 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="allegro_gui.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="allegro_gui.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="disdrv.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="display.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="game_types.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="gui/allegro/allegro_init.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -114,6 +104,16 @@
             flavor2="0">
       </item>
       <item path="gui/allegro/allegro_input/allegro_input.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/game/allegro_frogger_game.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/game/allegro_frogger_game.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -138,7 +138,15 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="gui/frogger/frogger_mainmenu.h" ex="false" tool="3" flavor2="0">
+      <item path="gui/frogger/frogger_game/frogger_game.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_game/frogger_game.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="gui/frogger/frogger_mainmenu/frogger_mainmenu.c"
             ex="false"
@@ -188,17 +196,9 @@
       </item>
       <item path="gui/gui_types.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="input.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="input.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="joydrv.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="rpi_gui.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="rpi_gui.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="settings.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -229,15 +229,9 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="allegro_gui.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="allegro_gui.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="disdrv.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="display.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="game_types.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="gui/allegro/allegro_init.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -249,6 +243,16 @@
             flavor2="0">
       </item>
       <item path="gui/allegro/allegro_input/allegro_input.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/game/allegro_frogger_game.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/game/allegro_frogger_game.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -273,7 +277,15 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="gui/frogger/frogger_mainmenu.h" ex="false" tool="3" flavor2="0">
+      <item path="gui/frogger/frogger_game/frogger_game.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/frogger/frogger_game/frogger_game.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="gui/frogger/frogger_mainmenu/frogger_mainmenu.c"
             ex="false"
@@ -323,17 +335,9 @@
       </item>
       <item path="gui/gui_types.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="input.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="input.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="joydrv.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="rpi_gui.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="rpi_gui.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="settings.h" ex="false" tool="3" flavor2="0">
       </item>

@@ -35,11 +35,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/allegro_gui.o \
 	${OBJECTDIR}/gui/allegro/allegro_init.o \
 	${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o \
+	${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o \
 	${OBJECTDIR}/gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.o \
 	${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o \
+	${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o \
 	${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o \
 	${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o \
 	${OBJECTDIR}/gui/gui_animation/gui_animation.o \
@@ -48,9 +49,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/gui_init.o \
 	${OBJECTDIR}/gui/gui_input/gui_input.o \
 	${OBJECTDIR}/gui/gui_timer/gui_timer.o \
-	${OBJECTDIR}/input.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/rpi_gui.o \
 	${OBJECTDIR}/timer.o
 
 
@@ -78,11 +77,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/frogger: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/frogger ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/allegro_gui.o: allegro_gui.c 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/allegro_gui.o allegro_gui.c
-
 ${OBJECTDIR}/gui/allegro/allegro_init.o: gui/allegro/allegro_init.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/allegro
 	${RM} "$@.d"
@@ -93,6 +87,11 @@ ${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o: gui/allegro/allegro_inpu
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o gui/allegro/allegro_input/allegro_input.c
 
+${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o: gui/allegro/frogger/game/allegro_frogger_game.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/game
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o gui/allegro/frogger/game/allegro_frogger_game.c
+
 ${OBJECTDIR}/gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.o: gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/mainmenu
 	${RM} "$@.d"
@@ -102,6 +101,11 @@ ${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o: gui/alle
 	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/pausemenu
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c
+
+${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o: gui/frogger/frogger_game/frogger_game.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_game
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o gui/frogger/frogger_game/frogger_game.c
 
 ${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o: gui/frogger/frogger_mainmenu/frogger_mainmenu.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_mainmenu
@@ -143,20 +147,10 @@ ${OBJECTDIR}/gui/gui_timer/gui_timer.o: gui/gui_timer/gui_timer.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_timer/gui_timer.o gui/gui_timer/gui_timer.c
 
-${OBJECTDIR}/input.o: input.c 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/input.o input.c
-
 ${OBJECTDIR}/main.o: main.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
-
-${OBJECTDIR}/rpi_gui.o: rpi_gui.c 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rpi_gui.o rpi_gui.c
 
 ${OBJECTDIR}/timer.o: timer.c 
 	${MKDIR} -p ${OBJECTDIR}

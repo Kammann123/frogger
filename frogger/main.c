@@ -26,7 +26,7 @@ typedef enum {
     PAUSEMENU_STAGE
 } GAME_STAGE;
 
-#define DEFAULT_STAGE MAINMENU_STAGE
+#define DEFAULT_STAGE PAUSEMENU_STAGE
 
 /* Eventos del timer */
 #define TIMER_DEFINITION    1000
