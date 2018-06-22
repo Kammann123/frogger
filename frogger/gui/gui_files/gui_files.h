@@ -18,8 +18,8 @@
 /**************/
 
 /* Maximo largo de string */
-#define MAX_STRING  50
-#define MAX_LINE    110
+#define MAX_STRING  100
+#define MAX_LINE    200
 
 /* Archivo objeto secciones y claves */
 #define OBJFILE_ATTRIBUTES   "attributes"

@@ -197,6 +197,7 @@ void on_pausemenu_enter(GAME_STAGE* stage){
         case PAUSEMENU_RESTART_OPTION:
             break;
         case PAUSEMENU_EXIT_OPTION:
+            frogger_game_close();
             change_stage(stage, CLOSING_STAGE);
             break;
     }
@@ -219,6 +220,7 @@ void on_mainmenu_enter(GAME_STAGE* stage){
     /* Cambio de etapa el programa */
     switch( frogger_mainmenu_selected() ){
         case MAINMENU_PLAY_OPTION:
+            frogger_game_init();
             change_stage(stage, FROGGER_STAGE);
             break;
         case MAINMENU_RANK_OPTION:
