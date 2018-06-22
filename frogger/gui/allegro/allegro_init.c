@@ -2,6 +2,7 @@
 
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_font.h>
 
 /************************************/
 /* Definicion de funciones publicas */
@@ -16,6 +17,12 @@ bool allegro_wrapped_init(void){
     }
     
     if( !al_init_image_addon() ){
+        return false;
+    }
+    
+    al_init_font_addon();
+    
+    if( !al_init_ttf_addon() ){
         return false;
     }
     

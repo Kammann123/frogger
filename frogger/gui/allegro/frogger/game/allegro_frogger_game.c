@@ -5,7 +5,11 @@
 #include "../../../gui_input/gui_input.h"
 #include "../../../../logic/frogger/frogger_kernel.h"
 
+#include <stdio.h>
+
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 /**************************/
 /* Objetos de la libreria */
@@ -210,7 +214,9 @@ bool allegro_frogger_init(void){
 
 /* allegro_frogger_screen_update */
 void allegro_frogger_screen_update(void){
+    ALLEGRO_FONT* font;
     ALLEGRO_BITMAP* bitmap;
+    char text[MAX_STRING];
     
     /* Abro la ventana */
     if( display == NULL ){
@@ -245,6 +251,24 @@ void allegro_frogger_screen_update(void){
     }
     if( bitmap != NULL ){
         al_draw_bitmap(bitmap, ALLEGRO_DISPLAY_LIFES_X, ALLEGRO_DISPLAY_LIFES_Y, 0);
+    }else{
+        return;
+    }
+    
+    /* Pongo la info de score */
+    font = al_load_ttf_font(FROGGER_FONT_0, FROGGER_SIZE_0, 0);
+    if( font != NULL ){
+         sprintf(text, "%s %d", ALLEGRO_SCORE_MSG, froggerGame.score);
+        al_draw_text(font, SCORE_COLOR, ALLEGRO_DISPLAY_SCORE_X, ALLEGRO_DISPLAY_SCORE_Y, 0, text);
+    }else{
+        return;
+    }
+    
+    /* Pongo la info de time */
+    font = al_load_ttf_font(FROGGER_FONT_0, FROGGER_SIZE_0, 0);
+    if( font != NULL ){
+         sprintf(text, "%s %d", ALLEGRO_TIME_MSG, froggerGame.time);
+        al_draw_text(font, TIME_COLOR, ALLEGRO_DISPLAY_TIME_X, ALLEGRO_DISPLAY_TIME_Y, 0, text);
     }else{
         return;
     }
