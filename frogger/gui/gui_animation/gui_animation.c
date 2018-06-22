@@ -87,10 +87,10 @@ static void* gui_animation_engine_thread(void* thisEngine){
                                     }
                                 }
                             }
-                        }
 
-                        /* Cierro el loop */
-                        break;
+                            /* Cierro el loop */
+                            break;
+                        }
                     }
                 }
             }

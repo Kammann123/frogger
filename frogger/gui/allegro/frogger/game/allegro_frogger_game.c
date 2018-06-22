@@ -91,7 +91,7 @@ bool allegro_frogger_init(void){
     /* Inicio el motor */
     gui_animation_start_engine(engine);
     
-    gui_animation_start_loop(frog.object, GUI_ANIMATION_VERTICAL_DOWN);
+    gui_animation_start_loop(frog.object, GUI_ANIMATION_HORIZONTAL_LEFT);
 }
 
 /* allegro_frogger_screen_update */
