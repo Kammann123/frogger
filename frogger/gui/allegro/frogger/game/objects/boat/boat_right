@@ -1,0 +1,7 @@
+[attributes]
+timedelta: 100
+spacedelta: 20
+orientation: HORIZONTAL_RIGHT
+quantity: 1
+[frames]
+0: gui/allegro/froggger/game/objets/boat/sprites/boat_right.png
