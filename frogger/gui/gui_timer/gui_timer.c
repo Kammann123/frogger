@@ -31,12 +31,16 @@ bool gui_timer_source(EVENT* event, void* timerQueue){
     for(i = 0;i < queue->length;i++){
         
         /* Compruebo timer overflow */
-        if( queue->timers[i].timerCounter >= queue->timers[i].timerMax ){
+        if( queue->timers[i].timerCounter >= queue->timers[i].timerMax && !(queue->timers[i].timerOverflow) ){
             
             pthread_mutex_lock(&(queue->timerMutex));
+            
             /* Raise event */
             event->type = TIMER_OVERFLOW;
             event->data = queue->timers[i].id;
+            /* Flag */
+            queue->timers[i].timerOverflow = true;
+
             pthread_mutex_unlock(&(queue->timerMutex));
             
             return true;
@@ -83,6 +87,7 @@ void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id){
     /* Busco el timer */
     for(i = 0;i < timerQueue->length;i++){
         if( timerQueue->timers[i].id == id ){
+            timerQueue->timers[i].timerOverflow = false;
             timerQueue->timers[i].timerCounter = 0;
             break;
         }
@@ -169,6 +174,7 @@ bool gui_timer_new_event(TIMER_QUEUE* timerQueue, uint32_t time, uint32_t id){
     timerQueue->timers[timerQueue->length].id = id;
     timerQueue->timers[timerQueue->length].timerCounter = 0;
     timerQueue->timers[timerQueue->length].timerMax = time;
+    timerQueue->timers[timerQueue->length].timerOverflow = false;
     
     /* Incremento contador */
     timerQueue->length++;

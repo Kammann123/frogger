@@ -150,6 +150,8 @@ int main(int argc, char** argv){
                 if( event.data == REFRESH_DISPLAY ){
                     switch_update_target(&stage);
                 }
+                /* Limpio el timer */
+                gui_timer_clear(timer, event.data);
             }
         }
         
@@ -160,10 +162,11 @@ int main(int argc, char** argv){
         
             /* Limpio la cola de eventos */
             queue_flush(queue);
+            
+            /* Limpio el timer */
+            gui_timer_clear(timer, REFRESH_DISPLAY);
         }
     }
-    
-    printf("Largo: %d\n", queue->length);
     
     /* Cierro la cola de eventos */
     queue_close(queue);

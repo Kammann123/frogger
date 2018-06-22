@@ -37,14 +37,6 @@ static void source_destroy(QUEUE_SOURCES* sources);
 /* Definicion de funciones privadas */
 /************************************/
 
-/* queue_flush */
-void queue_flush(EVENT_QUEUE* queue){
-    pthread_mutex_lock(&(queue->queueMutex));
-    queue->lastEvent = 0;
-    queue->nextEvent = 0;
-    pthread_mutex_unlock(&(queue->queueMutex));
-}
-
 /* source_destroy */
 static void source_destroy(QUEUE_SOURCES* sources){
     
@@ -146,6 +138,15 @@ static QUEUE_SOURCES* create_sources(void){
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* queue_flush */
+void queue_flush(EVENT_QUEUE* queue){
+    pthread_mutex_lock(&(queue->queueMutex));
+    queue->lastEvent = 0;
+    queue->nextEvent = 0;
+    pthread_mutex_unlock(&(queue->queueMutex));
+}
+
 
 /* queue_next_event */
 bool queue_next_event(EVENT_QUEUE* queue, EVENT* event){

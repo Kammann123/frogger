@@ -27,6 +27,9 @@ typedef struct{
     uint32_t id;
     uint32_t timerCounter;
     uint32_t timerMax;
+    
+    /* Flag */
+    bool timerOverflow;
 } TIMER;
 
 typedef struct{
