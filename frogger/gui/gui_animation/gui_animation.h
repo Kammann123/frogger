@@ -82,6 +82,7 @@ typedef struct{
     
     /* Habilitadores del motor */
     bool shutdown;
+    bool pause;
     
     /* Thread */
     pthread_t engineThread;
@@ -90,6 +91,20 @@ typedef struct{
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* gui_animation_pause_engine
+ * Pausa el motor de animaciones
+ *
+ * engine: Motor de animaciones
+ */
+void gui_animation_pause_engine(ANIMATION_ENGINE* engine);
+
+/* gui_animation_continue_engine
+ * Reanuda el motor de animaciones
+ *
+ * engine: Motor de animaciones 
+ */
+void gui_animation_continue_engine(ANIMATION_ENGINE* engine);
 
 /* gui_animation_get_frame
  * Devuelve el frame actual de un objeto

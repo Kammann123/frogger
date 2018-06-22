@@ -99,6 +99,20 @@ static void* gui_animation_engine_thread(void* thisEngine){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* gui_animation_pause_engine */
+void gui_animation_pause_engine(ANIMATION_ENGINE* engine){
+    if( !engine->pause ){
+        engine->pause = true;
+    }
+}
+
+/* gui_animation_continue_engine */
+void gui_animation_continue_engine(ANIMATION_ENGINE* engine){
+    if( engine->pause ){
+        engine->pause = false;
+    }
+}
+
 /* gui_animation_get_frame */
 FRAME gui_animation_get_frame(ANIMATED_OBJECT* object){
     uint16_t i;
@@ -153,12 +167,13 @@ void gui_animation_start_loop(ANIMATED_OBJECT* object, uint16_t orientation){
 /* gui_animation_start_engine */
 void gui_animation_start_engine(ANIMATION_ENGINE* engine){
     
-    /* Habilito el thread */
-    engine->shutdown = false;
-    
-    /* Inicio el thread */
-    pthread_create(&(engine->engineThread), NULL, gui_animation_engine_thread, engine);
-    
+    if( engine->pause ){
+        /* Habilito el thread */
+        engine->shutdown = false;
+
+        /* Inicio el thread */
+        pthread_create(&(engine->engineThread), NULL, gui_animation_engine_thread, engine);
+    }
 }
 
 /* gui_animation_attach_object */
@@ -214,6 +229,7 @@ ANIMATION_ENGINE* gui_animation_create_engine(void){
     
     /* Inicializo atributos */
     engine->shutdown = false;
+    engine->pause = false;
     engine->length = 0;
 }
 

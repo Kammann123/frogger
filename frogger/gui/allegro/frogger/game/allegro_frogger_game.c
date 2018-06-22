@@ -52,7 +52,6 @@ bool allegro_frogger_init(void){
     }
     
     /* Cargo animaciones de frog */
-    printf(FROGGER_PATH_FROG_OBJFILE);
     if( !gui_files_read_objfile(FROGGER_PATH_FROG_OBJFILE, frog.object) ){
         gui_animation_destroy_object(frog.object);
         gui_animation_destroy_engine(engine);
@@ -66,6 +65,8 @@ bool allegro_frogger_init(void){
     
     /* Inicio el motor */
     gui_animation_start_engine(engine);
+    
+    gui_animation_start_loop(frog.object, GUI_ANIMATION_VERTICAL_UP);
 }
 
 /* allegro_frogger_screen_update */
