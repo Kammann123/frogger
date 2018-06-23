@@ -31,14 +31,6 @@ typedef enum {
     SETTING_OK
 } setting_states;
 
-
-
-
-/* is_setting states */
-#define IS_SETTING_KEY          0
-#define IS_SETTING_SPACE        1
-#define IS_SETTING_VALUE        2
-
 /***********************************/
 /* Prototipo de funciones privadas */
 /***********************************/
@@ -153,46 +145,59 @@ static bool is_numeric_string(char* str);
  */
 static uint32_t count_sections(FILE* file);
 
-
-
-
-
-
-
-
-
-
-
-
-/* section_verify
- * Verifica que no haya error en el formato de la seccion
- *
- * line: Linea leida
- * sectionName: Nombre de la seccion esperado
- */
-static bool section_verify(char* line, char* sectionName);
-
-/* is_setting
- * Devuelve true si es una configuracion bien formateada
- * y la guarda 
- *
- * str: String a comprobar
- * setting: Setting para guardar
- */
-static bool is_setting(char* str, SETTING* setting);
-
-/* setting_verify
- * Verifica que no haya error en el formato de la configuracion
- *
- * line: Linea leida del archivo
- * setting: Donde se guarda la configuracion
- * settingName: Nombre de la configuracion esperada
- */
-static bool setting_verify(char* line, SETTING* setting, char* settingName);
-
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* gui_files_get_string */
+char* gui_files_get_string(SETTING* setting, char* section, char* key){
+    uint32_t i, ii;
+    
+    for(i = 0;i < setting->length;i++){
+        if( !(strcmp(setting->sections[i].name, section)) ){
+            for(ii = 0;ii < setting->sections[i].length;ii++){
+                if( !(strcmp(setting->sections[i].sets[ii].value.string, key)) ){
+                    return setting->sections[i].sets[ii].value.string;
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
+/* gui_files_get_int */
+bool gui_files_get_int(SETTING* setting, char* section, char* key, uint32_t* value){
+    uint32_t i, ii;
+    
+    for(i = 0;i < setting->length;i++){
+        if( !(strcmp(setting->sections[i].name, section)) ){
+            for(ii = 0;ii < setting->sections[i].length;ii++){
+                if( !(strcmp(setting->sections[i].sets[ii].value.string, key)) ){
+                    *value = setting->sections[i].sets[ii].value.integer;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+/* gui_files_get_bool */
+bool gui_files_get_bool(SETTING* setting, char* section, char* key, bool* value){
+    uint32_t i, ii;
+    
+    for(i = 0;i < setting->length;i++){
+        if( !(strcmp(setting->sections[i].name, section)) ){
+            for(ii = 0;ii < setting->sections[i].length;ii++){
+                if( !(strcmp(setting->sections[i].sets[ii].value.string, key)) ){
+                    *value = setting->sections[i].sets[ii].value.boolean;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
 
 /* gui_files_destroy_setting */
 void gui_files_destroy_setting(SETTING* setting){
