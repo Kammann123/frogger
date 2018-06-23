@@ -18,7 +18,7 @@
 typedef struct cheatT{
     uint8_t cheatLarge;
     uint32_t cheatArray[MAX_LARGE_FOR_CHEATS];
-    void * action (void);
+    void (* pToActionFunc) (void);
     struct cheatT * p2Next;
 } cheat_t;
 
