@@ -18,9 +18,10 @@
 /**************/
 
 /* Estados de la animacion */
-#define GUI_ANIMATION_STATE_STATIC  0
-#define GUI_ANIMATION_STATE_LOOP    1
-#define GUI_ANIMATION_STATE_MOVE    2
+#define GUI_ANIMATION_STATE_STATIC      0
+#define GUI_ANIMATION_STATE_LOOP        1
+#define GUI_ANIMATION_STATE_MOVE        2
+#define GUI_ANIMATION_STATE_STATIC_MOVE 3
 
 /* Orientaciones de la animacion */
 #define GUI_ANIMATION_HORIZONTAL_LEFT   0
@@ -120,6 +121,15 @@ void gui_animation_continue_engine(ANIMATION_ENGINE* engine);
  * object: Objeto 
  */
 FRAME gui_animation_get_frame(ANIMATED_OBJECT* object);
+
+/* gui_animation_start_static_movement
+ * Activa la animacion de movimiento con animacion estatica
+ *
+ * object: Objeto
+ * x: Posicion final de X
+ * y: Posicion final de Y
+ */
+void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t x, int32_t y);
 
 /* gui_animation_start_movement
  * Activa la animacion de movimiento hacia una posicion final

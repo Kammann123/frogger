@@ -58,13 +58,15 @@ static void* gui_animation_engine_thread(void* thisEngine){
                                 object->timeCounter = 0;
 
                                 /* Cambio la animacion */
-                                object->frameIndex++;
-                                if( object->frameIndex >= object->animations[ii].framesQty ){
-                                    object->frameIndex = 0;
+                                if( object->status == GUI_ANIMATION_STATE_LOOP ||  object->status == GUI_ANIMATION_STATE_MOVE ){
+                                    object->frameIndex++;
+                                    if( object->frameIndex >= object->animations[ii].framesQty ){
+                                        object->frameIndex = 0;
+                                    }
                                 }
 
                                 /* Me fijo si hay que cambiar la posicion */
-                                if( object->status == GUI_ANIMATION_STATE_MOVE ){
+                                if( object->status == GUI_ANIMATION_STATE_MOVE || object->status == GUI_ANIMATION_STATE_STATIC_MOVE ){
                                     /* Muevo la posicion */
                                     switch(object->orientation){
                                         case GUI_ANIMATION_HORIZONTAL_LEFT:
@@ -137,6 +139,16 @@ FRAME gui_animation_get_frame(ANIMATED_OBJECT* object){
     }
     
     return frame;
+}
+
+/* gui_animation_start_static_movement */
+void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t x, int32_t y){
+    /* Configuro posicion final */
+    object->finalPos.x = x;
+    object->finalPos.y = y;
+    
+    /* Configuro estado */
+    object->status = GUI_ANIMATION_STATE_STATIC_MOVE;
 }
 
 /* gui_animation_start_movement */
