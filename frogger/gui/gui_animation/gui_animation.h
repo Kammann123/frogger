@@ -38,6 +38,11 @@
 typedef char* FRAME;
 
 typedef struct{
+    uint32_t timeDelta;
+    uint32_t spaceDelta;
+} SPEED;
+
+typedef struct{
     /* Archivos de cada frame */
     FRAME* frames;
     
@@ -48,8 +53,8 @@ typedef struct{
     uint16_t orientation;
     
     /* Parametros de desplazamiento */
-    uint32_t timeDelta;
-    uint32_t spaceDelta;
+    SPEED speed;
+    
 } ANIMATION;
 
 typedef struct{

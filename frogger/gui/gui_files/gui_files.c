@@ -123,7 +123,7 @@ bool gui_files_read_objfile(char* objFile, ANIMATED_OBJECT* object){
                 case OBJFILE_STATE_TIMEDELTA:
                     if( setting_verify(fileLine, &settings, OBJFILE_TIMEDELTA) ){
                         if( is_numeric_string(settings.value) ){
-                            animation.timeDelta = atoi(settings.value);
+                            animation.speed.timeDelta = atoi(settings.value);
                             state = OBJFILE_STATE_SPACEDELTA;
                         }else{
                             error = true;
@@ -135,7 +135,7 @@ bool gui_files_read_objfile(char* objFile, ANIMATED_OBJECT* object){
                 case OBJFILE_STATE_SPACEDELTA:
                     if( setting_verify(fileLine, &settings, OBJFILE_SPACEDELTA) ){
                         if( is_numeric_string(settings.value) ){
-                            animation.spaceDelta = atoi(settings.value);
+                            animation.speed.spaceDelta = atoi(settings.value);
                             state = OBJFILE_STATE_ORIENTATION;
                         }else{
                             error = true;

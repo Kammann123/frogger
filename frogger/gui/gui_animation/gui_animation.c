@@ -52,7 +52,7 @@ static void* gui_animation_engine_thread(void* thisEngine){
                         if( object->animations[ii].orientation == object->orientation ){
 
                             /* Me fijo si paso el tiempo */
-                            if( object->timeCounter >= object->animations[ii].timeDelta ){
+                            if( object->timeCounter >= object->animations[ii].speed.timeDelta ){
 
                                 /* Reinicio el tiempo */
                                 object->timeCounter = 0;
@@ -68,16 +68,16 @@ static void* gui_animation_engine_thread(void* thisEngine){
                                     /* Muevo la posicion */
                                     switch(object->orientation){
                                         case GUI_ANIMATION_HORIZONTAL_LEFT:
-                                            object->currentPos.x -= object->animations[ii].spaceDelta;
+                                            object->currentPos.x -= object->animations[ii].speed.spaceDelta;
                                             break;
                                         case GUI_ANIMATION_HORIZONTAL_RIGHT:
-                                            object->currentPos.x += object->animations[ii].spaceDelta;
+                                            object->currentPos.x += object->animations[ii].speed.spaceDelta;
                                             break;
                                         case GUI_ANIMATION_VERTICAL_UP:
-                                            object->currentPos.y -= object->animations[ii].spaceDelta;
+                                            object->currentPos.y -= object->animations[ii].speed.spaceDelta;
                                             break;
                                         case GUI_ANIMATION_VERTICAL_DOWN:
-                                            object->currentPos.y += object->animations[ii].spaceDelta;
+                                            object->currentPos.y += object->animations[ii].speed.spaceDelta;
                                             break;
                                     }
 
