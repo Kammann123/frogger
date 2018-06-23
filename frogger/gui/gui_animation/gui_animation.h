@@ -39,6 +39,11 @@
 typedef char* FRAME;
 
 typedef struct{
+    POSITION iCorner;
+    POSITION fCorner;
+} REGION;
+
+typedef struct{
     uint32_t timeDelta;
     uint32_t spaceDelta;
 } SPEED;
@@ -100,6 +105,15 @@ typedef struct{
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* gui_animation_in_region 
+ * Devuelve true si el objeto se encuentra en la region
+ * especificada
+ * 
+ * object: Objeto
+ * region: Region
+ */
+bool gui_animation_in_region(ANIMATED_OBJECT* object, REGION region);
 
 /* gui_animation_pause_engine
  * Pausa el motor de animaciones

@@ -108,6 +108,16 @@ static void* gui_animation_engine_thread(void* thisEngine){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* gui_animation_in_region */
+bool gui_animation_in_region(ANIMATED_OBJECT* object, REGION region){
+    if( object->currentPos.x >= region.iCorner.x && object->currentPos.x <= region.fCorner.x ){
+        if( object->currentPos.y >= region.iCorner.y && object->currentPos.y <= region.fCorner.y ){
+            return true;
+        }
+    }
+    return false;
+}
+
 /* gui_animation_pause_engine */
 void gui_animation_pause_engine(ANIMATION_ENGINE* engine){
     if( !engine->pause ){

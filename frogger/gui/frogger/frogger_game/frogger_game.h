@@ -33,6 +33,7 @@
 
 typedef struct{
     ANIMATED_OBJECT* object;
+    ANIMATED_OBJECT* transport;
 } FROG;
 
 /***********************************/

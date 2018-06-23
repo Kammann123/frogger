@@ -6,7 +6,7 @@
 /*********************/
 
 /* Frog del jugador */
-FROG frog = { .object=NULL };
+FROG frog = { .object=NULL, .transport=NULL };
 
 /************************************/
 /* Definicion de funciones publicas */
