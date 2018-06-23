@@ -12,6 +12,34 @@ FROG frog = { .object=NULL, .transport=NULL };
 /* Definicion de funciones publicas */
 /************************************/
 
+/* frogger_game_create_lane */
+LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed){
+    LANE* lane;
+    
+    /* Reservo memoria para el carril */
+    lane = malloc( sizeof(LANE) );
+    if( lane == NULL ){
+        return NULL;
+    }
+    
+    /* Reservo memoria para los objetos */
+    lane->objects = malloc( sizeof(ANIMATED_OBJECT*) * qty );
+    if( lane->objects == NULL ){
+        free(lane);
+        return NULL;
+    }
+    
+    /* Inicializo atributos */
+    lane->laneNumber = laneNumber;
+    lane->type = type;
+    lane->orientation = orientation;
+    lane->objectsQty = qty;
+    lane->speed = speed;
+    
+    return lane;
+}
+
+
 /* frogger_game_move_frog */
 void frogger_game_move_frog(uint16_t input){
     uint32_t step;

@@ -36,11 +36,36 @@ typedef struct{
     ANIMATED_OBJECT* transport;
 } FROG;
 
+typedef ANIMATED_OBJECT* MOTORBIKE;
+typedef ANIMATED_OBJECT* CAR;
+typedef ANIMATED_OBJECT* TRUCK;
+typedef ANIMATED_OBJECT* BOAT;
+typedef ANIMATED_OBJECT* YACHT;
+
+typedef struct{
+    /* Objetos del carril */
+    ANIMATED_OBJECT* objects;
+    uint16_t objectsQty;
+    
+    /* Atributos del carril */
+    uint16_t laneNumber;
+    
+    /* Movimiento del carril */
+    uint16_t type;
+    uint16_t orientation;
+    SPEED speed;
+} LANE;
+
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
 
-/* move_frog
+/* frogger_game_create_lane
+ * Crea un objeto carril
+ */
+LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed);
+
+/* frogger_game_move_frog
  * Mueve el objeto frog en la direccion segun input
  *
  * input: Direccion ingresada por usuario 
