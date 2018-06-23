@@ -9,10 +9,10 @@
 /* Librerias utilizadas */
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "../../../settings.h"
 #include "../../gui_animation/gui_animation.h"
-#include "../../allegro/frogger/game/allegro_frogger_game.h"
 
 /**************/
 /* Constantes */
@@ -26,6 +26,9 @@
 /* Parametros de tablero */
 #define DISPLAY_DIVISIONS_X 16
 #define DISPLAY_DIVISIONS_Y 11
+
+/* Definicion de carriles */
+#define NUMBER_OF_LANES 8
 
 /******************/
 /* Tipos de datos */
@@ -56,27 +59,11 @@ typedef struct{
     SPEED speed;
 } LANE;
 
+typedef LANE** LANES;
+
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
-
-/* frogger_game_destroy_lane
- * Libera memoria del carril
- *
- * lane: Carril
- */
-void frogger_game_destroy_lane(LANE* lane);
-
-/* frogger_game_create_lane
- * Crea un objeto carril
- * 
- * laneNumber: Numero de carril
- * type: Tipo de vehiculos
- * qty: Cantidad de objetos 
- * orientation: Orientacion de movimiento
- * speed: Velocidad de movimiento
- */
-LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed);
 
 /* frogger_game_move_frog
  * Mueve el objeto frog en la direccion segun input

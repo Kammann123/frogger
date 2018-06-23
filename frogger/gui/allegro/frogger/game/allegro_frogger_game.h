@@ -9,6 +9,8 @@
 /* Librerias utilizadas */
 #include <stdbool.h>
 #include <stdint.h>
+#include "../../../gui_animation/gui_animation.h"
+#include "../../../frogger/frogger_game/frogger_game.h"
 
 /**************/
 /* Constantes */
@@ -59,13 +61,33 @@
 #define FROGGER_SIZE_0              25
 
 /* Paths para acceder a animaciones */
-#define FROGGER_PATH_OBJECTS        "gui/allegro/frogger/game/objects/"
+#define FROGGER_PATH_OBJECTS                "gui/allegro/frogger/game/objects/"
 
-#define FROGGER_PATH_FROG           "frog/"
-#define FROGGER_PATH_FROG_UP_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_up"
-#define FROGGER_PATH_FROG_DOWN_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_down"
-#define FROGGER_PATH_FROG_LEFT_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_left"
-#define FROGGER_PATH_FROG_RIGHT_OBJFILE   FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_right"
+#define FROGGER_PATH_FROG                   "frog/"
+#define FROGGER_FROG_UP_OBJFILE             FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_up"
+#define FROGGER_FROG_DOWN_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_down"
+#define FROGGER_FROG_LEFT_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_left"
+#define FROGGER_FROG_RIGHT_OBJFILE          FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_right"
+
+#define FROGGER_PATH_MOTORBIKE             "motorbike/"
+#define FROGGER_MOTORBIKE_LEFT_OBJFILE     FROGGER_PATH_OBJECTS FROGGER_PATH_MOTORBIKE "motorbike_left"
+#define FROGGER_MOTORBIKE_RIGHT_OBJFILE    FROGGER_PATH_OBJECTS FROGGER_PATH_MOTORBIKE "motrobike_right"
+    
+#define FROGGER_PATH_CAR                   "car/"
+#define FROGGER_CAR_LEFT_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_CAR "car_left"
+#define FROGGER_CAR_RIGHT_OBJFILE          FROGGER_PATH_OBJECTS FROGGER_PATH_CAR "car_right"
+
+#define FROGGER_PATH_TRUCK                 "truck/"
+#define FROGGER_TRUCK_LEFT_OBJFILE         FROGGER_PATH_OBJECTS FROGGER_PATH_TRUCK "truck_left"
+#define FROGGER_TRUCK_RIGHT_OBJFILE        FROGGER_PATH_OBJECTS FROGGER_PATH_TRUCK "truck_right"
+
+#define FROGGER_PATH_BOAT                   "boat/"
+#define FROGGER_BOAT_LEFT_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_BOAT "boat_left"
+#define FROGGER_BOAT_RIGHT_OBJFILE          FROGGER_PATH_OBJECTS FROGGER_PATH_BOAT "boat_right"
+
+#define FROGGER_PATH_YACHT                  "yacht/"
+#define FROGGER_YACHT_LEFT_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_YACHT "yacht_left"
+#define FROGGER_YACHT_RIGHT_OBJFILE          FROGGER_PATH_OBJECTS FROGGER_PATH_YACHT "yacht_right"
 
 /* Mensajes */
 #define ALLEGRO_SCORE_MSG           "Score"
@@ -86,21 +108,6 @@
  * input: Entrada del usuario
  */
 bool allegro_frogger_movement_valid(uint16_t input);
-
-/* allegro_frogger_pause
- * Pausa el juego
- */
-void allegro_frogger_pause(void);
-
-/* allegro_frogger_continue
- * Reanuda el juego
- */
-void allegro_frogger_continue(void);
-
-/* allegro_frogger_close *
- * Cierra y libera objetos creados en allegro para el juego
- */
-void allegro_frogger_close(void);
 
 /* allegro_frogger_init 
  * Inicializa los objetos del juego para

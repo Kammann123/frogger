@@ -18,8 +18,9 @@
 /**************/
 
 /* Maximo largo de string */
-#define MAX_STRING  100
-#define MAX_LINE    200
+#define MAX_LINE        256
+
+#define SETTING_END     "END\n"
 
 /* Archivo objeto secciones y claves */
 #define OBJFILE_ATTRIBUTES   "attributes"
@@ -48,25 +49,46 @@
 /* Tipos de datos */
 /******************/
 
+typedef union{
+    uint32_t integer;
+    char* string;
+    bool boolean;
+} VALUES;
+
 typedef struct{
-    /* Clave id del tipo de config */
-    char key[MAX_STRING];
-    /* Valor de la config */
-    char value[MAX_STRING];
+    char* key;
+    VALUES value;
+} SET;
+
+typedef struct{
+    char* name;
+    SET* sets;
+    uint32_t length;
+} SECTION;
+
+typedef struct{
+    SECTION* sections;
+    uint32_t length;
 } SETTING;
 
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
 
-/* gui_files_read_objfile 
- * Lee un object file y lo carga en una instancia, devuelve true
- * si el archivo pudo ser leido con exito
+/* gui_files_load_setting
+ * Carga un archivo de configuracion
+ * en un objeto
  *
- * objFile: Nombre del archivo objeto
- * object: Instancia del objeto
+ * filename: Nombre del archivo
  */
-bool gui_files_read_objfile(char* objFile, ANIMATED_OBJECT* object);
+SETTING* gui_files_load_setting(char* filename);
+
+/* gui_files_destroy_setting
+ * Destruye o libera memoria 
+ *
+ * setting: Instancia
+ */
+void gui_files_destroy_setting(SETTING* setting);
 
 #endif /* GUI_FILES_H */
 

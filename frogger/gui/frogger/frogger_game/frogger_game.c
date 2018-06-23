@@ -1,19 +1,48 @@
 #include "frogger_game.h"
 #include "../../gui_input/gui_input.h"
+#include "../../allegro/frogger/game/allegro_frogger_game.h"
 
 /*********************/
 /* Objetos del juego */
 /*********************/
 
+/* Motor de animaciones */
+static ANIMATION_ENGINE* engine = NULL;
+
 /* Frog del jugador */
 FROG frog = { .object=NULL, .transport=NULL };
 
+/* Carriles del juego */
+LANES lanes;
+
 /************************************/
-/* Definicion de funciones publicas */
+/* Prototipos de funciones privadas */
+/************************************/
+
+/* frogger_game_destroy_lane
+ * Libera memoria del carril
+ *
+ * lane: Carril
+ */
+static void frogger_game_destroy_lane(LANE* lane);
+
+/* frogger_game_create_lane
+ * Crea un objeto carril
+ * 
+ * laneNumber: Numero de carril
+ * type: Tipo de vehiculos
+ * qty: Cantidad de objetos 
+ * orientation: Orientacion de movimiento
+ * speed: Velocidad de movimiento
+ */
+static LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed);
+
+/************************************/
+/* Definicion de funciones privadas */
 /************************************/
 
 /* frogger_game_destroy_lane */
-void frogger_game_destroy_lane(LANE* lane){
+static void frogger_game_destroy_lane(LANE* lane){
     /* Libero memoria */
     free(lane->objects);
     
@@ -22,7 +51,7 @@ void frogger_game_destroy_lane(LANE* lane){
 }
 
 /* frogger_game_create_lane */
-LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed){
+static LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed){
     LANE* lane;
     
     /* Reservo memoria para el carril */
@@ -48,6 +77,9 @@ LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty,
     return lane;
 }
 
+/************************************/
+/* Definicion de funciones publicas */
+/************************************/
 
 /* frogger_game_move_frog */
 void frogger_game_move_frog(uint16_t input){
@@ -90,33 +122,48 @@ void frogger_game_move_frog(uint16_t input){
 
 /* frogger_game_continue */
 void frogger_game_continue(void){
-#if PLATFORM_MODE == PC_ALLEGRO
-    allegro_frogger_continue();
-#elif PLATFORM_MODE == RPI
-#endif    
+    gui_animation_continue_engine(engine);
 }
 
 /* frogger_game_pause */
 void frogger_game_pause(void){
-#if PLATFORM_MODE == PC_ALLEGRO
-    allegro_frogger_pause();
-#elif PLATFORM_MODE == RPI
-#endif    
+    gui_animation_pause_engine(engine);
 }
 
 /* frogger_game_close */
 void frogger_game_close(void){
-#if PLATFORM_MODE == PC_ALLEGRO
-    allegro_frogger_close();
-#elif PLATFORM_MODE == RPI
-#endif    
+    if( frog.object != NULL ){
+        gui_animation_destroy_object(frog.object);
+    }
+    
+    /* Libero motor de animaciones */
+    if( engine != NULL ){
+        gui_animation_destroy_engine(engine);
+    }
 }
 /* frogger_game_init */
 bool frogger_game_init(void){
+    
+    /* Creo el motor de animaciones */
+    engine = gui_animation_create_engine();
+    if( engine == NULL ){
+        gui_animation_destroy_object(frog.object);
+        return false;
+    }
+    
+    /* Inicializo los objetos de cada interfaz */
 #if PLATFORM_MODE == PC_ALLEGRO
     allegro_frogger_init();
 #elif PLATFORM_MODE == RPI
-#endif    
+#endif
+    
+    /* Vinculo objetos con el motor */
+    if( !gui_animation_attach_object(engine, frog.object) ){
+        return false;
+    }
+    
+    /* Inicio el motor */
+    gui_animation_start_engine(engine);
 }
 
 /* frogger_game_screen_update */

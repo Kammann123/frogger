@@ -1,5 +1,4 @@
 #include "allegro_frogger_game.h"
-#include "../../../frogger/frogger_game/frogger_game.h"
 #include "../../../gui_animation/gui_animation.h"
 #include "../../../gui_files/gui_files.h"
 #include "../../../gui_input/gui_input.h"
@@ -21,9 +20,6 @@ extern FROGGER_GAME_DATA froggerGame;
 
 /* Display del juego */
 static ALLEGRO_DISPLAY* display = NULL;
-
-/* Motor de animaciones */
-static ANIMATION_ENGINE* engine = NULL;
 
 /***********************************/
 /* Prototipo de funciones privadas */
@@ -59,23 +55,23 @@ static bool frog_init(FROG* frog){
         return false;
     }
     
-    /* Cargo animaciones de frog */
-    if( !gui_files_read_objfile(FROGGER_PATH_FROG_UP_OBJFILE, frog->object) ){
+    /*
+    if( !gui_files_load_objfile(FROGGER_FROG_UP_OBJFILE, frog->object) ){
         gui_animation_destroy_object(frog->object);
         return false;
     }
-    if( !gui_files_read_objfile(FROGGER_PATH_FROG_DOWN_OBJFILE, frog->object) ){
+    if( !gui_files_load_objfile(FROGGER_FROG_DOWN_OBJFILE, frog->object) ){
         gui_animation_destroy_object(frog->object);
         return false;
     }
-    if( !gui_files_read_objfile(FROGGER_PATH_FROG_LEFT_OBJFILE, frog->object) ){
+    if( !gui_files_load_objfile(FROGGER_FROG_LEFT_OBJFILE, frog->object) ){
         gui_animation_destroy_object(frog->object);
         return false;
     }
-    if( !gui_files_read_objfile(FROGGER_PATH_FROG_RIGHT_OBJFILE, frog->object) ){
+    if( !gui_files_load_objfile(FROGGER_FROG_RIGHT_OBJFILE, frog->object) ){
         gui_animation_destroy_object(frog->object);
         return false;
-    }
+    }*/
     
     /* Frog inicializada correctamente */
     return true;
@@ -164,59 +160,19 @@ bool allegro_frogger_movement_valid(uint16_t input){
     return true;
 }
 
-/* allegro_frogger_continue */
-void allegro_frogger_continue(void){
-    gui_animation_continue_engine(engine);
-}
-
-/* allegro_frogger_pause */
-void allegro_frogger_pause(void){
-    gui_animation_pause_engine(engine);
-}
-
-/* allegro_frogger_close */
-void allegro_frogger_close(void){
-    /* Libero el objeto frog */
-    if( frog.object != NULL ){
-        gui_animation_destroy_object(frog.object);
-    }
-    
-    /* Libero motor de animaciones */
-    if( engine != NULL ){
-        gui_animation_destroy_engine(engine);
-    }
-}
-
 /* allegro_frogger_init */
 bool allegro_frogger_init(void){
-    
     /* Inicializo la rana */
     if( !frog_init(&frog) ){
         return false;
-    }
-    
-    /* Creo el motor de animaciones */
-    engine = gui_animation_create_engine();
-    if( engine == NULL ){
-        gui_animation_destroy_object(frog.object);
-        return false;
-    }
-    
-    /* Vinculo objetos con el motor */
-    if( !gui_animation_attach_object(engine, frog.object) ){
-        return false;
-    }
-    
-    /* Inicio el motor */
-    gui_animation_start_engine(engine);
-    
+    }    
 }
 
 /* allegro_frogger_screen_update */
 void allegro_frogger_screen_update(void){
     ALLEGRO_FONT* font;
     ALLEGRO_BITMAP* bitmap;
-    char text[MAX_STRING];
+    char text[MAX_LINE];
     
     /* Abro la ventana */
     if( display == NULL ){
