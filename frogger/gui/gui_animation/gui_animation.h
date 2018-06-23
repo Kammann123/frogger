@@ -26,6 +26,11 @@
 #define OBJFILE_ORIENTATION "orientation"
 #define OBJFILE_QUANTITY    "quantity"
 
+#define OBJFILE_VERTICAL_UP         "VERTICAL_UP"
+#define OBJFILE_VERTICAL_DOWN       "VERTICAL_DOWN"
+#define OBJFILE_HORIZONTAL_LEFT     "HORIZONTAL_LEFT"
+#define OBJFILE_HORIZONTAL_RIGHT    "HORIZONTAL_RIGHT"
+
 /* Estados de la animacion */
 #define GUI_ANIMATION_STATE_STATIC      0
 #define GUI_ANIMATION_STATE_LOOP        1

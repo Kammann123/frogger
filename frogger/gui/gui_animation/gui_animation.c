@@ -139,13 +139,24 @@ bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object){
                 error = true;
                 break;
             }
-            if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_ORIENTATION, &animation.orientation) ){
-                error = true;
-                break;
-            }
             if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_QUANTITY, &animation.framesQty) ){
                 error = true;
                 break;
+            }
+            
+            auxStr = gui_files_get_string(setting, OBJFILE_ATTRIBUTES, OBJFILE_ORIENTATION);
+            if( auxStr == NULL ){
+                error = true;
+                break;
+            }
+            if( !(strcmp(auxStr, OBJFILE_VERTICAL_UP)) ){
+                animation.orientation = GUI_ANIMATION_VERTICAL_UP;
+            }else if( !(strcmp(auxStr, OBJFILE_VERTICAL_DOWN)) ){
+                animation.orientation = GUI_ANIMATION_VERTICAL_DOWN;
+            }else if( !(strcmp(auxStr, OBJFILE_HORIZONTAL_LEFT)) ){
+                animation.orientation = GUI_ANIMATION_HORIZONTAL_LEFT;
+            }else if( !(strcmp(auxStr, OBJFILE_HORIZONTAL_RIGHT)) ){
+                animation.orientation = GUI_ANIMATION_HORIZONTAL_RIGHT;
             }
             
             /* Reservo memoria para los frames */

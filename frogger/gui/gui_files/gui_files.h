@@ -26,7 +26,7 @@
 /* Tipos de datos */
 /******************/
 
-typedef union{
+typedef struct{
     uint32_t integer;
     char* string;
     bool boolean;

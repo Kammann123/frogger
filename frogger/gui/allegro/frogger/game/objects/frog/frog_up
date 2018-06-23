@@ -3,8 +3,11 @@ timedelta: 50
 spacedelta: 8
 orientation: VERTICAL_UP
 quantity: 4
+
 [frames]
 0: gui/allegro/frogger/game/objects/frog/sprites_up/frog_0.png
 1: gui/allegro/frogger/game/objects/frog/sprites_up/frog_1.png
 2: gui/allegro/frogger/game/objects/frog/sprites_up/frog_2.png
 3: gui/allegro/frogger/game/objects/frog/sprites_up/frog_3.png
+
+END

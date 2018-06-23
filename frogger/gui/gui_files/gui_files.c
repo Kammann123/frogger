@@ -156,7 +156,7 @@ char* gui_files_get_string(SETTING* setting, char* section, char* key){
     for(i = 0;i < setting->length;i++){
         if( !(strcmp(setting->sections[i].name, section)) ){
             for(ii = 0;ii < setting->sections[i].length;ii++){
-                if( !(strcmp(setting->sections[i].sets[ii].value.string, key)) ){
+                if( !(strcmp(setting->sections[i].sets[ii].key, key)) ){
                     return setting->sections[i].sets[ii].value.string;
                 }
             }
@@ -172,7 +172,7 @@ bool gui_files_get_int(SETTING* setting, char* section, char* key, uint32_t* val
     for(i = 0;i < setting->length;i++){
         if( !(strcmp(setting->sections[i].name, section)) ){
             for(ii = 0;ii < setting->sections[i].length;ii++){
-                if( !(strcmp(setting->sections[i].sets[ii].value.string, key)) ){
+                if( !(strcmp(setting->sections[i].sets[ii].key, key)) ){
                     *value = setting->sections[i].sets[ii].value.integer;
                     return true;
                 }
@@ -189,7 +189,7 @@ bool gui_files_get_bool(SETTING* setting, char* section, char* key, bool* value)
     for(i = 0;i < setting->length;i++){
         if( !(strcmp(setting->sections[i].name, section)) ){
             for(ii = 0;ii < setting->sections[i].length;ii++){
-                if( !(strcmp(setting->sections[i].sets[ii].value.string, key)) ){
+                if( !(strcmp(setting->sections[i].sets[ii].key, key)) ){
                     *value = setting->sections[i].sets[ii].value.boolean;
                     return true;
                 }

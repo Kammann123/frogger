@@ -3,7 +3,10 @@ timedelta: 50
 spacedelta: 10
 orientation: HORIZONTAL_LEFT
 quantity: 3
+
 [frames]
 0: gui/allegro/frogger/game/objects/frog/sprites_left/frog_0.png
 1: gui/allegro/frogger/game/objects/frog/sprites_left/frog_1.png
 2: gui/allegro/frogger/game/objects/frog/sprites_left/frog_2.png
+
+END
