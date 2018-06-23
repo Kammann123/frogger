@@ -17,6 +17,15 @@
 /* Constantes */
 /**************/
 
+/* Configuracion */
+#define OBJFILE_ATTRIBUTES  "attributes"
+#define OBJFILE_FRAMES      "frames"
+
+#define OBJFILE_TIMEDELTA   "timedelta"
+#define OBJFILE_SPACEDELTA  "spacedelta"
+#define OBJFILE_ORIENTATION "orientation"
+#define OBJFILE_QUANTITY    "quantity"
+
 /* Estados de la animacion */
 #define GUI_ANIMATION_STATE_STATIC      0
 #define GUI_ANIMATION_STATE_LOOP        1
@@ -53,10 +62,10 @@ typedef struct{
     FRAME* frames;
     
     /* Cantidad de frames de la animacion */
-    uint16_t framesQty;
+    uint32_t framesQty;
     
     /* Orientacion de los frames */
-    uint16_t orientation;
+    uint32_t orientation;
     
     /* Parametros de desplazamiento */
     SPEED speed;
@@ -105,6 +114,15 @@ typedef struct{
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* gui_animation_load_objfile
+ * Carga un archivo con la definicion de la animacion
+ * del objeto en la instancia
+ *
+ * objFile: Nombre del archivo
+ * object: Instancia 
+ */
+bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object);
 
 /* gui_animation_in_region 
  * Devuelve true si el objeto se encuentra en la region

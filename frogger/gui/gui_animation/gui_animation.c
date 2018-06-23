@@ -1,9 +1,11 @@
 #include "gui_animation.h"
+#include "../gui_files/gui_files.h"
 
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
 
 /***********************************/
 /* Prototipo de funciones privadas */
@@ -107,6 +109,87 @@ static void* gui_animation_engine_thread(void* thisEngine){
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object){
+    SETTING* setting;
+    ANIMATION animation;
+    
+    uint16_t i, ii;
+    char frameIndex[2];
+    char* auxStr;
+    
+    bool error = false;
+    
+    /* Abro el archivo */
+    setting = gui_files_load_setting(objFile);
+    if( setting == NULL ){
+        return false;
+    }
+    
+    /* Busco espacio libre */
+    for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
+        if( object->animations[i].orientation == GUI_ANIMATION_ORIENTATION_NULL ){
+            
+            /* Cargo los datos */
+            if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_TIMEDELTA, &animation.speed.timeDelta) ){
+                error = true;
+                break;
+            }
+            if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_SPACEDELTA, &animation.speed.spaceDelta) ){
+                error = true;
+                break;
+            }
+            if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_ORIENTATION, &animation.orientation) ){
+                error = true;
+                break;
+            }
+            if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_QUANTITY, &animation.framesQty) ){
+                error = true;
+                break;
+            }
+            
+            /* Reservo memoria para los frames */
+            animation.frames = malloc( sizeof(FRAME) * animation.framesQty );
+            if( animation.frames == NULL ){
+                error = true;
+                break;
+            }
+            
+            /* Reservo memoria para cada frame file name */
+            for(ii = 0;ii < animation.framesQty;ii++){
+                /* Creo la clave del parametro */
+                sprintf(frameIndex, "%d", ii);
+                
+                /* Busco el string */
+                auxStr = gui_files_get_string(setting, OBJFILE_FRAMES, frameIndex);
+                if( auxStr == NULL ){
+                    error = true;
+                    break;
+                }
+                
+                /* Reservo memoria para ese string */
+                animation.frames[ii] = malloc( sizeof(char) * (strlen(auxStr)+1) );
+                if( animation.frames[ii] == NULL ){
+                    error = true;
+                    break;
+                }
+                
+                /* Copio contenido */
+                strcpy(animation.frames[ii], auxStr);                
+            }
+            
+            break;
+        }
+    }
+    
+    if( error ){
+        gui_files_destroy_setting(setting);
+        gui_animation_destroy_framelist(animation.frames, ii);
+    }else{
+        object->animations[i] = animation;
+    }
+    return !error;
+}
 
 /* gui_animation_in_region */
 bool gui_animation_in_region(ANIMATED_OBJECT* object, REGION region){
