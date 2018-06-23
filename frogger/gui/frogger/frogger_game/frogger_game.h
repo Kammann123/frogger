@@ -60,8 +60,21 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* frogger_game_destroy_lane
+ * Libera memoria del carril
+ *
+ * lane: Carril
+ */
+void frogger_game_destroy_lane(LANE* lane);
+
 /* frogger_game_create_lane
  * Crea un objeto carril
+ * 
+ * laneNumber: Numero de carril
+ * type: Tipo de vehiculos
+ * qty: Cantidad de objetos 
+ * orientation: Orientacion de movimiento
+ * speed: Velocidad de movimiento
  */
 LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed);
 

@@ -12,6 +12,15 @@ FROG frog = { .object=NULL, .transport=NULL };
 /* Definicion de funciones publicas */
 /************************************/
 
+/* frogger_game_destroy_lane */
+void frogger_game_destroy_lane(LANE* lane){
+    /* Libero memoria */
+    free(lane->objects);
+    
+    /* Libero memoria */
+    free(lane);
+}
+
 /* frogger_game_create_lane */
 LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed){
     LANE* lane;
