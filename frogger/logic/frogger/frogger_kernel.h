@@ -19,12 +19,16 @@
 #define DEFAULT_LIFES   3
 #define DEFAULT_SCORE   0
 #define DEFAULT_TIME    0
+#define DEFAULT_STAGE   0
+
+#define STAGE_MAX_VALUE 5
 
 /******************/
 /* Tipos de datos */
 /******************/
 
 typedef struct{
+    uint16_t stage;
     uint16_t level;
     uint16_t lifes;
     uint32_t score;
@@ -47,8 +51,7 @@ void frogger_time_count(void);
 void frogger_flow(void);
 
 /* frogger_reset
- * Maneja el reset cuando perdio una vida
- * la frogg 
+ * Resetea posicion en stage
  */
 void frogger_reset(void);
 

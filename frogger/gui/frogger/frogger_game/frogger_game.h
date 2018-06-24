@@ -127,6 +127,11 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* frogger_game_has_won 
+ * Devuelve true si la ranita gano
+ */
+bool frogger_game_has_won(void);
+
 /* frogger_game_is_frog_static
  * Devuelve true si la rana esta estatica
  */

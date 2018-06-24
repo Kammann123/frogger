@@ -33,7 +33,7 @@ typedef enum {
     CLOSING_STAGE
 } STAGE_VALUES;
 
-#define DEFAULT_STAGE MAINMENU_STAGE
+#define DEFAULT_GAME_STAGE MAINMENU_STAGE
 
 /* Eventos del timer */
 #define TIMER_DEFINITION    1000
@@ -115,7 +115,7 @@ int main(int argc, char** argv){
     EVENT event;
     /* Game stage variable */
     GAME_STAGE stage = {
-        .value = DEFAULT_STAGE,
+        .value = DEFAULT_GAME_STAGE,
         .hasChanged = false
     };
     

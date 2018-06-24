@@ -458,6 +458,25 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* frogger_game_has_won */
+bool frogger_game_has_won(void){
+    uint32_t step;
+    POSITION pos;
+    
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+    step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif
+    
+    /* Objeto posicion */
+    pos = map_position(frog.object->currentPos.x / step, frog.object->currentPos.y / step);
+    if( pos.y == 0 ){
+        return true;
+    }
+    return false;    
+}
+
 /* frogger_game_is_frog_static */
 bool frogger_game_is_frog_static(void){
     if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){

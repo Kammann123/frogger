@@ -9,6 +9,7 @@
 
 /* Datos de la partida */
 FROGGER_GAME_DATA froggerGame = {
+    .stage = DEFAULT_STAGE,
     .level = DEFAULT_LEVEL,
     .lifes = DEFAULT_LIFES,
     .time = DEFAULT_TIME,
@@ -55,6 +56,30 @@ void frogger_flow(void){
             frogger_game_transport_frog();
         }
     }
+    
+    /* Me fijo si perdio */
+    if( !froggerGame.lifes ){
+        // Aca si pierde!!
+    }
+    
+    /* Me fijo si gano */
+    if( frogger_game_has_won() ){
+        /* Calculo y agrego puntaje */
+        
+        /* Incremento stage */
+        froggerGame.stage++;
+        
+        /* Reinicio timer */
+        froggerGame.time = 0;
+        
+        /* Me fijo si termino el nivel */
+        if( froggerGame.stage == STAGE_MAX_VALUE ){
+            // Aca sube de nivel!!
+        }
+        
+        /* Reseteo posicion */
+        frogger_reset();
+    }
 }
 
 /* frogger_reset */
@@ -62,6 +87,7 @@ void frogger_reset(void){
         
     /* Me fijo que tenga vidas aun */
     if( froggerGame.lifes ){
+        while( !frogger_game_is_frog_static() );
         frogger_game_reset_frog_position();
     }
 }
