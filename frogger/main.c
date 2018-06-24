@@ -38,8 +38,14 @@ typedef enum {
 /* Eventos del timer */
 #define TIMER_DEFINITION    1000
 #define REFRESH_FPS         60
-#define REFRESH_DISPLAY     0
-#define REFRESH_TIME        TIMER_DEFINITION/REFRESH_FPS
+
+typedef enum{
+    REFRESH_DISPLAY,
+    GAME_COUNTER
+} TIMER_EVENT_IDS;
+
+#define REFRESH_TIME    TIMER_DEFINITION/REFRESH_FPS
+#define GAME_TIME       TIMER_DEFINITION
 
 /**************/
 /* Prototipos */
@@ -137,6 +143,9 @@ int main(int argc, char** argv){
     if( !gui_timer_new_event(timer, REFRESH_TIME, REFRESH_DISPLAY) ){
         return 0;
     }
+    if( !gui_timer_new_event(timer, GAME_TIME, GAME_COUNTER) ){
+        return 0;
+    }
     
     /* Inicializo los eventos */
     queue = create_queue();
@@ -162,6 +171,10 @@ int main(int argc, char** argv){
             }else if( event.source == TIMER_SOURCE ){
                 if( event.data == REFRESH_DISPLAY ){
                     switch_update_target(&stage);
+                }else if( event.data == GAME_COUNTER ){
+                    if( stage.value == FROGGER_STAGE ){
+                        frogger_time_count();
+                    }
                 }
                 /* Limpio el timer */
                 gui_timer_clear(timer, event.data);
@@ -181,6 +194,7 @@ int main(int argc, char** argv){
             
             /* Limpio el timer */
             gui_timer_clear(timer, REFRESH_DISPLAY);
+            gui_timer_clear(timer, GAME_COUNTER);
         }
     }
     

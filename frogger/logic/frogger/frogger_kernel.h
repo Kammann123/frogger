@@ -35,6 +35,11 @@ typedef struct{
 /* Prototipos publicos */
 /***********************/
 
+/* frogger_time_count
+ * Cuenta tiempo de juego
+ */
+void frogger_time_count(void);
+
 /* frogger_flow 
  * Maneja el flujo del programa del juego
  * 

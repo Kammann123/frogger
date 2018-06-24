@@ -65,3 +65,8 @@ void frogger_reset(void){
         frogger_game_reset_frog_position();
     }
 }
+
+/* frogger_time_count */
+void frogger_time_count(void){
+    froggerGame.time++;
+}
