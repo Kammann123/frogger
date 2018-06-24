@@ -458,11 +458,64 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
 /* Definicion de funciones publicas */
 /************************************/
 
-/* frogger_game_transport_off */
-void frogger_game_transport_off(void);
-
 /* frogger_game_transport_on */
-void frogger_game_transport_on(void);
+void frogger_game_is_transport(void){
+    uint32_t i, ii, iii, step;
+    int32_t x, y;
+    
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+        step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif 
+    
+    /* Me fijo que este en region de agua */
+    if( gui_animation_in_region(frog.object, REGION_WATER) ){
+        
+        if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
+                
+            /* Reviso si esta en un transporte */
+            for(i = 0;i < field.lanesQty;i++){
+
+                /* Que sea barco */
+                if( field.lanes[i].type == FROGGER_BOAT || field.lanes[i].type == FROGGER_YACHT ){
+
+                    /* Busco entre sus barcos */
+                    for(iii = 0;iii < field.lanes[i].objectsQty;iii++){
+
+                        for(ii = 0;ii < NUMBER_OF_ORIENTATIONS;ii++){
+
+                            /* Es esta? */
+                            if( field.lanes[i].objects[iii]->animations[ii].orientation == field.lanes[i].orientation ){
+
+                                /* Calculo esquina */
+                                x = field.lanes[i].objects[iii].currentPos.x + step * field.lanes[i].objects[iii]->animations[ii].width - 1;
+                                y = field.lanes[i].objects[iii].currentPos.y + step * field.lanes[i].objects[iii]->animations[ii].height - 1;
+                                
+                                
+                                /* Me fijo si esta en el */
+                                if( gui_animation_in_region(frog.object->currentPos, map_region(field.lanes[i].objects[iii]->currentPos, map_position(x, y))) ){
+
+                                    if( frog.transport == NULL ){
+                                        /* Modo transporte */
+                                        frog.transport = field.lanes[i].objects[iii];
+                                    }
+                                }else{
+                                    if( frog.transport != NULL ){
+                                        /* Salgo de modo transporte? */
+                                        if( frog.transport == field.lanes[i].objects[iii] ){
+                                            frog.transport == NULL;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 /* frogger_game_transport_frog */
 void frogger_game_transport_frog(void){
@@ -515,7 +568,9 @@ void frogger_game_transport_frog(void){
                 }
                 
                 /* Valido posicion */
-                gui_animation_start_static_movement(frog.object, x, frog.object->currentPos.y);  
+                if( x >= 0  && x <= (DISPLAY_DIVISIONS_X - 1)){
+                    gui_animation_start_static_movement(frog.object, x, frog.object->currentPos.y);     
+                }   
             }
         }
     }

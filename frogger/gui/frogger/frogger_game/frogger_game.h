@@ -127,17 +127,11 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
-/* frogger_game_transport_frog 
- * Maneja el movimiento de la rana cuando esta
- * siendo transportada por un barco
- */
-void frogger_game_transport_frog(void);
-
 /* frogger_game_transport_off
- * Comprueba si la rana se bajo de un barco
+ * Comprueba si la rana se bajo o subio de un barco
  * y lo configura
  */
-void frogger_game_transport_off(void);
+void frogger_game_is_transport(void);
 
 /* frogger_game_transport_on 
  * Comprueba si la rana se subio a un barco
