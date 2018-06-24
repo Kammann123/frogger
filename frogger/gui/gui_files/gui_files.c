@@ -230,7 +230,7 @@ void gui_files_destroy_setting(SETTING* setting){
 }
 
 /* gui_files_load_setting */
-SETTING* gui_files_load_setting(char* filename){
+    SETTING* gui_files_load_setting(char* filename){
     char line[MAX_LINE];
     char sectionName[MAX_LINE];
     

@@ -38,7 +38,6 @@
 #define ALLEGRO_DISPLAY_STEP    40
 #define ALLEGRO_STEP_RESOLUTION 5
 
-
 /* Obstaculos del juego */
 #define TRASH_0_X 0
 #define TRASH_0_Y 400

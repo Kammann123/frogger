@@ -53,7 +53,8 @@
 #define LANE_ORIENTATION    "orientation"
 #define LANE_QUANTITY       "quantity"
 #define LANE_TIMEDELTA      "timedelta"
-#define LANE_SPACEDELTA     "spacedelta"    
+#define LANE_SPACEDELTA     "spacedelta"   
+#define LANE_ACCELERATION   "a_factor"
 
 /* Tipos de objetos */
 #define FROGGER_CFG_MOTORBIKE   "MOTORBIKE"
@@ -105,6 +106,9 @@ typedef struct{
     uint32_t type;
     uint32_t orientation;
     SPEED speed;
+    
+    /* Factor de aceleracion */
+    uint32_t aFactor;
     
     /* Flags */
     bool init;

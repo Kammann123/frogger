@@ -175,10 +175,6 @@ ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, uint32
     /* Le fuerzo algunos parametros */
     object->orientation = orientation;
     
-    /* Redefino velocidad para mayor claridad en pantalla */
-    speed.spaceDelta /= ALLEGRO_STEP_RESOLUTION;
-    speed.timeDelta /= ALLEGRO_STEP_RESOLUTION;
-    
     for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
         if( object->animations[i].orientation == orientation ){
             object->animations[i].speed = speed;

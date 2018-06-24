@@ -113,9 +113,43 @@ static void frogger_game_destroy_list_lane(LANE* lanes, uint32_t length);
  */
 static void frogger_game_destroy_list_objects(FROGGER_OBJECT* objects, uint32_t length);
 
+/* frogger_game_speed_resolution 
+ * Recalcula velocidad con la resolucion elegida por la interfaz
+ *
+ * speed: Velocidad
+ */
+static SPEED frogger_game_speed_resolution(SPEED speed);
+
+/* frogger_game_new_speed
+ * Calcula nueva velocidad
+ *
+ * speed: Velocidad base
+ * factor: Factor de reduccion del timedelta
+ * var: Punto variable
+ */
+static SPEED frogger_game_new_speed(SPEED speed, uint32_t factor, uint32_t var);
+
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
+
+/* frogger_game_new_speed */
+static SPEED frogger_game_new_speed(SPEED speed, uint32_t factor, uint32_t var){
+    SPEED newSpeed;
+    
+    /* Valido caso critico */
+    if( (speed.timeDelta - (factor*var)) < 0){
+        return speed;
+    }
+    
+    /* Fijo la distancia a recorrer */
+    newSpeed.spaceDelta = speed.spaceDelta;
+    
+    /* Recalculo el tiempo */
+    newSpeed.timeDelta = speed.timeDelta - (factor * var);
+    
+    return newSpeed;
+}
 
 /* frogger_game_create_list_lane_cfg */
 static LANE_CFG* frogger_game_create_list_lane_cfg(uint32_t amount){
@@ -254,19 +288,9 @@ static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uin
 /* frogger_game_create_object */
 static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
     FROGGER_OBJECT object;
-    uint32_t step;
-    
-    /* Cargo el desplazamiento */
-#if PLATFORM_MODE == PC_ALLEGRO
-    step = ALLEGRO_DISPLAY_STEP;
-#elif PLATFORM_MODE == RPI
-#endif
-    
-    /* Redefino velocidad */
-    speed.spaceDelta *= step;
     
 #if PLATFORM_MODE == PC_ALLEGRO
-    object = allegro_frogger_create_object(pos, speed, orientation, type);
+    object = allegro_frogger_create_object(pos, frogger_game_speed_resolution(speed), orientation, type);
 #elif PLATFORM_MODE == RPI
     
 #endif
@@ -398,6 +422,10 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
         gui_files_destroy_setting(setting);
         return false;
     }
+    if( !gui_files_get_int(setting, LANE_ATTRIBUTES, LANE_ACCELERATION, &(lane->aFactor)) ){
+        gui_files_destroy_setting(setting);
+        return false;
+    }
     
     /* Cargo los que son strings */
     auxStr = gui_files_get_string(setting, LANE_ATTRIBUTES, LANE_TYPE);
@@ -467,15 +495,42 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     return true;
 }
 
+/* frogger_game_speed_resolution 
+ * Recalcula velocidad con la resolucion elegida por la interfaz
+ *
+ * speed: Velocidad
+ */
+static SPEED frogger_game_speed_resolution(SPEED speed){
+    SPEED newSpeed;
+    uint32_t resolution;
+    uint32_t step;
+    
+#if PLATFORM_MODE == PC_ALLEGRO
+    step = ALLEGRO_DISPLAY_STEP;
+    resolution = ALLEGRO_STEP_RESOLUTION;
+#elif PLATFORM_MODE == RPI
+#endif
+    
+    /* Redefino velocidad */
+    speed.spaceDelta *= step;
+    
+    /* Redefino velocidad para mayor claridad en pantalla */
+    newSpeed.spaceDelta = speed.spaceDelta / resolution;
+    newSpeed.timeDelta = speed.timeDelta / resolution;
+    
+    return newSpeed;
+}
+
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
 
 /* frogger_game_new_level */
 bool frogger_game_new_level(uint32_t level){
-    uint32_t i, ii;
+    uint32_t i, ii, iii;
     POSITION* positions;
     uint32_t step;
+    SPEED speed;
     
     /* Cargo el desplazamiento */
 #if PLATFORM_MODE == PC_ALLEGRO
@@ -499,8 +554,19 @@ bool frogger_game_new_level(uint32_t level){
             return false;
         }
         
+        /* Nueva velocidad */
+        speed = frogger_game_new_speed(field.lanes[i].speed, field.lanes[i].aFactor, level-1);
+        
         /* Me muevo entre los objetos */
         for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
+            
+            /* Busco la animacion y cambio velocidad */
+            for(iii = 0;iii < NUMBER_OF_ORIENTATIONS;iii++){
+                if( field.lanes[i].objects[ii]->animations[iii].orientation == field.lanes[i].orientation ){
+                    field.lanes[i].objects[ii]->animations[iii].speed = frogger_game_speed_resolution(speed);
+                    break;
+                }
+            }
             
             /* Cargo nueva posicion */
             field.lanes[i].objects[ii]->currentPos = map_position(positions[ii].x * step, positions[ii].y * step);

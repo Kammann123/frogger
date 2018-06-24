@@ -5,5 +5,6 @@ orientation: HORIZONTAL_RIGHT
 quantity: 2
 timedelta: 120
 spacedelta: 1
+a_factor: 5
 
 END
