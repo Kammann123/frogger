@@ -22,5 +22,13 @@ typedef struct{
 /* Prototipos */
 /**************/
 
+/* map_position
+ * Crea un objeto posicion
+ *
+ * x: Posicion x
+ * y: Posicion y
+ */
+POSITION map_position(int32_t x, int32_t y);
+
 #endif /* GUI_TYPES_H */
 

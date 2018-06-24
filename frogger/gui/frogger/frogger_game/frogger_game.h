@@ -10,6 +10,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <time.h>
 
 #include "../../../settings.h"
 #include "../../gui_animation/gui_animation.h"
@@ -27,8 +30,8 @@
 #define DISPLAY_DIVISIONS_X 16
 #define DISPLAY_DIVISIONS_Y 11
 
-/* Definicion de carriles */
-#define NUMBER_OF_LANES 8
+#define MAP_X_MIN   -3
+#define MAP_X_MAX   18
 
 /* Archivos */
 #define FROGGER_PATH        "gui/frogger/frogger_game/"
@@ -67,20 +70,22 @@ typedef enum {
 /* Tipos de datos */
 /******************/
 
+typedef ANIMATED_OBJECT* FROGGER_OBJECT;
+
 typedef struct{
-    ANIMATED_OBJECT* object;
-    ANIMATED_OBJECT* transport;
+    FROGGER_OBJECT object;
+    FROGGER_OBJECT transport;
 } FROG;
 
-typedef ANIMATED_OBJECT* MOTORBIKE;
-typedef ANIMATED_OBJECT* CAR;
-typedef ANIMATED_OBJECT* TRUCK;
-typedef ANIMATED_OBJECT* BOAT;
-typedef ANIMATED_OBJECT* YACHT;
+typedef FROGGER_OBJECT MOTORBIKE;
+typedef FROGGER_OBJECT CAR;
+typedef FROGGER_OBJECT TRUCK;
+typedef FROGGER_OBJECT BOAT;
+typedef FROGGER_OBJECT YACHT;
 
 typedef struct{
     /* Objetos del carril */
-    ANIMATED_OBJECT* objects;
+    FROGGER_OBJECT* objects;
     uint32_t objectsQty;
     
     /* Atributos del carril */

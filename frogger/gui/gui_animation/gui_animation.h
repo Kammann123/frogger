@@ -120,6 +120,22 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* map_region
+ * Crea un objeto region
+ *
+ * iCorner: Esquina inicial
+ * fCorner: Esquina final
+ */
+REGION map_region(POSITION iCorner, POSITION fCorner);
+
+/* map_speed
+ * Crea un objeto velocidad
+ *
+ * timeDelta: Tiempo
+ * spaceDelta: Distancia
+ */
+SPEED map_speed(uint32_t timeDelta, uint32_t spaceDelta);
+
 /* gui_animation_load_objfile
  * Carga un archivo con la definicion de la animacion
  * del objeto en la instancia

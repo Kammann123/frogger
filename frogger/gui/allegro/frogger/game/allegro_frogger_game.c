@@ -3,6 +3,8 @@
 #include "../../../gui_files/gui_files.h"
 #include "../../../gui_input/gui_input.h"
 #include "../../../../logic/frogger/frogger_kernel.h"
+#include "../../frogger/game/allegro_frogger_game.h"
+#include "../../../frogger/frogger_game/frogger_game.h"
 
 #include <stdio.h>
 
@@ -116,6 +118,85 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y){
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* allegro_frogger_lane_object */
+ANIMATED_OBJECT* allegro_frogger_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
+    ANIMATED_OBJECT* object;
+    uint32_t i;
+    
+    /* Creo el objeto */
+    object = gui_animation_create_object(pos.x * ALLEGRO_DISPLAY_STEP, pos.y * ALLEGRO_DISPLAY_STEP, orientation);
+    if( object == NULL ){
+        return NULL;
+    }
+    
+    /* Cargo el object file */
+    switch( type ){
+        case FROGGER_MOTORBIKE:
+            if( !gui_animation_load_objfile(FROGGER_MOTORBIKE_LEFT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            if( !gui_animation_load_objfile(FROGGER_MOTORBIKE_RIGHT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            break;
+        case FROGGER_CAR:
+            if( !gui_animation_load_objfile(FROGGER_CAR_LEFT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            if( !gui_animation_load_objfile(FROGGER_CAR_RIGHT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            break;
+        case FROGGER_TRUCK:
+            if( !gui_animation_load_objfile(FROGGER_TRUCK_LEFT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            if( !gui_animation_load_objfile(FROGGER_TRUCK_RIGHT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            break;
+        case FROGGER_BOAT:
+            if( !gui_animation_load_objfile(FROGGER_BOAT_LEFT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            if( !gui_animation_load_objfile(FROGGER_BOAT_RIGHT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            break;
+        case FROGGER_YACHT:
+            if( !gui_animation_load_objfile(FROGGER_YACHT_LEFT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            if( !gui_animation_load_objfile(FROGGER_YACHT_RIGHT_OBJFILE, object) ){
+                gui_animation_destroy_object( object );
+                return NULL;
+            }
+            break;
+    }
+    
+    /* Le fuerzo algunos parametros */
+    object->orientation = orientation;
+    
+    for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
+        if( object->animations[i].orientation == orientation ){
+            object->animations[i].speed = speed;
+            break;
+        }
+    }
+    
+    /* Devuelvo la creacion */
+    return object;
+}
 
 /* allegro_frogger_movement_valid */
 bool allegro_frogger_movement_valid(uint16_t input){

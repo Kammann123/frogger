@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "../../../gui_animation/gui_animation.h"
-#include "../../../frogger/frogger_game/frogger_game.h"
+#include "../../../gui_types.h"
 
 /**************/
 /* Constantes */
@@ -101,6 +101,16 @@
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* allegro_frogger_lane_object 
+ * Crea un objeto animado perteneciente a un carril
+ *
+ * pos: Posicion inicial
+ * speed: Velocidad
+ * orientation: Direccion de movimiento
+ * type: Tipo de vehiculo
+ */
+ANIMATED_OBJECT* allegro_frogger_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type);
 
 /* allegro_frogger_movement_valid 
  * Valida si el movimiento en dicha orientacion es valido

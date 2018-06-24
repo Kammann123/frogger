@@ -7,11 +7,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/gui_types.c</file>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/main.c</file>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/gui_types.h</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/frogger_game/frogger_game.h</file>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/gui_animation/gui_animation.c</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/allegro/frogger/game/allegro_frogger_game.h</file>
         </group>
     </open-files>
 </project-private>

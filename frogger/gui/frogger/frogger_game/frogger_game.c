@@ -1,11 +1,8 @@
 #include "frogger_game.h"
 #include "../../gui_input/gui_input.h"
-#include "../../allegro/frogger/game/allegro_frogger_game.h"
 #include "../../gui_files/gui_files.h"
 #include "../../gui_types.h"
-
-#include <string.h>
-#include <stdio.h>
+#include "../../allegro/frogger/game/allegro_frogger_game.h"
 
 /*********************/
 /* Objetos del juego */
@@ -58,6 +55,20 @@ static void destroy_lanes(LANE* lanes, uint32_t amount);
  */
 static LANE* create_lanes(uint32_t amount);
 
+/* create_objects
+ * Creo arreglo de objetos e inicializo
+ *
+ * amount: Cantidad
+ */
+static FROGGER_OBJECT* create_objects(uint32_t amount);
+
+/* destroy_objects
+ * Destruyo los objetos y libero memoria
+ *
+ * lane: Carril
+ */
+static void destroy_objects(LANE* lane);
+
 /* frogger_game_lane_init 
  * Inicializa un carril con su archivo de configuracion
  * 
@@ -66,9 +77,41 @@ static LANE* create_lanes(uint32_t amount);
  */
 static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane);
 
+/* frogger_game_lane_object
+ * Crea un objeto de un carril con los parametros especificados
+ *
+ * pos: Posicion inicial
+ * speed: Velocidad
+ * orientation: Orientacion
+ * type: Tipo de objeto
+ */
+static FROGGER_OBJECT frogger_game_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type);
+
+/* frogger_game_lane_sequence 
+ * Crea una secuencia de posiciones para un carril, de forma aleatoria
+ * 
+ * amount: Cantidad de objetos
+ * objectSize: Tamaño del objeto
+ * positions: Arreglo de posiciones resultados
+ */
+static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, POSITION* positions);
+
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
+
+/* frogger_game_lane_object */
+static FROGGER_OBJECT frogger_game_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
+    FROGGER_OBJECT object;
+    
+#if PLATFORM_MODE == PC_ALLEGRO
+    object = allegro_frogger_lane_object(pos, speed, orientation, type);
+#elif PLATFORM_MODE == RPI
+    
+#endif
+    
+    return object;
+}
 
 /* create_lane_cfg */
 static LANE_CFG* create_lane_cfg(uint32_t amount){
@@ -181,7 +224,8 @@ static bool frogger_game_field_init(void){
 static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     SETTING* setting;
     char* auxStr;
-   
+    uint32_t i;
+    
     /* Cargo el archivo de configuracion */
     setting = gui_files_load_setting(laneCfg);
     if( setting == NULL ){
@@ -235,7 +279,56 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
         lane->orientation = GUI_ANIMATION_HORIZONTAL_RIGHT;
     }
     
+    gui_files_destroy_setting(setting);
+    
+    /* Reservo memoria para los objetos */
+    lane->objects = create_objects(lane->objectsQty);
+    if( lane->objects == NULL ){
+        return false;
+    }
+    
+    /* Creo los objetos */
+    for(i = 0;i < lane->objectsQty;i++){
+        lane->objects[i] = frogger_game_lane_object(map_position(0, lane->laneNumber), lane->speed, lane->orientation, lane->type);
+        if( lane->objects[i] == NULL ){
+            destroy_objects(lane);
+            return false;
+        }
+    }
+    
     return true;
+}
+
+static FROGGER_OBJECT* create_objects(uint32_t amount){
+    uint32_t i;
+    FROGGER_OBJECT* objects;
+    
+    /* Reservo memoria */
+    objects = malloc( sizeof(FROGGER_OBJECT) * amount );
+    if( objects == NULL ){
+        return NULL;
+    }
+    
+    /* Itero */
+    for(i = 0;i < amount;i++){
+        objects[i] = NULL;
+    }
+    
+    return objects;
+}
+
+static void destroy_objects(LANE* lane){
+    uint32_t i;
+    
+    /* Itero */
+    for(i = 0;i < lane->objectsQty;i++){
+        if( lane->objects[i] != NULL ){
+            gui_animation_destroy_object( lane->objects[i] );
+        }
+    }
+    
+    /* Libero memoria de la lista */
+    free(lane->objects);
 }
 
 /* create_lanes */

@@ -110,6 +110,27 @@ static void* gui_animation_engine_thread(void* thisEngine){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* map_region */
+REGION map_region(POSITION iCorner, POSITION fCorner){
+    REGION region = {
+        .iCorner = iCorner,
+        .fCorner = fCorner
+    };
+    
+    return region;
+}
+
+/* map_speed */
+SPEED map_speed(uint32_t timeDelta, uint32_t spaceDelta){
+    SPEED speed = {
+        .timeDelta = timeDelta,
+        .spaceDelta = spaceDelta
+    };
+    
+    return speed;
+}
+
+/* gui_animation_load_objfile */
 bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object){
     SETTING* setting;
     ANIMATION animation;
