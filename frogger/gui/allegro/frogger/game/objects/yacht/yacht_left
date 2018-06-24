@@ -1,6 +1,8 @@
 [attributes]
 timedelta: 100
 spacedelta: 20
+width: 3
+height: 1
 orientation: HORIZONTAL_LEFT
 quantity: 1
 

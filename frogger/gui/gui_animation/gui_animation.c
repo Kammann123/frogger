@@ -110,6 +110,143 @@ static void* gui_animation_engine_thread(void* thisEngine){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* gui_animation_collision */
+bool gui_animation_collision(ANIMATED_OBJECT* objA, ANIMATED_OBJECT* objB, uint32_t step){
+    REGION regionA, regionB;
+    uint32_t i;
+    uint32_t x, y;
+    
+    /* Creo la region A */
+    for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
+        if( objA->orientation == objA->animations[i].orientation ){
+            x = objA->currentPos.x + objA->animations[i].width * step - 1;
+            y = objA->currentPos.y + objA->animations[i].height * step - 1;
+        }
+    }
+    regionA = map_region( objA->currentPos, map_position(x, y) );
+    
+    /* Creo la region B */
+    for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
+        if( objB->orientation == objB->animations[i].orientation ){
+            x = objB->currentPos.x + objB->animations[i].width * step - 1;
+            y = objB->currentPos.y + objB->animations[i].height * step - 1;
+        }
+    }
+    regionB = map_region( objA->currentPos, map_position(x, y) );
+    
+    /* Me fijo si hubo colision */
+    if( gui_animation_region_intersection(regionA, regionB) ){
+        return true;
+    }
+    return false;
+}
+
+/* gui_animation_region_intersection */
+bool gui_animation_region_intersection(REGION regionA, REGION regionB){
+    
+    /* Cruzo el borde izquierda  */
+    if( regionA.iCorner.x > regionB.iCorner.x && regionA.iCorner.x < regionB.fCorner.x ){
+        
+        /* Quedo adentro en Y */
+        if( regionA.iCorner.y > regionB.iCorner.y && regionA.fCorner.y < regionB.fCorner.y ){
+            return true;
+        }
+        
+        /* Quedo afuera en Y */
+        if( regionA.iCorner.y < regionB.iCorner.y && regionA.fCorner.y > regionB.fCorner.y ){
+            return true;
+        }
+        
+        /* Entro parcilamente por arriba */
+        if( regionA.iCorner.y < regionB.iCorner.y && regionA.fCorner.y > regionB.iCorner.y ){
+            return true;
+        }
+        
+        /* Entro parcilamente por abajo */
+        if( regionA.iCorner.y < regionB.fCorner.y && regionA.fCorner.y > regionB.fCorner.y ){
+            return true;
+        }
+        
+    }
+    
+    /* Cruzo el borde derecho */
+    if( regionA.fCorner.x > regionB.iCorner.x && regionA.fCorner.x < regionB.fCorner.x ){
+        
+        /* Quedo adentro en Y */
+        if( regionA.iCorner.y > regionB.iCorner.y && regionA.fCorner.y < regionB.fCorner.y ){
+            return true;
+        }
+        
+        /* Quedo afuera en Y */
+        if( regionA.iCorner.y < regionB.iCorner.y && regionA.fCorner.y > regionB.fCorner.y ){
+            return true;
+        }
+        
+        /* Entro parcilamente por arriba */
+        if( regionA.iCorner.y < regionB.iCorner.y && regionA.fCorner.y > regionB.iCorner.y ){
+            return true;
+        }
+        
+        /* Entro parcilamente por abajo */
+        if( regionA.iCorner.y < regionB.fCorner.y && regionA.fCorner.y > regionB.fCorner.y ){
+            return true;
+        }
+        
+    }
+    
+    /* Cruzo el borde inferior*/
+    if( regionA.fCorner.y > regionB.iCorner.y && regionA.fCorner.y < regionB.fCorner.y ){
+        
+        /* Quedo adentro en X */
+        if( regionA.iCorner.x > regionB.iCorner.x && regionA.fCorner.x < regionB.fCorner.x ){
+            return true;
+        }
+        
+        /* Quedo afuera en X */
+        if( regionA.iCorner.x < regionB.iCorner.x && regionA.fCorner.x > regionB.fCorner.x ){
+            return true;
+        }
+        
+        /* Entro parcilamente por izquierda */
+        if( regionA.iCorner.x < regionB.iCorner.x && regionA.fCorner.x > regionB.iCorner.x ){
+            return true;
+        }
+        
+        /* Entro parcilamente por derecha */
+        if( regionA.iCorner.x < regionB.fCorner.x && regionA.fCorner.x > regionB.fCorner.x ){
+            return true;
+        }
+    }
+    
+    /* Cruzo el borde superior */
+    if( regionA.iCorner.y > regionB.iCorner.y && regionA.iCorner.y < regionB.fCorner.y ){
+        
+        
+        /* Quedo adentro en X */
+        if( regionA.iCorner.x > regionB.iCorner.x && regionA.fCorner.x < regionB.fCorner.x ){
+            return true;
+        }
+        
+        /* Quedo afuera en X */
+        if( regionA.iCorner.x < regionB.iCorner.x && regionA.fCorner.x > regionB.fCorner.x ){
+            return true;
+        }
+        
+        /* Entro parcilamente por izquierda */
+        if( regionA.iCorner.x < regionB.iCorner.x && regionA.fCorner.x > regionB.iCorner.x ){
+            return true;
+        }
+        
+        /* Entro parcilamente por derecha */
+        if( regionA.iCorner.x < regionB.fCorner.x && regionA.fCorner.x > regionB.fCorner.x ){
+            return true;
+        }
+    }
+    
+    return false;
+    
+}
+
 /* map_region */
 REGION map_region(POSITION iCorner, POSITION fCorner){
     REGION region = {
@@ -161,6 +298,14 @@ bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object){
                 break;
             }
             if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_QUANTITY, &animation.framesQty) ){
+                error = true;
+                break;
+            }
+            if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_WIDTH, &animation.width) ){
+                error = true;
+                break;
+            }
+            if( !gui_files_get_int(setting, OBJFILE_ATTRIBUTES, OBJFILE_HEIGHT, &animation.height) ){
                 error = true;
                 break;
             }
@@ -225,9 +370,9 @@ bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object){
 }
 
 /* gui_animation_in_region */
-bool gui_animation_in_region(ANIMATED_OBJECT* object, REGION region){
-    if( object->currentPos.x >= region.iCorner.x && object->currentPos.x <= region.fCorner.x ){
-        if( object->currentPos.y >= region.iCorner.y && object->currentPos.y <= region.fCorner.y ){
+bool gui_animation_in_region(POSITION position, REGION region){
+    if( position.x >= region.iCorner.x && position.x <= region.fCorner.x ){
+        if( position.y >= region.iCorner.y && position.y <= region.fCorner.y ){
             return true;
         }
     }

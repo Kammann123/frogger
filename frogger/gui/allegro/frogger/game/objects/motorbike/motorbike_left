@@ -1,4 +1,6 @@
 [attributes]
+width: 2
+height: 1
 timedelta: 100
 spacedelta: 20
 orientation: HORIZONTAL_LEFT

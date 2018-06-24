@@ -54,13 +54,12 @@ static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, uint
  */
 static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uint32_t y, POSITION* positions);
 
-/* frogger_game_object_size 
- * Devuelve el tamaño en divisiones del objeto
- * segun su id de tipo
- *
- * type: Tipo de objeto
+/* frogger_game_object_size }
+ * Largo de un objeto
+ * 
+ * type: Tipo del objeto
  */
-static uint32_t frogger_game_object_size(uint32_t type);
+uint32_t frogger_game_object_size(uint32_t type);
 
 /* frogger_game_create_list_lane
  * Crea un arreglo de LANE y inicializa 
@@ -230,30 +229,6 @@ static void frogger_game_destroy_list_objects(FROGGER_OBJECT* objects, uint32_t 
     free(objects);
 }
 
-/* frogger_game_object_size */
-static uint32_t frogger_game_object_size(uint32_t type){
-    switch( type ){
-        case FROGGER_MOTORBIKE:
-            return FROGGER_SIZE_MOTORBIKE;
-            break;
-        case FROGGER_CAR:
-            return FROGGER_SIZE_CAR;
-            break;
-        case FROGGER_TRUCK:
-            return FROGGER_SIZE_TRUCK;
-            break;
-        case FROGGER_BOAT:
-            return FROGGER_SIZE_BOAT;
-            break;
-        case FROGGER_YACHT:
-            return FROGGER_SIZE_YACHT;
-            break;
-        default:
-            return 0;
-            break;
-    }
-}
-
 /* frogger_game_lane_sequence */
 static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uint32_t y, POSITION* positions){
     int32_t i, subdiv;
@@ -362,11 +337,32 @@ static bool frogger_game_field_init(void){
     return true;
 }
 
+/* frogger_game_object_size */
+uint32_t frogger_game_object_size(uint32_t type){
+    switch(type){
+        case FROGGER_MOTORBIKE:
+            return FROGGER_SIZE_MOTORBIKE;
+            break;
+        case FROGGER_CAR:
+            return FROGGER_SIZE_CAR;
+            break;
+        case FROGGER_TRUCK:
+            return FROGGER_SIZE_TRUCK;
+            break;
+        case FROGGER_BOAT:
+            return FROGGER_SIZE_BOAT;
+            break;
+        case FROGGER_YACHT:
+            return FROGGER_SIZE_YACHT;
+            break;
+    }
+}
+
 /* frogger_game_lane_init */
 static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     SETTING* setting;
     char* auxStr;
-    uint32_t i;
+    uint32_t i, size;
     POSITION* positions;
     
     /* Cargo el archivo de configuracion */
@@ -436,6 +432,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
         frogger_game_destroy_list_objects(lane->objects, lane->objectsQty);
         return false;
     }
+    
     if( !frogger_game_lane_sequence(lane->objectsQty, frogger_game_object_size(lane->type), lane->laneNumber, positions)){
     
         frogger_game_destroy_list_objects(lane->objects, lane->objectsQty);
@@ -460,6 +457,81 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* frogger_game_transport_frog */
+void frogger_game_transport_frog(void);
+
+/* frogger_game_transport_off */
+void frogger_game_transport_off(void);
+
+/* frogger_game_transport_on */
+void frogger_game_transport_on(void);
+        
+/* frogger_game_drown */
+bool frogger_game_drown(void){
+    
+    /* Me fijo que este en region de agua */
+    if( gui_animation_in_region(frog.object->currentPos, REGION_WATER) ){
+        
+        /* Me fijo que este quieto */
+        if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
+            
+            /* Me fijo que no este en transporte */
+            if( frog.transport == NULL ){
+                
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+/* frogger_game_reset_frog_position */
+void frogger_game_reset_frog_position(void){
+    uint32_t step;
+        
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+        step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif   
+
+    /* Seteo posicion y orientacion de rana */
+    frog.object->currentPos = map_position(DEFAULT_FROG_X, DEFAULT_FROG_Y);
+    frog.object->orientation = DEFAULT_FROG_ORIENTATION;
+    
+}
+
+/* frogger_game_collisions */
+bool frogger_game_collisions(void){
+    uint32_t i, ii;
+    uint32_t step;
+        
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+        step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif   
+
+    /* Me muevo por los carriles */
+    for(i = 0;i < field.lanesQty;i++){
+        
+        /* Me muevo por los objetos */
+        for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
+            
+            /* Me fijo si hay colision */
+            if( field.lanes[i].type != FROGGER_YACHT && field.lanes[i].type != FROGGER_BOAT ){
+                
+                if( gui_animation_collision(frog.object, field.lanes[i].objects[ii], step)){
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;    
+}
 
 /* frogger_game_move_frog */
 void frogger_game_move_frog(uint16_t input){

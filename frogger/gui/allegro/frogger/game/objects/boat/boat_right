@@ -1,5 +1,7 @@
 [attributes]
 timedelta: 100
+width: 2
+height: 1
 spacedelta: 20
 orientation: HORIZONTAL_RIGHT
 quantity: 1

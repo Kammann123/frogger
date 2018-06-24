@@ -33,6 +33,10 @@
 #define MAP_X_MIN   -4
 #define MAP_X_MAX   19
 
+/* Regiones del mapa */
+#define REGION_WATER        map_region(map_position(0, 1), map_position(15, 4))
+#define REGION_STREET       map_region(map_position(0, 6), map_position(15, 9))
+
 /* Archivos */
 #define FROGGER_PATH        "gui/frogger/frogger_game/"
 #define FROGGER_PATH_LANES  FROGGER_PATH "lanes/"
@@ -58,12 +62,11 @@
 #define FROGGER_CFG_BOAT        "BOAT"
 #define FROGGER_CFG_YACHT       "YACHT"
 
-/* Tamaño de objetos en divisiones */
-#define FROGGER_SIZE_MOTORBIKE  2
-#define FROGGER_SIZE_CAR        3
-#define FROGGER_SIZE_TRUCK      4
+#define FROGGER_SIZE_MOTORBIKE   2
+#define FROGGER_SIZE_CAR         3
+#define FROGGER_SIZE_TRUCK       4
 #define FROGGER_SIZE_BOAT       2
-#define FROGGER_SIZE_YACHT      3
+#define FROGGER_SIZE_YACHT       3
 
 typedef enum {
     FROGGER_MOTORBIKE,
@@ -123,6 +126,39 @@ typedef struct{
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* frogger_game_transport_frog 
+ * Maneja el movimiento de la rana cuando esta
+ * siendo transportada por un barco
+ */
+void frogger_game_transport_frog(void);
+
+/* frogger_game_transport_off
+ * Comprueba si la rana se bajo de un barco
+ * y lo configura
+ */
+void frogger_game_transport_off(void);
+
+/* frogger_game_transport_on 
+ * Comprueba si la rana se subio a un barco
+ * y lo configura
+ */
+void frogger_game_transport_on(void);
+        
+/* frogger_game_drown
+ * Devuelve true si la rana se cayo al agua
+ */
+bool frogger_game_drown(void);
+
+/* frogger_game_reset_frog_position
+ * Reinicia posicion de frog
+ */
+void frogger_game_reset_frog_position(void);
+
+/* frogger_game_collisions
+ * Verifica si hay colisiones en el juego
+ */
+bool frogger_game_collisions(void);
 
 /* frogger_game_move_lanes
  * Mueve los carriles del juego

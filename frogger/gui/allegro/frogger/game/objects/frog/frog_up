@@ -1,6 +1,8 @@
 [attributes]
 timedelta: 50
 spacedelta: 8
+width: 1
+height: 1
 orientation: VERTICAL_UP
 quantity: 4
 

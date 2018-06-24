@@ -21,6 +21,8 @@
 #define OBJFILE_ATTRIBUTES  "attributes"
 #define OBJFILE_FRAMES      "frames"
 
+#define OBJFILE_WIDTH       "width"
+#define OBJFILE_HEIGHT      "height"
 #define OBJFILE_TIMEDELTA   "timedelta"
 #define OBJFILE_SPACEDELTA  "spacedelta"
 #define OBJFILE_ORIENTATION "orientation"
@@ -70,7 +72,10 @@ typedef struct{
     uint32_t framesQty;
     
     /* Orientacion de los frames */
-    uint32_t orientation;
+    uint32_t orientation;    
+    
+    uint32_t width;
+    uint32_t height;
     
     /* Parametros de desplazamiento */
     SPEED speed;
@@ -84,7 +89,7 @@ typedef struct{
     
     /* Estado de la animacion */
     uint16_t status;
-    uint16_t orientation;
+    uint32_t orientation;
     
     /* Indice frame actual */
     uint16_t frameIndex;
@@ -120,6 +125,24 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* gui_animation_collision 
+ * Detecta la colision de dos objetos
+ * tomando como division el step
+ *
+ * objA: Objeto uno
+ * objB: Objeto dos
+ * step: Divison en las unidades de la interfaz
+ */
+bool gui_animation_collision(ANIMATED_OBJECT* objA, ANIMATED_OBJECT* objB, uint32_t step);
+
+/* gui_animation_region_intersection
+ * Devuelve true si hay interseccion entre dos regiones
+ * 
+ * regionA: Region uno
+ * regionB: Region dos
+ */
+bool gui_animation_region_intersection(REGION regionA, REGION regionB);
+
 /* map_region
  * Crea un objeto region
  *
@@ -149,10 +172,10 @@ bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object);
  * Devuelve true si el objeto se encuentra en la region
  * especificada
  * 
- * object: Objeto
+ * position: Posicion del objeto
  * region: Region
  */
-bool gui_animation_in_region(ANIMATED_OBJECT* object, REGION region);
+bool gui_animation_in_region(POSITION position, REGION region);
 
 /* gui_animation_pause_engine
  * Pausa el motor de animaciones

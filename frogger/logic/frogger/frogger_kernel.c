@@ -24,4 +24,17 @@ void frogger_flow(void){
     /* Controlo que se muevan los carriles */
     frogger_game_move_lanes();
     
+    /* Me fijo que no haya colisiones */
+    if( frogger_game_collisions() ){
+        /* Le quito una vida */
+        froggerGame.lifes--;
+        
+        /* Me fijo que tenga vidas aun */
+        if( froggerGame.lifes ){
+            frogger_game_reset_frog_position();
+        }else{
+            
+        }
+        
+    }
 }
