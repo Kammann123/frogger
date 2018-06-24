@@ -92,13 +92,68 @@ static FROGGER_OBJECT frogger_game_lane_object(POSITION pos, SPEED speed, uint32
  * 
  * amount: Cantidad de objetos
  * objectSize: Tamaño del objeto
+ * y: Posicion Y
  * positions: Arreglo de posiciones resultados
  */
-static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, POSITION* positions);
+static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uint32_t y, POSITION* positions);
+
+/* frogger_game_object_size 
+ * Devuelve el tamaño en divisiones del objeto
+ * segun su id de tipo
+ *
+ * type: Tipo de objeto
+ */
+static uint32_t frogger_game_object_size(uint32_t type);
 
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
+
+/* frogger_game_object_size */
+static uint32_t frogger_game_object_size(uint32_t type){
+    switch( type ){
+        case FROGGER_MOTORBIKE:
+            return FROGGER_SIZE_MOTORBIKE;
+            break;
+        case FROGGER_CAR:
+            return FROGGER_SIZE_CAR;
+            break;
+        case FROGGER_TRUCK:
+            return FROGGER_SIZE_TRUCK;
+            break;
+        case FROGGER_BOAT:
+            return FROGGER_SIZE_BOAT;
+            break;
+        case FROGGER_YACHT:
+            return FROGGER_SIZE_YACHT;
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+/* frogger_game_lane_sequence */
+static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uint32_t y, POSITION* positions){
+    uint32_t i, subdiv;
+    
+    /* Veo si es valido */
+    subdiv = (MAP_X_MAX - MAP_X_MIN)/amount - (objectSize - 1);
+    if( subdiv <= objectSize ){
+        return false;
+    }
+    
+    /* Inicializo la semilla */
+    srand( time(NULL) );
+    
+    /* Genero numeros aleatorios */
+    for(i = 0;i < amount;i++){
+        positions[i].y = y;
+        positions[i].x = rand() % subdiv + i * (subdiv + (objectSize - 1));
+    }
+    
+    return true;
+}
 
 /* frogger_game_lane_object */
 static FROGGER_OBJECT frogger_game_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
@@ -225,6 +280,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     SETTING* setting;
     char* auxStr;
     uint32_t i;
+    POSITION* positions;
     
     /* Cargo el archivo de configuracion */
     setting = gui_files_load_setting(laneCfg);
@@ -284,6 +340,17 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     /* Reservo memoria para los objetos */
     lane->objects = create_objects(lane->objectsQty);
     if( lane->objects == NULL ){
+        return false;
+    }
+    
+    /* Creo la secuencia */
+    positions = malloc( sizeof(POSITION) * lane->objectsQty );
+    if(positions == NULL){
+        destroy_objects(lane);
+        return false;
+    }
+    if( !frogger_game_lane_sequence(lane->objectsQty, frogger_game_object_size(lane->type), lane->laneNumber, positions)){
+        destroy_objects(lane);
         return false;
     }
     
