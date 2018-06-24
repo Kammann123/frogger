@@ -17,7 +17,7 @@
 /* Valores default de la partida */
 #define DEFAULT_LEVEL   1
 #define DEFAULT_LIFES   3
-#define DEFAULT_SCORE   0
+#define DEFAULT_SCORE   364813
 #define DEFAULT_TIME    0
 #define DEFAULT_STAGE   0
 

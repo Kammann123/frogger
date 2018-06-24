@@ -15,12 +15,22 @@
 #define ALLEGRO_FROGGER_LOST_IMAGES  "gui/allegro/frogger/lostscreen/images/"
 #define ALLEGRO_FROGGER_LOSTSCREEN   ALLEGRO_FROGGER_LOST_IMAGES "lost.png"
 
+#define ALLEGRO_FROGGER_LOST_FONTS   "gui/allegro/frogger/lostscreen/fonts/"
+#define ALLEGRO_FROGGER_SCORE_FONT   ALLEGRO_FROGGER_LOST_FONTS "Bubblegum.ttf"
+#define ALLEGRO_FROGGER_SCORE_SIZE   30
+
 /* Tamaño de ventana */
 #define ALLEGRO_LOSTSCREEN_WIDTH    640
 #define ALLEGRO_LOSTSCREEN_HEIGHT   480
 
 /* Colores */
 #define CLEAR_COLOR     al_map_rgb(0, 0, 0)
+#define SCORE_COLOR     al_map_rgb(255, 255, 255)
+
+/* Ubicacion de texto */
+#define SCORE_X         380
+#define SCORE_Y         300
+
 /**************/
 /* Prototipos */
 /**************/
