@@ -3,7 +3,7 @@ lanenumber: 9
 type: MOTORBIKE
 orientation: HORIZONTAL_RIGHT
 quantity: 2
-timedelta: 85
-spacedelta: 10
+timedelta: 120
+spacedelta: 1
 
 END

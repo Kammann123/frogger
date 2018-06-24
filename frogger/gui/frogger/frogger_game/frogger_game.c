@@ -254,6 +254,16 @@ static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uin
 /* frogger_game_create_object */
 static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
     FROGGER_OBJECT object;
+    uint32_t step;
+    
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+    step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif
+    
+    /* Redefino velocidad */
+    speed.spaceDelta *= step;
     
 #if PLATFORM_MODE == PC_ALLEGRO
     object = allegro_frogger_create_object(pos, speed, orientation, type);
