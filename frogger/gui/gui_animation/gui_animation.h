@@ -121,6 +121,9 @@ typedef struct{
     
     /* Thread */
     pthread_t engineThread;
+    
+    /* Mutex */
+    pthread_mutex_t engineMutex;
 } ANIMATION_ENGINE;
 
 /***********************************/

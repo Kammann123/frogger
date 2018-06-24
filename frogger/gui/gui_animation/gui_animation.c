@@ -36,6 +36,11 @@ static void* gui_animation_engine_thread(void* thisEngine){
             usleep(1000);
 
             /* Veo objeto por objeto */
+            pthread_mutex_lock(&engine->engineMutex);
+            /* Parametro de seguridad */
+            if( engine->shutdown ){
+                pthread_exit(NULL);
+            }
             for(i = 0;i < engine->length;i++){
                 /* Cargo el objeto */
                 object = engine->objects[i];
@@ -101,6 +106,7 @@ static void* gui_animation_engine_thread(void* thisEngine){
                     pthread_mutex_unlock(&(object->objectMutex));
                 }
             }
+            pthread_mutex_unlock(&engine->engineMutex);
         }
     }
 }
@@ -400,12 +406,17 @@ bool gui_animation_attach_object(ANIMATION_ENGINE* engine, ANIMATED_OBJECT* obje
 void gui_animation_destroy_engine(ANIMATION_ENGINE* engine){
     
     /* Apago el thread */
+    pthread_mutex_lock(&engine->engineMutex);
     engine->shutdown = true;
+    pthread_mutex_unlock(&engine->engineMutex);
     
     /* Libero la memoria de la lista de objetos */
     if( engine->objects != NULL ){
         free(engine->objects);
     }
+    
+    /* Destruyo el mutex */
+    pthread_mutex_destroy(&engine->engineMutex);
     
     /* Liboer la memoria del motor */
     free(engine);
@@ -432,6 +443,11 @@ ANIMATION_ENGINE* gui_animation_create_engine(void){
     engine->shutdown = false;
     engine->pause = false;
     engine->length = 0;
+    
+    /* Creo el mutex */
+    pthread_mutex_init(&engine->engineMutex, NULL);
+    
+    return engine;
     
 }
 

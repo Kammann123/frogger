@@ -3,6 +3,7 @@
 #include "../../gui_files/gui_files.h"
 #include "../../gui_types.h"
 #include "../../allegro/frogger/game/allegro_frogger_game.h"
+#include "../../allegro/frogger/lostscreen/allegro_frogger_lostscreen.h"
 
 /*********************/
 /* Objetos del juego */
@@ -974,6 +975,23 @@ bool frogger_game_init(void){
     
     return true;
 }
+
+/* frogger_game_lostscreen_update */
+void frogger_game_lostscreen_update(void){
+#if PLATFORM_MODE == PC_ALLEGRO
+    allegro_frogger_lostscreen();
+#elif PLATFORM_MODE == RPI
+#endif    
+}
+
+/* frogger_game_lostscreen_close */
+void frogger_game_lostscreen_close(void){
+#if PLATFORM_MODE == PC_ALLEGRO
+    allegro_frogger_lostscreen_close();
+#elif PLATFORM_MODE == RPI
+#endif    
+}
+
 
 /* frogger_game_screen_update */
 void frogger_game_screen_update(void){

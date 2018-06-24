@@ -44,6 +44,11 @@ typedef struct{
 /* Prototipos publicos */
 /***********************/
 
+/* frogger_get_score
+ * Devuelve el score del jugador
+ */
+uint32_t frogger_get_score(void);
+
 /* frogger_restart 
  * Reinicia los datos del juego
  */
@@ -71,13 +76,14 @@ void frogger_time_count(void);
 /* frogger_flow 
  * Maneja el flujo del programa del juego
  * 
+ * callback: Que hacer si pierde
+ * arg: Argumentos
  */
-bool frogger_flow(void);
+bool frogger_flow(void (*callback)(void*), void* arg);
 
 /* frogger_reset
  * Resetea posicion en stage
  */
 void frogger_reset(void);
-
 
 #endif /* FROGGER_KERNEL_H */

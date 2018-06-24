@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>gui/allegro/frogger/game/allegro_frogger_game.h</itemPath>
+      <itemPath>gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.h</itemPath>
       <itemPath>gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.h</itemPath>
       <itemPath>gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.h</itemPath>
       <itemPath>gui/allegro/allegro_init.h</itemPath>
@@ -36,6 +37,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>gui/allegro/frogger/game/allegro_frogger_game.c</itemPath>
+      <itemPath>gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.c</itemPath>
       <itemPath>gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.c</itemPath>
       <itemPath>gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c</itemPath>
       <itemPath>gui/allegro/allegro_init.c</itemPath>
@@ -117,6 +119,16 @@
             flavor2="0">
       </item>
       <item path="gui/allegro/frogger/game/allegro_frogger_game.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -262,6 +274,16 @@
             flavor2="0">
       </item>
       <item path="gui/allegro/frogger/game/allegro_frogger_game.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.h"
             ex="false"
             tool="3"
             flavor2="0">

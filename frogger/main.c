@@ -24,12 +24,18 @@ typedef struct{
     bool hasChanged;
 } GAME_STAGE;
 
+typedef struct{
+    GAME_STAGE* stage;
+    uint16_t newStage;
+} EXTERN_STAGE_DATA;
+
 typedef enum {
     MAINMENU_STAGE, 
     RANKING_STAGE,
     HOWTO_STAGE, 
     FROGGER_STAGE,
     PAUSEMENU_STAGE,
+    LOSTSCREEN_STAGE,
     CLOSING_STAGE
 } STAGE_VALUES;
 
@@ -50,6 +56,13 @@ typedef enum{
 /**************/
 /* Prototipos */
 /**************/
+
+/* on_frogger_lost 
+ * Permite cambiar de modo de juego mediante un callback
+ *
+ * arg: Datos
+ */
+void on_frogger_lost(void* arg);
 
 /* switch_tasks_target
  * Maneja quien ejecuta tareas de forma concurrente
@@ -117,11 +130,7 @@ int main(int argc, char** argv){
     GAME_STAGE stage = {
         .value = DEFAULT_GAME_STAGE,
         .hasChanged = false
-    };
-    
-    SETTING* setting;
-    
-    setting = gui_files_load_setting("setting");
+    };    
     
     /* Inicializo la interfaz */
     if( !gui_init() ){
@@ -212,6 +221,20 @@ int main(int argc, char** argv){
 /* Definicion de funciones */
 /***************************/
 
+/* extern_change_stage */
+void on_frogger_lost(void* arg){
+    EXTERN_STAGE_DATA* externStage = arg;
+    
+    /* Cierro la ventana */
+    frogger_game_screen_close();
+    
+    /* Cierro juego */
+    frogger_game_close();
+    
+    /* Cambio modo de juego */
+    change_stage( externStage->stage, externStage->newStage );
+}
+
 /* change_stage */
 void change_stage(GAME_STAGE* stage, uint16_t newStage){
     /* Cambio el valor del estado */
@@ -289,17 +312,14 @@ void on_mainmenu_enter(GAME_STAGE* stage){
 
 /* switch_tasks_target */
 void switch_tasks_target(GAME_STAGE* stage){
+    EXTERN_STAGE_DATA externStage = { 
+        .stage = stage
+    };
+    
     switch(stage->value){
-        case MAINMENU_STAGE:
-            break;
-        case RANKING_STAGE:
-            break;
-        case HOWTO_STAGE:
-            break;
         case FROGGER_STAGE:
-            frogger_flow();
-            break;
-        case PAUSEMENU_STAGE:
+            externStage.newStage = LOSTSCREEN_STAGE;
+            frogger_flow(on_frogger_lost, &externStage);
             break;
     }    
 }
@@ -319,6 +339,9 @@ void switch_update_target(GAME_STAGE* stage){
             break;
         case PAUSEMENU_STAGE:
             frogger_pausemenu_update();
+            break;
+        case LOSTSCREEN_STAGE:
+            frogger_game_lostscreen_update();
             break;
     }
 }
@@ -354,6 +377,14 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
             }else if( event.type == ACTION_EVENT ){
                 if( event.data == ENTER ){
                     on_pausemenu_enter(stage);
+                }
+            }
+            break;
+        case LOSTSCREEN_STAGE:
+            if( event.type == ACTION_EVENT ){
+                if( event.data == ENTER ){
+                    frogger_game_lostscreen_close();
+                    change_stage(stage, MAINMENU_STAGE);
                 }
             }
             break;

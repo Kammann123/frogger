@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/allegro/allegro_init.o \
 	${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o \
 	${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o \
+	${OBJECTDIR}/gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.o \
 	${OBJECTDIR}/gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.o \
 	${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o \
 	${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o \
@@ -93,6 +94,11 @@ ${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o: gui/allegro/frogge
 	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/game
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o gui/allegro/frogger/game/allegro_frogger_game.c
+
+${OBJECTDIR}/gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.o: gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/lostscreen
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.o gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.c
 
 ${OBJECTDIR}/gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.o: gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/mainmenu

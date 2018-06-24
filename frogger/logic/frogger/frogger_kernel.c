@@ -38,7 +38,7 @@ uint32_t frogger_calculate_score(uint32_t level, uint32_t stage, uint32_t time){
 }
 
 /* frogger_flow */
-bool frogger_flow(void){
+bool frogger_flow(void (*callback)(void*), void* arg){
     
     /* Controlo que se muevan los carriles */
     frogger_game_move_lanes();
@@ -76,36 +76,36 @@ bool frogger_flow(void){
     
     /* Me fijo si perdio */
     if( !froggerGame.lifes ){
-        // Aca si pierde!!
-    }
-    
-    /* Me fijo si gano */
-    if( frogger_game_has_won() ){
-        /* Calculo y agrego puntaje */
-        froggerGame.score += frogger_calculate_score(froggerGame.level, froggerGame.stage, froggerGame.time);
-        
-        /* Incremento stage */
-        froggerGame.stage++;
-        
-        /* Reinicio timer */
-        froggerGame.time = 0;
-        
-        /* Me fijo si termino el nivel */
-        if( froggerGame.stage == STAGE_MAX_VALUE ){
-            /* Pauso el juego */
-            frogger_game_pause();
-            
-            /* Subo el nivel */
-            if( !frogger_level_up() ){
-                return false;
+        callback(arg);
+    }else{
+        /* Me fijo si gano */
+        if( frogger_game_has_won() ){
+            /* Calculo y agrego puntaje */
+            froggerGame.score += frogger_calculate_score(froggerGame.level, froggerGame.stage, froggerGame.time);
+
+            /* Incremento stage */
+            froggerGame.stage++;
+
+            /* Reinicio timer */
+            froggerGame.time = 0;
+
+            /* Me fijo si termino el nivel */
+            if( froggerGame.stage == STAGE_MAX_VALUE ){
+                /* Pauso el juego */
+                frogger_game_pause();
+
+                /* Subo el nivel */
+                if( !frogger_level_up() ){
+                    return false;
+                }
+
+                /* Continuo el juego */
+                frogger_game_continue();
             }
-            
-            /* Continuo el juego */
-            frogger_game_continue();
+
+            /* Reseteo posicion */
+            frogger_reset();
         }
-        
-        /* Reseteo posicion */
-        frogger_reset();
     }
     
     return true;
@@ -142,4 +142,9 @@ void frogger_restart(void){
     froggerGame.lifes = DEFAULT_LIFES;
     froggerGame.score = DEFAULT_SCORE;
     froggerGame.time = DEFAULT_TIME;
+}
+
+/* frogger_get_score */
+uint32_t frogger_get_score(void){
+    return froggerGame.score;
 }
