@@ -135,13 +135,13 @@ typedef struct{
  */
 bool gui_animation_collision(ANIMATED_OBJECT* objA, ANIMATED_OBJECT* objB, uint32_t step);
 
-/* gui_animation_region_intersection
- * Devuelve true si hay interseccion entre dos regiones
+/* gui_animation_region_collision
+ * Se fija si hubo colision de dos regiones
  * 
- * regionA: Region uno
- * regionB: Region dos
- */
-bool gui_animation_region_intersection(REGION regionA, REGION regionB);
+ * a: Region a
+ * b: Region b 
+ * */
+bool gui_animation_region_collision(REGION a, REGION b);
 
 /* map_region
  * Crea un objeto region

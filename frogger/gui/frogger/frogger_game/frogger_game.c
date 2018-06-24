@@ -523,8 +523,8 @@ void frogger_game_is_transport(void){
                             if( field.lanes[i].objects[iii]->animations[ii].orientation == field.lanes[i].orientation ){
 
                                 /* Calculo esquina */
-                                x = field.lanes[i].objects[iii].currentPos.x + step * field.lanes[i].objects[iii]->animations[ii].width - 1;
-                                y = field.lanes[i].objects[iii].currentPos.y + step * field.lanes[i].objects[iii]->animations[ii].height - 1;
+                                x = field.lanes[i].objects[iii]->currentPos.x + step * field.lanes[i].objects[iii]->animations[ii].width - 1;
+                                y = field.lanes[i].objects[iii]->currentPos.y + step * field.lanes[i].objects[iii]->animations[ii].height - 1;
                                 
                                 
                                 /* Me fijo si esta en el */

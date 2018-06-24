@@ -26,15 +26,32 @@ void frogger_flow(void){
     frogger_game_move_lanes();
     
     /* Si esta en tierra */
-    if( gui_animation_in_region ){
-        
-    }
+    if( frogger_game_is_street_region() ){
     
-    /* Me fijo que no haya colisiones */
-    if( frogger_game_collisions() ){
-        /* Le quito una vida */
-        froggerGame.lifes--;
+        /* Me fijo que no haya colisiones */
+        if( frogger_game_collisions() ){
+            /* Le quito una vida */
+            froggerGame.lifes--;
+            
+            /* Si hubo colision */
+            frogger_reset();
+        }
+    }else if( frogger_game_is_water_region() ){
         
+        /* Me fijo si no se subio a transporte */
+        frogger_game_is_transport();
+        
+        /* Me fijo si no se cayo al agua */
+        if( frogger_game_drown() ){
+            /* Le quito una vida */
+            froggerGame.lifes--;
+            
+            /* Si hubo colision */
+            frogger_reset();
+        }else{
+            /* Manejo el transporte */
+            frogger_game_transport_frog();
+        }
     }
 }
 
