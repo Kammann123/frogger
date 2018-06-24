@@ -2,6 +2,7 @@
 
 #include "../../gui/frogger/frogger_game/frogger_game.h"
 #include "../../gui/gui_animation/gui_animation.h"
+#include <math.h>
 
 /**************************/
 /* Objetos de la libreria */
@@ -19,6 +20,22 @@ FROGGER_GAME_DATA froggerGame = {
 /***************************/
 /* Definicion de funciones */
 /***************************/
+
+/* frogger_calculate_score */
+uint32_t frogger_calculate_score(uint32_t level, uint32_t stage, uint32_t time){
+    uint32_t score, timePlus;
+    
+    /* Calculo el puntaje por el nivel y el stage */
+    score = LEVEL_SCORE_BASE * level * (stage + 1);
+    
+    /* Calculo el plus por tiempo */
+    timePlus = (TIME_SCORE_BASE + (double)level / 10) * (TIME_MAX_VALUE - time);
+    
+    /* score final */
+    score += timePlus;
+    
+    return score;
+}
 
 /* frogger_flow */
 void frogger_flow(void){
@@ -65,6 +82,7 @@ void frogger_flow(void){
     /* Me fijo si gano */
     if( frogger_game_has_won() ){
         /* Calculo y agrego puntaje */
+        froggerGame.score += frogger_calculate_score(froggerGame.level, froggerGame.stage, froggerGame.time);
         
         /* Incremento stage */
         froggerGame.stage++;
@@ -74,12 +92,21 @@ void frogger_flow(void){
         
         /* Me fijo si termino el nivel */
         if( froggerGame.stage == STAGE_MAX_VALUE ){
-            // Aca sube de nivel!!
+            frogger_level_up();
         }
         
         /* Reseteo posicion */
         frogger_reset();
     }
+}
+
+/* frogger_level_up */
+void frogger_level_up(void){
+    /* New values */
+    froggerGame.level++;
+    froggerGame.stage = DEFAULT_STAGE;
+    froggerGame.lifes = DEFAULT_LIFES;
+    // Generar el nuevo nivel!!
 }
 
 /* frogger_reset */

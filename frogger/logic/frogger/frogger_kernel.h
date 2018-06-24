@@ -21,7 +21,12 @@
 #define DEFAULT_TIME    0
 #define DEFAULT_STAGE   0
 
-#define STAGE_MAX_VALUE 5
+#define STAGE_MAX_VALUE 3
+#define TIME_MAX_VALUE  60
+
+/* Parametros de puntaje */
+#define LEVEL_SCORE_BASE      20
+#define TIME_SCORE_BASE       1
 
 /******************/
 /* Tipos de datos */
@@ -38,6 +43,20 @@ typedef struct{
 /***********************/
 /* Prototipos publicos */
 /***********************/
+
+/* frogger_calculate_score 
+ * Calcula el score agregado por el nivel, stage y time
+ *
+ * level: Nivel del juego
+ * stage: Stage del nivel
+ * time: Tiempo en que gano el stage
+ */
+uint32_t frogger_calculate_score(uint32_t level, uint32_t stage, uint32_t time);
+
+/* frogger_level_up
+ * Maneja subir un nivel
+ */
+void frogger_level_up(void);
 
 /* frogger_time_count
  * Cuenta tiempo de juego
