@@ -38,8 +38,30 @@
 /* Configuracion */
 #define FIELD_ATTRIBUTES    "attributes"
 #define FIELD_FILES         "files"
-
 #define FIELD_QUANTITY      "quantity"
+
+#define LANE_ATTRIBUTES     "attributes"
+#define LANE_NUMBER         "lanenumber"
+#define LANE_TYPE           "type"
+#define LANE_ORIENTATION    "orientation"
+#define LANE_QUANTITY       "quantity"
+#define LANE_TIMEDELTA      "timedelta"
+#define LANE_SPACEDELTA     "spacedelta"    
+
+/* Tipos de objetos */
+#define FROGGER_CFG_MOTORBIKE   "MOTORBIKE"
+#define FROGGER_CFG_CAR         "CAR"
+#define FROGGER_CFG_TRUCK       "TRUCK"
+#define FROGGER_CFG_BOAT        "BOAT"
+#define FROGGER_CFG_YACHT       "YACHT"
+
+typedef enum {
+    FROGGER_MOTORBIKE,
+    FROGGER_CAR,
+    FROGGER_TRUCK,
+    FROGGER_BOAT,
+    FROGGER_YACHT
+} OBJECT_TYPES;
 
 /******************/
 /* Tipos de datos */
@@ -59,14 +81,14 @@ typedef ANIMATED_OBJECT* YACHT;
 typedef struct{
     /* Objetos del carril */
     ANIMATED_OBJECT* objects;
-    uint16_t objectsQty;
+    uint32_t objectsQty;
     
     /* Atributos del carril */
-    uint16_t laneNumber;
+    uint32_t laneNumber;
     
     /* Movimiento del carril */
-    uint16_t type;
-    uint16_t orientation;
+    uint32_t type;
+    uint32_t orientation;
     SPEED speed;
     
     /* Flags */
@@ -84,9 +106,6 @@ typedef struct{
     
     /* Archivos de configuracion de lanes */
     LANE_CFG* lanesCfg;
-    
-    /* Flags */
-    bool init;
 } FIELD;
 
 /***********************************/

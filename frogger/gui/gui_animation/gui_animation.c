@@ -193,8 +193,9 @@ bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object){
         }
     }
     
+    gui_files_destroy_setting(setting);
+    
     if( error ){
-        gui_files_destroy_setting(setting);
         gui_animation_destroy_framelist(animation.frames, ii);
     }else{
         object->animations[i] = animation;

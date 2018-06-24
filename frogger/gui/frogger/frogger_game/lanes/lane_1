@@ -1,0 +1,9 @@
+[attributes]
+lanenumber: 0
+type: MOTORBIKE
+orientation: HORIZONTAL_RIGHT
+quantity: 4
+timedelta: 100
+spacedelta: 10
+
+END

@@ -2,13 +2,13 @@
 quantity: 8
 
 [files]
-0: lane_0
-1: lane_1
-2: lane_2
-3: lane_3
-4: lane_4
-5: lane_5
-6: lane_6
-7: lane_7
+0: gui/frogger/frogger_game/lanes/lane_0
+1: gui/frogger/frogger_game/lanes/lane_1
+2: gui/frogger/frogger_game/lanes/lane_2
+3: gui/frogger/frogger_game/lanes/lane_3
+4: gui/frogger/frogger_game/lanes/lane_4
+5: gui/frogger/frogger_game/lanes/lane_5
+6: gui/frogger/frogger_game/lanes/lane_6
+7: gui/frogger/frogger_game/lanes/lane_7
 
 END

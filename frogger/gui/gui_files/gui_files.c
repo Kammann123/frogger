@@ -445,8 +445,9 @@ static void destroy_section(SECTION* section){
         /* Liberas memoria de las secciones */
         for(i = 0;i < section->length;i++){
             destroy_set(section->sets + i);
-            free(section->sets + i);
         }
+        
+        free(section->sets);
     }
 }
 

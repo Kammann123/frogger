@@ -36,24 +36,6 @@ static bool frogger_game_field_init(void);
  */
 static void frogger_game_destroy_lane(LANE* lane);
 
-/* frogger_game_create_lane
- * Crea un objeto carril
- * 
- * laneNumber: Numero de carril
- * type: Tipo de vehiculos
- * qty: Cantidad de objetos 
- * orientation: Orientacion de movimiento
- * speed: Velocidad de movimiento
- */
-static LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed);
-
-/* create_lane_cfg
- * Crea una lista de archivos
- * 
- * amount: Cantidad
- */
-static LANE_CFG* create_lane_cfg(uint32_t amount);
-
 /* destroy_lane_cfg 
  * Libera las posiciones de un lane cfg
  *
@@ -61,10 +43,34 @@ static LANE_CFG* create_lane_cfg(uint32_t amount);
  */
 static void destroy_lane_cfg(LANE_CFG* lanesCfg, uint32_t amount);
 
+/* destroy_lanes
+ * Libera el arreglo y destruye sus elementos
+ *
+ * lanes: Arreglo
+ * amount: Cantidad de elementos
+ */
+static void destroy_lanes(LANE* lanes, uint32_t amount);
+
+/* create_lanes
+ * Crea un arreglo de LANE y inicializa 
+ *
+ * amount: Cantidad
+ */
+static LANE* create_lanes(uint32_t amount);
+
+/* frogger_game_lane_init 
+ * Inicializa un carril con su archivo de configuracion
+ * 
+ * laneCfg: Archivo de configuracion
+ * lane: Instancia de un carril
+ */
+static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane);
+
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
 
+/* create_lane_cfg */
 static LANE_CFG* create_lane_cfg(uint32_t amount){
     uint32_t i;
     LANE_CFG* laneCfg;
@@ -83,6 +89,7 @@ static LANE_CFG* create_lane_cfg(uint32_t amount){
     return laneCfg;
 }
 
+/* destroy_lane_cfg */
 static void destroy_lane_cfg(LANE_CFG* lanesCfg, uint32_t amount){
     uint32_t i;
     
@@ -148,45 +155,121 @@ static bool frogger_game_field_init(void){
         strcpy(field.lanesCfg[i], auxStr);
     }
     
+    /* Libero esta configuracion */
+    gui_files_destroy_setting(setting);
+    
+    /* Reservo memoria para los carriles */
+    field.lanes = create_lanes(field.lanesQty);
+    if( field.lanes == NULL ){
+        destroy_lane_cfg(field.lanesCfg, field.lanesQty);
+        return false;
+    }
+    
     /* Itero e inicializo cada lane */
+    for(i = 0;i < field.lanesQty;i++){
+        if( !frogger_game_lane_init(field.lanesCfg[i], field.lanes + i) ){
+            destroy_lane_cfg(field.lanesCfg, field.lanesQty);
+            destroy_lanes(field.lanes, field.lanesQty);
+            return false;
+        }
+    }
     
     return true;
 }
 
-/* frogger_game_destroy_lane */
-static void frogger_game_destroy_lane(LANE* lane){
-    /* Libero memoria */
-    free(lane->objects);
+/* frogger_game_lane_init */
+static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
+    SETTING* setting;
+    char* auxStr;
+   
+    /* Cargo el archivo de configuracion */
+    setting = gui_files_load_setting(laneCfg);
+    if( setting == NULL ){
+        return false;
+    }
     
-    /* Libero memoria */
-    free(lane);
+    /* Cargo los parametros enteros */
+    if( !gui_files_get_int(setting, LANE_ATTRIBUTES, LANE_NUMBER, &lane->laneNumber) ){
+        gui_files_destroy_setting(setting);
+        return false;
+    }
+    if( !gui_files_get_int(setting, LANE_ATTRIBUTES, LANE_QUANTITY, &(lane->objectsQty)) ){
+        gui_files_destroy_setting(setting);
+        return false;
+    }
+    if( !gui_files_get_int(setting, LANE_ATTRIBUTES, LANE_TIMEDELTA, &(lane->speed.timeDelta)) ){
+        gui_files_destroy_setting(setting);
+        return false;
+    }
+    if( !gui_files_get_int(setting, LANE_ATTRIBUTES, LANE_SPACEDELTA, &(lane->speed.spaceDelta)) ){
+        gui_files_destroy_setting(setting);
+        return false;
+    }
+    
+    /* Cargo los que son strings */
+    auxStr = gui_files_get_string(setting, LANE_ATTRIBUTES, LANE_TYPE);
+    if( auxStr == NULL ){
+        gui_files_destroy_setting(setting);
+        return false;
+    }
+    if( !(strcmp(auxStr, FROGGER_CFG_MOTORBIKE)) ){
+        lane->type = FROGGER_MOTORBIKE;
+    }else if( !(strcmp(auxStr, FROGGER_CFG_CAR)) ){
+        lane->type = FROGGER_CAR;
+    }else if( !(strcmp(auxStr, FROGGER_CFG_TRUCK)) ){
+        lane->type = FROGGER_TRUCK;
+    }else if( !(strcmp(auxStr, FROGGER_CFG_BOAT)) ){
+        lane->type = FROGGER_BOAT;
+    }else if( !(strcmp(auxStr, FROGGER_CFG_YACHT)) ){
+        lane->type = FROGGER_YACHT;
+    }
+    
+    auxStr = gui_files_get_string(setting, LANE_ATTRIBUTES, LANE_ORIENTATION);
+    if( auxStr == NULL ){
+        gui_files_destroy_setting(setting);
+        return false;
+    }
+    if( !(strcmp(auxStr, OBJFILE_HORIZONTAL_LEFT)) ){
+        lane->orientation = GUI_ANIMATION_HORIZONTAL_LEFT;
+    }else if( !(strcmp(auxStr, OBJFILE_HORIZONTAL_RIGHT)) ){
+        lane->orientation = GUI_ANIMATION_HORIZONTAL_RIGHT;
+    }
+    
+    return true;
 }
 
-/* frogger_game_create_lane */
-static LANE* frogger_game_create_lane(uint16_t laneNumber, uint16_t type, uint16_t qty, uint16_t orientation, SPEED speed){
-    LANE* lane;
+/* create_lanes */
+static LANE* create_lanes(uint32_t amount){
+    uint32_t i;
+    LANE* lanes;
     
-    /* Reservo memoria para el carril */
-    lane = malloc( sizeof(LANE) );
-    if( lane == NULL ){
+    /* Reservo memoria */
+    lanes = malloc( sizeof(LANE) * amount );
+    if( lanes == NULL ){
         return NULL;
     }
     
-    /* Reservo memoria para los objetos */
-    lane->objects = malloc( sizeof(ANIMATED_OBJECT*) * qty );
-    if( lane->objects == NULL ){
-        free(lane);
-        return NULL;
+    /* Itero */
+    for(i = 0;i < amount;i++){
+        lanes[i].init = false;
     }
     
-    /* Inicializo atributos */
-    lane->laneNumber = laneNumber;
-    lane->type = type;
-    lane->orientation = orientation;
-    lane->objectsQty = qty;
-    lane->speed = speed;
+    return lanes;
+}
+
+/* destroy_lanes */
+static void destroy_lanes(LANE* lanes, uint32_t amount){
+    uint32_t i;
     
-    return lane;
+    /* Itero */
+    for(i = 0;i < amount;i++){
+        if( lanes[i].init ){
+            
+        }
+    }
+    
+    /* Libero memoria */
+    free(lanes);
 }
 
 /************************************/
