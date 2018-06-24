@@ -458,15 +458,69 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
 /* Definicion de funciones publicas */
 /************************************/
 
-/* frogger_game_transport_frog */
-void frogger_game_transport_frog(void);
-
 /* frogger_game_transport_off */
 void frogger_game_transport_off(void);
 
 /* frogger_game_transport_on */
 void frogger_game_transport_on(void);
+
+/* frogger_game_transport_frog */
+void frogger_game_transport_frog(void){
+    uint32_t i, ii, step;
+    int32_t x;
+    
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+        step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif 
+    
+    /* Me fijo que este en la region agua */
+    if( gui_animation_in_region(frog.object->currentPos, REGION_WATER) ){
         
+        /* Me fijo que este siendo transportado */
+        if( frog.transport != NULL ){
+            
+            /* Me fijo si esta quieto */
+            if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
+                
+                /* Configuro parametros de movimiento */
+                frog.object->orientation = frog.transport->orientation;
+                
+                /* Configuro velocidad */
+                for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
+                    
+                    /* Busco la animacion de la rana */
+                    if( frog.object->animations[i].orientation == frog.transport->orientation ){
+                        
+                        /* Busco animacion del barco */
+                        for(ii = 0;ii < NUMBER_OF_ORIENTATIONS;ii++){
+                            
+                            if( frog.transport->animations[ii].orientation == frog.transport->orientation ){
+                                frog.object->animations[i].speed.timeDelta = frog.transport->animations[ii].speed.timeDelta;
+                                frog.object->animations[i].speed.spaceDelta = frog.transport->animations[ii].speed.spaceDelta; 
+                            }                           
+                        }
+                    }
+                }
+                
+                /* Calculo posicion final */
+                switch( frog.transport->orientation ){
+                    case GUI_ANIMATION_HORIZONTAL_LEFT:
+                        x = frog.object->currentPos.x - step;
+                        break;
+                    case GUI_ANIMATION_HORIZONTAL_RIGHT:
+                        x = frog.object->currentPos.x + step;
+                        break;
+                }
+                
+                /* Valido posicion */
+                gui_animation_start_static_movement(frog.object, x, frog.object->currentPos.y);  
+            }
+        }
+    }
+}
+
 /* frogger_game_drown */
 bool frogger_game_drown(void){
     
@@ -540,7 +594,7 @@ void frogger_game_move_frog(uint16_t input){
     /* Verifico que este quieta */
     if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
         
-        /* Me fijo si el desplazamiento es valido */
+    /* Me fijo si el desplazamiento es valido */
 #if PLATFORM_MODE == PC_ALLEGRO
         if( !allegro_frogger_movement_valid(input) ){
             return;
@@ -548,7 +602,7 @@ void frogger_game_move_frog(uint16_t input){
 #elif PLATFORM_MODE == RPI
 #endif   
         
-        /* Cargo el desplazamiento */
+    /* Cargo el desplazamiento */
 #if PLATFORM_MODE == PC_ALLEGRO
         step = ALLEGRO_DISPLAY_STEP;
 #elif PLATFORM_MODE == RPI
