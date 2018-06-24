@@ -30,8 +30,8 @@
 #define DISPLAY_DIVISIONS_X 16
 #define DISPLAY_DIVISIONS_Y 11
 
-#define MAP_X_MIN   -3
-#define MAP_X_MAX   18
+#define MAP_X_MIN   -4
+#define MAP_X_MAX   19
 
 /* Archivos */
 #define FROGGER_PATH        "gui/frogger/frogger_game/"
@@ -123,6 +123,11 @@ typedef struct{
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* frogger_game_move_lanes
+ * Mueve los carriles del juego
+ */
+void frogger_game_move_lanes(void);
 
 /* frogger_game_move_frog
  * Mueve el objeto frog en la direccion segun input

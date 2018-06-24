@@ -4,6 +4,6 @@ type: TRUCK
 orientation: HORIZONTAL_LEFT
 quantity: 2
 timedelta: 100
-spacedelta: 10
+spacedelta: 5
 
 END

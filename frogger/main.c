@@ -11,6 +11,7 @@
 #include "gui/frogger/frogger_game/frogger_game.h"
 #include "gui/gui_files/gui_files.h"
 #include "gui/gui_animation/gui_animation.h"
+#include "logic/frogger/frogger_kernel.h"
 
 /**************/
 /* Constantes */
@@ -43,6 +44,14 @@ typedef enum {
 /**************/
 /* Prototipos */
 /**************/
+
+/* switch_tasks_target
+ * Maneja quien ejecuta tareas de forma concurrente
+ * mientras se esperan entradas y eventos de la cola de eventos
+ * 
+ * stage: Etapa del programa
+ */
+void switch_tasks_target(GAME_STAGE* stage);
 
 /* switch_input_target 
  * Maneja quien recibe un evento de entrada
@@ -159,6 +168,9 @@ int main(int argc, char** argv){
             }
         }
         
+        /* Algunos controles mientras */
+        switch_tasks_target(&stage);
+        
         /* Hago una limpieza si hubo un cambio */
         if( stage.hasChanged ){
             /* Limpio el flag */
@@ -252,6 +264,23 @@ void on_mainmenu_enter(GAME_STAGE* stage){
     
     /* Cierro el mainmenu */
     frogger_mainmenu_close();
+}
+
+/* switch_tasks_target */
+void switch_tasks_target(GAME_STAGE* stage){
+    switch(stage->value){
+        case MAINMENU_STAGE:
+            break;
+        case RANKING_STAGE:
+            break;
+        case HOWTO_STAGE:
+            break;
+        case FROGGER_STAGE:
+            frogger_flow();
+            break;
+        case PAUSEMENU_STAGE:
+            break;
+    }    
 }
 
 /* switch_update_target */

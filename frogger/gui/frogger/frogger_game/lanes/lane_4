@@ -1,9 +1,9 @@
 [attributes]
 lanenumber: 1
 type: YACHT
-orientation: HORIZONTAL_RIGHT
-quantity: 4
-timedelta: 100
+orientation: HORIZONTAL_LEFT
+quantity: 2
+timedelta: 50
 spacedelta: 10
 
 END

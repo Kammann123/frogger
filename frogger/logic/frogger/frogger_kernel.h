@@ -31,5 +31,14 @@ typedef struct{
     uint32_t time;
 } FROGGER_GAME_DATA;
 
+/***********************/
+/* Prototipos publicos */
+/***********************/
+
+/* frogger_flow 
+ * Maneja el flujo del programa del juego
+ */
+void frogger_flow(void);
+
 #endif /* FROGGER_KERNEL_H */
 

@@ -1,5 +1,7 @@
 #include "frogger_kernel.h"
 
+#include "../../gui/frogger/frogger_game/frogger_game.h"
+
 /**************************/
 /* Objetos de la libreria */
 /**************************/
@@ -11,3 +13,15 @@ FROGGER_GAME_DATA froggerGame = {
     .time = DEFAULT_TIME,
     .score = DEFAULT_SCORE
 };
+
+/***************************/
+/* Definicion de funciones */
+/***************************/
+
+/* frogger_flow */
+void frogger_flow(void){
+    
+    /* Controlo que se muevan los carriles */
+    frogger_game_move_lanes();
+    
+}

@@ -587,3 +587,49 @@ void frogger_game_screen_close(void){
 #elif PLATFORM_MODE == RPI
 #endif
 }
+
+/* frogger_game_move_lanes */
+void frogger_game_move_lanes(void){
+    uint32_t i, ii;
+    int32_t step;
+    int32_t x;
+    
+#if PLATFORM_MODE == PC_ALLEGRO
+    step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif
+    
+    /* Itero los carriles */
+    for(i = 0;i < field.lanesQty;i++){
+        
+        /* Itero los objetos de cada carril */
+        for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
+            
+            /* Me fijo su estado de animacion */
+            if( field.lanes[i].objects[ii]->status == GUI_ANIMATION_STATE_STATIC ){
+                
+                /* Nueva posicion x */
+                switch( field.lanes[i].orientation ){
+                    case GUI_ANIMATION_HORIZONTAL_LEFT:
+                        x = (field.lanes[i].objects[ii]->currentPos.x / step) - 1;
+                        break;
+                    case GUI_ANIMATION_HORIZONTAL_RIGHT:
+                        x = (field.lanes[i].objects[ii]->currentPos.x / step) + 1;
+                        break;
+                }
+                
+                /* Verifico los limites */
+                if( x < MAP_X_MIN ){
+                    field.lanes[i].objects[ii]->currentPos.x = MAP_X_MAX * step;
+                    x = MAP_X_MAX - 1;
+                }else if( x > MAP_X_MAX ){
+                    field.lanes[i].objects[ii]->currentPos.x = MAP_X_MIN * step;
+                    x = MAP_X_MIN + 1;
+                }
+                
+                /* Si esta quieto, lo desplazo */
+                gui_animation_start_movement(field.lanes[i].objects[ii], field.lanes[i].orientation, x * step, field.lanes[i].laneNumber * step);
+            }
+        }
+    }
+}

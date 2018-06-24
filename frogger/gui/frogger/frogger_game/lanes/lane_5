@@ -2,8 +2,8 @@
 lanenumber: 2
 type: BOAT
 orientation: HORIZONTAL_RIGHT
-quantity: 4
-timedelta: 100
+quantity: 3
+timedelta: 60
 spacedelta: 10
 
 END

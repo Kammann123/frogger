@@ -3,7 +3,7 @@ lanenumber: 8
 type: CAR
 orientation: HORIZONTAL_LEFT
 quantity: 3
-timedelta: 100
+timedelta: 70
 spacedelta: 10
 
 END

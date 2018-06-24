@@ -3,7 +3,7 @@ lanenumber: 4
 type: BOAT
 orientation: HORIZONTAL_LEFT
 quantity: 4
-timedelta: 100
-spacedelta: 10
+timedelta: 40
+spacedelta: 5
 
 END
