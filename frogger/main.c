@@ -289,6 +289,7 @@ void on_mainmenu_enter(GAME_STAGE* stage){
     switch( frogger_mainmenu_selected() ){
         case MAINMENU_PLAY_OPTION:
             if( frogger_game_init() ){
+                frogger_restart();
                 change_stage(stage, FROGGER_STAGE);
             }
             break;
