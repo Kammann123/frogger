@@ -59,6 +59,7 @@ static void* queue_thread(void* queue){
     /* Habilito funcionamiento de la cola */
     while( !eventQueue->shutdown ){
         
+        pthread_mutex_lock(&(eventQueue->queueMutex));
         /* Reviso todas las fuentes de eventos */
         for(i = 0;i < eventQueue->sources->length;i++){
             /* Busco los datos de la fuente */
@@ -67,15 +68,14 @@ static void* queue_thread(void* queue){
             
             /* Busco actualizacion del evento */
             if( callback(&event, args) ){
-                pthread_mutex_lock(&(eventQueue->queueMutex));
                 /* Verifico error */
                 if( eventQueue->shutdown ){
                     pthread_exit(NULL);
                 }
                 raise_event(eventQueue, &event);
-                pthread_mutex_unlock(&(eventQueue->queueMutex));
             }
         }
+        pthread_mutex_unlock(&(eventQueue->queueMutex));
     }
 }
 

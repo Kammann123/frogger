@@ -232,8 +232,9 @@ void on_mainmenu_enter(GAME_STAGE* stage){
     /* Cambio de etapa el programa */
     switch( frogger_mainmenu_selected() ){
         case MAINMENU_PLAY_OPTION:
-            frogger_game_init();
-            change_stage(stage, FROGGER_STAGE);
+            if( frogger_game_init() ){
+                change_stage(stage, FROGGER_STAGE);
+            }
             break;
         case MAINMENU_RANK_OPTION:
             change_stage(stage, RANKING_STAGE);

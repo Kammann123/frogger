@@ -5,6 +5,6 @@ orientation: HORIZONTAL_LEFT
 quantity: 1
 
 [frames]
-0: gui/allegro/froggger/game/objets/motorbike/sprites/motorbike_left.png
+0: gui/allegro/frogger/game/objects/motorbike/sprites/motorbike_left.png
 
 END

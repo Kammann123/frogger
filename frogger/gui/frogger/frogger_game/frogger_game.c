@@ -221,7 +221,9 @@ static void frogger_game_destroy_list_objects(FROGGER_OBJECT* objects, uint32_t 
     
     /* Destruyo cada elemento */
     for(i = 0;i < length;i++){
-        gui_animation_destroy_object(objects[i]);
+        if( objects[i] != NULL ){
+            gui_animation_destroy_object(objects[i]);  
+        }
     }
     
     /* Libero memoria de la lista */
@@ -254,11 +256,11 @@ static uint32_t frogger_game_object_size(uint32_t type){
 
 /* frogger_game_lane_sequence */
 static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uint32_t y, POSITION* positions){
-    uint32_t i, subdiv;
+    int32_t i, subdiv;
     
     /* Veo si es valido */
     subdiv = (MAP_X_MAX - MAP_X_MIN)/amount - (objectSize - 1);
-    if( subdiv <= objectSize ){
+    if( subdiv <= 1 ){
         return false;
     }
     
@@ -435,6 +437,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
         return false;
     }
     if( !frogger_game_lane_sequence(lane->objectsQty, frogger_game_object_size(lane->type), lane->laneNumber, positions)){
+    
         frogger_game_destroy_list_objects(lane->objects, lane->objectsQty);
         return false;
     }
@@ -524,6 +527,7 @@ void frogger_game_close(void){
 
 /* frogger_game_init */
 bool frogger_game_init(void){
+    uint32_t i, ii;
     
     /* Inicializo los carriles */
     if( !frogger_game_field_init() ){
@@ -545,11 +549,27 @@ bool frogger_game_init(void){
     
     /* Vinculo objetos con el motor */
     if( !gui_animation_attach_object(engine, frog.object) ){
+        gui_animation_destroy_object(frog.object);
+        gui_animation_destroy_engine(engine);
         return false;
     }
     
+    /* Vinculos los objetos */
+    for(i = 0;i < field.lanesQty;i++){
+        for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
+            if( !gui_animation_attach_object(engine, field.lanes[i].objects[ii]) ){
+                gui_animation_destroy_object(frog.object);
+                frogger_game_destroy_field(field);
+                return false;
+            }
+        }
+    }
+    
+    
     /* Inicio el motor */
     gui_animation_start_engine(engine);
+    
+    return true;
 }
 
 /* frogger_game_screen_update */

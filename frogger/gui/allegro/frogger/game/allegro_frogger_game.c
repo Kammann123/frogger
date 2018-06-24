@@ -18,6 +18,7 @@
 
 /* Objetos de acceso externo */
 extern FROG frog;
+extern FIELD field;
 extern FROGGER_GAME_DATA froggerGame;
 
 /* Display del juego */
@@ -254,6 +255,8 @@ void allegro_frogger_screen_update(void){
     ALLEGRO_BITMAP* bitmap;
     char text[MAX_LINE];
     
+    uint32_t i, ii;
+    
     /* Abro la ventana */
     if( display == NULL ){
         display = al_create_display(ALLEGRO_FROGGER_GAME_WIDTH, ALLEGRO_FROGGER_GAME_HEIGHT);
@@ -307,6 +310,17 @@ void allegro_frogger_screen_update(void){
         al_draw_text(font, TIME_COLOR, ALLEGRO_DISPLAY_TIME_X, ALLEGRO_DISPLAY_TIME_Y, 0, text);
     }else{
         return;
+    }
+    
+    /* Pongo los objetos */
+    for(i = 0;i < field.lanesQty;i++){
+        for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
+            bitmap = al_load_bitmap( gui_animation_get_frame(field.lanes[i].objects[ii]) );
+            if( bitmap == NULL ){
+                return;
+            }
+            al_draw_bitmap(bitmap, field.lanes[i].objects[ii]->currentPos.x, field.lanes[i].objects[ii]->currentPos.y, 0);
+        }
     }
     
     /* Pongo la ranita :) */

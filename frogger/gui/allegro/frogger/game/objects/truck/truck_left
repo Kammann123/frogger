@@ -5,6 +5,6 @@ orientation: HORIZONTAL_LEFT
 quantity: 1
 
 [frames]
-0: gui/allegro/froggger/game/objets/truck/sprites/truck_left.png
+0: gui/allegro/frogger/game/objects/truck/sprites/truck_left.png
 
 END
