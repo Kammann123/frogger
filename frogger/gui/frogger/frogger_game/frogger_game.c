@@ -641,7 +641,7 @@ void frogger_game_reset_frog_position(void){
 #endif   
 
     /* Seteo posicion y orientacion de rana */
-    frog.object->currentPos = map_position(DEFAULT_FROG_X, DEFAULT_FROG_Y);
+    frog.object->currentPos = map_position(DEFAULT_FROG_X * step, DEFAULT_FROG_Y * step);
     frog.object->orientation = DEFAULT_FROG_ORIENTATION;
     
 }
