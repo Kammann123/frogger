@@ -85,7 +85,9 @@ typedef struct{
 typedef struct{
     /* Posiciones del objeto */
     POSITION currentPos;
-    POSITION finalPos;
+    
+    /* Distancia de recorrido */
+    int32_t distance; 
     
     /* Estado de la animacion */
     uint16_t status;
@@ -202,20 +204,18 @@ FRAME gui_animation_get_frame(ANIMATED_OBJECT* object);
  * Activa la animacion de movimiento con animacion estatica
  *
  * object: Objeto
- * x: Posicion final de X
- * y: Posicion final de Y
+ * distance: Distanica a recorrer
  */
-void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t x, int32_t y);
+void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t distance);
 
 /* gui_animation_start_movement
  * Activa la animacion de movimiento hacia una posicion final
  *
  * object: Objeto animado
  * orientation: Orientacion de la animacion
- * x: Posicion final X
- * y: Posicion final Y
+ * distance: Distancia a recorrer
  */
-void gui_animation_start_movement(ANIMATED_OBJECT* object, uint16_t orientation, int32_t x, int32_t y);
+void gui_animation_start_movement(ANIMATED_OBJECT* object, uint16_t orientation, int32_t distance);
 
 /* gui_animation_stop_loop
  * Para la animacion del objeto 

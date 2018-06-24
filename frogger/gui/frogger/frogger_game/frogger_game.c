@@ -681,7 +681,7 @@ void frogger_game_transport_frog(void){
                 
                 /* Valido posicion */
                 if( x >= 0  && x <= (DISPLAY_DIVISIONS_X - 1)*step ){
-                    gui_animation_start_static_movement(frog.object, x, frog.object->currentPos.y);     
+                    gui_animation_start_static_movement(frog.object, step);     
                 }   
             }
         }
@@ -778,16 +778,16 @@ bool frogger_game_move_frog(uint16_t input){
         /* Muevo segun orientacion */
         switch(input){
             case MOVE_UP:
-                gui_animation_start_movement(frog.object, GUI_ANIMATION_VERTICAL_UP, frog.object->currentPos.x, frog.object->currentPos.y - step);
+                gui_animation_start_movement(frog.object, GUI_ANIMATION_VERTICAL_UP, step);
                 break;
             case MOVE_DOWN:
-                gui_animation_start_movement(frog.object, GUI_ANIMATION_VERTICAL_DOWN, frog.object->currentPos.x, frog.object->currentPos.y + step);
+                gui_animation_start_movement(frog.object, GUI_ANIMATION_VERTICAL_DOWN, step);
                 break;
             case MOVE_LEFT:
-                gui_animation_start_movement(frog.object, GUI_ANIMATION_HORIZONTAL_LEFT, frog.object->currentPos.x - step, frog.object->currentPos.y);
+                gui_animation_start_movement(frog.object, GUI_ANIMATION_HORIZONTAL_LEFT, step);
                 break;
             case MOVE_RIGHT:
-                gui_animation_start_movement(frog.object, GUI_ANIMATION_HORIZONTAL_RIGHT, frog.object->currentPos.x + step, frog.object->currentPos.y);
+                gui_animation_start_movement(frog.object, GUI_ANIMATION_HORIZONTAL_RIGHT, step);
                 break;
         }
         
@@ -956,7 +956,7 @@ void frogger_game_move_lanes(void){
                 }
                 
                 /* Si esta quieto, lo desplazo */
-                gui_animation_start_movement(field.lanes[i].objects[ii], field.lanes[i].orientation, x * step, field.lanes[i].laneNumber * step);
+                gui_animation_start_movement(field.lanes[i].objects[ii], field.lanes[i].orientation, step);
             }
         }
     }

@@ -86,11 +86,10 @@ static void* gui_animation_engine_thread(void* thisEngine){
                                     }
 
                                     /* Me fijo si ya llego */
-                                    if( object->currentPos.x == object->finalPos.x ){
-                                        if( object->currentPos.y == object->finalPos.y ){
-                                            object->status = GUI_ANIMATION_STATE_STATIC;
-                                            object->frameIndex = 0;
-                                        }
+                                    object->distance -= object->animations[ii].speed.spaceDelta;
+                                    if( object->distance <= 0 ){
+                                        object->status = GUI_ANIMATION_STATE_STATIC;
+                                        object->frameIndex = 0;
                                     }
                                 }
                             }
@@ -325,21 +324,19 @@ FRAME gui_animation_get_frame(ANIMATED_OBJECT* object){
 }
 
 /* gui_animation_start_static_movement */
-void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t x, int32_t y){
+void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t distance){
     /* Configuro posicion final */
-    object->finalPos.x = x;
-    object->finalPos.y = y;
+    object->distance = distance;
     
     /* Configuro estado */
     object->status = GUI_ANIMATION_STATE_STATIC_MOVE;
 }
 
 /* gui_animation_start_movement */
-void gui_animation_start_movement(ANIMATED_OBJECT* object, uint16_t orientation, int32_t x, int32_t y){
+void gui_animation_start_movement(ANIMATED_OBJECT* object, uint16_t orientation, int32_t distance){
     
     /* Configuro la posicion final de movimiento */
-    object->finalPos.x = x;
-    object->finalPos.y = y;
+    object->distance = distance;
     
     /* Configuro la orientacion del objeto */
     object->orientation = orientation;
