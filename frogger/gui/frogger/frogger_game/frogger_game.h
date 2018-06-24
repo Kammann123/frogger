@@ -30,6 +30,17 @@
 /* Definicion de carriles */
 #define NUMBER_OF_LANES 8
 
+/* Archivos */
+#define FROGGER_PATH        "gui/frogger/frogger_game/"
+#define FROGGER_PATH_LANES  FROGGER_PATH "lanes/"
+#define FROGGER_FIELD_CFG   FROGGER_PATH "field"
+
+/* Configuracion */
+#define FIELD_ATTRIBUTES    "attributes"
+#define FIELD_FILES         "files"
+
+#define FIELD_QUANTITY      "quantity"
+
 /******************/
 /* Tipos de datos */
 /******************/
@@ -57,9 +68,26 @@ typedef struct{
     uint16_t type;
     uint16_t orientation;
     SPEED speed;
+    
+    /* Flags */
+    bool init;
 } LANE;
 
-typedef LANE** LANES;
+typedef char* LANE_CFG;
+        
+typedef struct{
+    /* Carriles del campo */
+    LANE* lanes;
+    
+    /* Cantidad de carriles */
+    uint32_t lanesQty;
+    
+    /* Archivos de configuracion de lanes */
+    LANE_CFG* lanesCfg;
+    
+    /* Flags */
+    bool init;
+} FIELD;
 
 /***********************************/
 /* Prototipo de funciones publicas */

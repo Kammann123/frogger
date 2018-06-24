@@ -145,6 +145,20 @@ static bool is_numeric_string(char* str);
  */
 static uint32_t count_sections(FILE* file);
 
+/* create_sets
+ * Crea un arreglo de sets y los inicializa
+ *
+ * amount: Cantidad de sets
+ */
+static SET* create_sets(uint32_t amount);
+
+/* create_sections
+ * Crea un arreglo de secciones y los inicializa
+ *
+ * amount: Cantidad de secciones
+ */
+static SECTION* create_sections(uint32_t amount);
+
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
@@ -251,7 +265,7 @@ SETTING* gui_files_load_setting(char* filename){
         fclose(file);
         return NULL;
     }
-    setting->sections = malloc( sizeof(SECTION) * settingLength );
+    setting->sections = create_sections(settingLength);
     if( setting->sections == NULL ){
         free(setting);
         fclose(file);
@@ -322,6 +336,42 @@ static uint32_t count_sections(FILE* file){
     return length;
 }
 
+static SECTION* create_sections(uint32_t amount){
+    uint32_t i;
+    SECTION* sections;
+    
+    /* Reservo memoria */
+    sections = malloc( sizeof(SECTION) * amount );
+    if( sections == NULL ){
+        return NULL;
+    }
+    
+    /* Las inicializo */
+    for(i = 0;i < amount;i++){
+        sections[i].init = false;
+    }
+    
+    return sections;
+}
+
+static SET* create_sets(uint32_t amount){
+    uint32_t i;
+    SET* sets;
+    
+    /* Reservo memoria */
+    sets = malloc( sizeof(SET) * amount );
+    if( sets == NULL ){
+        return NULL;
+    }
+    
+    /* Inicializo */
+    for(i = 0;i < amount;i++){
+        sets[i].init = false;
+    }
+    
+    return sets;
+}
+
 /* read_section */
 static bool read_section(FILE* file, char* name, SECTION* section){
     /* Variables para seccion */
@@ -339,7 +389,7 @@ static bool read_section(FILE* file, char* name, SECTION* section){
     }
     
     /* Reservo memoria para sets */
-    section->sets = malloc( sizeof(SET) * (sectionLength) );
+    section->sets = create_sets(sectionLength);
     if(section->sets == NULL){
         free(section);
         return false;
@@ -355,6 +405,9 @@ static bool read_section(FILE* file, char* name, SECTION* section){
     
     /* Guardo el nombre */
     strcpy(section->name, name);
+    
+    /* Inicialice, flag */
+    section->init = true;
     
     /* Leo las lineas */
     for(i = 0;i < sectionLength;i++){
@@ -385,13 +438,15 @@ static bool read_section(FILE* file, char* name, SECTION* section){
 static void destroy_section(SECTION* section){
     uint32_t i;
     
-    /* Liberas memoria del nombre */
-    free(section->name);
-    
-    /* Liberas memoria de las secciones */
-    for(i = 0;i < section->length;i++){
-        destroy_set(section->sets + i);
-        free(section->sets + i);
+    if( section->init ){
+        /* Liberas memoria del nombre */
+        free(section->name);
+
+        /* Liberas memoria de las secciones */
+        for(i = 0;i < section->length;i++){
+            destroy_set(section->sets + i);
+            free(section->sets + i);
+        }
     }
 }
 
@@ -545,6 +600,9 @@ static bool is_set(char* str, SET* set){
         free(set->key);
         return false;
     }
+        
+    /* Inicialice, flag */
+    set->init = true;
     
     while( state != IS_SET_OK && state != IS_SET_ERROR ){
         switch( state ){
@@ -625,11 +683,14 @@ static uint32_t strlen_end(char* str, char end){
 /* destroy_set */
 static void destroy_set(SET* set){
     
-    /* Libero memoria del string */
-    free(set->value.string);
+    if( set->init ){
+        /* Libero memoria del string */
+        free(set->value.string);
+
+        /* Libero memoria del key */
+        free(set->key);
+    }
     
-    /* Libero memoria del key */
-    free(set->key);
 }
 
 /* is_empty_line */

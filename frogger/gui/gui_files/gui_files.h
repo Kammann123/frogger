@@ -35,12 +35,14 @@ typedef struct{
 typedef struct{
     char* key;
     VALUES value;
+    bool init;
 } SET;
 
 typedef struct{
     char* name;
     SET* sets;
     uint32_t length;
+    bool init;
 } SECTION;
 
 typedef struct{

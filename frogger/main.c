@@ -104,6 +104,10 @@ int main(int argc, char** argv){
         .hasChanged = false
     };
     
+    SETTING* setting;
+    
+    setting = gui_files_load_setting("setting");
+    
     /* Inicializo la interfaz */
     if( !gui_init() ){
         return 0;

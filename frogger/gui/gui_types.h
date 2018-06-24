@@ -18,5 +18,9 @@ typedef struct{
     int32_t y;
 } POSITION;
 
+/**************/
+/* Prototipos */
+/**************/
+
 #endif /* GUI_TYPES_H */
 

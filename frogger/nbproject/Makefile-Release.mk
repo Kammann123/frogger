@@ -49,6 +49,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/gui_init.o \
 	${OBJECTDIR}/gui/gui_input/gui_input.o \
 	${OBJECTDIR}/gui/gui_timer/gui_timer.o \
+	${OBJECTDIR}/gui/gui_types.o \
 	${OBJECTDIR}/logic/frogger/frogger_kernel.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/timer.o
@@ -147,6 +148,11 @@ ${OBJECTDIR}/gui/gui_timer/gui_timer.o: gui/gui_timer/gui_timer.c
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_timer
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_timer/gui_timer.o gui/gui_timer/gui_timer.c
+
+${OBJECTDIR}/gui/gui_types.o: gui/gui_types.c 
+	${MKDIR} -p ${OBJECTDIR}/gui
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_types.o gui/gui_types.c
 
 ${OBJECTDIR}/logic/frogger/frogger_kernel.o: logic/frogger/frogger_kernel.c 
 	${MKDIR} -p ${OBJECTDIR}/logic/frogger
