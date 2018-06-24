@@ -458,6 +458,40 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* frogger_game_is_water_region */
+bool frogger_game_is_water_region(void){
+    uint32_t step;
+    
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+    step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif
+        
+   /* Me fijo si esta en region */
+    if( gui_animation_in_region( map_position(frog.object->currentPos.x / step, frog.object->currentPos.y / step) , REGION_WATER) ){
+        return true;
+    }
+    return false;    
+}
+
+/* frogger_game_is_street_region */
+bool frogger_game_is_street_region(void){
+    uint32_t step;
+    
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+    step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif
+        
+   /* Me fijo si esta en region */
+    if( gui_animation_in_region( map_position(frog.object->currentPos.x / step, frog.object->currentPos.y / step) , REGION_STREET) ){
+        return true;
+    }
+    return false;
+}
+
 /* frogger_game_transport_on */
 void frogger_game_is_transport(void){
     uint32_t i, ii, iii, step;
@@ -465,12 +499,12 @@ void frogger_game_is_transport(void){
     
     /* Cargo el desplazamiento */
 #if PLATFORM_MODE == PC_ALLEGRO
-        step = ALLEGRO_DISPLAY_STEP;
+    step = ALLEGRO_DISPLAY_STEP;
 #elif PLATFORM_MODE == RPI
 #endif 
     
     /* Me fijo que este en region de agua */
-    if( gui_animation_in_region(frog.object, REGION_WATER) ){
+    if( frogger_game_is_water_region() ){
         
         if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
                 
@@ -524,12 +558,12 @@ void frogger_game_transport_frog(void){
     
     /* Cargo el desplazamiento */
 #if PLATFORM_MODE == PC_ALLEGRO
-        step = ALLEGRO_DISPLAY_STEP;
+    step = ALLEGRO_DISPLAY_STEP;
 #elif PLATFORM_MODE == RPI
 #endif 
     
     /* Me fijo que este en la region agua */
-    if( gui_animation_in_region(frog.object->currentPos, REGION_WATER) ){
+    if( frogger_game_is_water_region() ){
         
         /* Me fijo que este siendo transportado */
         if( frog.transport != NULL ){
@@ -580,7 +614,7 @@ void frogger_game_transport_frog(void){
 bool frogger_game_drown(void){
     
     /* Me fijo que este en region de agua */
-    if( gui_animation_in_region(frog.object->currentPos, REGION_WATER) ){
+    if( frogger_game_is_water_region() ){
         
         /* Me fijo que este quieto */
         if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
@@ -602,7 +636,7 @@ void frogger_game_reset_frog_position(void){
         
     /* Cargo el desplazamiento */
 #if PLATFORM_MODE == PC_ALLEGRO
-        step = ALLEGRO_DISPLAY_STEP;
+    step = ALLEGRO_DISPLAY_STEP;
 #elif PLATFORM_MODE == RPI
 #endif   
 
@@ -651,9 +685,9 @@ void frogger_game_move_frog(uint16_t input){
         
     /* Me fijo si el desplazamiento es valido */
 #if PLATFORM_MODE == PC_ALLEGRO
-        if( !allegro_frogger_movement_valid(input) ){
-            return;
-        }
+    if( !allegro_frogger_movement_valid(input) ){
+        return;
+    }
 #elif PLATFORM_MODE == RPI
 #endif   
         

@@ -40,6 +40,11 @@ typedef struct{
  */
 void frogger_flow(void);
 
+/* frogger_reset
+ * Maneja el reset cuando perdio una vida
+ * la frogg 
+ */
+void frogger_reset(void);
+
 
 #endif /* FROGGER_KERNEL_H */
-

@@ -127,17 +127,27 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
-/* frogger_game_transport_off
+/* frogger_game_is_water_region
+ * Devuelve true si esta en la region de agua 
+ */
+bool frogger_game_is_water_region(void);
+
+/* frogger_game_is_street_region
+ * Devuelve true si esta en la region de vehiculos 
+ */
+bool frogger_game_is_street_region(void);
+
+/* frogger_game_transport_frog 
+ * Maneja el movimiento de la rana cuando esta
+ * siendo transportada por un barco
+ */
+void frogger_game_transport_frog(void);
+
+/* frogger_game_is_transport
  * Comprueba si la rana se bajo o subio de un barco
  * y lo configura
  */
 void frogger_game_is_transport(void);
-
-/* frogger_game_transport_on 
- * Comprueba si la rana se subio a un barco
- * y lo configura
- */
-void frogger_game_transport_on(void);
         
 /* frogger_game_drown
  * Devuelve true si la rana se cayo al agua
