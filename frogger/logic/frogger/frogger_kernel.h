@@ -21,7 +21,7 @@
 #define DEFAULT_TIME    0
 #define DEFAULT_STAGE   0
 
-#define STAGE_MAX_VALUE 1
+#define STAGE_MAX_VALUE 3
 #define TIME_MAX_VALUE  60
 
 /* Parametros de puntaje */
@@ -43,6 +43,11 @@ typedef struct{
 /***********************/
 /* Prototipos publicos */
 /***********************/
+
+/* frogger_restart 
+ * Reinicia los datos del juego
+ */
+void frogger_restart(void);
 
 /* frogger_calculate_score 
  * Calcula el score agregado por el nivel, stage y time

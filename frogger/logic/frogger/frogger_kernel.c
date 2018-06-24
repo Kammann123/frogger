@@ -134,3 +134,12 @@ void frogger_reset(void){
 void frogger_time_count(void){
     froggerGame.time++;
 }
+
+/* frogger_restart */
+void frogger_restart(void){
+    froggerGame.level = DEFAULT_LEVEL;
+    froggerGame.stage = DEFAULT_STAGE;
+    froggerGame.lifes = DEFAULT_LIFES;
+    froggerGame.score = DEFAULT_SCORE;
+    froggerGame.time = DEFAULT_TIME;
+}

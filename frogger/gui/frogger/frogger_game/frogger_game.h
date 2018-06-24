@@ -23,7 +23,7 @@
 
 /* Parametros default */
 #define DEFAULT_FROG_X  7
-#define DEFAULT_FROG_Y  5
+#define DEFAULT_FROG_Y  10
 #define DEFAULT_FROG_ORIENTATION GUI_ANIMATION_VERTICAL_UP
 
 /* Parametros de tablero */

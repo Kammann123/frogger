@@ -230,10 +230,17 @@ void on_pausemenu_enter(GAME_STAGE* stage){
             change_stage(stage, FROGGER_STAGE);
             break;
         case PAUSEMENU_RESTART_OPTION:
+            frogger_game_close();
+            frogger_restart();
+            if( !frogger_game_init() ){
+                change_stage(stage, MAINMENU_STAGE);
+            }else{
+                change_stage(stage, FROGGER_STAGE);
+            }
             break;
         case PAUSEMENU_EXIT_OPTION:
             frogger_game_close();
-            change_stage(stage, CLOSING_STAGE);
+            change_stage(stage, MAINMENU_STAGE);
             break;
     }
     
