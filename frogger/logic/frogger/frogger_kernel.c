@@ -38,7 +38,7 @@ uint32_t frogger_calculate_score(uint32_t level, uint32_t stage, uint32_t time){
 }
 
 /* frogger_flow */
-bool frogger_flow(void (*callback)(void*), void* arg){
+uint32_t frogger_flow(void){
     
     /* Controlo que se muevan los carriles */
     frogger_game_move_lanes();
@@ -76,7 +76,7 @@ bool frogger_flow(void (*callback)(void*), void* arg){
     
     /* Me fijo si perdio */
     if( !froggerGame.lifes ){
-        callback(arg);
+        return FROGGER_HAS_LOST;
     }else{
         /* Me fijo si gano */
         if( frogger_game_has_won() ){
@@ -96,7 +96,7 @@ bool frogger_flow(void (*callback)(void*), void* arg){
 
                 /* Subo el nivel */
                 if( !frogger_level_up() ){
-                    return false;
+                    return FROGGER_ERROR;
                 }
 
                 /* Continuo el juego */
@@ -105,10 +105,12 @@ bool frogger_flow(void (*callback)(void*), void* arg){
 
             /* Reseteo posicion */
             frogger_reset();
+            
+            return FROGGER_HAS_WON;
         }
     }
     
-    return true;
+    return FROGGER_NOTHING;
 }
 
 /* frogger_level_up */
@@ -147,4 +149,19 @@ void frogger_restart(void){
 /* frogger_get_score */
 uint32_t frogger_get_score(void){
     return froggerGame.score;
+}
+
+/* frogger_get_lifes */
+uint32_t frogger_get_lifes(void){
+    return froggerGame.lifes;
+}
+
+/* frogger_get_level */
+uint32_t frogger_get_level(void){
+    return froggerGame.level;
+}
+
+/* frogger_get_stage */
+uint32_t frogger_get_stage(void){
+    return froggerGame.stage;
 }

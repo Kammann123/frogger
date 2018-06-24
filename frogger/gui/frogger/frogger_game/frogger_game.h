@@ -233,15 +233,5 @@ void frogger_game_screen_update(void);
  */
 void frogger_game_screen_close(void);
 
-/* frogger_game_lostscreen_update
- * Actualiza pantalla tras haber perdido
- */
-void frogger_game_lostscreen_update(void);
-
-/* frogger_game_lostscreen_close
- * Cierra la ventana de lostscreen
- */
-void frogger_game_lostscreen_close(void);
-
 #endif /* FROGGER_GAME_H */
 

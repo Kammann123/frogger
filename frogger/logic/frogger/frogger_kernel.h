@@ -17,7 +17,7 @@
 /* Valores default de la partida */
 #define DEFAULT_LEVEL   1
 #define DEFAULT_LIFES   3
-#define DEFAULT_SCORE   364813
+#define DEFAULT_SCORE   0
 #define DEFAULT_TIME    0
 #define DEFAULT_STAGE   0
 
@@ -27,6 +27,14 @@
 /* Parametros de puntaje */
 #define LEVEL_SCORE_BASE      20
 #define TIME_SCORE_BASE       1
+
+/* Eventos del flujo del juego */
+typedef enum{
+    FROGGER_HAS_LOST,
+    FROGGER_HAS_WON,
+    FROGGER_ERROR,
+    FROGGER_NOTHING
+} FLOW_EVENTS;
 
 /******************/
 /* Tipos de datos */
@@ -43,6 +51,22 @@ typedef struct{
 /***********************/
 /* Prototipos publicos */
 /***********************/
+
+
+/* frogger_get_lifes
+ * Devuelve el score del jugador
+ */
+uint32_t frogger_get_lifes(void);
+
+/* frogger_get_level
+ * Devuelve el score del jugador
+ */
+uint32_t frogger_get_level(void);
+
+/* frogger_get_stage
+ * Devuelve el score del jugador
+ */
+uint32_t frogger_get_stage(void);
 
 /* frogger_get_score
  * Devuelve el score del jugador
@@ -75,11 +99,8 @@ void frogger_time_count(void);
 
 /* frogger_flow 
  * Maneja el flujo del programa del juego
- * 
- * callback: Que hacer si pierde
- * arg: Argumentos
  */
-bool frogger_flow(void (*callback)(void*), void* arg);
+uint32_t frogger_flow(void);
 
 /* frogger_reset
  * Resetea posicion en stage

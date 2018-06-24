@@ -976,23 +976,6 @@ bool frogger_game_init(void){
     return true;
 }
 
-/* frogger_game_lostscreen_update */
-void frogger_game_lostscreen_update(void){
-#if PLATFORM_MODE == PC_ALLEGRO
-    allegro_frogger_lostscreen();
-#elif PLATFORM_MODE == RPI
-#endif    
-}
-
-/* frogger_game_lostscreen_close */
-void frogger_game_lostscreen_close(void){
-#if PLATFORM_MODE == PC_ALLEGRO
-    allegro_frogger_lostscreen_close();
-#elif PLATFORM_MODE == RPI
-#endif    
-}
-
-
 /* frogger_game_screen_update */
 void frogger_game_screen_update(void){
 #if PLATFORM_MODE == PC_ALLEGRO

@@ -8,6 +8,8 @@
 #include "gui/gui_timer/gui_timer.h"
 #include "gui/frogger/frogger_mainmenu/frogger_mainmenu.h"
 #include "gui/frogger/frogger_pausemenu/frogger_pausemenu.h"
+#include "gui/frogger/frogger_lostscreen/frogger_lostscreen.h"
+#include "gui/frogger/frogger_changescreen/frogger_changescreen.h"
 #include "gui/frogger/frogger_game/frogger_game.h"
 #include "gui/gui_files/gui_files.h"
 #include "gui/gui_animation/gui_animation.h"
@@ -36,6 +38,7 @@ typedef enum {
     FROGGER_STAGE,
     PAUSEMENU_STAGE,
     LOSTSCREEN_STAGE,
+    CHANGESCREEN_STAGE,
     CLOSING_STAGE
 } STAGE_VALUES;
 
@@ -47,22 +50,17 @@ typedef enum {
 
 typedef enum{
     REFRESH_DISPLAY,
-    GAME_COUNTER
+    GAME_COUNTER,
+    CHANGESCREEN_TIMER
 } TIMER_EVENT_IDS;
 
 #define REFRESH_TIME    TIMER_DEFINITION/REFRESH_FPS
 #define GAME_TIME       TIMER_DEFINITION
+#define CHANGESCREEN_TIME     TIMER_DEFINITION*2
 
 /**************/
 /* Prototipos */
 /**************/
-
-/* on_frogger_lost 
- * Permite cambiar de modo de juego mediante un callback
- *
- * arg: Datos
- */
-void on_frogger_lost(void* arg);
 
 /* switch_tasks_target
  * Maneja quien ejecuta tareas de forma concurrente
@@ -116,6 +114,14 @@ void on_game_enter(GAME_STAGE* stage);
  */
 void change_stage(GAME_STAGE* stage, uint16_t newStage);
 
+/* on_frogger_event
+ * Maneja eventos durante la partida
+ *
+ * stage: Estado
+ * event: Id
+ */
+void on_frogger_event(GAME_STAGE* stage, uint32_t event);
+
 /* *******************************
  * main
  * Funcion principal del programa.
@@ -155,6 +161,9 @@ int main(int argc, char** argv){
     if( !gui_timer_new_event(timer, GAME_TIME, GAME_COUNTER) ){
         return 0;
     }
+    if( !gui_timer_new_event(timer, CHANGESCREEN_TIME, CHANGESCREEN_TIMER) ){
+        return 0;
+    }
     
     /* Inicializo los eventos */
     queue = create_queue();
@@ -184,6 +193,12 @@ int main(int argc, char** argv){
                     if( stage.value == FROGGER_STAGE ){
                         frogger_time_count();
                     }
+                }else if( event.data == CHANGESCREEN_TIMER ){
+                    if( stage.value == CHANGESCREEN_STAGE ){
+                        frogger_changescreen_close();
+                        change_stage(&stage, FROGGER_STAGE);
+                        frogger_game_continue();
+                    }
                 }
                 /* Limpio el timer */
                 gui_timer_clear(timer, event.data);
@@ -204,6 +219,7 @@ int main(int argc, char** argv){
             /* Limpio el timer */
             gui_timer_clear(timer, REFRESH_DISPLAY);
             gui_timer_clear(timer, GAME_COUNTER);
+            gui_timer_clear(timer, CHANGESCREEN_TIMER);
         }
     }
     
@@ -221,18 +237,20 @@ int main(int argc, char** argv){
 /* Definicion de funciones */
 /***************************/
 
-/* extern_change_stage */
-void on_frogger_lost(void* arg){
-    EXTERN_STAGE_DATA* externStage = arg;
-    
-    /* Cierro la ventana */
-    frogger_game_screen_close();
-    
-    /* Cierro juego */
-    frogger_game_close();
-    
-    /* Cambio modo de juego */
-    change_stage( externStage->stage, externStage->newStage );
+/* on_frogger_event */
+void on_frogger_event(GAME_STAGE* stage, uint32_t event){
+    switch( event ){
+        case FROGGER_HAS_LOST:
+            frogger_game_screen_close();
+            frogger_game_close();
+            change_stage(stage, LOSTSCREEN_STAGE);
+            break;
+        case FROGGER_HAS_WON:
+            frogger_game_screen_close();
+            frogger_game_pause();
+            change_stage(stage, CHANGESCREEN_STAGE);
+            break;
+    }
 }
 
 /* change_stage */
@@ -313,14 +331,9 @@ void on_mainmenu_enter(GAME_STAGE* stage){
 
 /* switch_tasks_target */
 void switch_tasks_target(GAME_STAGE* stage){
-    EXTERN_STAGE_DATA externStage = { 
-        .stage = stage
-    };
-    
     switch(stage->value){
         case FROGGER_STAGE:
-            externStage.newStage = LOSTSCREEN_STAGE;
-            frogger_flow(on_frogger_lost, &externStage);
+            on_frogger_event(stage, frogger_flow());
             break;
     }    
 }
@@ -330,6 +343,9 @@ void switch_update_target(GAME_STAGE* stage){
     switch(stage->value){
         case MAINMENU_STAGE:
             frogger_mainmenu_update();
+            break;
+        case CHANGESCREEN_STAGE:
+            frogger_changescreen_update();
             break;
         case RANKING_STAGE:
             break;
@@ -342,7 +358,7 @@ void switch_update_target(GAME_STAGE* stage){
             frogger_pausemenu_update();
             break;
         case LOSTSCREEN_STAGE:
-            frogger_game_lostscreen_update();
+            frogger_lostscreen_update();
             break;
     }
 }
@@ -384,7 +400,7 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
         case LOSTSCREEN_STAGE:
             if( event.type == ACTION_EVENT ){
                 if( event.data == ENTER ){
-                    frogger_game_lostscreen_close();
+                    frogger_lostscreen_close();
                     change_stage(stage, MAINMENU_STAGE);
                 }
             }

@@ -16,7 +16,7 @@
 #define ALLEGRO_FROGGER_LOSTSCREEN   ALLEGRO_FROGGER_LOST_IMAGES "lost.png"
 
 #define ALLEGRO_FROGGER_LOST_FONTS   "gui/allegro/frogger/lostscreen/fonts/"
-#define ALLEGRO_FROGGER_SCORE_FONT   ALLEGRO_FROGGER_LOST_FONTS "Bubblegum.ttf"
+#define ALLEGRO_FROGGER_SCORE_FONT   ALLEGRO_FROGGER_LOST_FONTS "Fluo Gums.ttf"
 #define ALLEGRO_FROGGER_SCORE_SIZE   30
 
 /* Tamaño de ventana */

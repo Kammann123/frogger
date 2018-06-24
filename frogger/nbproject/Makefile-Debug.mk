@@ -37,11 +37,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/gui/allegro/allegro_init.o \
 	${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o \
+	${OBJECTDIR}/gui/allegro/frogger/changescreen/allegro_frogger_changescreen.o \
 	${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o \
 	${OBJECTDIR}/gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.o \
 	${OBJECTDIR}/gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.o \
 	${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o \
+	${OBJECTDIR}/gui/frogger/frogger_changescreen/frogger_changescreen.o \
 	${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o \
+	${OBJECTDIR}/gui/frogger/frogger_lostscreen/frogger_lostscreen.o \
 	${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o \
 	${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o \
 	${OBJECTDIR}/gui/gui_animation/gui_animation.o \
@@ -90,6 +93,11 @@ ${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o: gui/allegro/allegro_inpu
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o gui/allegro/allegro_input/allegro_input.c
 
+${OBJECTDIR}/gui/allegro/frogger/changescreen/allegro_frogger_changescreen.o: gui/allegro/frogger/changescreen/allegro_frogger_changescreen.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/changescreen
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/changescreen/allegro_frogger_changescreen.o gui/allegro/frogger/changescreen/allegro_frogger_changescreen.c
+
 ${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o: gui/allegro/frogger/game/allegro_frogger_game.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/game
 	${RM} "$@.d"
@@ -110,10 +118,20 @@ ${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o: gui/alle
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c
 
+${OBJECTDIR}/gui/frogger/frogger_changescreen/frogger_changescreen.o: gui/frogger/frogger_changescreen/frogger_changescreen.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_changescreen
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_changescreen/frogger_changescreen.o gui/frogger/frogger_changescreen/frogger_changescreen.c
+
 ${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o: gui/frogger/frogger_game/frogger_game.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_game
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o gui/frogger/frogger_game/frogger_game.c
+
+${OBJECTDIR}/gui/frogger/frogger_lostscreen/frogger_lostscreen.o: gui/frogger/frogger_lostscreen/frogger_lostscreen.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_lostscreen
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_lostscreen/frogger_lostscreen.o gui/frogger/frogger_lostscreen/frogger_lostscreen.c
 
 ${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o: gui/frogger/frogger_mainmenu/frogger_mainmenu.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_mainmenu
