@@ -38,7 +38,7 @@ uint32_t frogger_calculate_score(uint32_t level, uint32_t stage, uint32_t time){
 }
 
 /* frogger_flow */
-void frogger_flow(void){
+bool frogger_flow(void){
     
     /* Controlo que se muevan los carriles */
     frogger_game_move_lanes();
@@ -92,21 +92,25 @@ void frogger_flow(void){
         
         /* Me fijo si termino el nivel */
         if( froggerGame.stage == STAGE_MAX_VALUE ){
-            frogger_level_up();
+            if( !frogger_level_up() ){
+                return false;
+            }
         }
         
         /* Reseteo posicion */
         frogger_reset();
     }
+    
+    return true;
 }
 
 /* frogger_level_up */
-void frogger_level_up(void){
+bool frogger_level_up(void){
     /* New values */
     froggerGame.level++;
     froggerGame.stage = DEFAULT_STAGE;
     froggerGame.lifes = DEFAULT_LIFES;
-    // Generar el nuevo nivel!!
+    return frogger_game_new_level( froggerGame.level );
 }
 
 /* frogger_reset */

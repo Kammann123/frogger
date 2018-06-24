@@ -21,7 +21,7 @@
 #define DEFAULT_TIME    0
 #define DEFAULT_STAGE   0
 
-#define STAGE_MAX_VALUE 3
+#define STAGE_MAX_VALUE 1
 #define TIME_MAX_VALUE  60
 
 /* Parametros de puntaje */
@@ -56,7 +56,7 @@ uint32_t frogger_calculate_score(uint32_t level, uint32_t stage, uint32_t time);
 /* frogger_level_up
  * Maneja subir un nivel
  */
-void frogger_level_up(void);
+bool frogger_level_up(void);
 
 /* frogger_time_count
  * Cuenta tiempo de juego
@@ -67,7 +67,7 @@ void frogger_time_count(void);
  * Maneja el flujo del programa del juego
  * 
  */
-void frogger_flow(void);
+bool frogger_flow(void);
 
 /* frogger_reset
  * Resetea posicion en stage

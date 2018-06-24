@@ -127,6 +127,13 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* frogger_game_new_level
+ * Genera un nuevo campo al cambiar nivel
+ *
+ * level: Nivel
+ */
+bool frogger_game_new_level(uint32_t level);
+
 /* frogger_game_has_won 
  * Devuelve true si la ranita gano
  */

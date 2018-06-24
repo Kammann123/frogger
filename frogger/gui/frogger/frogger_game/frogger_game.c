@@ -59,7 +59,7 @@ static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uin
  * 
  * type: Tipo del objeto
  */
-uint32_t frogger_game_object_size(uint32_t type);
+static uint32_t frogger_game_object_size(uint32_t type);
 
 /* frogger_game_create_list_lane
  * Crea un arreglo de LANE y inicializa 
@@ -338,7 +338,7 @@ static bool frogger_game_field_init(void){
 }
 
 /* frogger_game_object_size */
-uint32_t frogger_game_object_size(uint32_t type){
+static uint32_t frogger_game_object_size(uint32_t type){
     switch(type){
         case FROGGER_MOTORBIKE:
             return FROGGER_SIZE_MOTORBIKE;
@@ -434,7 +434,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     }
     
     if( !frogger_game_lane_sequence(lane->objectsQty, frogger_game_object_size(lane->type), lane->laneNumber, positions)){
-    
+        free(positions);
         frogger_game_destroy_list_objects(lane->objects, lane->objectsQty);
         return false;
     }
@@ -443,6 +443,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     for(i = 0;i < lane->objectsQty;i++){
         lane->objects[i] = frogger_game_create_object(positions[i], lane->speed, lane->orientation, lane->type);
         if( lane->objects[i] == NULL ){
+            free(positions);
             frogger_game_destroy_list_objects(lane->objects, lane->objectsQty);
             return false;
         }
@@ -451,12 +452,55 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     /* Flag */
     lane->init = true;
     
+    free(positions);
+    
     return true;
 }
 
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* frogger_game_new_level */
+bool frogger_game_new_level(uint32_t level){
+    uint32_t i, ii;
+    POSITION* positions;
+    uint32_t step;
+    
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+    step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif
+    
+    
+    /* Me muevo entre los carriles */
+    for(i = 0;i < field.lanesQty;i++){
+        
+        /* Creo en memoria lista con nuevas posicione */
+        positions = malloc( sizeof(POSITION) * field.lanes[i].objectsQty);
+        if( positions == NULL ){
+            return false;
+        }
+        
+        /* Cargo nuevas posiciones */
+        if( !frogger_game_lane_sequence(field.lanes[i].objectsQty, frogger_game_object_size(field.lanes[i].type), field.lanes[i].laneNumber, positions)){
+            free(positions);
+            return false;
+        }
+        
+        /* Me muevo entre los objetos */
+        for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
+            
+            /* Cargo nueva posicion */
+            field.lanes[i].objects[ii]->currentPos = map_position(positions[ii].x * step, positions[ii].y * step);
+        }
+    }
+    
+    free(positions);
+    
+    return true;
+}
 
 /* frogger_game_has_won */
 bool frogger_game_has_won(void){
