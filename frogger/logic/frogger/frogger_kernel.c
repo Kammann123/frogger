@@ -29,12 +29,14 @@ void frogger_flow(void){
     if( frogger_game_is_street_region() ){
     
         /* Me fijo que no haya colisiones */
-        if( frogger_game_collisions() ){
-            /* Le quito una vida */
-            froggerGame.lifes--;
-            
-            /* Si hubo colision */
-            frogger_reset();
+        if( frogger_game_is_frog_static() ){   
+            if( frogger_game_collisions() ){
+                /* Le quito una vida */
+                froggerGame.lifes--;
+
+                /* Si hubo colision */
+                frogger_reset();
+            }
         }
     }else if( frogger_game_is_water_region() ){
         
@@ -61,7 +63,5 @@ void frogger_reset(void){
     /* Me fijo que tenga vidas aun */
     if( froggerGame.lifes ){
         frogger_game_reset_frog_position();
-    }else{
-
     }
 }

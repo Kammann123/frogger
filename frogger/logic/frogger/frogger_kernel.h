@@ -37,6 +37,7 @@ typedef struct{
 
 /* frogger_flow 
  * Maneja el flujo del programa del juego
+ * 
  */
 void frogger_flow(void);
 

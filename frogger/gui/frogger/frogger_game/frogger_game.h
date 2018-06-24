@@ -23,7 +23,7 @@
 
 /* Parametros default */
 #define DEFAULT_FROG_X  7
-#define DEFAULT_FROG_Y  10
+#define DEFAULT_FROG_Y  5
 #define DEFAULT_FROG_ORIENTATION GUI_ANIMATION_VERTICAL_UP
 
 /* Parametros de tablero */
@@ -127,6 +127,16 @@ typedef struct{
 /* Prototipo de funciones publicas */
 /***********************************/
 
+/* frogger_game_is_frog_static
+ * Devuelve true si la rana esta estatica
+ */
+bool frogger_game_is_frog_static(void);
+
+/* frogger_game_frog_init 
+ * Inicializa el objeto frog
+ */
+bool frogger_game_frog_init(void);
+
 /* frogger_game_is_water_region
  * Devuelve true si esta en la region de agua 
  */
@@ -174,7 +184,7 @@ void frogger_game_move_lanes(void);
  *
  * input: Direccion ingresada por usuario 
  */
-void frogger_game_move_frog(uint16_t input);
+bool frogger_game_move_frog(uint16_t input);
 
 /* frogger_game_pause
  * Pausa el juego

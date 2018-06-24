@@ -119,11 +119,11 @@ ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, uint32
  */
 bool allegro_frogger_movement_valid(uint16_t input);
 
-/* allegro_frogger_init 
- * Inicializa los objetos del juego para
+/* allegro_frogger_frog_init 
+ * Inicializa la rana del juego para
  * su funcionamiento en allegro
  */
-bool allegro_frogger_init(void);
+bool allegro_frogger_frog_init(void);
 
 /* allegro_frogger_screen_update 
  * Actualiza la pantalla del juego

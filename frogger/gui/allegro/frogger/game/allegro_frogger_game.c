@@ -38,46 +38,9 @@ static ALLEGRO_DISPLAY* display = NULL;
  */
 static bool map_collision(uint16_t input, int32_t x, int32_t y);
 
-/* frog_init
- * Inicializa el contenido del objeto animado de la rana
- *
- * frog: Objeto a inicializar
- */
-static bool frog_init(FROG* frog);
-
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
-
-/* frog_init */
-static bool frog_init(FROG* frog){    
-    
-    /* Creo el objeto frog */
-    frog->object = gui_animation_create_object(DEFAULT_FROG_X * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_Y * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_ORIENTATION);
-    if( frog->object == NULL ){
-        return false;
-    }    
-    
-    if( !gui_animation_load_objfile(FROGGER_FROG_UP_OBJFILE, frog->object) ){
-        gui_animation_destroy_object(frog->object);
-        return false;
-    }
-    if( !gui_animation_load_objfile(FROGGER_FROG_DOWN_OBJFILE, frog->object) ){
-        gui_animation_destroy_object(frog->object);
-        return false;
-    }
-    if( !gui_animation_load_objfile(FROGGER_FROG_LEFT_OBJFILE, frog->object) ){
-        gui_animation_destroy_object(frog->object);
-        return false;
-    }
-    if( !gui_animation_load_objfile(FROGGER_FROG_RIGHT_OBJFILE, frog->object) ){
-        gui_animation_destroy_object(frog->object);
-        return false;
-    }
-    
-    /* Frog inicializada correctamente */
-    return true;
-}
 
 /* map_collision */
 static bool map_collision(uint16_t input, int32_t x, int32_t y){
@@ -119,6 +82,30 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y){
 /************************************/
 /* Definicion de funciones publicas */
 /************************************/
+
+/* frog_init */
+bool allegro_frogger_frog_init(void){  
+    
+    if( !gui_animation_load_objfile(FROGGER_FROG_UP_OBJFILE, frog.object) ){
+        gui_animation_destroy_object(frog.object);
+        return false;
+    }
+    if( !gui_animation_load_objfile(FROGGER_FROG_DOWN_OBJFILE, frog.object) ){
+        gui_animation_destroy_object(frog.object);
+        return false;
+    }
+    if( !gui_animation_load_objfile(FROGGER_FROG_LEFT_OBJFILE, frog.object) ){
+        gui_animation_destroy_object(frog.object);
+        return false;
+    }
+    if( !gui_animation_load_objfile(FROGGER_FROG_RIGHT_OBJFILE, frog.object) ){
+        gui_animation_destroy_object(frog.object);
+        return false;
+    }
+    
+    /* Frog inicializada correctamente */
+    return true;
+}
 
 /* allegro_frogger_create_object */
 ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
@@ -239,14 +226,6 @@ bool allegro_frogger_movement_valid(uint16_t input){
     
     /* No hubo caso invalido */
     return true;
-}
-
-/* allegro_frogger_init */
-bool allegro_frogger_init(void){
-    /* Inicializo la rana */
-    if( !frog_init(&frog) ){
-        return false;
-    }    
 }
 
 /* allegro_frogger_screen_update */
