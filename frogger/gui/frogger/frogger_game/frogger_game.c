@@ -613,7 +613,7 @@ void frogger_game_is_transport(void){
                                     if( frog.transport != NULL ){
                                         /* Salgo de modo transporte? */
                                         if( frog.transport == field.lanes[i].objects[iii] ){
-                                            frog.transport == NULL;
+                                            frog.transport = NULL;
                                             found = true;
                                         }
                                     }
@@ -893,7 +893,6 @@ bool frogger_game_init(void){
         }
     }
     
-    
     /* Inicio el motor */
     gui_animation_start_engine(engine);
     
@@ -949,10 +948,8 @@ void frogger_game_move_lanes(void){
                 /* Verifico los limites */
                 if( x < MAP_X_MIN ){
                     field.lanes[i].objects[ii]->currentPos.x = MAP_X_MAX * step;
-                    x = MAP_X_MAX - 1;
                 }else if( x > MAP_X_MAX ){
                     field.lanes[i].objects[ii]->currentPos.x = MAP_X_MIN * step;
-                    x = MAP_X_MIN + 1;
                 }
                 
                 /* Si esta quieto, lo desplazo */
