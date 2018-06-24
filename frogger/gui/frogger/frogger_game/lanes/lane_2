@@ -1,8 +1,8 @@
 [attributes]
-lanenumber: 0
-type: MOTORBIKE
-orientation: HORIZONTAL_RIGHT
-quantity: 4
+lanenumber: 7
+type: TRUCK
+orientation: HORIZONTAL_LEFT
+quantity: 2
 timedelta: 100
 spacedelta: 10
 

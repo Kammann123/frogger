@@ -119,8 +119,8 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y){
 /* Definicion de funciones publicas */
 /************************************/
 
-/* allegro_frogger_lane_object */
-ANIMATED_OBJECT* allegro_frogger_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
+/* allegro_frogger_create_object */
+ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
     ANIMATED_OBJECT* object;
     uint32_t i;
     

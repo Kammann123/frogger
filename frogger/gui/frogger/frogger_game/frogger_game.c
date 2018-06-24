@@ -26,49 +26,6 @@ FIELD field;
  */
 static bool frogger_game_field_init(void);
 
-/* frogger_game_destroy_lane
- * Libera memoria del carril
- *
- * lane: Carril
- */
-static void frogger_game_destroy_lane(LANE* lane);
-
-/* destroy_lane_cfg 
- * Libera las posiciones de un lane cfg
- *
- * amount: Cantidad 
- */
-static void destroy_lane_cfg(LANE_CFG* lanesCfg, uint32_t amount);
-
-/* destroy_lanes
- * Libera el arreglo y destruye sus elementos
- *
- * lanes: Arreglo
- * amount: Cantidad de elementos
- */
-static void destroy_lanes(LANE* lanes, uint32_t amount);
-
-/* create_lanes
- * Crea un arreglo de LANE y inicializa 
- *
- * amount: Cantidad
- */
-static LANE* create_lanes(uint32_t amount);
-
-/* create_objects
- * Creo arreglo de objetos e inicializo
- *
- * amount: Cantidad
- */
-static FROGGER_OBJECT* create_objects(uint32_t amount);
-
-/* destroy_objects
- * Destruyo los objetos y libero memoria
- *
- * lane: Carril
- */
-static void destroy_objects(LANE* lane);
-
 /* frogger_game_lane_init 
  * Inicializa un carril con su archivo de configuracion
  * 
@@ -77,7 +34,7 @@ static void destroy_objects(LANE* lane);
  */
 static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane);
 
-/* frogger_game_lane_object
+/* frogger_game_create_object
  * Crea un objeto de un carril con los parametros especificados
  *
  * pos: Posicion inicial
@@ -85,7 +42,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane);
  * orientation: Orientacion
  * type: Tipo de objeto
  */
-static FROGGER_OBJECT frogger_game_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type);
+static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type);
 
 /* frogger_game_lane_sequence 
  * Crea una secuencia de posiciones para un carril, de forma aleatoria
@@ -105,9 +62,171 @@ static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uin
  */
 static uint32_t frogger_game_object_size(uint32_t type);
 
+/* frogger_game_create_list_lane
+ * Crea un arreglo de LANE y inicializa 
+ *
+ * amount: Cantidad
+ */
+static LANE* frogger_game_create_list_lane(uint32_t amount);
+
+/* frogger_game_create_list_objects
+ * Creo arreglo de objetos e inicializo
+ *
+ * amount: Cantidad
+ */
+static FROGGER_OBJECT* frogger_game_create_list_objects(uint32_t amount);
+
+/* frogger_game_create_list_lane_cfg 
+ * Creo arreglo de archivos de los setting de lane
+ * 
+ * amount: Cantidad
+ */
+static LANE_CFG* frogger_game_create_list_lane_cfg(uint32_t amount);
+
+/* frogger_game_destroy_field 
+ * Libera memoria de un campo de juego
+ *
+ * field: Instancia
+ */
+static void frogger_game_destroy_field(FIELD field);
+
+/* frogger_game_destroy_lane_cfg 
+ * Libera memoria de los archivos de configuracion
+ *
+ * lanesCfg: Lista de archivos
+ * length: Cantidad de elementos de lista 
+ */
+static void frogger_game_destroy_list_lane_cfg(LANE_CFG* lanesCfg, uint32_t length);
+
+/* frogger_game_destroy_list_lane
+ * Libera la memoria de los carriles
+ *
+ * lanes: Instancias de carriles
+ * length: Largo de la lista
+ */
+static void frogger_game_destroy_list_lane(LANE* lanes, uint32_t length);
+
+/* frogger_game_destroy_list_objects
+ * Libera memoria de lista de objetos
+ *
+ * objects: Lista de objetos 
+ * length: Largo de la lista
+ */
+static void frogger_game_destroy_list_objects(FROGGER_OBJECT* objects, uint32_t length);
+
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
+
+/* frogger_game_create_list_lane_cfg */
+static LANE_CFG* frogger_game_create_list_lane_cfg(uint32_t amount){
+    uint32_t i;
+    LANE_CFG* laneCfg;
+    
+    /* Reservo memoria */
+    laneCfg = malloc( sizeof(LANE_CFG) * amount );
+    if( laneCfg == NULL ){
+        return NULL;
+    }
+    
+    /* Itero */
+    for(i = 0;i < amount;i++){
+        laneCfg[i] = NULL;
+    }
+    
+    return laneCfg;
+}
+
+/* frogger_game_create_list_objects */
+static FROGGER_OBJECT* frogger_game_create_list_objects(uint32_t amount){
+    uint32_t i;
+    FROGGER_OBJECT* objects;
+    
+    /* Reservo memoria */
+    objects = malloc( sizeof(FROGGER_OBJECT) * amount );
+    if( objects == NULL ){
+        return NULL;
+    }
+    
+    /* Itero */
+    for(i = 0;i < amount;i++){
+        objects[i] = NULL;
+    }
+    
+    return objects;
+}
+
+/* frogger_game_create_list_lane */
+static LANE* frogger_game_create_list_lane(uint32_t amount){
+    uint32_t i;
+    LANE* lanes;
+    
+    /* Reservo memoria */
+    lanes = malloc( sizeof(LANE) * amount );
+    if( lanes == NULL ){
+        return NULL;
+    }
+    
+    /* Itero */
+    for(i = 0;i < amount;i++){
+        lanes[i].init = false;
+    }
+    
+    return lanes;
+}
+
+/* frogger_game_destroy_field */
+static void frogger_game_destroy_field(FIELD field){
+    /* Libero lanes */
+    frogger_game_destroy_list_lane(field.lanes, field.lanesQty);
+    
+    /* Libero lanes files */
+    frogger_game_destroy_list_lane_cfg(field.lanesCfg, field.lanesQty);
+    
+}
+
+/* frogger_game_destroy_lane_cfg */
+static void frogger_game_destroy_list_lane_cfg(LANE_CFG* lanesCfg, uint32_t length){
+    uint32_t i;
+    
+    /* Destruyo cada elemento */
+    for(i = 0;i < length;i++){
+        if( lanesCfg[i] != NULL ){
+            free( lanesCfg[i] );
+        }
+    }
+    
+    /* Libero la lista */
+    free(lanesCfg);
+}
+
+/* frogger_game_destroy_list_lane */
+static void frogger_game_destroy_list_lane(LANE* lanes, uint32_t length){
+    uint32_t i;
+    
+    /* Destruyo cada elemento */
+    for(i = 0;i < length;i++){
+        if( lanes[i].init ){
+            frogger_game_destroy_list_objects(lanes[i].objects, lanes[i].objectsQty);
+        }
+    }
+    
+    /* Libero memoria de la lista */
+    free(lanes);
+}
+
+/* frogger_game_destroy_list_objects */
+static void frogger_game_destroy_list_objects(FROGGER_OBJECT* objects, uint32_t length){
+    uint32_t i;
+    
+    /* Destruyo cada elemento */
+    for(i = 0;i < length;i++){
+        gui_animation_destroy_object(objects[i]);
+    }
+    
+    /* Libero memoria de la lista */
+    free(objects);
+}
 
 /* frogger_game_object_size */
 static uint32_t frogger_game_object_size(uint32_t type){
@@ -155,51 +274,17 @@ static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uin
     return true;
 }
 
-/* frogger_game_lane_object */
-static FROGGER_OBJECT frogger_game_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
+/* frogger_game_create_object */
+static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
     FROGGER_OBJECT object;
     
 #if PLATFORM_MODE == PC_ALLEGRO
-    object = allegro_frogger_lane_object(pos, speed, orientation, type);
+    object = allegro_frogger_create_object(pos, speed, orientation, type);
 #elif PLATFORM_MODE == RPI
     
 #endif
     
     return object;
-}
-
-/* create_lane_cfg */
-static LANE_CFG* create_lane_cfg(uint32_t amount){
-    uint32_t i;
-    LANE_CFG* laneCfg;
-    
-    /* Reservo memoria */
-    laneCfg = malloc( sizeof(LANE_CFG) * amount );
-    if( laneCfg == NULL ){
-        return NULL;
-    }
-    
-    /* Itero */
-    for(i = 0;i < amount;i++){
-        laneCfg[i] = NULL;
-    }
-    
-    return laneCfg;
-}
-
-/* destroy_lane_cfg */
-static void destroy_lane_cfg(LANE_CFG* lanesCfg, uint32_t amount){
-    uint32_t i;
-    
-    /* Itero y libero elementos */
-    for(i = 0;i < amount;i++){
-        if( lanesCfg[i] != NULL ){
-            free(lanesCfg[i]);
-        }
-    }
-    
-    /* Libero la lane cfg */
-    free(lanesCfg);
 }
 
 /* frogger_game_create_field */
@@ -222,7 +307,7 @@ static bool frogger_game_field_init(void){
     }
     
     /* Reservo memoria para los nombres de archivos */
-    field.lanesCfg = create_lane_cfg(field.lanesQty);
+    field.lanesCfg = frogger_game_create_list_lane_cfg(field.lanesQty);
     if( field.lanesCfg == NULL ){
         gui_files_destroy_setting(setting);
         return false;
@@ -236,7 +321,7 @@ static bool frogger_game_field_init(void){
         /* Busco el elemento */
         auxStr = gui_files_get_string(setting, FIELD_FILES, fileIndex);
         if( auxStr == NULL ){
-            destroy_lane_cfg(field.lanesCfg, field.lanesQty);
+            frogger_game_destroy_list_lane_cfg(field.lanesCfg, field.lanesQty);
             gui_files_destroy_setting(setting);
             return false;
         }
@@ -244,7 +329,7 @@ static bool frogger_game_field_init(void){
         /* Reservo memoria */
         field.lanesCfg[i] = malloc( sizeof(char) * (strlen(auxStr) + 1) );
         if( field.lanesCfg[i] == NULL ){
-            destroy_lane_cfg(field.lanesCfg, field.lanesQty);
+            frogger_game_destroy_list_lane_cfg(field.lanesCfg, field.lanesQty);
             gui_files_destroy_setting(setting);
             return false;
         }
@@ -257,17 +342,17 @@ static bool frogger_game_field_init(void){
     gui_files_destroy_setting(setting);
     
     /* Reservo memoria para los carriles */
-    field.lanes = create_lanes(field.lanesQty);
+    field.lanes = frogger_game_create_list_lane(field.lanesQty);
     if( field.lanes == NULL ){
-        destroy_lane_cfg(field.lanesCfg, field.lanesQty);
+        frogger_game_destroy_list_lane_cfg(field.lanesCfg, field.lanesQty);
         return false;
     }
     
     /* Itero e inicializo cada lane */
     for(i = 0;i < field.lanesQty;i++){
         if( !frogger_game_lane_init(field.lanesCfg[i], field.lanes + i) ){
-            destroy_lane_cfg(field.lanesCfg, field.lanesQty);
-            destroy_lanes(field.lanes, field.lanesQty);
+            frogger_game_destroy_list_lane_cfg(field.lanesCfg, field.lanesQty);
+            frogger_game_destroy_list_lane(field.lanes, field.lanesQty);
             return false;
         }
     }
@@ -338,7 +423,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     gui_files_destroy_setting(setting);
     
     /* Reservo memoria para los objetos */
-    lane->objects = create_objects(lane->objectsQty);
+    lane->objects = frogger_game_create_list_objects(lane->objectsQty);
     if( lane->objects == NULL ){
         return false;
     }
@@ -346,90 +431,27 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
     /* Creo la secuencia */
     positions = malloc( sizeof(POSITION) * lane->objectsQty );
     if(positions == NULL){
-        destroy_objects(lane);
+        frogger_game_destroy_list_objects(lane->objects, lane->objectsQty);
         return false;
     }
     if( !frogger_game_lane_sequence(lane->objectsQty, frogger_game_object_size(lane->type), lane->laneNumber, positions)){
-        destroy_objects(lane);
+        frogger_game_destroy_list_objects(lane->objects, lane->objectsQty);
         return false;
     }
     
     /* Creo los objetos */
     for(i = 0;i < lane->objectsQty;i++){
-        lane->objects[i] = frogger_game_lane_object(map_position(0, lane->laneNumber), lane->speed, lane->orientation, lane->type);
+        lane->objects[i] = frogger_game_create_object(positions[i], lane->speed, lane->orientation, lane->type);
         if( lane->objects[i] == NULL ){
-            destroy_objects(lane);
+            frogger_game_destroy_list_objects(lane->objects, lane->objectsQty);
             return false;
         }
     }
     
+    /* Flag */
+    lane->init = true;
+    
     return true;
-}
-
-static FROGGER_OBJECT* create_objects(uint32_t amount){
-    uint32_t i;
-    FROGGER_OBJECT* objects;
-    
-    /* Reservo memoria */
-    objects = malloc( sizeof(FROGGER_OBJECT) * amount );
-    if( objects == NULL ){
-        return NULL;
-    }
-    
-    /* Itero */
-    for(i = 0;i < amount;i++){
-        objects[i] = NULL;
-    }
-    
-    return objects;
-}
-
-static void destroy_objects(LANE* lane){
-    uint32_t i;
-    
-    /* Itero */
-    for(i = 0;i < lane->objectsQty;i++){
-        if( lane->objects[i] != NULL ){
-            gui_animation_destroy_object( lane->objects[i] );
-        }
-    }
-    
-    /* Libero memoria de la lista */
-    free(lane->objects);
-}
-
-/* create_lanes */
-static LANE* create_lanes(uint32_t amount){
-    uint32_t i;
-    LANE* lanes;
-    
-    /* Reservo memoria */
-    lanes = malloc( sizeof(LANE) * amount );
-    if( lanes == NULL ){
-        return NULL;
-    }
-    
-    /* Itero */
-    for(i = 0;i < amount;i++){
-        lanes[i].init = false;
-    }
-    
-    return lanes;
-}
-
-/* destroy_lanes */
-static void destroy_lanes(LANE* lanes, uint32_t amount){
-    uint32_t i;
-    
-    /* Itero */
-    for(i = 0;i < amount;i++){
-        if( lanes[i].init ){
-            
-        }
-    }
-    
-    /* Libero memoria */
-    free(lanes);
 }
 
 /************************************/
@@ -495,6 +517,9 @@ void frogger_game_close(void){
     if( engine != NULL ){
         gui_animation_destroy_engine(engine);
     }
+    
+    /* Destruyo objetos de campo */
+    frogger_game_destroy_field(field);
 }
 
 /* frogger_game_init */

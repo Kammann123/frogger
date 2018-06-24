@@ -1,6 +1,6 @@
 [attributes]
-lanenumber: 0
-type: MOTORBIKE
+lanenumber: 2
+type: BOAT
 orientation: HORIZONTAL_RIGHT
 quantity: 4
 timedelta: 100

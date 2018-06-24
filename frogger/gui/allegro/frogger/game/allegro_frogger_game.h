@@ -102,7 +102,7 @@
 /* Prototipo de funciones publicas */
 /***********************************/
 
-/* allegro_frogger_lane_object 
+/* allegro_frogger_create_object 
  * Crea un objeto animado perteneciente a un carril
  *
  * pos: Posicion inicial
@@ -110,7 +110,7 @@
  * orientation: Direccion de movimiento
  * type: Tipo de vehiculo
  */
-ANIMATED_OBJECT* allegro_frogger_lane_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type);
+ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type);
 
 /* allegro_frogger_movement_valid 
  * Valida si el movimiento en dicha orientacion es valido
