@@ -64,9 +64,9 @@
 #define FROGGER_CFG_YACHT       "YACHT"
 
 #define FROGGER_SIZE_MOTORBIKE   2
-#define FROGGER_SIZE_CAR         3
+#define FROGGER_SIZE_CAR         2
 #define FROGGER_SIZE_TRUCK       4
-#define FROGGER_SIZE_BOAT       2
+#define FROGGER_SIZE_BOAT        2
 #define FROGGER_SIZE_YACHT       3
 
 typedef enum {
