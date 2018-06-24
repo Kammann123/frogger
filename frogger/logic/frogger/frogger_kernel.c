@@ -92,9 +92,16 @@ bool frogger_flow(void){
         
         /* Me fijo si termino el nivel */
         if( froggerGame.stage == STAGE_MAX_VALUE ){
+            /* Pauso el juego */
+            frogger_game_pause();
+            
+            /* Subo el nivel */
             if( !frogger_level_up() ){
                 return false;
             }
+            
+            /* Continuo el juego */
+            frogger_game_continue();
         }
         
         /* Reseteo posicion */

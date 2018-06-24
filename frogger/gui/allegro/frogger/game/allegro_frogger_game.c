@@ -285,7 +285,7 @@ void allegro_frogger_screen_update(void){
     /* Pongo la info de time */
     font = al_load_ttf_font(FROGGER_FONT_0, FROGGER_SIZE_0, 0);
     if( font != NULL ){
-         sprintf(text, "%s %d", ALLEGRO_TIME_MSG, froggerGame.time);
+        sprintf(text, "%s %d", ALLEGRO_TIME_MSG, froggerGame.time);
         al_draw_text(font, TIME_COLOR, ALLEGRO_DISPLAY_TIME_X, ALLEGRO_DISPLAY_TIME_Y, 0, text);
     }else{
         return;
@@ -294,11 +294,14 @@ void allegro_frogger_screen_update(void){
     /* Pongo los objetos */
     for(i = 0;i < field.lanesQty;i++){
         for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
-            bitmap = al_load_bitmap( gui_animation_get_frame(field.lanes[i].objects[ii]) );
-            if( bitmap == NULL ){
-                return;
+            if( field.lanes[i].objects[ii]->currentPos.x < ALLEGRO_FROGGER_GAME_WIDTH ){
+                bitmap = al_load_bitmap( gui_animation_get_frame(field.lanes[i].objects[ii]) );
+                if( bitmap == NULL ){
+                  return;
+                }
+                al_draw_bitmap(bitmap, field.lanes[i].objects[ii]->currentPos.x, field.lanes[i].objects[ii]->currentPos.y, 0);  
             }
-            al_draw_bitmap(bitmap, field.lanes[i].objects[ii]->currentPos.x, field.lanes[i].objects[ii]->currentPos.y, 0);
+            
         }
     }
     
