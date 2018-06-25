@@ -30,6 +30,8 @@
 
 /* Eventos del flujo del juego */
 typedef enum{
+    FROGGER_HAS_DIED,
+    FROGGER_HAS_DROWN,
     FROGGER_HAS_LOST,
     FROGGER_HAS_WON,
     FROGGER_ERROR,

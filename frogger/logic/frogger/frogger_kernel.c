@@ -40,6 +40,11 @@ uint32_t frogger_calculate_score(uint32_t level, uint32_t stage, uint32_t time){
 /* frogger_flow */
 uint32_t frogger_flow(void){
     
+    /* Me fijo si perdio */
+    if( !froggerGame.lifes ){
+        return FROGGER_HAS_LOST;
+    }
+    
     /* Controlo que se muevan los carriles */
     frogger_game_move_lanes();
     
@@ -53,7 +58,7 @@ uint32_t frogger_flow(void){
                 froggerGame.lifes--;
 
                 /* Si hubo colision */
-                frogger_reset();
+                return FROGGER_HAS_DIED;
             }
         }
     }else if( frogger_game_is_water_region() ){
@@ -67,7 +72,7 @@ uint32_t frogger_flow(void){
             froggerGame.lifes--;
             
             /* Si hubo colision */
-            frogger_reset();
+            return FROGGER_HAS_DROWN;
         }else{
             /* Manejo el transporte */
             frogger_game_transport_frog();
@@ -79,40 +84,35 @@ uint32_t frogger_flow(void){
         return FROGGER_HAS_LOST;
     }
     
-    /* Me fijo si perdio */
-    if( !froggerGame.lifes ){
-        return FROGGER_HAS_LOST;
-    }else{
-        /* Me fijo si gano */
-        if( frogger_game_has_won() ){
-            /* Calculo y agrego puntaje */
-            froggerGame.score += frogger_calculate_score(froggerGame.level, froggerGame.stage, froggerGame.time);
+    /* Me fijo si gano */
+    if( frogger_game_has_won() ){
+        /* Calculo y agrego puntaje */
+        froggerGame.score += frogger_calculate_score(froggerGame.level, froggerGame.stage, froggerGame.time);
 
-            /* Incremento stage */
-            froggerGame.stage++;
+        /* Incremento stage */
+        froggerGame.stage++;
 
-            /* Reinicio timer */
-            froggerGame.time = 0;
+        /* Reinicio timer */
+        froggerGame.time = 0;
 
-            /* Me fijo si termino el nivel */
-            if( froggerGame.stage == STAGE_MAX_VALUE ){
-                /* Pauso el juego */
-                frogger_game_pause();
+        /* Me fijo si termino el nivel */
+        if( froggerGame.stage == STAGE_MAX_VALUE ){
+            /* Pauso el juego */
+            frogger_game_pause();
 
-                /* Subo el nivel */
-                if( !frogger_level_up() ){
-                    return FROGGER_ERROR;
-                }
-
-                /* Continuo el juego */
-                frogger_game_continue();
+            /* Subo el nivel */
+            if( !frogger_level_up() ){
+                return FROGGER_ERROR;
             }
 
-            /* Reseteo posicion */
-            frogger_reset();
-            
-            return FROGGER_HAS_WON;
+            /* Continuo el juego */
+            frogger_game_continue();
         }
+
+        /* Reseteo posicion */
+        frogger_reset();
+
+        return FROGGER_HAS_WON;
     }
     
     return FROGGER_NOTHING;

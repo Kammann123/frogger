@@ -39,6 +39,7 @@ typedef enum {
     PAUSEMENU_STAGE,
     LOSTSCREEN_STAGE,
     CHANGESCREEN_STAGE,
+    DEAD_STAGE,
     CLOSING_STAGE
 } STAGE_VALUES;
 
@@ -250,6 +251,10 @@ void on_frogger_event(GAME_STAGE* stage, uint32_t event){
             frogger_game_pause();
             change_stage(stage, CHANGESCREEN_STAGE);
             break;
+        case FROGGER_HAS_DIED:
+            frogger_game_dead_animation();
+            change_stage(stage, DEAD_STAGE);
+            break;
     }
 }
 
@@ -335,6 +340,12 @@ void switch_tasks_target(GAME_STAGE* stage){
         case FROGGER_STAGE:
             on_frogger_event(stage, frogger_flow());
             break;
+        case DEAD_STAGE:
+            if( frogger_game_is_frog_static() ){
+                frogger_game_reset_frog_position();
+                change_stage(stage, FROGGER_STAGE);
+            }
+            break;
     }    
 }
 
@@ -351,7 +362,7 @@ void switch_update_target(GAME_STAGE* stage){
             break;
         case HOWTO_STAGE:
             break;
-        case FROGGER_STAGE:
+        case FROGGER_STAGE: case DEAD_STAGE:
             frogger_game_screen_update();
             break;
         case PAUSEMENU_STAGE:

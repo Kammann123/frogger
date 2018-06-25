@@ -9,5 +9,9 @@ spacedelta: 40
 1: gui/allegro/frogger/game/objects/frog/frog_up
 2: gui/allegro/frogger/game/objects/frog/frog_left
 3: gui/allegro/frogger/game/objects/frog/frog_right
+4: gui/allegro/frogger/game/objects/frog/death_left
+5: gui/allegro/frogger/game/objects/frog/death_right
+6: gui/allegro/frogger/game/objects/frog/death_up
+7: gui/allegro/frogger/game/objects/frog/death_down
 
 END

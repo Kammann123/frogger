@@ -1155,3 +1155,16 @@ void frogger_game_move_lanes(void){
         }
     }
 }
+
+/* frogger_game_dead_animation */
+void frogger_game_dead_animation(void){
+    if( gui_animation_is_animation(frog.object, FROG_LEFT) ){
+        gui_animation_start_one_time(frog.object, DEATH_LEFT);
+    }else if( gui_animation_is_animation(frog.object, FROG_RIGHT) ){
+        gui_animation_start_one_time(frog.object, DEATH_RIGHT);
+    }else if( gui_animation_is_animation(frog.object, FROG_UP) ){
+        gui_animation_start_one_time(frog.object, DEATH_UP);
+    }else if( gui_animation_is_animation(frog.object, FROG_DOWN) ){
+        gui_animation_start_one_time(frog.object, DEATH_DOWN);
+    }
+}

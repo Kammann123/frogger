@@ -27,6 +27,11 @@
 #define FROG_LEFT   "FROG_LEFT"
 #define FROG_RIGHT  "FROG_RIGHT"
 
+#define DEATH_LEFT   "DEATH_LEFT"
+#define DEATH_RIGHT  "DEATH_RIGHT"
+#define DEATH_UP   "DEATH_UP"
+#define DEATH_DOWN  "DEATH_DOWN"
+
 #define MOTORBIKE_LEFT     "MOTORBIKE_LEFT"
 #define MOTORBIKE_RIGHT    "MOTORBIKE_RIGHT"
 
@@ -159,6 +164,11 @@ typedef struct{
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* frogger_game_dead_animation 
+ * Muestra la ranita muriendo
+ */
+void frogger_game_dead_animation(void);
 
 /* frogger_game_new_level
  * Genera un nuevo campo al cambiar nivel
