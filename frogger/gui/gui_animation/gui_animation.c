@@ -254,7 +254,11 @@ static void gui_animation_move_object(OBJECT_POINTER object){
     uint32_t dist;
     
     /* Calculo desplazamiento */
-    dist = (object->speed.spaceDelta / gui_animation_get_frame_length(object, object->currentAnimation));
+    if( object->status == GUI_ANIMATION_STATE_MOVE ){
+        dist = (object->speed.spaceDelta / gui_animation_get_frame_length(object, object->currentAnimation));
+    }else{
+        dist = object->speed.spaceDelta;
+    }
     
     /* Busco la animacion */
     for(i = 0;i < object->animQty;i++){
@@ -393,7 +397,7 @@ OBJECT_POINTER gui_animation_load_object(char* filename, POSITION pos, ANIMATION
     SETTING* settings;
     LENGTH length;
     char* str, i;
-    char ai[2];
+    char ai[10];
     
     /* Creo el objeto por primera vez */
     object = gui_animation_create_object(pos);
@@ -483,7 +487,7 @@ static bool gui_animation_load_animation(ANIMATION* animation, char* filename){
     SETTING* settings;
     LENGTH length, i;
     char* str;
-    char fi[2];
+    char fi[5];
     
     /* Creo la instancia */
     *animation = gui_animation_create_animation();
@@ -569,6 +573,10 @@ static ANIMATION gui_animation_create_animation(void){
 static bool gui_animation_init_animation(ANIMATION* animation, ANIMATION_ID id, LENGTH qty){
     LENGTH length, i;
     
+    if( animation->init ){
+        return false;
+    }
+    
     /* Calculo bytes para id */
     length = strlen(id) + 1;
     
@@ -618,6 +626,7 @@ static void gui_animation_destroy_animation(ANIMATION* animation){
             /* Libero memoria de arreglo frame */
             free( animation->frames );
         }
+        animation->init = false;
     }
 }
 
@@ -642,6 +651,14 @@ static FRAME gui_animation_create_frame(void){
 /* gui_animation_init_frame */
 static bool gui_animation_init_frame(FRAME* frame, char* filename){
     LENGTH length;
+    
+    if( frame->init ){
+        return false;
+    }
+    
+    if( filename == NULL ){
+        return false;
+    }
     
     /* Calculo cantidad de bytes */
     length = strlen(filename) + 1;
@@ -673,6 +690,7 @@ static void gui_animation_destroy_frame(FRAME* frame){
                 free( frame->file );
             }
         }
+        frame->init = false;
     }
 }
 
@@ -684,6 +702,7 @@ static void gui_animation_destroy_frame(FRAME* frame){
 static void* gui_animation_engine_thread(void* thisEngine){
     ANIMATION_ENGINE* engine = thisEngine;
     ANIMATED_OBJECT* object;
+    uint32_t timeMax;
     
     uint32_t i, ii;
     
@@ -717,8 +736,14 @@ static void* gui_animation_engine_thread(void* thisEngine){
                     /* Incremento contador de tiempo */
                     object->timeCounter++;
                     
+                    /* Get time max */
+                    if( object->status == GUI_ANIMATION_STATE_MOVE ){
+                        timeMax = object->speed.timeDelta / gui_animation_get_frame_length(object, object->currentAnimation);
+                    }else{
+                        timeMax = object->speed.timeDelta;
+                    }
                     /* Me fijo si paso el tiempo */
-                    if( object->timeCounter >= (object->speed.timeDelta / gui_animation_get_frame_length(object, object->currentAnimation)) ){
+                    if( object->timeCounter >= timeMax ){
                         
                         /* Reinicio el tiempo */
                         object->timeCounter = 0;

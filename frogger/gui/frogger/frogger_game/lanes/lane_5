@@ -3,7 +3,7 @@ lanenumber: 2
 type: BOAT
 orientation: HORIZONTAL_RIGHT
 quantity: 3
-timedelta: 240
+timedelta: 300
 spacedelta: 1
 a_factor: 5
 

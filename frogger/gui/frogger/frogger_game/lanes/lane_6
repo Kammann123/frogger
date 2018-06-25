@@ -3,7 +3,7 @@ lanenumber: 3
 type: YACHT
 orientation: HORIZONTAL_RIGHT
 quantity: 2
-timedelta: 360
+timedelta: 470
 spacedelta: 1
 a_factor: 5
 

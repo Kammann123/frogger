@@ -3,9 +3,13 @@ id: FROG_RIGHT
 orientation: HORIZONTAL_RIGHT
 
 [frames]
-0: gui/allegro/frogger/game/objects/frog/sprites_right/frog_0.png
-1: gui/allegro/frogger/game/objects/frog/sprites_right/frog_1.png
-2: gui/allegro/frogger/game/objects/frog/sprites_right/frog_2.png
-3: gui/allegro/frogger/game/objects/frog/sprites_right/frog_0.png
+0: gui/allegro/frogger/game/objects/frog/sprites_right/froggy_0.png
+1: gui/allegro/frogger/game/objects/frog/sprites_right/froggy_1.png
+2: gui/allegro/frogger/game/objects/frog/sprites_right/froggy_2.png
+3: gui/allegro/frogger/game/objects/frog/sprites_right/froggy_3.png
+4: gui/allegro/frogger/game/objects/frog/sprites_right/froggy_4.png
+5: gui/allegro/frogger/game/objects/frog/sprites_right/froggy_5.png
+6: gui/allegro/frogger/game/objects/frog/sprites_right/froggy_6.png
+7: gui/allegro/frogger/game/objects/frog/sprites_right/froggy_7.png
 
 END

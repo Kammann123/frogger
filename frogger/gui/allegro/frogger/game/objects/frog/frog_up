@@ -3,9 +3,13 @@ id: FROG_UP
 orientation: VERTICAL_UP
 
 [frames]
-0: gui/allegro/frogger/game/objects/frog/sprites_up/frog_0.png
-1: gui/allegro/frogger/game/objects/frog/sprites_up/frog_1.png
-2: gui/allegro/frogger/game/objects/frog/sprites_up/frog_2.png
-3: gui/allegro/frogger/game/objects/frog/sprites_up/frog_3.png
+0: gui/allegro/frogger/game/objects/frog/sprites_up/froggy_0.png
+1: gui/allegro/frogger/game/objects/frog/sprites_up/froggy_1.png
+2: gui/allegro/frogger/game/objects/frog/sprites_up/froggy_2.png
+3: gui/allegro/frogger/game/objects/frog/sprites_up/froggy_3.png
+4: gui/allegro/frogger/game/objects/frog/sprites_up/froggy_4.png
+5: gui/allegro/frogger/game/objects/frog/sprites_up/froggy_5.png
+6: gui/allegro/frogger/game/objects/frog/sprites_up/froggy_6.png
+7: gui/allegro/frogger/game/objects/frog/sprites_up/froggy_7.png
 
 END

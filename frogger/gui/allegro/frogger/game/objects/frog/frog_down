@@ -3,9 +3,13 @@ id: FROG_DOWN
 orientation: VERTICAL_DOWN
 
 [frames]
-0: gui/allegro/frogger/game/objects/frog/sprites_down/frog_0.png
-1: gui/allegro/frogger/game/objects/frog/sprites_down/frog_1.png
-2: gui/allegro/frogger/game/objects/frog/sprites_down/frog_2.png
-3: gui/allegro/frogger/game/objects/frog/sprites_down/frog_3.png
+0: gui/allegro/frogger/game/objects/frog/sprites_down/froggy_6.png
+1: gui/allegro/frogger/game/objects/frog/sprites_down/froggy_0.png
+2: gui/allegro/frogger/game/objects/frog/sprites_down/froggy_1.png
+3: gui/allegro/frogger/game/objects/frog/sprites_down/froggy_2.png
+4: gui/allegro/frogger/game/objects/frog/sprites_down/froggy_3.png
+5: gui/allegro/frogger/game/objects/frog/sprites_down/froggy_4.png
+6: gui/allegro/frogger/game/objects/frog/sprites_down/froggy_5.png
+7: gui/allegro/frogger/game/objects/frog/sprites_down/froggy_6.png
 
 END

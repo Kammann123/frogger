@@ -36,7 +36,7 @@
 #define ALLEGRO_DISPLAY_BORDER_RIGHT    600
 
 #define ALLEGRO_DISPLAY_STEP    40
-#define ALLEGRO_STEP_RESOLUTION 5
+#define ALLEGRO_STEP_RESOLUTION 10
 
 /* Obstaculos del juego */
 #define TRASH_0_X 0

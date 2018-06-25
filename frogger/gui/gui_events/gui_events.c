@@ -59,7 +59,12 @@ static void* queue_thread(void* queue){
     /* Habilito funcionamiento de la cola */
     while( !eventQueue->shutdown ){
         
-        pthread_mutex_lock(&(eventQueue->queueMutex));
+        pthread_mutex_lock(&eventQueue->queueMutex);
+        /* Verifico error */
+        if( eventQueue->shutdown ){
+            pthread_mutex_unlock(&eventQueue->queueMutex);
+            pthread_exit(NULL);
+        }
         /* Reviso todas las fuentes de eventos */
         for(i = 0;i < eventQueue->sources->length;i++){
             /* Busco los datos de la fuente */
@@ -68,14 +73,10 @@ static void* queue_thread(void* queue){
             
             /* Busco actualizacion del evento */
             if( callback(&event, args) ){
-                /* Verifico error */
-                if( eventQueue->shutdown ){
-                    pthread_exit(NULL);
-                }
                 raise_event(eventQueue, &event);
             }
         }
-        pthread_mutex_unlock(&(eventQueue->queueMutex));
+        pthread_mutex_unlock(&eventQueue->queueMutex);
     }
 }
 
@@ -167,10 +168,10 @@ bool queue_next_event(EVENT_QUEUE* queue, EVENT* event){
 /* queue_close */
 void queue_close(EVENT_QUEUE* queue){
     
-    pthread_mutex_lock(&(queue->queueMutex));
+    pthread_mutex_lock(&queue->queueMutex);
     /* Apago el thread */
     queue->shutdown = true;
-    pthread_mutex_unlock(&(queue->queueMutex));
+    pthread_mutex_unlock(&queue->queueMutex);
     
     /* Elimino el mutex */
     pthread_mutex_destroy(&(queue->queueMutex));

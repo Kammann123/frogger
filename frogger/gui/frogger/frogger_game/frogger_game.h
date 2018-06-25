@@ -68,14 +68,14 @@
 #define FIELD_FILES         "files"
 #define FIELD_QUANTITY      "quantity"
 
-#define LANE_ATTRIBUTES     "attributes"
-#define LANE_NUMBER         "lanenumber"
-#define LANE_TYPE           "type"
-#define LANE_ORIENTATION    "orientation"
-#define LANE_QUANTITY       "quantity"
-#define LANE_TIMEDELTA      "timedelta"
-#define LANE_SPACEDELTA     "spacedelta"   
-#define LANE_ACCELERATION   "a_factor"
+#define LANE_ATTRIBUTES         "attributes"
+#define LANE_ATT_NUMBER         "lanenumber"
+#define LANE_ATT_TYPE           "type"
+#define LANE_ATT_ORIENTATION    "orientation"
+#define LANE_ATT_QUANTITY       "quantity"
+#define LANE_ATT_TIME           "timedelta"
+#define LANE_ATT_SPACE          "spacedelta"   
+#define LANE_ATT_ACCEL          "a_factor"
     
 /* Tipos de objetos */
 #define FROGGER_CFG_MOTORBIKE   "MOTORBIKE"
@@ -95,7 +95,8 @@ typedef enum {
     FROGGER_CAR,
     FROGGER_TRUCK,
     FROGGER_BOAT,
-    FROGGER_YACHT
+    FROGGER_YACHT,
+    FROGGER_NONE
 } OBJECT_TYPES;
 
 /******************/
@@ -116,36 +117,43 @@ typedef FROGGER_OBJECT BOAT;
 typedef FROGGER_OBJECT YACHT;
 
 typedef struct{
+    /* Archivo */
+    char* file;
+    
+    /* Inicializacion */
+    bool init;
+} CFG;
+
+typedef struct{
     /* Objetos del carril */
     FROGGER_OBJECT* objects;
-    uint32_t objectsQty;
+    LENGTH objectsQty;
     
     /* Atributos del carril */
     uint32_t laneNumber;
     
     /* Movimiento del carril */
     uint32_t type;
-    uint32_t orientation;
+    GUI_ANIMATION_ORIENTATION orientation;
     SPEED speed;
     
     /* Factor de aceleracion */
     uint32_t aFactor;
     
-    /* Flags */
+    /* Inicializacion */
     bool init;
 } LANE;
-
-typedef char* LANE_CFG;
         
 typedef struct{
     /* Carriles del campo */
     LANE* lanes;
+    CFG* files;
     
     /* Cantidad de carriles */
-    uint32_t lanesQty;
+    LENGTH lanesQty;
     
-    /* Archivos de configuracion de lanes */
-    LANE_CFG* lanesCfg;
+    /* Inicializacion */
+    bool init;
 } FIELD;
 
 /***********************************/
