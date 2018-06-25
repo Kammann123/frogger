@@ -130,9 +130,45 @@ static SPEED frogger_game_speed_resolution(SPEED speed);
  */
 static SPEED frogger_game_new_speed(SPEED speed, uint32_t factor, uint32_t var);
 
+/* frogger_game_get_norm_pos
+ * Devuelve una posicion normalizada del objeto desde la referencia marcada 
+ * 
+ * reference: Referencia 
+ * obj: Objeto
+ */
+static POSITION frogger_game_get_norm_pos(POSITION reference, POSITION obj);
+
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
+
+/* frogger_game_get_norm_pos */
+static POSITION frogger_game_get_norm_pos(POSITION reference, POSITION obj){
+    uint32_t step;
+    POSITION newPos = {
+        .y = reference.y
+    };
+    
+    /* Cargo el desplazamiento */
+#if PLATFORM_MODE == PC_ALLEGRO
+    step = ALLEGRO_DISPLAY_STEP;
+#elif PLATFORM_MODE == RPI
+#endif
+    
+    /* Busco la pos */
+    for(newPos.x = reference.x;newPos.x <= (obj.x + step);newPos.x += step){
+        
+        /* Verifico que es valida */
+        if( obj.x < newPos.x ){
+            newPos.x -= step;
+            return newPos;
+        }
+    }
+    
+    newPos.x = obj.x;
+    
+    return newPos;
+}
 
 /* frogger_game_new_speed */
 static SPEED frogger_game_new_speed(SPEED speed, uint32_t factor, uint32_t var){
@@ -539,7 +575,6 @@ bool frogger_game_new_level(uint32_t level){
 #elif PLATFORM_MODE == RPI
 #endif
     
-    
     /* Me muevo entre los carriles */
     for(i = 0;i < field.lanesQty;i++){
         
@@ -685,6 +720,8 @@ void frogger_game_is_transport(void){
                                         /* Modo transporte */
                                         frog.transport = field.lanes[i].objects[iii];
                                         found = true;
+                                        /* Normalizo la posicion */
+                                        frog.object->currentPos = frogger_game_get_norm_pos(frog.transport->currentPos, frog.object->currentPos);
                                     }
                                 }else{
                                     if( frog.transport != NULL ){

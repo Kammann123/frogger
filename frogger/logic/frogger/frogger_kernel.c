@@ -74,6 +74,11 @@ uint32_t frogger_flow(void){
         }
     }
     
+    /* Limite de tiempo */
+    if( froggerGame.time > TIME_MAX_VALUE ){
+        return FROGGER_HAS_LOST;
+    }
+    
     /* Me fijo si perdio */
     if( !froggerGame.lifes ){
         return FROGGER_HAS_LOST;

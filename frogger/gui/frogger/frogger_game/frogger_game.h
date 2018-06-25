@@ -55,7 +55,7 @@
 #define LANE_TIMEDELTA      "timedelta"
 #define LANE_SPACEDELTA     "spacedelta"   
 #define LANE_ACCELERATION   "a_factor"
-
+    
 /* Tipos de objetos */
 #define FROGGER_CFG_MOTORBIKE   "MOTORBIKE"
 #define FROGGER_CFG_CAR         "CAR"
