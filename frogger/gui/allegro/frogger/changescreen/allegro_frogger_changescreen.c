@@ -29,6 +29,7 @@ void allegro_frogger_changescreen(void){
         if( display == NULL ){
             return;
         }
+        al_set_window_position(display, 300, 100);
     }
 
     /* Limpio el fondo */

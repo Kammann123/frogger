@@ -9,7 +9,7 @@
 /**************************/
 
 /* Datos de la partida */
-FROGGER_GAME_DATA froggerGame = {
+static FROGGER_GAME_DATA froggerGame = {
     .stage = DEFAULT_STAGE,
     .level = DEFAULT_LEVEL,
     .lifes = DEFAULT_LIFES,
@@ -169,4 +169,9 @@ uint32_t frogger_get_level(void){
 /* frogger_get_stage */
 uint32_t frogger_get_stage(void){
     return froggerGame.stage;
+}
+
+/* frogger_get_time */
+uint32_t frogger_get_time(void){
+    return froggerGame.time;
 }

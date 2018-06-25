@@ -28,6 +28,7 @@ void allegro_frogger_mainmenu(const char** options, uint16_t optionSelected){
         if( display == NULL ){
             return;
         }
+        al_set_window_position(display, 300, 100);
     }
     
     /* Cargo el bitmap */

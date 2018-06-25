@@ -75,6 +75,8 @@ static void* timer_thread(void* timerQueue){
         }
         pthread_mutex_unlock(&queue->timerMutex);
     }
+    
+    return NULL;
 }
 
 /************************************/

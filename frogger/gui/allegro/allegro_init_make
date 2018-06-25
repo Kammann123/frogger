@@ -1,0 +1,13 @@
+CC = gcc
+OPTIONS = -Wall -lpthread `pkg-config --libs allegro-5.0` `pkg-config --libs allegro_acodec-5.0` `pkg-config --libs\
+allegro_audio-5.0` `pkg-config --libs allegro_color-5.0` `pkg-config --libs allegro_dialog-5.0` `pkg-config --libs allegro_font-5.0` `pkg-config --libs allegro_image-5.0` `pkg-config --libs allegro_main-5.0` `pkg-config --libs allegro_memfile-5.0` `pkg-config --libs allegro_physfs-5.0` `pkg-config --libs allegro_primitives-5.0` `pkg-config --libs allegro_ttf-5.0`
+NAME = allegro_init
+SRC = ${NAME}.c
+HEADERS = ${NAME}.h
+OBJS = ${NAME}.o
+
+${OBJS}: ${SRC} ${HEADERS}
+	${CC} ${OPTIONS} -c ${SRC}
+
+clean:
+	rm *.o

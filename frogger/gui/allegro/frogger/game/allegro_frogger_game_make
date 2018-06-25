@@ -1,0 +1,12 @@
+CC = gcc
+OPTIONS = -Wall -pthread -I/usr/include/allegro5 -L/usr/lib -lallegro
+NAME = allegro_frogger_game
+SRC = ${NAME}.c
+HEADERS = ${NAME}.h
+OBJS = ${NAME}.o
+
+${OBJS}: ${SRC} ${HEADERS}
+	${CC} ${OPTIONS} -c ${SRC}
+
+clean:
+	rm *.o

@@ -19,7 +19,6 @@
 /* Objetos de acceso externo */
 extern FROG frog;
 extern FIELD field;
-extern FROGGER_GAME_DATA froggerGame;
 
 /* Display del juego */
 static ALLEGRO_DISPLAY* display = NULL;
@@ -195,6 +194,7 @@ void allegro_frogger_screen_update(void){
         if( display == NULL ){
             return;
         }
+        al_set_window_position(display, 300, 100);
     }
     
     /* Limpio la ventana */
@@ -209,7 +209,7 @@ void allegro_frogger_screen_update(void){
     
     /* Pongo las vidas */
     bitmap = NULL;
-    switch( froggerGame.lifes ){
+    switch( frogger_get_lifes() ){
         case 1:
             bitmap = al_load_bitmap(ALLEGRO_IMAGE_LIFES_1);
             break;
@@ -227,7 +227,7 @@ void allegro_frogger_screen_update(void){
     /* Pongo la info de score */
     font = al_load_ttf_font(ALLEGRO_FONT_0, ALLEGRO_SIZE_0, 0);
     if( font != NULL ){
-         sprintf(text, "%s %d", ALLEGRO_SCORE_MSG, froggerGame.score);
+         sprintf(text, "%s %d", ALLEGRO_SCORE_MSG, frogger_get_score());
         al_draw_text(font, SCORE_COLOR, ALLEGRO_DISPLAY_SCORE_X, ALLEGRO_DISPLAY_SCORE_Y, 0, text);
     }else{
         return;
@@ -236,7 +236,7 @@ void allegro_frogger_screen_update(void){
     /* Pongo la info de time */
     font = al_load_ttf_font(ALLEGRO_FONT_0, ALLEGRO_SIZE_0, 0);
     if( font != NULL ){
-        sprintf(text, "%s %d", ALLEGRO_TIME_MSG, froggerGame.time);
+        sprintf(text, "%s %d", ALLEGRO_TIME_MSG, frogger_get_time());
         al_draw_text(font, TIME_COLOR, ALLEGRO_DISPLAY_TIME_X, ALLEGRO_DISPLAY_TIME_Y, 0, text);
     }else{
         return;

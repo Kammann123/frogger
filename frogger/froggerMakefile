@@ -1,0 +1,14 @@
+CC = gcc
+OPTIONS = -Wall
+SRC = 
+HEADERS = 
+OBJS = 
+
+frogger: ${OBJS}
+	${CC} ${OPTIONS} ${OBJS} -frogger
+
+${OBJS}: ${SRC} ${HEADERS}
+	${CC} ${OPTIONS} -c ${SRC}
+
+clean:
+	rm *.o

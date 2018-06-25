@@ -1,0 +1,12 @@
+CC = gcc
+OPTIONS = -Wall
+NAME = gui_timer
+SRC = ${NAME}.c
+HEADERS = ${NAME}.h
+OBJS = ${NAME}.o
+
+${OBJS}: ${SRC} ${HEADERS}
+	${CC} ${OPTIONS} -c ${SRC}
+
+clean:
+	rm *.o

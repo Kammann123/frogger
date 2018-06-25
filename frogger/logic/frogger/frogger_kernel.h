@@ -75,6 +75,11 @@ uint32_t frogger_get_stage(void);
  */
 uint32_t frogger_get_score(void);
 
+/* frogger_get_time
+ * Devuelve el time del jugador
+ */
+uint32_t frogger_get_time(void);
+
 /* frogger_restart 
  * Reinicia los datos del juego
  */

@@ -1,0 +1,12 @@
+CC = gcc
+OPTIONS = -Wall
+NAME = frogger_mainmenu
+SRC = ${NAME}.c
+HEADERS = ${NAME}.h
+OBJS = ${NAME}.o
+
+${OBJS}: ${SRC} ${HEADERS}
+	${CC} ${OPTIONS} -c ${SRC}
+
+clean:
+	rm *.o
