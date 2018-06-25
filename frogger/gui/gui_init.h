@@ -5,8 +5,8 @@
 
 /* Librerias utilizadas */
 #include "../settings.h"
-
 #include "allegro/allegro_init.h"
+
 
 #ifndef GUI_INIT_H
 #define GUI_INIT_H

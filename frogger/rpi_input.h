@@ -3,8 +3,13 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "joydrv.h"
-#include "input.h"
+#include "disdrv.h"
+#include "gui/gui_events/gui_events.h"
+#include "gui/gui_input/gui_input.h"
 
 /**********************/
 /*    Coordenadas     */
@@ -28,17 +33,13 @@
  *Inicializa configuraciones
  * de joystick
  */
-void joystick_init(void);
+bool joystick_input_init(void);
 
 /*joystick_state
  *Actualiza el estado de
  *entrada del joystick
  */
-uint16_t joystick_state(jcoord_t* coords, jswitch_t* click);
-
-
-
-
+bool joystick_state(EVENT* event, void* none);
 
 #endif /* RPI_INPUT_H */
 

@@ -9,7 +9,6 @@ bool gui_input_init(void){
 #if PLATFORM_MODE == PC_ALLEGRO
     return allegro_input_init();
 #elif PLATFORM_MODE == RPI
-    
 #endif
 }
 
@@ -27,6 +26,5 @@ bool gui_input_source(EVENT* event, void* none){
 #if PLATFORM_MODE == PC_ALLEGRO
     return allegro_input_source(event, none);
 #elif PLATFORM_MODE == RPI
-    
 #endif    
 }

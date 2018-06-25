@@ -5,6 +5,7 @@
 #include "disdrv.h"
 #include "joydrv.h"
 #include "game_types.h"
+#include "rpi_input.h"
 
 /**********************/
 /* Funciones publicas */
@@ -34,17 +35,10 @@ uint16_t pause_menu_rpi(void);
 /* input_joystick
  * Lee el estado del joystick 
  */
-uint16_t input_joystick(void);
+jcoord_t input_joystick(void);
 
-/* rpi_init
- * Inicializa lo necesario para utilizar la plataforma rpi
- */
-void rpi_init(void);
 
-/* rpi_close
- * Cierra la plataforma
- */
-void rpi_close(void);
+
 
 /* print_display_menu
  * imprime en el display el menu

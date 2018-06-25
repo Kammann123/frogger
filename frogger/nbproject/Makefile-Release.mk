@@ -55,8 +55,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/gui_timer/gui_timer.o \
 	${OBJECTDIR}/gui/gui_types.o \
 	${OBJECTDIR}/logic/frogger/frogger_kernel.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/timer.o
+	${OBJECTDIR}/main.o
 
 
 # C Compiler Flags
@@ -187,11 +186,6 @@ ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
-
-${OBJECTDIR}/timer.o: timer.c 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/timer.o timer.c
 
 # Subprojects
 .build-subprojects:

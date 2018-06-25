@@ -1,6 +1,8 @@
 #ifndef disdrv_h
 #define disdrv_h
 
+#include <stdint.h>
+
 typedef enum {NORMAL ,ROTATE} daxis_t;
 
 typedef enum {D_OFF, D_ON} dlevel_t;

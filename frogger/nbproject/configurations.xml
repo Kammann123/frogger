@@ -30,7 +30,6 @@
       <itemPath>settings.h</itemPath>
       <itemPath>gui/gui_events/source_codes.h</itemPath>
       <itemPath>termlib.h</itemPath>
-      <itemPath>timer.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -60,7 +59,6 @@
       <itemPath>gui/gui_timer/gui_timer.c</itemPath>
       <itemPath>gui/gui_types.c</itemPath>
       <itemPath>main.c</itemPath>
-      <itemPath>timer.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -261,10 +259,6 @@
       </item>
       <item path="termlib.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="timer.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="timer.h" ex="false" tool="3" flavor2="0">
-      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -445,10 +439,6 @@
       <item path="settings.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="termlib.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="timer.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="timer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -37,7 +37,7 @@ void frogger_mainmenu_update(void){
 #if PLATFORM_MODE == PC_ALLEGRO
     allegro_frogger_mainmenu(MAINMENU_OPTIONS, optionSelected);
 #elif PLATFORM_MODE == RPI
-    
+    rpi_frogger_mainmenu(MAINMENU_OPTIONS, optionSelected);
 #endif
 }
 
