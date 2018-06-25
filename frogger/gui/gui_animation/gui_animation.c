@@ -79,6 +79,16 @@ static bool gui_animation_load_animation(ANIMATION* animation, char* filename);
 /* ANIMATED_OBJECT handlers */
 /****************************/
 
+/* gui_animation_start_one_time */
+void gui_animation_start_one_time(ANIMATED_OBJECT* object, ANIMATION_ID id){
+    
+    /* Seteo la animacion */
+    gui_animation_set_animation(object, id);
+    
+    /* Configuro el modo */
+    object->status = GUI_ANIMATION_STATE_ONE_TIME;
+}
+
 /* gui_animation_create_object 
  * Crea un objeto con valores default 
  *
@@ -107,11 +117,69 @@ static void gui_animation_move_object(OBJECT_POINTER object);
  *
  * object: Instancia del objeto
  */
-static void gui_animation_nextframe_object(OBJECT_POINTER object);
+static uint32_t gui_animation_nextframe_object(OBJECT_POINTER object);
 
 /****************************/
 /* ANIMATED_OBJECT handlers */
 /****************************/
+
+/* gui_animation_reload_object */
+bool gui_animation_reload_object(ANIMATED_OBJECT* object){
+    SETTING* settings;
+    
+    /* Valido */
+    if( object->file == NULL ){
+        return false;
+    }
+    
+    /* Cargo la configuracion del objeto */
+    settings = gui_files_load_setting(object->file);
+    if( settings == NULL ){
+        return false;
+    }
+    
+    /* Cargo los parametros basicos */
+    if( !gui_files_get_int(settings, OBJFILE_ATTRIBUTES, OBJFILE_ATT_WIDTH, &object->width) ){
+        gui_files_destroy_setting(settings);
+        return false;
+    }
+    if( !gui_files_get_int(settings, OBJFILE_ATTRIBUTES, OBJFILE_ATT_HEIGHT, &object->height) ){
+        gui_files_destroy_setting(settings);
+        return false;
+    }
+    if( !gui_files_get_int(settings, OBJFILE_ATTRIBUTES, OBJFILE_ATT_TIME, &object->speed.timeDelta) ){
+        gui_files_destroy_setting(settings);
+        return false;
+    }
+    if( !gui_files_get_int(settings, OBJFILE_ATTRIBUTES, OBJFILE_ATT_SPACE, &object->speed.spaceDelta) ){
+        gui_files_destroy_setting(settings);
+        return false;
+    }
+    
+    /* Exito */
+    gui_files_destroy_setting(settings);
+    return true;
+}
+
+/* gui_animation_get_frame_length */
+LENGTH gui_animation_get_frame_length(ANIMATED_OBJECT* object, ANIMATION_ID id){
+    ANIMATION animation;
+    LENGTH i;
+    
+    /* Busco la animacion */
+    for(i = 0;i < object->animQty;i++){
+        animation = object->animations[i];
+        
+        /* La encuentro por el id */
+        if( !( strcmp(id, animation.id) ) ){
+            
+            return animation.framesQty;
+        }
+    }
+    
+    return 0;
+    
+}
 
 /* gui_animation_get_orientation */
 GUI_ANIMATION_ORIENTATION gui_animation_get_orientation(ANIMATED_OBJECT* object){
@@ -183,6 +251,10 @@ char* gui_animation_get_frame(ANIMATED_OBJECT* object){
 /* gui_animation_move_object */
 static void gui_animation_move_object(OBJECT_POINTER object){
     LENGTH i;
+    uint32_t dist;
+    
+    /* Calculo desplazamiento */
+    dist = (object->speed.spaceDelta / gui_animation_get_frame_length(object, object->currentAnimation));
     
     /* Busco la animacion */
     for(i = 0;i < object->animQty;i++){
@@ -191,16 +263,16 @@ static void gui_animation_move_object(OBJECT_POINTER object){
             
             switch( object->animations[i].orientation ){
                 case GUI_VERTICAL_UP:
-                    object->pos.y -= object->speed.spaceDelta;
+                    object->pos.y -= dist;
                     break;
                 case GUI_VERTICAL_DOWN:
-                    object->pos.y += object->speed.spaceDelta;
+                    object->pos.y += dist;
                     break;
                 case GUI_HORIZONTAL_LEFT:
-                    object->pos.x -= object->speed.spaceDelta;
+                    object->pos.x -= dist;
                     break;
                 case GUI_HORIZONTAL_RIGHT:
-                    object->pos.x += object->speed.spaceDelta;
+                    object->pos.x += dist;
                     break;
             }
         }
@@ -208,7 +280,7 @@ static void gui_animation_move_object(OBJECT_POINTER object){
 }
 
 /* gui_animation_nextframe_object */
-static void gui_animation_nextframe_object(OBJECT_POINTER object){
+static uint32_t gui_animation_nextframe_object(OBJECT_POINTER object){
     LENGTH i;
     
     /* Busco la animacion */
@@ -219,6 +291,7 @@ static void gui_animation_nextframe_object(OBJECT_POINTER object){
             if( object->frameIndex >= object->animations[i].framesQty ){
                 object->frameIndex = 0;
             }
+            return object->frameIndex;
         }
     }    
 }
@@ -243,6 +316,7 @@ static OBJECT_POINTER gui_animation_create_object(POSITION pos){
     object->timeCounter = 0;
     object->currentAnimation = NULL;
     object->animations = NULL;
+    object->file = NULL;
     object->animQty = 0;
     object->init = false;
     
@@ -262,6 +336,14 @@ static bool gui_animation_init_object(OBJECT_POINTER object, LENGTH qty, ANIMATI
     /* Reservo memoria para id */
     object->currentAnimation = malloc( sizeof(char) * ANIMATION_ID_MAX_LENGTH );
     if( object->currentAnimation == NULL ){
+        free( object->animations );
+        return false;
+    }
+    
+    /* Reservo memoria para file name */
+    object->file = malloc( sizeof(char) * ANIMATION_ID_MAX_LENGTH );
+    if( object->file == NULL ){
+        free( object->currentAnimation );
         free( object->animations );
         return false;
     }
@@ -296,6 +378,9 @@ void gui_animation_destroy_object(OBJECT_POINTER object){
         
         /* Libero id */
         free( object->currentAnimation );
+        
+        /* Libero filename */
+        free( object->file );
         
         /* Libero memoria del objeto */
         free( object );
@@ -337,6 +422,9 @@ OBJECT_POINTER gui_animation_load_object(char* filename, POSITION pos, ANIMATION
         gui_files_destroy_setting(settings);
         return NULL;
     }
+    
+    /* Cargo el filename */
+    strcpy(object->file, filename);
     
     /* Cargo los parametros basicos */
     if( !gui_files_get_int(settings, OBJFILE_ATTRIBUTES, OBJFILE_ATT_WIDTH, &object->width) ){
@@ -611,8 +699,10 @@ static void* gui_animation_engine_thread(void* thisEngine){
             
             /* Parametro de seguridad */
             if( engine->shutdown ){
+                pthread_mutex_unlock(&engine->engineMutex);
                 pthread_exit(NULL);
             }else if( engine->pause ){
+                pthread_mutex_unlock(&engine->engineMutex);
                 continue;
             }
             
@@ -628,7 +718,7 @@ static void* gui_animation_engine_thread(void* thisEngine){
                     object->timeCounter++;
                     
                     /* Me fijo si paso el tiempo */
-                    if( object->timeCounter >= object->speed.timeDelta ){
+                    if( object->timeCounter >= (object->speed.timeDelta / gui_animation_get_frame_length(object, object->currentAnimation)) ){
                         
                         /* Reinicio el tiempo */
                         object->timeCounter = 0;
@@ -650,14 +740,22 @@ static void* gui_animation_engine_thread(void* thisEngine){
                                 /* Cambio el frame */
                                 gui_animation_nextframe_object(object);
                                 break;
+                            case GUI_ANIMATION_STATE_ONE_TIME:
+                                /* Cambio el frame */
+                                if( !gui_animation_nextframe_object(object) ){
+                                    object->status = GUI_ANIMATION_STATE_STATIC;
+                                }
+                                break;
                         }
-                    }
 
-                    /* Me fijo si ya llego */
-                    object->distance -= object->speed.spaceDelta;
-                    if( object->distance <= 0 ){
-                        object->status = GUI_ANIMATION_STATE_STATIC;
-                        object->frameIndex = 0;
+                        /* Me fijo si ya llego */
+                        if( object->status == GUI_ANIMATION_STATE_STATIC_MOVE || object->status == GUI_ANIMATION_STATE_MOVE ){ 
+                            object->distance -= (object->speed.spaceDelta / gui_animation_get_frame_length(object, object->currentAnimation));
+                            if( object->distance <= 0 ){
+                                object->status = GUI_ANIMATION_STATE_STATIC;
+                                object->frameIndex = 0;
+                            }
+                        }
                     }
                     pthread_mutex_unlock(&object->objectMutex);
                 }
@@ -767,16 +865,18 @@ bool gui_animation_attach_engine(ANIMATION_ENGINE* engine, ANIMATED_OBJECT* obje
 
 /* gui_animation_start_static_movement */
 void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t distance){
+    pthread_mutex_lock(&object->objectMutex);
     /* Configuro posicion final */
     object->distance = distance;
     
     /* Configuro estado */
     object->status = GUI_ANIMATION_STATE_STATIC_MOVE;
+    pthread_mutex_unlock(&object->objectMutex);
 }
 
 /* gui_animation_start_movement */
 void gui_animation_start_movement(ANIMATED_OBJECT* object, ANIMATION_ID id, int32_t distance){
-    
+    pthread_mutex_lock(&object->objectMutex);
     /* Configuro la posicion final de movimiento */
     object->distance = distance;
     
@@ -785,26 +885,29 @@ void gui_animation_start_movement(ANIMATED_OBJECT* object, ANIMATION_ID id, int3
     
     /* Configuro estado movimiento */
     object->status = GUI_ANIMATION_STATE_MOVE;
+    pthread_mutex_unlock(&object->objectMutex);
 }
 
 /* gui_animation_stop_movement */
 void gui_animation_stop_movement(ANIMATED_OBJECT* object){
-    
+    pthread_mutex_lock(&object->objectMutex);
     /* Reseteo el frame */
     object->frameIndex = 0;
     
     /* Configuro */
     object->status = GUI_ANIMATION_STATE_STATIC;
+    pthread_mutex_unlock(&object->objectMutex);
 }
 
 /* gui_animation_stop_loop */
 void gui_animation_stop_loop(ANIMATED_OBJECT* object){
-    
+    pthread_mutex_lock(&object->objectMutex);
     /* Reseteo el frame */
     object->frameIndex = 0;
     
     /* Desactivo estado loop */
     object->status = GUI_ANIMATION_STATE_STATIC;
+    pthread_mutex_unlock(&object->objectMutex);
 }
 
 /* gui_animation_start_loop */

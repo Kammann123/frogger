@@ -87,7 +87,7 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y){
 bool allegro_frogger_frog_init(void){
     
     /* Cargo la ranita :D */
-    frog.object = gui_animation_load_object(ALLEGRO_FROG_OBJFILE, map_position(DEFAULT_FROG_X, DEFAULT_FROG_Y), DEFAULT_FROG_ANIMATION);
+    frog.object = gui_animation_load_object(ALLEGRO_FROG_OBJFILE, map_position(DEFAULT_FROG_X * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_Y * ALLEGRO_DISPLAY_STEP), DEFAULT_FROG_ANIMATION);
     if( frog.object == NULL ){
         return false;
     }
@@ -99,6 +99,9 @@ bool allegro_frogger_frog_init(void){
 /* allegro_frogger_create_object */
 ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type){
     ANIMATED_OBJECT* object;
+    
+    pos.x *= ALLEGRO_DISPLAY_STEP;
+    pos.y *= ALLEGRO_DISPLAY_STEP;
     
     /* Cargo el object file */
     switch( type ){

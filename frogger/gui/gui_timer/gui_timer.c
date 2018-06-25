@@ -60,9 +60,10 @@ static void* timer_thread(void* timerQueue){
         usleep(1000);
         
         /* Actualizo estado de eventos */
-        pthread_mutex_lock(&(queue->timerMutex));
+        pthread_mutex_lock(&queue->timerMutex);
         /* Verifico error de apagado */
         if( queue->shutdown ){
+            pthread_mutex_unlock(&queue->timerMutex);
             pthread_exit(NULL);
         }
         if( queue->enable ){
@@ -72,7 +73,7 @@ static void* timer_thread(void* timerQueue){
                 }
             }
         }
-        pthread_mutex_unlock(&(queue->timerMutex));
+        pthread_mutex_unlock(&queue->timerMutex);
     }
 }
 

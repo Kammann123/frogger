@@ -6,5 +6,6 @@ orientation: HORIZONTAL_RIGHT
 0: gui/allegro/frogger/game/objects/frog/sprites_right/frog_0.png
 1: gui/allegro/frogger/game/objects/frog/sprites_right/frog_1.png
 2: gui/allegro/frogger/game/objects/frog/sprites_right/frog_2.png
+3: gui/allegro/frogger/game/objects/frog/sprites_right/frog_0.png
 
 END

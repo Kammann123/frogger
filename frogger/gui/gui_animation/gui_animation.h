@@ -47,7 +47,8 @@ typedef enum {
     GUI_ANIMATION_STATE_STATIC,
     GUI_ANIMATION_STATE_LOOP,
     GUI_ANIMATION_STATE_MOVE,
-    GUI_ANIMATION_STATE_STATIC_MOVE
+    GUI_ANIMATION_STATE_STATIC_MOVE,
+    GUI_ANIMATION_STATE_ONE_TIME
 } GUI_ANIMATION_STATUS;
 
 /* Orientaciones */
@@ -122,6 +123,9 @@ typedef struct{
     ANIMATION* animations;
     LENGTH animQty;
 
+    /* Object file */
+    char* file;
+    
     /* Mutex */
     pthread_mutex_t objectMutex;
     
@@ -155,6 +159,21 @@ typedef struct{
 /****************************/
 /* ANIMATED_OBJECT handlers */
 /****************************/
+
+/* gui_animation_reload_object 
+ * Carga el archivo objeto devuelta
+ * 
+ * object: Objeto
+ */
+bool gui_animation_reload_object(ANIMATED_OBJECT* object);
+
+/* gui_animation_get_frame_length 
+ * Devuelve la cantidad de frames de la animacion 
+ *
+ * object: Objeto
+ * id: Animacion
+ */
+LENGTH gui_animation_get_frame_length(ANIMATED_OBJECT* object, ANIMATION_ID id);
 
 /* gui_animation_get_orientation 
  * Devuelve la orientacion de la animacion que esta usando
@@ -212,6 +231,14 @@ OBJECT_POINTER gui_animation_load_object(char* filename, POSITION pos, ANIMATION
 /****************************/
 /* ANIMATION_ENGINE handler */
 /****************************/
+
+/* gui_animation_start_one_time
+ * Inicia animacion bluce en posicion fija una vez
+ * 
+ * object: Objeto
+ * id: Animacion 
+ */
+void gui_animation_start_one_time(ANIMATED_OBJECT* object, ANIMATION_ID id);
 
 /* gui_animation_start_static_movement
  * Activa la animacion de movimiento con animacion estatica

@@ -701,8 +701,8 @@ void frogger_game_is_transport(void){
                         object = lane.objects[ii];
                         
                         /* Busco sus esquinas */
-                        x = object->pos.x + step * object->width - 1;
-                        y = object->pos.y + step * object->height - 1;
+                        x = object->pos.x + object->width - 1;
+                        y = object->pos.y + object->height - 1;
                         
                         /* Me fijo si esta en el */
                         if( gui_animation_in_region(frog.object->pos, map_region(object->pos, map_position(x, y))) ){
@@ -890,7 +890,7 @@ bool frogger_game_move_frog(uint16_t input){
         /* Finalizo tranporte */
         if( frog.transport != NULL ){
             frog.transport = NULL;
-            if( !frogger_game_frog_init() ){
+            if( !gui_animation_reload_object(frog.object) ){
                 return false;
             }
         }
@@ -911,13 +911,13 @@ void frogger_game_pause(void){
 
 /* frogger_game_close */
 void frogger_game_close(void){
-    if( frog.object != NULL ){
-        gui_animation_destroy_object(frog.object);
-    }
-    
     /* Libero motor de animaciones */
     if( engine != NULL ){
         gui_animation_destroy_engine(engine);
+    }
+    
+    if( frog.object != NULL ){
+        gui_animation_destroy_object(frog.object);
     }
     
     /* Destruyo objetos de campo */
@@ -1045,7 +1045,7 @@ void frogger_game_move_lanes(void){
                 }
                 
                 /* Si esta quieto, lo desplazo */
-                gui_animation_start_movement(object, gui_animation_seek_animation(object, lane.orientation), step);
+                gui_animation_start_static_movement(object, step);
             }
         }
     }
