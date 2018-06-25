@@ -4,7 +4,6 @@
  */
 
 /* Librerias utilizadas */
-#include "../settings.h"
 #include "allegro/allegro_init.h"
 
 
