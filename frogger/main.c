@@ -251,7 +251,7 @@ void on_frogger_event(GAME_STAGE* stage, uint32_t event){
             frogger_game_pause();
             change_stage(stage, CHANGESCREEN_STAGE);
             break;
-        case FROGGER_HAS_DIED:
+        case FROGGER_HAS_DIED: case FROGGER_HAS_DROWN:
             frogger_game_dead_animation();
             change_stage(stage, DEAD_STAGE);
             break;

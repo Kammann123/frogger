@@ -222,8 +222,6 @@ void allegro_frogger_screen_update(void){
     }
     if( bitmap != NULL ){
         al_draw_bitmap(bitmap, ALLEGRO_DISPLAY_LIFES_X, ALLEGRO_DISPLAY_LIFES_Y, 0);
-    }else{
-        return;
     }
     
     /* Pongo la info de score */
