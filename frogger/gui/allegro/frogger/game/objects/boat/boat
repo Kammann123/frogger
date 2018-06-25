@@ -1,0 +1,11 @@
+[attributes]
+width: 80
+height: 40
+timedelta: 100
+spacedelta: 20
+
+[animations]
+0: gui/allegro/frogger/game/objects/boat/boat_left
+1: gui/allegro/frogger/game/objects/boat/boat_right
+
+END

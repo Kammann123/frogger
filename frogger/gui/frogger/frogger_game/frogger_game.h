@@ -21,10 +21,31 @@
 /* Constantes */
 /**************/
 
+/* Animaciones */
+#define FROG_UP     "FROG_UP"
+#define FROG_DOWN   "FROG_DOWN"
+#define FROG_LEFT   "FROG_LEFT"
+#define FROG_RIGHT  "FROG_RIGHT"
+
+#define MOTORBIKE_LEFT     "MOTORBIKE_LEFT"
+#define MOTORBIKE_RIGHT    "MOTORBIKE_RIGHT"
+
+#define CAR_LEFT     "CAR_LEFT"
+#define CAR_RIGHT    "CAR_RIGHT"
+
+#define TRUCK_LEFT     "TRUCK_LEFT"
+#define TRUCK_RIGHT    "TRUCK_RIGHT"
+
+#define BOAT_LEFT    "BOAT_LEFT"
+#define BOAT_RIGHT   "BOAT_RIGHT"
+
+#define YACHT_LEFT  "YACHT_LEFT"
+#define YACHT_RIGHT "YACHT_RIGHT"
+
 /* Parametros default */
 #define DEFAULT_FROG_X  7
 #define DEFAULT_FROG_Y  10
-#define DEFAULT_FROG_ORIENTATION GUI_ANIMATION_VERTICAL_UP
+#define DEFAULT_FROG_ANIMATION  FROG_UP
 
 /* Parametros de tablero */
 #define DISPLAY_DIVISIONS_X 16

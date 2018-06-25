@@ -1,10 +1,6 @@
 [attributes]
-timedelta: 50
-spacedelta: 8
-width: 1
-height: 1
+id: FROG_UP
 orientation: VERTICAL_UP
-quantity: 4
 
 [frames]
 0: gui/allegro/frogger/game/objects/frog/sprites_up/frog_0.png

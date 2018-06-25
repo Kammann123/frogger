@@ -1,0 +1,13 @@
+[attributes]
+width: 40
+height: 40
+timedelta: 200
+spacedelta: 40
+
+[animations]
+0: gui/allegro/frogger/game/objects/frog/frog_down
+1: gui/allegro/frogger/game/objects/frog/frog_up
+2: gui/allegro/frogger/game/objects/frog/frog_left
+3: gui/allegro/frogger/game/objects/frog/frog_right
+
+END

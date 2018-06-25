@@ -1,10 +1,6 @@
 [attributes]
-timedelta: 100
-width: 4
-height: 1
-spacedelta: 20
+id: TRUCK_LEFT
 orientation: HORIZONTAL_LEFT
-quantity: 1
 
 [frames]
 0: gui/allegro/frogger/game/objects/truck/sprites/truck_left.png

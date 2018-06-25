@@ -163,6 +163,18 @@ static SECTION* create_sections(uint32_t amount);
 /* Definicion de funciones publicas */
 /************************************/
 
+/* gui_files_get_section_length */
+LENGTH gui_files_get_section_length(SETTING* setting, char* section){
+    uint32_t i;
+    
+    for(i = 0;i < setting->length;i++){
+        if( !(strcmp(setting->sections[i].name, section)) ){
+            return setting->sections[i].length;
+        }
+    }
+    return 0;
+}
+
 /* gui_files_get_string */
 char* gui_files_get_string(SETTING* setting, char* section, char* key){
     uint32_t i, ii;

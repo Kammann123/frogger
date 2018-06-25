@@ -18,6 +18,8 @@ typedef struct{
     int32_t y;
 } POSITION;
 
+typedef uint32_t LENGTH;
+
 /**************/
 /* Prototipos */
 /**************/

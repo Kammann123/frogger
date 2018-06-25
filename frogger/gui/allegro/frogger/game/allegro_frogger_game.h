@@ -47,47 +47,28 @@
 #define PHONE_Y 400
 
 /* Imagenes para la pantalla */
-#define FROGGER_PATH_IMAGES     "gui/allegro/frogger/game/images/"
+#define ALLEGRO_PATH_IMAGES     "gui/allegro/frogger/game/images/"
 
-#define FROGGER_IMAGE_FIELD     FROGGER_PATH_IMAGES "field.png"
-#define FROGGER_IMAGE_LIFES_1   FROGGER_PATH_IMAGES "lifes_1.png"
-#define FROGGER_IMAGE_LIFES_2   FROGGER_PATH_IMAGES "lifes_2.png"
-#define FROGGER_IMAGE_LIFES_3   FROGGER_PATH_IMAGES "lifes_3.png"
+#define ALLEGRO_IMAGE_FIELD     ALLEGRO_PATH_IMAGES "field.png"
+#define ALLEGRO_IMAGE_LIFES_1   ALLEGRO_PATH_IMAGES "lifes_1.png"
+#define ALLEGRO_IMAGE_LIFES_2   ALLEGRO_PATH_IMAGES "lifes_2.png"
+#define ALLEGRO_IMAGE_LIFES_3   ALLEGRO_PATH_IMAGES "lifes_3.png"
 
 /* Paths para acceder a fuentes */
-#define FROGGER_PATH_FONTS          "gui/allegro/frogger/game/fonts/"
+#define ALLEGRO_PATH_FONTS          "gui/allegro/frogger/game/fonts/"
 
-#define FROGGER_FONT_0              FROGGER_PATH_FONTS "Bubblegum.ttf"
-#define FROGGER_SIZE_0              25
+#define ALLEGRO_FONT_0              ALLEGRO_PATH_FONTS "Bubblegum.ttf"
+#define ALLEGRO_SIZE_0              25
 
 /* Paths para acceder a animaciones */
-#define FROGGER_PATH_OBJECTS                "gui/allegro/frogger/game/objects/"
+#define ALLEGRO_PATH_OBJECTS                "gui/allegro/frogger/game/objects/"
 
-#define FROGGER_PATH_FROG                   "frog/"
-#define FROGGER_FROG_UP_OBJFILE             FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_up"
-#define FROGGER_FROG_DOWN_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_down"
-#define FROGGER_FROG_LEFT_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_left"
-#define FROGGER_FROG_RIGHT_OBJFILE          FROGGER_PATH_OBJECTS FROGGER_PATH_FROG "frog_right"
-
-#define FROGGER_PATH_MOTORBIKE             "motorbike/"
-#define FROGGER_MOTORBIKE_LEFT_OBJFILE     FROGGER_PATH_OBJECTS FROGGER_PATH_MOTORBIKE "motorbike_left"
-#define FROGGER_MOTORBIKE_RIGHT_OBJFILE    FROGGER_PATH_OBJECTS FROGGER_PATH_MOTORBIKE "motorbike_right"
-    
-#define FROGGER_PATH_CAR                   "car/"
-#define FROGGER_CAR_LEFT_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_CAR "car_left"
-#define FROGGER_CAR_RIGHT_OBJFILE          FROGGER_PATH_OBJECTS FROGGER_PATH_CAR "car_right"
-
-#define FROGGER_PATH_TRUCK                 "truck/"
-#define FROGGER_TRUCK_LEFT_OBJFILE         FROGGER_PATH_OBJECTS FROGGER_PATH_TRUCK "truck_left"
-#define FROGGER_TRUCK_RIGHT_OBJFILE        FROGGER_PATH_OBJECTS FROGGER_PATH_TRUCK "truck_right"
-
-#define FROGGER_PATH_BOAT                   "boat/"
-#define FROGGER_BOAT_LEFT_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_BOAT "boat_left"
-#define FROGGER_BOAT_RIGHT_OBJFILE          FROGGER_PATH_OBJECTS FROGGER_PATH_BOAT "boat_right"
-
-#define FROGGER_PATH_YACHT                  "yacht/"
-#define FROGGER_YACHT_LEFT_OBJFILE           FROGGER_PATH_OBJECTS FROGGER_PATH_YACHT "yacht_left"
-#define FROGGER_YACHT_RIGHT_OBJFILE          FROGGER_PATH_OBJECTS FROGGER_PATH_YACHT "yacht_right"
+#define ALLEGRO_FROG_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/frog"
+#define ALLEGRO_MOTORBIKE_OBJFILE           ALLEGRO_PATH_OBJECTS "motorbike/motorbike"
+#define ALLEGRO_CAR_OBJFILE                 ALLEGRO_PATH_OBJECTS "car/car"
+#define ALLEGRO_TRUCK_OBJFILE               ALLEGRO_PATH_OBJECTS "truck/truck"
+#define ALLEGRO_BOAT_OBJFILE                ALLEGRO_PATH_OBJECTS "boat/boat"
+#define ALLEGRO_YACHT_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/yacht"
 
 /* Mensajes */
 #define ALLEGRO_SCORE_MSG           "Score"
@@ -107,10 +88,10 @@
  *
  * pos: Posicion inicial
  * speed: Velocidad
- * orientation: Direccion de movimiento
+ * orientation: Orientacion inicial
  * type: Tipo de vehiculo
  */
-ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type);
+ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type);
 
 /* allegro_frogger_movement_valid 
  * Valida si el movimiento en dicha orientacion es valido

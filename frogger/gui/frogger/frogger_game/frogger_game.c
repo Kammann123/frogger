@@ -43,7 +43,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane);
  * orientation: Orientacion
  * type: Tipo de objeto
  */
-static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type);
+static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type);
 
 /* frogger_game_lane_sequence 
  * Crea una secuencia de posiciones para un carril, de forma aleatoria
@@ -323,7 +323,7 @@ static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uin
 }
 
 /* frogger_game_create_object */
-static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
+static FROGGER_OBJECT frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type){
     FROGGER_OBJECT object;
     
 #if PLATFORM_MODE == PC_ALLEGRO
@@ -487,11 +487,7 @@ static bool frogger_game_lane_init(LANE_CFG laneCfg, LANE* lane){
         gui_files_destroy_setting(setting);
         return false;
     }
-    if( !(strcmp(auxStr, OBJFILE_HORIZONTAL_LEFT)) ){
-        lane->orientation = GUI_ANIMATION_HORIZONTAL_LEFT;
-    }else if( !(strcmp(auxStr, OBJFILE_HORIZONTAL_RIGHT)) ){
-        lane->orientation = GUI_ANIMATION_HORIZONTAL_RIGHT;
-    }
+    lane->orientation = gui_animation_orientation_conv(auxStr);
     
     gui_files_destroy_setting(setting);
     
@@ -564,7 +560,7 @@ static SPEED frogger_game_speed_resolution(SPEED speed){
 
 /* frogger_game_new_level */
 bool frogger_game_new_level(uint32_t level){
-    uint32_t i, ii, iii;
+    uint32_t i, ii;
     POSITION* positions;
     uint32_t step;
     SPEED speed;
@@ -596,16 +592,11 @@ bool frogger_game_new_level(uint32_t level){
         /* Me muevo entre los objetos */
         for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
             
-            /* Busco la animacion y cambio velocidad */
-            for(iii = 0;iii < NUMBER_OF_ORIENTATIONS;iii++){
-                if( field.lanes[i].objects[ii]->animations[iii].orientation == field.lanes[i].orientation ){
-                    field.lanes[i].objects[ii]->animations[iii].speed = frogger_game_speed_resolution(speed);
-                    break;
-                }
-            }
-            
+            /* Cargo nueva velocidad */
+            field.lanes[i].objects[ii]->speed = frogger_game_speed_resolution(speed);
+                        
             /* Cargo nueva posicion */
-            field.lanes[i].objects[ii]->currentPos = map_position(positions[ii].x * step, positions[ii].y * step);
+            field.lanes[i].objects[ii]->pos = map_position(positions[ii].x * step, positions[ii].y * step);
         }
     }
     
@@ -626,7 +617,7 @@ bool frogger_game_has_won(void){
 #endif
     
     /* Objeto posicion */
-    pos = map_position(frog.object->currentPos.x / step, frog.object->currentPos.y / step);
+    pos = map_position(frog.object->pos.x / step, frog.object->pos.y / step);
     if( pos.y == 0 ){
         return true;
     }
@@ -654,7 +645,7 @@ bool frogger_game_is_water_region(void){
 #endif
         
    /* Me fijo si esta en region */
-    if( gui_animation_in_region( map_position(frog.object->currentPos.x / step, frog.object->currentPos.y / step) , REGION_WATER) ){
+    if( gui_animation_in_region( map_position(frog.object->pos.x / step, frog.object->pos.y / step) , REGION_WATER) ){
         return true;
     }
     return false;    
@@ -671,7 +662,7 @@ bool frogger_game_is_street_region(void){
 #endif
         
    /* Me fijo si esta en region */
-    if( gui_animation_in_region( map_position(frog.object->currentPos.x / step, frog.object->currentPos.y / step) , REGION_STREET) ){
+    if( gui_animation_in_region( map_position(frog.object->pos.x / step, frog.object->pos.y / step) , REGION_STREET) ){
         return true;
     }
     return false;
@@ -679,7 +670,10 @@ bool frogger_game_is_street_region(void){
 
 /* frogger_game_transport_on */
 void frogger_game_is_transport(void){
-    uint32_t i, ii, iii, step;
+    LANE lane;
+    FROGGER_OBJECT object;
+    
+    uint32_t i, ii, step;
     int32_t x, y;
     bool found = false;
     
@@ -692,45 +686,39 @@ void frogger_game_is_transport(void){
     /* Me fijo que este en region de agua */
     if( frogger_game_is_water_region() ){
         
+        /* Que este quieto... */
         if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
                 
-            /* Reviso si esta en un transporte */
+            /* Veo cada carril en busca de transportes */
             for(i = 0;i < field.lanesQty && !found;i++){
+                lane = field.lanes[i];
+                
+                /* Que sea transporte el carril...  */
+                if( lane.type == FROGGER_BOAT || lane.type == FROGGER_YACHT ){
 
-                /* Que sea barco */
-                if( field.lanes[i].type == FROGGER_BOAT || field.lanes[i].type == FROGGER_YACHT ){
-
-                    /* Busco entre sus barcos */
-                    for(iii = 0;iii < field.lanes[i].objectsQty && !found;iii++){
-
-                        for(ii = 0;ii < NUMBER_OF_ORIENTATIONS && !found;ii++){
-
-                            /* Es esta? */
-                            if( field.lanes[i].objects[iii]->animations[ii].orientation == field.lanes[i].orientation ){
-
-                                /* Calculo esquina */
-                                x = field.lanes[i].objects[iii]->currentPos.x + step * field.lanes[i].objects[iii]->animations[ii].width - 1;
-                                y = field.lanes[i].objects[iii]->currentPos.y + step * field.lanes[i].objects[iii]->animations[ii].height - 1;
-                                
-                                
-                                /* Me fijo si esta en el */
-                                if( gui_animation_in_region(frog.object->currentPos, map_region(field.lanes[i].objects[iii]->currentPos, map_position(x, y))) ){
-
-                                    if( frog.transport == NULL ){
-                                        /* Modo transporte */
-                                        frog.transport = field.lanes[i].objects[iii];
-                                        found = true;
-                                        /* Normalizo la posicion */
-                                        frog.object->currentPos = frogger_game_get_norm_pos(frog.transport->currentPos, frog.object->currentPos);
-                                    }
-                                }else{
-                                    if( frog.transport != NULL ){
-                                        /* Salgo de modo transporte? */
-                                        if( frog.transport == field.lanes[i].objects[iii] ){
-                                            frog.transport = NULL;
-                                            found = true;
-                                        }
-                                    }
+                    /* Busco entre sus transportes */
+                    for(ii = 0;ii < lane.objectsQty && !found;ii++){/* Calculo esquina */
+                        object = lane.objects[ii];
+                        
+                        /* Busco sus esquinas */
+                        x = object->pos.x + step * object->width - 1;
+                        y = object->pos.y + step * object->height - 1;
+                        
+                        /* Me fijo si esta en el */
+                        if( gui_animation_in_region(frog.object->pos, map_region(object->pos, map_position(x, y))) ){
+                            if( frog.transport == NULL ){
+                                /* Modo transporte */
+                                frog.transport = object;
+                                found = true;
+                                /* Normalizo la posicion */
+                                frog.object->pos = frogger_game_get_norm_pos(frog.transport->pos, frog.object->pos);
+                            }
+                        }else{
+                            if( frog.transport != NULL ){
+                                /* Salgo de modo transporte? */
+                                if( frog.transport == object ){
+                                    frog.transport = NULL;
+                                    found = true;
                                 }
                             }
                         }
@@ -745,7 +733,6 @@ void frogger_game_is_transport(void){
 void frogger_game_transport_frog(void){
     uint32_t i, ii, step;
     int32_t x;
-    bool found = false;
     
     /* Cargo el desplazamiento */
 #if PLATFORM_MODE == PC_ALLEGRO
@@ -763,40 +750,30 @@ void frogger_game_transport_frog(void){
             if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
                 
                 /* Configuro parametros de movimiento */
-                frog.object->orientation = frog.transport->orientation;
-                
-                /* Configuro velocidad */
-                for(i = 0;i < NUMBER_OF_ORIENTATIONS && !found;i++){
-                    
-                    /* Busco la animacion de la rana */
-                    if( frog.object->animations[i].orientation == frog.transport->orientation ){
-                        
-                        /* Busco animacion del barco */
-                        for(ii = 0;ii < NUMBER_OF_ORIENTATIONS && !found;ii++){
-                            
-                            if( frog.transport->animations[ii].orientation == frog.transport->orientation ){
-                                frog.object->animations[i].speed.timeDelta = frog.transport->animations[ii].speed.timeDelta;
-                                frog.object->animations[i].speed.spaceDelta = frog.transport->animations[ii].speed.spaceDelta; 
-                                found = true;
-                            }                           
-                        }
-                    }
+                if( gui_animation_get_orientation(frog.transport) == GUI_HORIZONTAL_LEFT ){
+                    x = frog.object->pos.x - step;
                 }
-                
-                /* Calculo posicion final */
-                switch( frog.transport->orientation ){
-                    case GUI_ANIMATION_HORIZONTAL_LEFT:
-                        x = frog.object->currentPos.x - step;
-                        break;
-                    case GUI_ANIMATION_HORIZONTAL_RIGHT:
-                        x = frog.object->currentPos.x + step;
-                        break;
+                if( gui_animation_get_orientation(frog.transport) == GUI_HORIZONTAL_RIGHT ){
+                    x = frog.object->pos.x + step;
                 }
                 
                 /* Valido posicion */
                 if( x >= 0  && x <= (DISPLAY_DIVISIONS_X - 1)*step ){
+                
+                    /* Configuro velocidad */
+                    frog.object->speed = frog.transport->speed;
+
+                    /* Configuro parametros de movimiento */
+                    if( gui_animation_get_orientation(frog.transport) == GUI_HORIZONTAL_LEFT ){
+                        gui_animation_set_animation(frog.object, FROG_LEFT);
+                    }
+                    if( gui_animation_get_orientation(frog.transport) == GUI_HORIZONTAL_RIGHT ){
+                        gui_animation_set_animation(frog.object, FROG_RIGHT);
+                    }
+                    
+                    /* Inicio el movimiento */
                     gui_animation_start_static_movement(frog.object, step);     
-                }   
+                } 
             }
         }
     }
@@ -833,8 +810,8 @@ void frogger_game_reset_frog_position(void){
 #endif   
 
     /* Seteo posicion y orientacion de rana */
-    frog.object->currentPos = map_position(DEFAULT_FROG_X * step, DEFAULT_FROG_Y * step);
-    frog.object->orientation = DEFAULT_FROG_ORIENTATION;
+    frog.object->pos = map_position(DEFAULT_FROG_X * step, DEFAULT_FROG_Y * step);
+    gui_animation_set_animation(frog.object, DEFAULT_FROG_ANIMATION);
     
 }
 
@@ -842,6 +819,9 @@ void frogger_game_reset_frog_position(void){
 bool frogger_game_collisions(void){
     uint32_t i, ii;
     uint32_t step;
+    
+    LANE lane;
+    FROGGER_OBJECT object;
         
     /* Cargo el desplazamiento */
 #if PLATFORM_MODE == PC_ALLEGRO
@@ -851,14 +831,16 @@ bool frogger_game_collisions(void){
 
     /* Me muevo por los carriles */
     for(i = 0;i < field.lanesQty;i++){
+        lane = field.lanes[i];
         
         /* Me muevo por los objetos */
         for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
+            object = lane.objects[ii];
             
             /* Me fijo si hay colision */
-            if( field.lanes[i].type != FROGGER_YACHT && field.lanes[i].type != FROGGER_BOAT ){
+            if( lane.type != FROGGER_YACHT && lane.type != FROGGER_BOAT ){
                 
-                if( gui_animation_collision(frog.object, field.lanes[i].objects[ii], step)){
+                if( gui_animation_collision(frog.object, object)){
                     return true;
                 }
             }
@@ -877,9 +859,9 @@ bool frogger_game_move_frog(uint16_t input){
         
     /* Me fijo si el desplazamiento es valido */
 #if PLATFORM_MODE == PC_ALLEGRO
-    if( !allegro_frogger_movement_valid(input) ){
-        return false;
-    }
+        if( !allegro_frogger_movement_valid(input) ){
+            return false;
+        }
 #elif PLATFORM_MODE == RPI
 #endif   
         
@@ -892,16 +874,16 @@ bool frogger_game_move_frog(uint16_t input){
         /* Muevo segun orientacion */
         switch(input){
             case MOVE_UP:
-                gui_animation_start_movement(frog.object, GUI_ANIMATION_VERTICAL_UP, step);
+                gui_animation_start_movement(frog.object, FROG_UP, step);
                 break;
             case MOVE_DOWN:
-                gui_animation_start_movement(frog.object, GUI_ANIMATION_VERTICAL_DOWN, step);
+                gui_animation_start_movement(frog.object, FROG_DOWN, step);
                 break;
             case MOVE_LEFT:
-                gui_animation_start_movement(frog.object, GUI_ANIMATION_HORIZONTAL_LEFT, step);
+                gui_animation_start_movement(frog.object, FROG_LEFT, step);
                 break;
             case MOVE_RIGHT:
-                gui_animation_start_movement(frog.object, GUI_ANIMATION_HORIZONTAL_RIGHT, step);
+                gui_animation_start_movement(frog.object, FROG_RIGHT, step);
                 break;
         }
         
@@ -971,12 +953,6 @@ bool frogger_game_init(void){
         return false;
     }
     
-    /* Creo el objeto frog */
-    frog.object = gui_animation_create_object(DEFAULT_FROG_X * step, DEFAULT_FROG_Y * step, DEFAULT_FROG_ORIENTATION);
-    if( frog.object == NULL ){
-        return false;
-    }
-    
     /* Inicializo la rana */
     if( !frogger_game_frog_init() ){
         return false;
@@ -990,7 +966,7 @@ bool frogger_game_init(void){
     }
     
     /* Vinculo objetos con el motor */
-    if( !gui_animation_attach_object(engine, frog.object) ){
+    if( !gui_animation_attach_engine(engine, frog.object) ){
         gui_animation_destroy_object(frog.object);
         gui_animation_destroy_engine(engine);
         return false;
@@ -999,7 +975,7 @@ bool frogger_game_init(void){
     /* Vinculos los objetos */
     for(i = 0;i < field.lanesQty;i++){
         for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
-            if( !gui_animation_attach_object(engine, field.lanes[i].objects[ii]) ){
+            if( !gui_animation_attach_engine(engine, field.lanes[i].objects[ii]) ){
                 gui_animation_destroy_object(frog.object);
                 frogger_game_destroy_field(field);
                 return false;
@@ -1035,6 +1011,9 @@ void frogger_game_move_lanes(void){
     int32_t step;
     int32_t x;
     
+    LANE lane;
+    FROGGER_OBJECT object;
+    
 #if PLATFORM_MODE == PC_ALLEGRO
     step = ALLEGRO_DISPLAY_STEP;
 #elif PLATFORM_MODE == RPI
@@ -1042,32 +1021,31 @@ void frogger_game_move_lanes(void){
     
     /* Itero los carriles */
     for(i = 0;i < field.lanesQty;i++){
+        lane = field.lanes[i];
         
         /* Itero los objetos de cada carril */
-        for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
-            
+        for(ii = 0;ii < lane.objectsQty;ii++){
+            object = lane.objects[ii];
+                    
             /* Me fijo su estado de animacion */
-            if( field.lanes[i].objects[ii]->status == GUI_ANIMATION_STATE_STATIC ){
+            if( object->status == GUI_ANIMATION_STATE_STATIC ){
                 
                 /* Nueva posicion x */
-                switch( field.lanes[i].orientation ){
-                    case GUI_ANIMATION_HORIZONTAL_LEFT:
-                        x = (field.lanes[i].objects[ii]->currentPos.x / step) - 1;
-                        break;
-                    case GUI_ANIMATION_HORIZONTAL_RIGHT:
-                        x = (field.lanes[i].objects[ii]->currentPos.x / step) + 1;
-                        break;
+                if( lane.orientation == GUI_HORIZONTAL_LEFT ){
+                    x = (object->pos.x / step) - 1;
+                }else if( lane.orientation == GUI_HORIZONTAL_RIGHT ){
+                    x = (object->pos.x / step) + 1;
                 }
                 
                 /* Verifico los limites */
                 if( x < MAP_X_MIN ){
-                    field.lanes[i].objects[ii]->currentPos.x = MAP_X_MAX * step;
+                    object->pos.x = MAP_X_MAX * step;
                 }else if( x > MAP_X_MAX ){
-                    field.lanes[i].objects[ii]->currentPos.x = MAP_X_MIN * step;
+                    object->pos.x = MAP_X_MIN * step;
                 }
                 
                 /* Si esta quieto, lo desplazo */
-                gui_animation_start_movement(field.lanes[i].objects[ii], field.lanes[i].orientation, step);
+                gui_animation_start_movement(object, gui_animation_seek_animation(object, lane.orientation), step);
             }
         }
     }

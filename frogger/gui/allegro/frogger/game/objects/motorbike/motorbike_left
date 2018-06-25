@@ -1,10 +1,6 @@
 [attributes]
-width: 2
-height: 1
-timedelta: 100
-spacedelta: 20
+id: MOTORBIKE_LEFT
 orientation: HORIZONTAL_LEFT
-quantity: 1
 
 [frames]
 0: gui/allegro/frogger/game/objects/motorbike/sprites/motorbike_left.png

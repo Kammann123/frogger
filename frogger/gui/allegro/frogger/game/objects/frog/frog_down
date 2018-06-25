@@ -1,10 +1,6 @@
 [attributes]
-width: 1
-height: 1
-timedelta: 50
-spacedelta: 8
+id: FROG_DOWN
 orientation: VERTICAL_DOWN
-quantity: 4
 
 [frames]
 0: gui/allegro/frogger/game/objects/frog/sprites_down/frog_0.png

@@ -1,10 +1,6 @@
 [attributes]
-timedelta: 100
-spacedelta: 20
-width: 3
-height: 1
+id: YACHT_RIGHT
 orientation: HORIZONTAL_RIGHT
-quantity: 1
 
 [frames]
 0: gui/allegro/frogger/game/objects/yacht/sprites/yacht_right.png

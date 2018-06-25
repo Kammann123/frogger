@@ -13,6 +13,8 @@
 
 #include "../gui_animation/gui_animation.h"
 
+#include "../gui_types.h"
+
 /**************/
 /* Constantes */
 /**************/
@@ -53,6 +55,14 @@ typedef struct{
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* gui_files_get_section_length 
+ * Devuelve la cantidad de parametrosd entro de una seccion
+ *
+ * setting: Instancia setting
+ * section: Nombre de la seccion
+ */
+LENGTH gui_files_get_section_length(SETTING* setting, char* section);
 
 /* gui_files_get_bool
  * Devuelve el parametro booleano de la configuracion

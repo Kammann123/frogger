@@ -15,44 +15,63 @@
 
 /**************/
 /* Constantes */
-/**************/
+/**************/        
 
-/* Configuracion */
+/* Max values */
+#define ANIMATION_ID_MAX_LENGTH     100
+
+/* Formato animation file */
+#define ANIMATION_ATTRIBUTES        "attributes"
+#define ANIMATION_FRAMES            "frames"
+
+#define ANIMATION_ATT_ID            "id"
+#define ANIMATION_ATT_ORIENTATION   "orientation"
+
+#define ANIMATION_HORIZONTAL_LEFT   "HORIZONTAL_LEFT"
+#define ANIMATION_HORIZONTAL_RIGHT  "HORIZONTAL_RIGHT"
+#define ANIMATION_VERTICAL_UP       "VERTICAL_UP"
+#define ANIMATION_VERTICAL_DOWN     "VERTICAL_DOWN"
+#define ANIMATION_ORIENTATION_NULL  "ORIENTATION_NULL"
+
+/* Formato object file  */
 #define OBJFILE_ATTRIBUTES  "attributes"
-#define OBJFILE_FRAMES      "frames"
+#define OBJFILE_ANIMATIONS  "animations"
 
-#define OBJFILE_WIDTH       "width"
-#define OBJFILE_HEIGHT      "height"
-#define OBJFILE_TIMEDELTA   "timedelta"
-#define OBJFILE_SPACEDELTA  "spacedelta"
-#define OBJFILE_ORIENTATION "orientation"
-#define OBJFILE_QUANTITY    "quantity"
-
-#define OBJFILE_VERTICAL_UP         "VERTICAL_UP"
-#define OBJFILE_VERTICAL_DOWN       "VERTICAL_DOWN"
-#define OBJFILE_HORIZONTAL_LEFT     "HORIZONTAL_LEFT"
-#define OBJFILE_HORIZONTAL_RIGHT    "HORIZONTAL_RIGHT"
+#define OBJFILE_ATT_WIDTH       "width"
+#define OBJFILE_ATT_HEIGHT      "height"
+#define OBJFILE_ATT_TIME        "timedelta"
+#define OBJFILE_ATT_SPACE       "spacedelta"
 
 /* Estados de la animacion */
-#define GUI_ANIMATION_STATE_STATIC      0
-#define GUI_ANIMATION_STATE_LOOP        1
-#define GUI_ANIMATION_STATE_MOVE        2
-#define GUI_ANIMATION_STATE_STATIC_MOVE 3
+typedef enum {
+    GUI_ANIMATION_STATE_STATIC,
+    GUI_ANIMATION_STATE_LOOP,
+    GUI_ANIMATION_STATE_MOVE,
+    GUI_ANIMATION_STATE_STATIC_MOVE
+} GUI_ANIMATION_STATUS;
 
-/* Orientaciones de la animacion */
-#define GUI_ANIMATION_HORIZONTAL_LEFT   0
-#define GUI_ANIMATION_HORIZONTAL_RIGHT  1
-#define GUI_ANIMATION_VERTICAL_UP       2
-#define GUI_ANIMATION_VERTICAL_DOWN     3
-#define GUI_ANIMATION_ORIENTATION_NULL  4
-
-#define NUMBER_OF_ORIENTATIONS          4
+/* Orientaciones */
+typedef enum {
+    GUI_HORIZONTAL_LEFT,
+    GUI_HORIZONTAL_RIGHT,
+    GUI_VERTICAL_UP,
+    GUI_VERTICAL_DOWN,
+    GUI_ORIENTATION_NULL
+} GUI_ANIMATION_ORIENTATION;
 
 /******************/
 /* Tipos de datos */
 /******************/
 
-typedef char* FRAME;
+typedef char* ANIMATION_ID;
+
+typedef struct{
+    /* Nombre del archivo */
+    char* file;
+    
+    /* Inicializacion del objeto */
+    bool init;
+} FRAME;
 
 typedef struct{
     POSITION iCorner;
@@ -65,45 +84,49 @@ typedef struct{
 } SPEED;
 
 typedef struct{
-    /* Archivos de cada frame */
+    /* Identificador de animacion */
+    ANIMATION_ID id;
+    
+    /* Frames */
     FRAME* frames;
+    LENGTH framesQty;
     
-    /* Cantidad de frames de la animacion */
-    uint32_t framesQty;
+    /* Orientacion */
+    GUI_ANIMATION_ORIENTATION orientation;
     
-    /* Orientacion de los frames */
-    uint32_t orientation;    
-    
-    uint32_t width;
-    uint32_t height;
-    
-    /* Parametros de desplazamiento */
-    SPEED speed;
-    
+    /* Inicializacion del objeto */
+    bool init;    
 } ANIMATION;
 
 typedef struct{
-    /* Posiciones del objeto */
-    POSITION currentPos;
+    /* Posicion del objeto */
+    POSITION pos;
     
-    /* Distancia de recorrido */
-    int32_t distance; 
+    /* Tamaño del objeto */
+    uint32_t width;
+    uint32_t height;
+    
+    /* Velocidad */
+    SPEED speed;
+    
+    /* Id de animacion en proceso */
+    ANIMATION_ID currentAnimation;
     
     /* Estado de la animacion */
-    uint16_t status;
-    uint32_t orientation;
-    
-    /* Indice frame actual */
+    GUI_ANIMATION_STATUS status;
     uint16_t frameIndex;
-    
-    /* Contador de tiempo */
+    int32_t distance;
     uint32_t timeCounter;
     
-    /* Configuracion de la animacion */
-    ANIMATION animations[NUMBER_OF_ORIENTATIONS];
+    /* Animaciones */
+    ANIMATION* animations;
+    LENGTH animQty;
 
     /* Mutex */
     pthread_mutex_t objectMutex;
+    
+    /* Inicializacion del objeto */
+    bool init;
 } ANIMATED_OBJECT;
 
 typedef ANIMATED_OBJECT* OBJECT_POINTER;
@@ -113,7 +136,7 @@ typedef struct{
     OBJECT_POINTER* objects;
     
     /* Cantidad de objetos vinculados */
-    uint32_t length;
+    LENGTH length;
     
     /* Habilitadores del motor */
     bool shutdown;
@@ -124,11 +147,164 @@ typedef struct{
     
     /* Mutex */
     pthread_mutex_t engineMutex;
+    
+    /* Inicializacion del objeto */
+    bool init;
 } ANIMATION_ENGINE;
 
-/***********************************/
-/* Prototipo de funciones publicas */
-/***********************************/
+/****************************/
+/* ANIMATED_OBJECT handlers */
+/****************************/
+
+/* gui_animation_get_orientation 
+ * Devuelve la orientacion de la animacion que esta usando
+ *
+ * object: Objeto
+ */
+GUI_ANIMATION_ORIENTATION gui_animation_get_orientation(ANIMATED_OBJECT* object);
+
+/* gui_animation_seek_animation 
+ * Busco la animacion con dicha orientacion
+ *
+ * object: Objeto
+ * or: Orientacion
+ */
+ANIMATION_ID gui_animation_seek_animation(ANIMATED_OBJECT* object, GUI_ANIMATION_ORIENTATION or);
+
+/* gui_animation_set_animation 
+ * Configura una animacion a la fuerza
+ *
+ * object: Objeto
+ * id: Animacion
+ */
+void gui_animation_set_animation(ANIMATED_OBJECT* object, ANIMATION_ID id);
+
+/* gui_animation_is_animation 
+ * Devuelve si es que esa es la animacion actual del objeto
+ *
+ * object: Objeto
+ * id: Animacion
+ */
+bool gui_animation_is_animation(ANIMATED_OBJECT* object, ANIMATION_ID id);
+
+/* gui_animation_get_frame
+ * Devuelve el frame actual de un objeto
+ *
+ * object: Objeto 
+ */
+char* gui_animation_get_frame(ANIMATED_OBJECT* object);
+
+/* gui_animation_destroy_object 
+ * Destruye la instancia
+ *
+ * object: Instancia */
+void gui_animation_destroy_object(OBJECT_POINTER object);
+
+/* gui_animation_load_object 
+ * Carga en memoria un objeto
+ *
+ * filename: Nombre del archivo del objeto
+ * pos: Posicion inicial
+ * id: Id animacion inicial 
+ */
+OBJECT_POINTER gui_animation_load_object(char* filename, POSITION pos, ANIMATION_ID id);
+
+/****************************/
+/* ANIMATION_ENGINE handler */
+/****************************/
+
+/* gui_animation_start_static_movement
+ * Activa la animacion de movimiento con animacion estatica
+ *
+ * object: Objeto
+ * distance: Distanica a recorrer
+ */
+void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t distance);
+
+/* gui_animation_start_movement
+ * Activa la animacion de movimiento hacia una posicion final
+ *
+ * object: Objeto animado
+ * id: Id de animacion 
+ * distance: Distancia a recorrer
+ */
+void gui_animation_start_movement(ANIMATED_OBJECT* object, ANIMATION_ID id, int32_t distance);
+
+/* gui_animation_stop_movement 
+ * Frena un movimiento
+ *
+ * object: Objeto a frenar
+ */
+void gui_animation_stop_movement(ANIMATED_OBJECT* object);
+
+/* gui_animation_stop_loop
+ * Para la animacion del objeto 
+ *
+ * object: Objeto
+ */
+void gui_animation_stop_loop(ANIMATED_OBJECT* object);
+
+/* gui_animation_start_loop 
+ * Activa el funcionamiento de la animacion en modo bucle del objeto
+ * 
+ * object: Objeto
+ * id: Id de animacion 
+ */
+void gui_animation_start_loop(ANIMATED_OBJECT* object, ANIMATION_ID id);
+
+/* gui_animation_start_engine 
+ * Inicia el funcionamiento del motor de animaciones
+ * 
+ * engine: Motor de animaciones 
+ */
+void gui_animation_start_engine(ANIMATION_ENGINE* engine);
+
+/* gui_animation_attach_object
+ * Agrega un objeto a la lista de objetos del motor
+ * de animaciones para controlarlos 
+ *
+ * engine: Motor de animaciones 
+ * object: Objeto
+ */
+bool gui_animation_attach_engine(ANIMATION_ENGINE* engine, ANIMATED_OBJECT* object);
+
+/* gui_animation_destroy_engine
+ * Libera la memoria ocupada por el engine
+ *
+ * engine: Motor de animaciones a liberar
+ */
+void gui_animation_destroy_engine(ANIMATION_ENGINE* engine);
+
+/* gui_animation_create_engine
+ * Instancia un motor de animaciones para manejar
+ * objetos animados
+ */
+ANIMATION_ENGINE* gui_animation_create_engine(void);
+
+/* gui_animation_pause_engine
+ * Pausa el motor de animaciones
+ *
+ * engine: Motor de animaciones
+ */
+void gui_animation_pause_engine(ANIMATION_ENGINE* engine);
+
+/* gui_animation_continue_engine
+ * Reanuda el motor de animaciones
+ *
+ * engine: Motor de animaciones 
+ */
+void gui_animation_continue_engine(ANIMATION_ENGINE* engine);
+
+/**********************/
+/* Funciones publicas */
+/**********************/
+
+/* gui_animation_orientation_conv 
+ * Convierte el dato en su valor
+ *
+ * str: String
+ */
+GUI_ANIMATION_ORIENTATION gui_animation_orientation_conv(char* str);
 
 /* gui_animation_collision 
  * Detecta la colision de dos objetos
@@ -136,9 +312,8 @@ typedef struct{
  *
  * objA: Objeto uno
  * objB: Objeto dos
- * step: Divison en las unidades de la interfaz
  */
-bool gui_animation_collision(ANIMATED_OBJECT* objA, ANIMATED_OBJECT* objB, uint32_t step);
+bool gui_animation_collision(ANIMATED_OBJECT* objA, ANIMATED_OBJECT* objB);
 
 /* gui_animation_region_collision
  * Se fija si hubo colision de dos regiones
@@ -164,15 +339,6 @@ REGION map_region(POSITION iCorner, POSITION fCorner);
  */
 SPEED map_speed(uint32_t timeDelta, uint32_t spaceDelta);
 
-/* gui_animation_load_objfile
- * Carga un archivo con la definicion de la animacion
- * del objeto en la instancia
- *
- * objFile: Nombre del archivo
- * object: Instancia 
- */
-bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object);
-
 /* gui_animation_in_region 
  * Devuelve true si el objeto se encuentra en la region
  * especificada
@@ -181,134 +347,6 @@ bool gui_animation_load_objfile(char* objFile, ANIMATED_OBJECT* object);
  * region: Region
  */
 bool gui_animation_in_region(POSITION position, REGION region);
-
-/* gui_animation_pause_engine
- * Pausa el motor de animaciones
- *
- * engine: Motor de animaciones
- */
-void gui_animation_pause_engine(ANIMATION_ENGINE* engine);
-
-/* gui_animation_continue_engine
- * Reanuda el motor de animaciones
- *
- * engine: Motor de animaciones 
- */
-void gui_animation_continue_engine(ANIMATION_ENGINE* engine);
-
-/* gui_animation_get_frame
- * Devuelve el frame actual de un objeto
- *
- * object: Objeto 
- */
-FRAME gui_animation_get_frame(ANIMATED_OBJECT* object);
-
-/* gui_animation_start_static_movement
- * Activa la animacion de movimiento con animacion estatica
- *
- * object: Objeto
- * distance: Distanica a recorrer
- */
-void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t distance);
-
-/* gui_animation_start_movement
- * Activa la animacion de movimiento hacia una posicion final
- *
- * object: Objeto animado
- * orientation: Orientacion de la animacion
- * distance: Distancia a recorrer
- */
-void gui_animation_start_movement(ANIMATED_OBJECT* object, uint16_t orientation, int32_t distance);
-
-/* gui_animation_stop_loop
- * Para la animacion del objeto 
- *
- * object: Objeto
- */
-void gui_animation_stop_loop(ANIMATED_OBJECT* object);
-
-/* gui_animation_start_loop 
- * Activa el funcionamiento de la animacion en modo bucle del objeto
- * 
- * object: Objeto
- * orientation: Orientacion de la animacion
- */
-void gui_animation_start_loop(ANIMATED_OBJECT* object, uint16_t orientation);
-
-/* gui_animation_start_engine 
- * Inicia el funcionamiento del motor de animaciones
- * 
- * engine: Motor de animaciones 
- */
-void gui_animation_start_engine(ANIMATION_ENGINE* engine);
-
-/* gui_animation_attach_object
- * Agrega un objeto a la lista de objetos del motor
- * de animaciones para controlarlos 
- *
- * engine: Motor de animaciones 
- * object: Objeto
- */
-bool gui_animation_attach_object(ANIMATION_ENGINE* engine, ANIMATED_OBJECT* object);
-
-/* gui_animation_destroy_engine
- * Libera la memoria ocupada por el engine
- *
- * engine: Motor de animaciones a liberar
- */
-void gui_animation_destroy_engine(ANIMATION_ENGINE* engine);
-
-/* gui_animation_create_engine
- * Instancia un motor de animaciones para manejar
- * objetos animados
- */
-ANIMATION_ENGINE* gui_animation_create_engine(void);
-
-/* gui_animation_destroy_object 
- * Libera objeto creado
- *
- * object: Objeto a destruir*/
-void gui_animation_destroy_object(ANIMATED_OBJECT* object);
-
-/* gui_animation_create_object
- * Instancia un objeto animado, precargando su configuracion
- * dada en el archivo
- *
- * x: Posicion inicial en X
- * y: Posicion inicial en Y
- * orientation: Orientacion inicial del objeto 
- */
-ANIMATED_OBJECT* gui_animation_create_object(int32_t x, int32_t y, uint16_t orientation);
-
-/* gui_animation_create_framelist
- * Asigna memoria para crear una lista de frames
- *
- * frameQty: Cantidad de frames
- */
-FRAME* gui_animation_create_framelist(uint16_t frameQty);
-
-/* gui_animation_destroy_framelist
- * Libera la memoria usada por la framelist
- *
- * framelist: Lista de frames
- * framesQty: Cantidad de frames
- */
-void gui_animation_destroy_framelist(FRAME* framelist, uint16_t framesQty);
-
-/* gui_animation_create_frame 
- * Asigna memoria y guarda el contenido del frame
- * en dicho bloque
- * 
- * str: Filename del frame
- */
-FRAME gui_animation_create_frame(char* str);
-
-/* gui_animation_destroy_frame
- * Destruye, libera la memoria usada por un frame
- *
- * frame: Frame a liberar
- */
-void gui_animation_destroy_frame(FRAME frame);
 
 #endif /* GUI_ANIMATION_H */
 

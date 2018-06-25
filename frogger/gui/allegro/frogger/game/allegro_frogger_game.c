@@ -46,29 +46,29 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y);
 static bool map_collision(uint16_t input, int32_t x, int32_t y){
     switch(input){
         case MOVE_UP:
-            if( x == frog.object->currentPos.x ){
-                if( y == (frog.object->currentPos.y - ALLEGRO_DISPLAY_STEP) ){
+            if( x == frog.object->pos.x ){
+                if( y == (frog.object->pos.y - ALLEGRO_DISPLAY_STEP) ){
                     return true;
                 }
             }
             break;
         case MOVE_DOWN:
-            if( x == frog.object->currentPos.x ){
-                if( y == (frog.object->currentPos.y + ALLEGRO_DISPLAY_STEP) ){
+            if( x == frog.object->pos.x ){
+                if( y == (frog.object->pos.y + ALLEGRO_DISPLAY_STEP) ){
                     return true;
                 }
             }
             break;
         case MOVE_LEFT:
-            if( y == frog.object->currentPos.y ){
-                if( x == (frog.object->currentPos.x - ALLEGRO_DISPLAY_STEP) ){
+            if( y == frog.object->pos.y ){
+                if( x == (frog.object->pos.x - ALLEGRO_DISPLAY_STEP) ){
                     return true;
                 }
             }
             break;
         case MOVE_RIGHT:
-            if( y == frog.object->currentPos.y ){
-                if( x == (frog.object->currentPos.x + ALLEGRO_DISPLAY_STEP) ){
+            if( y == frog.object->pos.y ){
+                if( x == (frog.object->pos.x + ALLEGRO_DISPLAY_STEP) ){
                     return true;
                 }
             }
@@ -84,22 +84,11 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y){
 /************************************/
 
 /* frog_init */
-bool allegro_frogger_frog_init(void){  
+bool allegro_frogger_frog_init(void){
     
-    if( !gui_animation_load_objfile(FROGGER_FROG_UP_OBJFILE, frog.object) ){
-        gui_animation_destroy_object(frog.object);
-        return false;
-    }
-    if( !gui_animation_load_objfile(FROGGER_FROG_DOWN_OBJFILE, frog.object) ){
-        gui_animation_destroy_object(frog.object);
-        return false;
-    }
-    if( !gui_animation_load_objfile(FROGGER_FROG_LEFT_OBJFILE, frog.object) ){
-        gui_animation_destroy_object(frog.object);
-        return false;
-    }
-    if( !gui_animation_load_objfile(FROGGER_FROG_RIGHT_OBJFILE, frog.object) ){
-        gui_animation_destroy_object(frog.object);
+    /* Cargo la ranita :D */
+    frog.object = gui_animation_load_object(ALLEGRO_FROG_OBJFILE, map_position(DEFAULT_FROG_X, DEFAULT_FROG_Y), DEFAULT_FROG_ANIMATION);
+    if( frog.object == NULL ){
         return false;
     }
     
@@ -108,79 +97,38 @@ bool allegro_frogger_frog_init(void){
 }
 
 /* allegro_frogger_create_object */
-ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, uint32_t orientation, uint32_t type){
+ANIMATED_OBJECT* allegro_frogger_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type){
     ANIMATED_OBJECT* object;
-    uint32_t i;
-    
-    /* Creo el objeto */
-    object = gui_animation_create_object(pos.x * ALLEGRO_DISPLAY_STEP, pos.y * ALLEGRO_DISPLAY_STEP, orientation);
-    if( object == NULL ){
-        return NULL;
-    }
     
     /* Cargo el object file */
     switch( type ){
         case FROGGER_MOTORBIKE:
-            if( !gui_animation_load_objfile(FROGGER_MOTORBIKE_LEFT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
-            if( !gui_animation_load_objfile(FROGGER_MOTORBIKE_RIGHT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
+            object = gui_animation_load_object( ALLEGRO_MOTORBIKE_OBJFILE, pos, "" );
             break;
         case FROGGER_CAR:
-            if( !gui_animation_load_objfile(FROGGER_CAR_LEFT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
-            if( !gui_animation_load_objfile(FROGGER_CAR_RIGHT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
+            object = gui_animation_load_object( ALLEGRO_CAR_OBJFILE, pos, "" );
             break;
         case FROGGER_TRUCK:
-            if( !gui_animation_load_objfile(FROGGER_TRUCK_LEFT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
-            if( !gui_animation_load_objfile(FROGGER_TRUCK_RIGHT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
+            object = gui_animation_load_object( ALLEGRO_TRUCK_OBJFILE, pos, "" );
             break;
         case FROGGER_BOAT:
-            if( !gui_animation_load_objfile(FROGGER_BOAT_LEFT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
-            if( !gui_animation_load_objfile(FROGGER_BOAT_RIGHT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
+            object = gui_animation_load_object( ALLEGRO_BOAT_OBJFILE, pos, "" );
             break;
         case FROGGER_YACHT:
-            if( !gui_animation_load_objfile(FROGGER_YACHT_LEFT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
-            if( !gui_animation_load_objfile(FROGGER_YACHT_RIGHT_OBJFILE, object) ){
-                gui_animation_destroy_object( object );
-                return NULL;
-            }
+            object = gui_animation_load_object( ALLEGRO_YACHT_OBJFILE, pos, "" );
             break;
     }
     
-    /* Le fuerzo algunos parametros */
-    object->orientation = orientation;
-    
-    for(i = 0;i < NUMBER_OF_ORIENTATIONS;i++){
-        if( object->animations[i].orientation == orientation ){
-            object->animations[i].speed = speed;
-            break;
-        }
+    /* Valido */
+    if( object == NULL ){
+        return NULL;
     }
+    
+    /* Cargo la velocidad */
+    object->speed = speed;
+    
+    /* Cargo orientacion */
+    gui_animation_set_animation(object, gui_animation_seek_animation(object, orientation));
     
     /* Devuelvo la creacion */
     return object;
@@ -203,22 +151,22 @@ bool allegro_frogger_movement_valid(uint16_t input){
     /* Me fijo que este en los limites */
     switch(input){
         case MOVE_UP:
-            if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_UP ){
+            if( frog.object->pos.y == ALLEGRO_DISPLAY_BORDER_UP ){
                 return false;
             }
             break;
         case MOVE_DOWN:
-            if( frog.object->currentPos.y == ALLEGRO_DISPLAY_BORDER_DOWN ){
+            if( frog.object->pos.y == ALLEGRO_DISPLAY_BORDER_DOWN ){
                 return false;
             }
             break;
         case MOVE_LEFT:
-            if( frog.object->currentPos.x == ALLEGRO_DISPLAY_BORDER_LEFT ){
+            if( frog.object->pos.x == ALLEGRO_DISPLAY_BORDER_LEFT ){
                 return false;
             }
             break;
         case MOVE_RIGHT:
-            if( frog.object->currentPos.x == ALLEGRO_DISPLAY_BORDER_RIGHT ){
+            if( frog.object->pos.x == ALLEGRO_DISPLAY_BORDER_RIGHT ){
                 return false;
             }
             break;
@@ -232,6 +180,8 @@ bool allegro_frogger_movement_valid(uint16_t input){
 void allegro_frogger_screen_update(void){
     ALLEGRO_FONT* font;
     ALLEGRO_BITMAP* bitmap;
+    LANE lane;
+    FROGGER_OBJECT object;
     char text[MAX_LINE];
     
     uint32_t i, ii;
@@ -248,7 +198,7 @@ void allegro_frogger_screen_update(void){
     al_clear_to_color( CLEAR_COLOR );
     
     /* Pongo el campo de juego */
-    bitmap = al_load_bitmap(FROGGER_IMAGE_FIELD);
+    bitmap = al_load_bitmap(ALLEGRO_IMAGE_FIELD);
     if( bitmap == NULL ){
         return;
     }
@@ -258,13 +208,13 @@ void allegro_frogger_screen_update(void){
     bitmap = NULL;
     switch( froggerGame.lifes ){
         case 1:
-            bitmap = al_load_bitmap(FROGGER_IMAGE_LIFES_1);
+            bitmap = al_load_bitmap(ALLEGRO_IMAGE_LIFES_1);
             break;
         case 2:
-            bitmap = al_load_bitmap(FROGGER_IMAGE_LIFES_2);
+            bitmap = al_load_bitmap(ALLEGRO_IMAGE_LIFES_2);
             break;
         case 3:
-            bitmap = al_load_bitmap(FROGGER_IMAGE_LIFES_3);
+            bitmap = al_load_bitmap(ALLEGRO_IMAGE_LIFES_3);
             break;
     }
     if( bitmap != NULL ){
@@ -274,7 +224,7 @@ void allegro_frogger_screen_update(void){
     }
     
     /* Pongo la info de score */
-    font = al_load_ttf_font(FROGGER_FONT_0, FROGGER_SIZE_0, 0);
+    font = al_load_ttf_font(ALLEGRO_FONT_0, ALLEGRO_SIZE_0, 0);
     if( font != NULL ){
          sprintf(text, "%s %d", ALLEGRO_SCORE_MSG, froggerGame.score);
         al_draw_text(font, SCORE_COLOR, ALLEGRO_DISPLAY_SCORE_X, ALLEGRO_DISPLAY_SCORE_Y, 0, text);
@@ -283,7 +233,7 @@ void allegro_frogger_screen_update(void){
     }
     
     /* Pongo la info de time */
-    font = al_load_ttf_font(FROGGER_FONT_0, FROGGER_SIZE_0, 0);
+    font = al_load_ttf_font(ALLEGRO_FONT_0, ALLEGRO_SIZE_0, 0);
     if( font != NULL ){
         sprintf(text, "%s %d", ALLEGRO_TIME_MSG, froggerGame.time);
         al_draw_text(font, TIME_COLOR, ALLEGRO_DISPLAY_TIME_X, ALLEGRO_DISPLAY_TIME_Y, 0, text);
@@ -293,13 +243,17 @@ void allegro_frogger_screen_update(void){
     
     /* Pongo los objetos */
     for(i = 0;i < field.lanesQty;i++){
-        for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
-            if( field.lanes[i].objects[ii]->currentPos.x < ALLEGRO_FROGGER_GAME_WIDTH ){
-                bitmap = al_load_bitmap( gui_animation_get_frame(field.lanes[i].objects[ii]) );
+        lane = field.lanes[i];
+        
+        for(ii = 0;ii < lane.objectsQty;ii++){
+            object = lane.objects[ii];
+            
+            if( object->pos.x < ALLEGRO_FROGGER_GAME_WIDTH ){
+                bitmap = al_load_bitmap( gui_animation_get_frame(object) );
                 if( bitmap == NULL ){
                   return;
                 }
-                al_draw_bitmap(bitmap, field.lanes[i].objects[ii]->currentPos.x, field.lanes[i].objects[ii]->currentPos.y, 0);  
+                al_draw_bitmap(bitmap, object->pos.x, object->pos.y, 0);  
             }
             
         }
@@ -310,7 +264,7 @@ void allegro_frogger_screen_update(void){
     if( bitmap == NULL ){
         return;
     }
-    al_draw_bitmap(bitmap, frog.object->currentPos.x, frog.object->currentPos.y, 0);
+    al_draw_bitmap(bitmap, frog.object->pos.x, frog.object->pos.y, 0);
     
     /* Mando el buffer al display */
     al_flip_display();

@@ -1,10 +1,6 @@
 [attributes]
-timedelta: 100
-width: 2
-height: 1
-spacedelta: 20
+id: CAR_RIGHT
 orientation: HORIZONTAL_RIGHT
-quantity: 1
 
 [frames]
 0: gui/allegro/frogger/game/objects/car/sprites/car_right.png
