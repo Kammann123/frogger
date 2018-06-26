@@ -1,0 +1,8 @@
+[attributes]
+id: CAR_RIGHT
+orientation: HORIZONTAL_RIGHT
+
+[frames]
+0: gui/frogger/allegro/objects/car/sprites/car_right.png
+
+END

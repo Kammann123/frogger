@@ -1,8 +1,0 @@
-[attributes]
-id: BOAT_LEFT
-orientation: HORIZONTAL_LEFT
-
-[frames]
-0: gui/allegro/frogger/game/objects/boat/sprites/boat_left.png
-
-END

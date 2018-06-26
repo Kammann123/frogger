@@ -35,23 +35,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/gui/allegro/allegro_init.o \
-	${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o \
-	${OBJECTDIR}/gui/allegro/frogger/changescreen/allegro_frogger_changescreen.o \
-	${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o \
-	${OBJECTDIR}/gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.o \
-	${OBJECTDIR}/gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.o \
-	${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o \
-	${OBJECTDIR}/gui/frogger/frogger_changescreen/frogger_changescreen.o \
-	${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o \
-	${OBJECTDIR}/gui/frogger/frogger_lostscreen/frogger_lostscreen.o \
-	${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o \
-	${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o \
+	${OBJECTDIR}/gui/frogger/allegro/allegro_init.o \
+	${OBJECTDIR}/gui/frogger/allegro/allegro_input.o \
+	${OBJECTDIR}/gui/frogger/allegro/allegro_output.o \
+	${OBJECTDIR}/gui/frogger/allegro/allegro_physics.o \
+	${OBJECTDIR}/gui/frogger/frogger_physics.o \
 	${OBJECTDIR}/gui/gui_animation/gui_animation.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/gui/gui_files/gui_files.o \
-	${OBJECTDIR}/gui/gui_init.o \
-	${OBJECTDIR}/gui/gui_input/gui_input.o \
 	${OBJECTDIR}/gui/gui_timer/gui_timer.o \
 	${OBJECTDIR}/gui/gui_types.o \
 	${OBJECTDIR}/logic/frogger/frogger_kernel.o \
@@ -82,65 +73,30 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/frogger: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/frogger ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/gui/allegro/allegro_init.o: gui/allegro/allegro_init.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/allegro
+${OBJECTDIR}/gui/frogger/allegro/allegro_init.o: gui/frogger/allegro/allegro_init.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/allegro
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/allegro_init.o gui/allegro/allegro_init.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/allegro/allegro_init.o gui/frogger/allegro/allegro_init.c
 
-${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o: gui/allegro/allegro_input/allegro_input.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/allegro/allegro_input
+${OBJECTDIR}/gui/frogger/allegro/allegro_input.o: gui/frogger/allegro/allegro_input.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/allegro
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/allegro_input/allegro_input.o gui/allegro/allegro_input/allegro_input.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/allegro/allegro_input.o gui/frogger/allegro/allegro_input.c
 
-${OBJECTDIR}/gui/allegro/frogger/changescreen/allegro_frogger_changescreen.o: gui/allegro/frogger/changescreen/allegro_frogger_changescreen.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/changescreen
+${OBJECTDIR}/gui/frogger/allegro/allegro_output.o: gui/frogger/allegro/allegro_output.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/allegro
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/changescreen/allegro_frogger_changescreen.o gui/allegro/frogger/changescreen/allegro_frogger_changescreen.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/allegro/allegro_output.o gui/frogger/allegro/allegro_output.c
 
-${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o: gui/allegro/frogger/game/allegro_frogger_game.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/game
+${OBJECTDIR}/gui/frogger/allegro/allegro_physics.o: gui/frogger/allegro/allegro_physics.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/allegro
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/game/allegro_frogger_game.o gui/allegro/frogger/game/allegro_frogger_game.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/allegro/allegro_physics.o gui/frogger/allegro/allegro_physics.c
 
-${OBJECTDIR}/gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.o: gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/lostscreen
+${OBJECTDIR}/gui/frogger/frogger_physics.o: gui/frogger/frogger_physics.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.o gui/allegro/frogger/lostscreen/allegro_frogger_lostscreen.c
-
-${OBJECTDIR}/gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.o: gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/mainmenu
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.o gui/allegro/frogger/mainmenu/allegro_frogger_mainmenu.c
-
-${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o: gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/allegro/frogger/pausemenu
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.o gui/allegro/frogger/pausemenu/allegro_frogger_pausemenu.c
-
-${OBJECTDIR}/gui/frogger/frogger_changescreen/frogger_changescreen.o: gui/frogger/frogger_changescreen/frogger_changescreen.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_changescreen
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_changescreen/frogger_changescreen.o gui/frogger/frogger_changescreen/frogger_changescreen.c
-
-${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o: gui/frogger/frogger_game/frogger_game.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_game
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_game/frogger_game.o gui/frogger/frogger_game/frogger_game.c
-
-${OBJECTDIR}/gui/frogger/frogger_lostscreen/frogger_lostscreen.o: gui/frogger/frogger_lostscreen/frogger_lostscreen.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_lostscreen
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_lostscreen/frogger_lostscreen.o gui/frogger/frogger_lostscreen/frogger_lostscreen.c
-
-${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o: gui/frogger/frogger_mainmenu/frogger_mainmenu.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_mainmenu
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_mainmenu/frogger_mainmenu.o gui/frogger/frogger_mainmenu/frogger_mainmenu.c
-
-${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o: gui/frogger/frogger_pausemenu/frogger_pausemenu.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/frogger_pausemenu
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_pausemenu/frogger_pausemenu.o gui/frogger/frogger_pausemenu/frogger_pausemenu.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_physics.o gui/frogger/frogger_physics.c
 
 ${OBJECTDIR}/gui/gui_animation/gui_animation.o: gui/gui_animation/gui_animation.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_animation
@@ -156,16 +112,6 @@ ${OBJECTDIR}/gui/gui_files/gui_files.o: gui/gui_files/gui_files.c
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_files
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_files/gui_files.o gui/gui_files/gui_files.c
-
-${OBJECTDIR}/gui/gui_init.o: gui/gui_init.c 
-	${MKDIR} -p ${OBJECTDIR}/gui
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_init.o gui/gui_init.c
-
-${OBJECTDIR}/gui/gui_input/gui_input.o: gui/gui_input/gui_input.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/gui_input
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/gui_input/gui_input.o gui/gui_input/gui_input.c
 
 ${OBJECTDIR}/gui/gui_timer/gui_timer.o: gui/gui_timer/gui_timer.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_timer

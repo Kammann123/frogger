@@ -347,8 +347,16 @@ bool gui_animation_collision(ANIMATED_OBJECT* objA, ANIMATED_OBJECT* objB);
  * 
  * a: Region a
  * b: Region b 
- * */
+ */
 bool gui_animation_region_collision(REGION a, REGION b);
+
+/* gui_animation_map_collision 
+ * Se fija si hubo colision de una region y un objeto
+ *
+ * a: Region a
+ * obj: Objeto
+ */
+bool gui_animation_map_collision(REGION a, ANIMATED_OBJECT* obj);
 
 /* map_region
  * Crea un objeto region

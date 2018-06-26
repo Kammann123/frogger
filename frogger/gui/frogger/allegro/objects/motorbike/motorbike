@@ -1,0 +1,11 @@
+[attributes]
+width: 80
+height: 40
+timedelta: 100
+spacedelta: 20
+
+[animations]
+0: gui/frogger/allegro/objects/motorbike/motorbike_left
+1: gui/frogger/allegro/objects/motorbike/motorbike_right
+
+END

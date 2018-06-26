@@ -1,8 +1,0 @@
-[attributes]
-id: TRUCK_RIGHT
-orientation: HORIZONTAL_RIGHT
-
-[frames]
-0: gui/allegro/frogger/game/objects/truck/sprites/truck_right.png
-
-END

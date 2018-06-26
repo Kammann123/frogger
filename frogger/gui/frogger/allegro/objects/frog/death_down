@@ -1,0 +1,10 @@
+[attributes]
+id: DEATH_DOWN
+orientation: ORIENTATION_NULL
+
+[frames]
+0: gui/frogger/allegro/objects/frog/sprites_death/death_down/froggy_0.png
+1: gui/frogger/allegro/objects/frog/sprites_death/death_down/froggy_1.png
+2: gui/frogger/allegro/objects/frog/sprites_death/death_down/froggy_2.png
+
+END

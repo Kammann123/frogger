@@ -239,9 +239,7 @@ char* gui_animation_get_frame(ANIMATED_OBJECT* object){
     for(i = 0;i < object->animQty;i++){
         
         if( !( strcmp(object->currentAnimation, object->animations[i].id) ) ){
-            pthread_mutex_lock(&object->objectMutex);
             file = object->animations[i].frames[object->frameIndex].file;
-            pthread_mutex_unlock(&object->objectMutex);
         }
     }
     
@@ -712,27 +710,14 @@ static void* gui_animation_engine_thread(void* thisEngine){
         if( !engine->pause ){
             /* Retardo temporal de 1mS */
             usleep(1000);
-
-            /* Veo objeto por objeto */
-            pthread_mutex_lock(&engine->engineMutex);
             
-            /* Parametro de seguridad */
-            if( engine->shutdown ){
-                pthread_mutex_unlock(&engine->engineMutex);
-                pthread_exit(NULL);
-            }else if( engine->pause ){
-                pthread_mutex_unlock(&engine->engineMutex);
-                continue;
-            }
-            
+            /* Controlo los objetos del motor */            
             for(i = 0;i < engine->length;i++){
                 /* Cargo el objeto */
                 object = engine->objects[i];
 
                 /* Me fijo el estado del objeto */
                 if( object->status != GUI_ANIMATION_STATE_STATIC ){
-                    
-                    pthread_mutex_lock(&object->objectMutex);
                     /* Incremento contador de tiempo */
                     object->timeCounter++;
                     
@@ -782,10 +767,8 @@ static void* gui_animation_engine_thread(void* thisEngine){
                             }
                         }
                     }
-                    pthread_mutex_unlock(&object->objectMutex);
                 }
             }
-            pthread_mutex_unlock(&engine->engineMutex);
         }
     }
 }
@@ -823,9 +806,8 @@ ANIMATION_ENGINE* gui_animation_create_engine(void){
 void gui_animation_destroy_engine(ANIMATION_ENGINE* engine){
     
     /* Apago el thread */
-    pthread_mutex_lock(&engine->engineMutex);
     engine->shutdown = true;
-    pthread_mutex_unlock(&engine->engineMutex);
+    pthread_join(engine->engineThread, NULL);
     
     /* Libero la memoria de la lista de objetos */
     if( engine->objects != NULL ){
@@ -890,57 +872,48 @@ bool gui_animation_attach_engine(ANIMATION_ENGINE* engine, ANIMATED_OBJECT* obje
 
 /* gui_animation_start_static_movement */
 void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t distance){
-    pthread_mutex_lock(&object->objectMutex);
     /* Configuro posicion final */
     object->distance = distance;
-    
+
     /* Configuro estado */
     object->status = GUI_ANIMATION_STATE_STATIC_MOVE;
-    pthread_mutex_unlock(&object->objectMutex);
 }
 
 /* gui_animation_start_movement */
 void gui_animation_start_movement(ANIMATED_OBJECT* object, ANIMATION_ID id, int32_t distance){
-    pthread_mutex_lock(&object->objectMutex);
     /* Configuro la posicion final de movimiento */
     object->distance = distance;
-    
+
     /* Configuro la animacion del objeto */
     strcpy(object->currentAnimation, id);
-    
+
     /* Configuro estado movimiento */
     object->status = GUI_ANIMATION_STATE_MOVE;
-    pthread_mutex_unlock(&object->objectMutex);
 }
 
 /* gui_animation_stop_movement */
 void gui_animation_stop_movement(ANIMATED_OBJECT* object){
-    pthread_mutex_lock(&object->objectMutex);
     /* Reseteo el frame */
     object->frameIndex = 0;
-    
+
     /* Configuro */
     object->status = GUI_ANIMATION_STATE_STATIC;
-    pthread_mutex_unlock(&object->objectMutex);
 }
 
 /* gui_animation_stop_loop */
 void gui_animation_stop_loop(ANIMATED_OBJECT* object){
-    pthread_mutex_lock(&object->objectMutex);
     /* Reseteo el frame */
     object->frameIndex = 0;
-    
+
     /* Desactivo estado loop */
     object->status = GUI_ANIMATION_STATE_STATIC;
-    pthread_mutex_unlock(&object->objectMutex);
 }
 
 /* gui_animation_start_loop */
 void gui_animation_start_loop(ANIMATED_OBJECT* object, ANIMATION_ID id){
-     
     /* Configuro la animacion del objeto */
     strcpy(object->currentAnimation, id);
-    
+
     /* Pongo en modo bucle */
     object->status = GUI_ANIMATION_STATE_LOOP;
 }
@@ -973,6 +946,13 @@ bool gui_animation_collision(ANIMATED_OBJECT* objA, ANIMATED_OBJECT* objB){
     
     /* Me fijo si hubo colision */
     return collision;
+}
+
+/* gui_animation_map_collision */
+bool gui_animation_map_collision(REGION a, ANIMATED_OBJECT* obj){ 
+    REGION region = map_region(obj->pos, map_position(obj->pos.x+obj->width, obj->pos.y+obj->height));
+
+    return gui_animation_region_collision(a, region);
 }
 
 /* gui_animation_region_collision */

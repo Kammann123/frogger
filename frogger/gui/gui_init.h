@@ -1,14 +1,12 @@
 /* GUI_INIT
  * Maneja la inicializacion de las interfaces graficas.
- * Hace de wrapper segun la plataforma que se utilice 
  */
-
-/* Librerias utilizadas */
-#include "allegro/allegro_init.h"
-
 
 #ifndef GUI_INIT_H
 #define GUI_INIT_H
+
+/* Librerias */
+#include <stdbool.h>
 
 /***********************************/
 /* Prototipo de funciones publicas */

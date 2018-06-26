@@ -1,8 +1,0 @@
-[attributes]
-id: MOTORBIKE_LEFT
-orientation: HORIZONTAL_LEFT
-
-[frames]
-0: gui/allegro/frogger/game/objects/motorbike/sprites/motorbike_left.png
-
-END

@@ -33,15 +33,15 @@ bool gui_timer_source(EVENT* event, void* timerQueue){
         /* Compruebo timer overflow */
         if( queue->timers[i].timerCounter >= queue->timers[i].timerMax && !(queue->timers[i].timerOverflow) ){
             
-            pthread_mutex_lock(&(queue->timerMutex));
             
             /* Raise event */
             event->type = TIMER_OVERFLOW;
             event->data = queue->timers[i].id;
+            
             /* Flag */
+            pthread_mutex_lock(&queue->timerMutex);
             queue->timers[i].timerOverflow = true;
-
-            pthread_mutex_unlock(&(queue->timerMutex));
+            pthread_mutex_unlock(&queue->timerMutex);
             
             return true;
         }
@@ -60,20 +60,15 @@ static void* timer_thread(void* timerQueue){
         usleep(1000);
         
         /* Actualizo estado de eventos */
-        pthread_mutex_lock(&queue->timerMutex);
-        /* Verifico error de apagado */
-        if( queue->shutdown ){
-            pthread_mutex_unlock(&queue->timerMutex);
-            pthread_exit(NULL);
-        }
         if( queue->enable ){
             for(i = 0;i < queue->length;i++){
                 if(queue->timers[i].timerCounter < queue->timers[i].timerMax){
+                    pthread_mutex_lock(&queue->timerMutex);
                     queue->timers[i].timerCounter++;
+                    pthread_mutex_unlock(&queue->timerMutex);
                 }
             }
         }
-        pthread_mutex_unlock(&queue->timerMutex);
     }
     
     return NULL;
@@ -90,8 +85,10 @@ void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id){
     /* Busco el timer */
     for(i = 0;i < timerQueue->length;i++){
         if( timerQueue->timers[i].id == id ){
+            pthread_mutex_lock(&timerQueue->timerMutex);
             timerQueue->timers[i].timerOverflow = false;
             timerQueue->timers[i].timerCounter = 0;
+            pthread_mutex_unlock(&timerQueue->timerMutex);
             break;
         }
     }
@@ -121,11 +118,9 @@ void gui_timer_start(TIMER_QUEUE* timerQueue){
 
 /* gui_timer_destroy */
 void gui_timer_destroy(TIMER_QUEUE* timerQueue ){
-    
-    pthread_mutex_lock(&(timerQueue->timerMutex));
     /* Apago el thread */
     timerQueue->shutdown = true;
-    pthread_mutex_unlock(&(timerQueue->timerMutex));
+    pthread_join(timerQueue->timerThread, NULL);
     
     /* Destruyo el mutex */
     pthread_mutex_destroy(&(timerQueue->timerMutex));

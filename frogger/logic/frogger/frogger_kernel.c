@@ -1,7 +1,7 @@
 #include "frogger_kernel.h"
 
-#include "../../gui/frogger/frogger_game/frogger_game.h"
 #include "../../gui/gui_animation/gui_animation.h"
+#include "../../gui/frogger/frogger_physics.h"
 #include <math.h>
 
 /**************************/
