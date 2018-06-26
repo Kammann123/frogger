@@ -480,11 +480,12 @@ bool frogger_lostscreen(uint32_t score){
 /**********************/
 
 /* Configuracion */
-#define GAMESCREEN_PATH   "gui/frogger/allegro/gamescreen/"
-#define GAMESCREEN_LIFES  GAMESCREEN_PATH "lifes_"
-#define GAMESCREEN_IMAGE  GAMESCREEN_PATH "field.png"
-#define GAMESCREEN_FONT   GAMESCREEN_PATH "Bubblegum.ttf"
-#define GAMESCREEN_SIZE   25
+#define GAMESCREEN_PATH         "gui/frogger/allegro/gamescreen/"
+#define GAMESCREEN_LIFES        GAMESCREEN_PATH "lifes_"
+#define GAMESCREEN_IMAGE_FIELD  GAMESCREEN_PATH "field.png"
+#define GAMESCREEN_IMAGE_LAVA   GAMESCREEN_PATH "lava.png"
+#define GAMESCREEN_FONT         GAMESCREEN_PATH "Bubblegum.ttf"
+#define GAMESCREEN_SIZE         25
 
 #define GAME_SCORE_COLOR     al_map_rgb(255, 255, 255)
 #define GAME_TIME_COLOR      al_map_rgb(255, 255, 255)
@@ -497,6 +498,18 @@ bool frogger_lostscreen(uint32_t score){
 #define GAME_DISPLAY_SCORE_Y     445
 #define GAME_DISPLAY_TIME_X      510
 #define GAME_DISPLAY_TIME_Y      445
+
+
+static char* frogger_back_selector(uint16_t index){
+    switch(index){
+        case 1:
+            return GAMESCREEN_IMAGE_LAVA;
+            break;
+        default:
+            return GAMESCREEN_IMAGE_FIELD;
+            break;
+    }
+}
 
 /* frogger_gamescreen */
 bool frogger_gamescreen(GAME_STAGE* stage, FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score){
@@ -520,7 +533,7 @@ bool frogger_gamescreen(GAME_STAGE* stage, FIELD field, FROG frog, uint32_t life
     al_clear_to_color( CLEAR_COLOR );
 
     /* Pongo el campo de juego */
-    bitmap = al_load_bitmap( GAMESCREEN_IMAGE );
+    bitmap = al_load_bitmap( frogger_back_selector(stage->backgroundId) );
     if( bitmap == NULL ){
         return false;
     }
