@@ -28,8 +28,11 @@
 #define ALLEGRO_FROGGY_OBJFILE              ALLEGRO_PATH_OBJECTS "frog/froggy"
 #define ALLEGRO_BIRD_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/bird"
 #define ALLEGRO_MOTORBIKE_OBJFILE           ALLEGRO_PATH_OBJECTS "motorbike/motorbike"
+#define ALLEGRO_ROCKET_OBJFILE              ALLEGRO_PATH_OBJECTS "motorbike/rocket"
 #define ALLEGRO_CAR_OBJFILE                 ALLEGRO_PATH_OBJECTS "car/car"
+#define ALLEGRO_PLANE_OBJFILE               ALLEGRO_PATH_OBJECTS "car/plane"
 #define ALLEGRO_TRUCK_OBJFILE               ALLEGRO_PATH_OBJECTS "truck/truck"
+#define ALLEGRO_HELICOPTER_OBJFILE          ALLEGRO_PATH_OBJECTS "truck/heli"
 #define ALLEGRO_BOAT_OBJFILE                ALLEGRO_PATH_OBJECTS "boat/boat"
 #define ALLEGRO_SMALL_CLOUD_OBJFILE         ALLEGRO_PATH_OBJECTS "boat/small_cloud"
 #define ALLEGRO_YACHT_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/yacht"
@@ -58,7 +61,7 @@ char* frogger_frog_selector(uint16_t index){
 /* frogger_yatch_selector */
 char* frogger_yatch_selector(uint16_t index){
     switch(index){
-        case 1:
+        case 1: case 2:
             return ALLEGRO_CLOUD_OBJFILE;
             break;
         default:
@@ -70,11 +73,47 @@ char* frogger_yatch_selector(uint16_t index){
 /* frogger_boat_selector */
 char* frogger_boat_selector(uint16_t index){
     switch(index){
-        case 1:
+        case 1: case 2:
             return ALLEGRO_SMALL_CLOUD_OBJFILE;
             break;
         default:
             return ALLEGRO_BOAT_OBJFILE;
+            break;
+    }
+}
+
+/* frogger_car_selector */
+char* frogger_car_selector(uint16_t index){
+    switch(index){
+        case 2:
+            return ALLEGRO_PLANE_OBJFILE;
+            break;
+        default:
+            return ALLEGRO_CAR_OBJFILE;
+            break;
+    }
+}
+
+/* frogger_motorbike_selector */
+char* frogger_motorbike_selector(uint16_t index){
+    switch(index){
+        case 2:
+            return ALLEGRO_ROCKET_OBJFILE;
+            break;
+        default:
+            return ALLEGRO_MOTORBIKE_OBJFILE;
+            break;
+    }
+}
+
+/* frogger_truck_selector */
+char* frogger_truck_selector(uint16_t index){
+    switch(index){
+        case 2:
+            return ALLEGRO_HELICOPTER_OBJFILE;
+            break;
+        default:
+            return ALLEGRO_TRUCK_OBJFILE;
             break;
     }
 }
@@ -175,13 +214,13 @@ ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMA
     /* Cargo el object file */
     switch( type ){
         case FROGGER_MOTORBIKE:
-            object = gui_animation_load_object( ALLEGRO_MOTORBIKE_OBJFILE, pos, "" );
+            object = gui_animation_load_object( frogger_motorbike_selector(vehiclesId), pos, "" );
             break;
         case FROGGER_CAR:
-            object = gui_animation_load_object( ALLEGRO_CAR_OBJFILE, pos, "" );
+            object = gui_animation_load_object( frogger_car_selector(vehiclesId), pos, "" );
             break;
         case FROGGER_TRUCK:
-            object = gui_animation_load_object( ALLEGRO_TRUCK_OBJFILE, pos, "" );
+            object = gui_animation_load_object( frogger_truck_selector(vehiclesId), pos, "" );
             break;
         case FROGGER_BOAT:
             object = gui_animation_load_object( frogger_boat_selector(vehiclesId), pos, "" );

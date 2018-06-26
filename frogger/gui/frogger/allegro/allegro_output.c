@@ -489,13 +489,14 @@ bool frogger_lostscreen(uint32_t score){
 /**********************/
 
 /* Configuracion */
-#define GAMESCREEN_PATH         "gui/frogger/allegro/gamescreen/"
-#define GAMESCREEN_LIFES        GAMESCREEN_PATH "lifes_"
-#define GAMESCREEN_IMAGE_FIELD  GAMESCREEN_PATH "field.png"
-#define GAMESCREEN_IMAGE_LAVA   GAMESCREEN_PATH "lava.png"
-#define GAMESCREEN_IMAGE_SKY   GAMESCREEN_PATH "sky.png"
-#define GAMESCREEN_FONT         GAMESCREEN_PATH "Bubblegum.ttf"
-#define GAMESCREEN_SIZE         25
+#define GAMESCREEN_PATH             "gui/frogger/allegro/gamescreen/"
+#define GAMESCREEN_LIFES            GAMESCREEN_PATH "lifes_"
+#define GAMESCREEN_IMAGE_FIELD      GAMESCREEN_PATH "field.png"
+#define GAMESCREEN_IMAGE_LAVA       GAMESCREEN_PATH "lava.png"
+#define GAMESCREEN_IMAGE_SKY        GAMESCREEN_PATH "sky.png"
+#define GAMESCREEN_IMAGE_FULL_SKY   GAMESCREEN_PATH "full_sky.png"
+#define GAMESCREEN_FONT             GAMESCREEN_PATH "Bubblegum.ttf"
+#define GAMESCREEN_SIZE             25
 
 #define GAME_SCORE_COLOR     al_map_rgb(255, 255, 255)
 #define GAME_TIME_COLOR      al_map_rgb(255, 255, 255)
@@ -517,6 +518,9 @@ static char* frogger_back_selector(uint16_t index){
             break;
         case 2:
             return GAMESCREEN_IMAGE_SKY;
+            break;
+        case 3:
+            return GAMESCREEN_IMAGE_FULL_SKY;
             break;
         default:
             return GAMESCREEN_IMAGE_FIELD;

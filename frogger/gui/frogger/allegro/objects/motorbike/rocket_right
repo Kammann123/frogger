@@ -1,0 +1,8 @@
+[attributes]
+id: MOTORBIKE_RIGHT
+orientation: HORIZONTAL_RIGHT
+
+[frames]
+0: gui/frogger/allegro/objects/motorbike/sprites/rocket_right.png
+
+END

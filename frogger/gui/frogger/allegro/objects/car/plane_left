@@ -1,0 +1,8 @@
+[attributes]
+id: CAR_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/allegro/objects/car/sprites/plane_left.png
+
+END

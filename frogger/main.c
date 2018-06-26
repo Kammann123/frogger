@@ -139,6 +139,7 @@ int main(int argc, char** argv){
     ENTRIES entries;
 
     char* username = NULL;
+    uint32_t mapId=0;
     uint32_t characterId = 0;
     uint32_t backgroundId = 0;
     uint32_t vehiclesId = 0;
@@ -148,11 +149,37 @@ int main(int argc, char** argv){
     if( read_entries(&entries, &argv[1], argc-1) ){
         /* Si no hubo error de sintaxis y se cargaron los comandos */
         username = entries_get_string(&entries, "name");
-        entries_get_int(&entries, "character", &characterId);
+        entries_get_int(&entries, "map", &mapId);
+        
+        switch (mapId){
+            case 0:
+                characterId=0;
+                backgroundId=0;
+                vehiclesId=0;
+                break;
+            case 1:
+                characterId=2;
+                backgroundId=2;
+                vehiclesId=1;
+                break;
+            case 2:
+                characterId=2;
+                backgroundId=3;
+                vehiclesId=2;
+                break;
+            default:
+                characterId=0;
+                backgroundId=0;
+                vehiclesId=0;
+                break;
+        }
+        
         entries_get_int(&entries, "background", &backgroundId);
         entries_get_int(&entries, "vehicles", &vehiclesId);
+        entries_get_int(&entries, "character", &characterId);
+        
     }
-
+    
     /* Inicializo estructura estado del juego */
     stage = stage_init(username, characterId, backgroundId, vehiclesId);
 

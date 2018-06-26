@@ -248,6 +248,30 @@ char* frogger_yatch_selector(uint16_t index);
  */
 char* frogger_boat_selector(uint16_t index);
 
+/* frogger_car_selector
+ * Devuelve un string con el path del object file del auto
+ * elegido segun el indice, cada interfaz lo maneja a su manera
+ *
+ * index: Indice
+ */
+char* frogger_auto_selector(uint16_t index);
+
+/* frogger_motorbike_selector
+ * Devuelve un string con el path del object file de la moto
+ * elegido segun el indice, cada interfaz lo maneja a su manera
+ *
+ * index: Indice
+ */
+char* frogger_motorbike_selector(uint16_t index);
+
+/* frogger_truck_selector
+ * Devuelve un string con el path del object file del camion
+ * elegido segun el indice, cada interfaz lo maneja a su manera
+ *
+ * index: Indice
+ */
+char* frogger_truck_selector(uint16_t index);
+
 /* frogger_game_dead_animation
  * Muestra la ranita muriendo
  */
