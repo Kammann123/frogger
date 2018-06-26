@@ -40,6 +40,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/frogger/allegro/allegro_output.o \
 	${OBJECTDIR}/gui/frogger/allegro/allegro_physics.o \
 	${OBJECTDIR}/gui/frogger/frogger_physics.o \
+	${OBJECTDIR}/gui/frogger/rpi/rpi_init.o \
+	${OBJECTDIR}/gui/frogger/rpi/rpi_input.o \
+	${OBJECTDIR}/gui/frogger/rpi/rpi_output.o \
+	${OBJECTDIR}/gui/frogger/rpi/rpi_physics.o \
 	${OBJECTDIR}/gui/gui_animation/gui_animation.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/gui/gui_files/gui_files.o \
@@ -97,6 +101,26 @@ ${OBJECTDIR}/gui/frogger/frogger_physics.o: gui/frogger/frogger_physics.c
 	${MKDIR} -p ${OBJECTDIR}/gui/frogger
 	${RM} "$@.d"
 	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_physics.o gui/frogger/frogger_physics.c
+
+${OBJECTDIR}/gui/frogger/rpi/rpi_init.o: gui/frogger/rpi/rpi_init.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/rpi_init.o gui/frogger/rpi/rpi_init.c
+
+${OBJECTDIR}/gui/frogger/rpi/rpi_input.o: gui/frogger/rpi/rpi_input.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/rpi_input.o gui/frogger/rpi/rpi_input.c
+
+${OBJECTDIR}/gui/frogger/rpi/rpi_output.o: gui/frogger/rpi/rpi_output.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/rpi_output.o gui/frogger/rpi/rpi_output.c
+
+${OBJECTDIR}/gui/frogger/rpi/rpi_physics.o: gui/frogger/rpi/rpi_physics.c 
+	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
+	${RM} "$@.d"
+	$(COMPILE.c) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/rpi_physics.o gui/frogger/rpi/rpi_physics.c
 
 ${OBJECTDIR}/gui/gui_animation/gui_animation.o: gui/gui_animation/gui_animation.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_animation

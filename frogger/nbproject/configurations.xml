@@ -40,6 +40,10 @@
       <itemPath>gui/gui_timer/gui_timer.c</itemPath>
       <itemPath>gui/gui_types.c</itemPath>
       <itemPath>main.c</itemPath>
+      <itemPath>gui/frogger/rpi/rpi_init.c</itemPath>
+      <itemPath>gui/frogger/rpi/rpi_input.c</itemPath>
+      <itemPath>gui/frogger/rpi/rpi_output.c</itemPath>
+      <itemPath>gui/frogger/rpi/rpi_physics.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -111,6 +115,14 @@
       <item path="gui/frogger/frogger_physics.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/frogger/frogger_physics.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/frogger/rpi/rpi_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="gui/frogger/rpi/rpi_input.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="gui/frogger/rpi/rpi_output.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="gui/frogger/rpi/rpi_physics.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/gui_animation/gui_animation.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -200,6 +212,14 @@
       <item path="gui/frogger/frogger_physics.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/frogger/frogger_physics.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gui/frogger/rpi/rpi_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="gui/frogger/rpi/rpi_input.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="gui/frogger/rpi/rpi_output.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="gui/frogger/rpi/rpi_physics.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/gui_animation/gui_animation.c" ex="false" tool="0" flavor2="0">
       </item>
