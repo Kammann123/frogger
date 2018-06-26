@@ -27,18 +27,24 @@
 #define ALLEGRO_FROG_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/frog"
 #define ALLEGRO_FROGGY_OBJFILE              ALLEGRO_PATH_OBJECTS "frog/froggy"
 #define ALLEGRO_BIRD_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/bird"
+#define ALLEGRO_R2D2_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/r2d2"
 #define ALLEGRO_MOTORBIKE_OBJFILE           ALLEGRO_PATH_OBJECTS "motorbike/motorbike"
 #define ALLEGRO_ROCKET_OBJFILE              ALLEGRO_PATH_OBJECTS "motorbike/rocket"
+#define ALLEGRO_BARC_OBJFILE                ALLEGRO_PATH_OBJECTS "motorbike/barc"
 #define ALLEGRO_CAR_OBJFILE                 ALLEGRO_PATH_OBJECTS "car/car"
 #define ALLEGRO_PLANE_OBJFILE               ALLEGRO_PATH_OBJECTS "car/plane"
+#define ALLEGRO_ATT_OBJFILE                 ALLEGRO_PATH_OBJECTS "car/att"
 #define ALLEGRO_TRUCK_OBJFILE               ALLEGRO_PATH_OBJECTS "truck/truck"
 #define ALLEGRO_HELICOPTER_OBJFILE          ALLEGRO_PATH_OBJECTS "truck/heli"
+#define ALLEGRO_HAVWA6_OBJFILE              ALLEGRO_PATH_OBJECTS "truck/havwa6"
 #define ALLEGRO_BOAT_OBJFILE                ALLEGRO_PATH_OBJECTS "boat/boat"
 #define ALLEGRO_SMALL_CLOUD_OBJFILE         ALLEGRO_PATH_OBJECTS "boat/small_cloud"
 #define ALLEGRO_SMALL_STONE_OBJFILE         ALLEGRO_PATH_OBJECTS "boat/small_stone"
+#define ALLEGRO_ALCONMIL_OBJFILE            ALLEGRO_PATH_OBJECTS "boat/alconmil"
 #define ALLEGRO_YACHT_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/yacht"
 #define ALLEGRO_CLOUD_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/cloud"
 #define ALLEGRO_STONE_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/stone"
+#define ALLEGRO_DESTROYER_OBJFILE           ALLEGRO_PATH_OBJECTS "yacht/destroyer"
 
 /**********************/
 /* Funciones publicas */
@@ -53,6 +59,9 @@ char* frogger_frog_selector(uint16_t index){
             break;
         case 2:
             return ALLEGRO_BIRD_OBJFILE;
+            break;
+        case 3: 
+            return ALLEGRO_R2D2_OBJFILE;
             break;
         default:
             return ALLEGRO_FROG_OBJFILE;
@@ -69,7 +78,9 @@ char* frogger_yatch_selector(uint16_t index){
         case 3:
             return ALLEGRO_STONE_OBJFILE;
             break;
-            
+        case 4:
+            return ALLEGRO_DESTROYER_OBJFILE;
+            break;
         default:
             return ALLEGRO_YACHT_OBJFILE;
             break;
@@ -85,6 +96,9 @@ char* frogger_boat_selector(uint16_t index){
         case 3:
             return ALLEGRO_SMALL_STONE_OBJFILE;
             break;
+        case 4:
+            return ALLEGRO_ALCONMIL_OBJFILE;
+            break;
         default:
             return ALLEGRO_BOAT_OBJFILE;
             break;
@@ -96,6 +110,9 @@ char* frogger_car_selector(uint16_t index){
     switch(index){
         case 2:
             return ALLEGRO_PLANE_OBJFILE;
+            break;
+        case 4:
+            return ALLEGRO_ATT_OBJFILE;
             break;
         default:
             return ALLEGRO_CAR_OBJFILE;
@@ -109,6 +126,9 @@ char* frogger_motorbike_selector(uint16_t index){
         case 2:
             return ALLEGRO_ROCKET_OBJFILE;
             break;
+        case 4:
+            return ALLEGRO_BARC_OBJFILE;
+            break;
         default:
             return ALLEGRO_MOTORBIKE_OBJFILE;
             break;
@@ -120,6 +140,9 @@ char* frogger_truck_selector(uint16_t index){
     switch(index){
         case 2:
             return ALLEGRO_HELICOPTER_OBJFILE;
+            break;
+        case 4:
+            return ALLEGRO_HAVWA6_OBJFILE;
             break;
         default:
             return ALLEGRO_TRUCK_OBJFILE;

@@ -1,0 +1,11 @@
+[attributes]
+width: 70
+height: 35
+timedelta: 100
+spacedelta: 20
+
+[animations]
+0: gui/frogger/allegro/objects/car/att_left
+1: gui/frogger/allegro/objects/car/att_right
+
+END

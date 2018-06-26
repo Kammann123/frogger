@@ -1,0 +1,8 @@
+[attributes]
+id: BOAT_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/allegro/objects/boat/sprites/alconmil_left.png
+
+END

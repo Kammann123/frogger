@@ -1,0 +1,8 @@
+[attributes]
+id: FROG_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/allegro/objects/frog/sprites_left/r2d2_left.png
+
+END

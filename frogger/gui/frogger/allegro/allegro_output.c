@@ -495,6 +495,7 @@ bool frogger_lostscreen(uint32_t score){
 #define GAMESCREEN_IMAGE_LAVA       GAMESCREEN_PATH "lava.png"
 #define GAMESCREEN_IMAGE_SKY        GAMESCREEN_PATH "sky.png"
 #define GAMESCREEN_IMAGE_FULL_SKY   GAMESCREEN_PATH "full_sky.png"
+#define GAMESCREEN_IMAGE_STAR_WARS  GAMESCREEN_PATH "field_star.png"
 #define GAMESCREEN_FONT             GAMESCREEN_PATH "Bubblegum.ttf"
 #define GAMESCREEN_SIZE             25
 
@@ -521,6 +522,9 @@ static char* frogger_back_selector(uint16_t index){
             break;
         case 3:
             return GAMESCREEN_IMAGE_FULL_SKY;
+            break;
+        case 4:
+            return GAMESCREEN_IMAGE_STAR_WARS;
             break;
         default:
             return GAMESCREEN_IMAGE_FIELD;

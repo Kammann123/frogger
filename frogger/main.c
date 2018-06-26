@@ -172,6 +172,11 @@ int main(int argc, char** argv){
                 backgroundId=1;
                 vehiclesId=3;
                 break;
+            case 4:
+                characterId=3;
+                backgroundId=4;
+                vehiclesId=4;
+                break;
             default:
                 characterId=0;
                 backgroundId=0;

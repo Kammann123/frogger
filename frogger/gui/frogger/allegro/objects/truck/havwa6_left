@@ -1,0 +1,8 @@
+[attributes]
+id: TRUCK_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/allegro/objects/truck/sprites/havwa6_left.png
+
+END

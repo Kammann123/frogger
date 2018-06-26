@@ -1,0 +1,8 @@
+[attributes]
+id: MOTORBIKE_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/allegro/objects/motorbike/sprites/barc_left.png
+
+END
