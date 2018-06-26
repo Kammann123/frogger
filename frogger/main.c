@@ -181,8 +181,7 @@ int main(int argc, char** argv){
         
         entries_get_int(&entries, "background", &backgroundId);
         entries_get_int(&entries, "vehicles", &vehiclesId);
-        entries_get_int(&entries, "character", &characterId);
-        
+        entries_get_int(&entries, "character", &characterId);   
     }
     
     /* Inicializo estructura estado del juego */
