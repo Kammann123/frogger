@@ -9,3 +9,4 @@
 - Hacer diagrama de archivos
 - Hacer manual de juego
 - SEGMENTATION FAULT EN EL SCORE
+- Cuando se me acaban las vidas no puedo volver a jugar

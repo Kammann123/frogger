@@ -216,8 +216,9 @@ bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input);
  * speed: Velocidad
  * orientation: Orientacion inicial
  * type: Tipo de vehiculo
+ * vehiclesId : Id de la combinacion de vehiculos.
  */
-ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type);
+ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type, uint16_t vehiclesId);
 
 /***********************************/
 /* Prototipo de funciones publicas */
@@ -230,6 +231,22 @@ ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMA
  * index: Indice
  */
 char* frogger_frog_selector(uint16_t index);
+
+/* frogger_yatch_selector
+ * Devuelve un string con el path del object file del yatch
+ * elegido segun el indice, cada interfaz lo maneja a su manera
+ *
+ * index: Indice
+ */
+char* frogger_yatch_selector(uint16_t index);
+
+/* frogger_boat_selector
+ * Devuelve un string con el path del object file del bote
+ * elegido segun el indice, cada interfaz lo maneja a su manera
+ *
+ * index: Indice
+ */
+char* frogger_boat_selector(uint16_t index);
 
 /* frogger_game_dead_animation
  * Muestra la ranita muriendo

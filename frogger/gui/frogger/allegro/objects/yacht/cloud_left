@@ -1,0 +1,8 @@
+[attributes]
+id: YACHT_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/allegro/objects/yacht/sprites/cloud_left.png
+
+END

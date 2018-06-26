@@ -63,14 +63,16 @@ bool get_score_position(GAME_STAGE* stage, char* str, uint32_t pos){
 }
 
 /* stage_init */
-GAME_STAGE stage_init(char* username, uint16_t characterId, uint16_t backgroundId){
+GAME_STAGE stage_init(char* username, uint16_t characterId, uint16_t backgroundId, uint16_t vehiclesId){
     
     /* Inicializacion de instancia */
     GAME_STAGE stage = {
         .value = DEFAULT_GAME_STAGE,
         .hasChanged = false,
         .characterId = characterId,
-        .backgroundId = backgroundId
+        .backgroundId = backgroundId,
+        .vehiclesId = vehiclesId
+        
     };
     
     /* Cargo el score */

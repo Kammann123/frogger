@@ -26,11 +26,14 @@
     
 #define ALLEGRO_FROG_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/frog"
 #define ALLEGRO_FROGGY_OBJFILE              ALLEGRO_PATH_OBJECTS "frog/froggy"
+#define ALLEGRO_BIRD_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/bird"
 #define ALLEGRO_MOTORBIKE_OBJFILE           ALLEGRO_PATH_OBJECTS "motorbike/motorbike"
 #define ALLEGRO_CAR_OBJFILE                 ALLEGRO_PATH_OBJECTS "car/car"
 #define ALLEGRO_TRUCK_OBJFILE               ALLEGRO_PATH_OBJECTS "truck/truck"
 #define ALLEGRO_BOAT_OBJFILE                ALLEGRO_PATH_OBJECTS "boat/boat"
+#define ALLEGRO_SMALL_CLOUD_OBJFILE         ALLEGRO_PATH_OBJECTS "boat/small_cloud"
 #define ALLEGRO_YACHT_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/yacht"
+#define ALLEGRO_CLOUD_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/cloud"
 
 /**********************/
 /* Funciones publicas */
@@ -43,8 +46,35 @@ char* frogger_frog_selector(uint16_t index){
         case 1:
             return ALLEGRO_FROGGY_OBJFILE;
             break;
+        case 2:
+            return ALLEGRO_BIRD_OBJFILE;
+            break;
         default:
             return ALLEGRO_FROG_OBJFILE;
+            break;
+    }
+}
+
+/* frogger_yatch_selector */
+char* frogger_yatch_selector(uint16_t index){
+    switch(index){
+        case 1:
+            return ALLEGRO_CLOUD_OBJFILE;
+            break;
+        default:
+            return ALLEGRO_YACHT_OBJFILE;
+            break;
+    }
+}
+
+/* frogger_boat_selector */
+char* frogger_boat_selector(uint16_t index){
+    switch(index){
+        case 1:
+            return ALLEGRO_SMALL_CLOUD_OBJFILE;
+            break;
+        default:
+            return ALLEGRO_BOAT_OBJFILE;
             break;
     }
 }
@@ -136,7 +166,7 @@ bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
 }
 
 /* frogger_game_create_object */
-ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type){
+ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type, uint16_t vehiclesId){
     ANIMATED_OBJECT* object;
 
     pos.x *= ALLEGRO_DISPLAY_STEP;
@@ -154,10 +184,10 @@ ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMA
             object = gui_animation_load_object( ALLEGRO_TRUCK_OBJFILE, pos, "" );
             break;
         case FROGGER_BOAT:
-            object = gui_animation_load_object( ALLEGRO_BOAT_OBJFILE, pos, "" );
+            object = gui_animation_load_object( frogger_boat_selector(vehiclesId), pos, "" );
             break;
         case FROGGER_YACHT:
-            object = gui_animation_load_object( ALLEGRO_YACHT_OBJFILE, pos, "" );
+            object = gui_animation_load_object( frogger_yatch_selector(vehiclesId), pos, "" );
             break;
         default:
             break;

@@ -49,8 +49,9 @@ static void frogger_game_destroy_field(FIELD* field);
  *
  * field: Instancia
  * filename: Nombre del archivo
+ * vehiclesId: Id de la combinacion de vehiculos
  */
-static bool frogger_game_load_field(FIELD* field, char* filename);
+static bool frogger_game_load_field(FIELD* field, char* filename, uint16_t vehiclesId);
 
 /*****************/
 /* LANE handlers */
@@ -81,8 +82,9 @@ static void frogger_game_destroy_lane(LANE* lane);
  *
  * lane: Instancia del carril
  * filename: Archivo configuracion del carril
+ * vehiclesId: Id de combinacion de vehiculos elegida.
  */
-static bool frogger_game_load_lane(LANE* lane, char* filename);
+static bool frogger_game_load_lane(LANE* lane, char* filename, uint16_t vehiclesId);
 
 /**********************/
 /* LANE_FILE handlers */
@@ -150,7 +152,7 @@ static SPEED frogger_game_new_speed(SPEED speed, uint32_t factor, uint32_t var);
 /******************/
 
 /* frogger_game_load_field */
-static bool frogger_game_load_field(FIELD* field, char* filename){
+static bool frogger_game_load_field(FIELD* field, char* filename, uint16_t vehiclesId){
     SETTING* settings;
     LENGTH i;
     char fi[5];
@@ -208,7 +210,7 @@ static bool frogger_game_load_field(FIELD* field, char* filename){
         }
 
         /* Cargo el carril */
-        if( !frogger_game_load_lane(&field->lanes[i], str) ){
+        if( !frogger_game_load_lane(&field->lanes[i], str, vehiclesId) ){
             frogger_game_destroy_field(field);
             gui_files_destroy_setting(settings);
             return false;
@@ -341,7 +343,7 @@ static void frogger_game_destroy_lane(LANE* lane){
 }
 
 /* frogger_game_load_lane */
-static bool frogger_game_load_lane(LANE* lane, char* filename){
+static bool frogger_game_load_lane(LANE* lane, char* filename, uint16_t vehiclesId){
     SETTING* settings;
     LENGTH i;
     char* str;
@@ -412,7 +414,7 @@ static bool frogger_game_load_lane(LANE* lane, char* filename){
 
     /* Cargo objetos */
     for(i = 0;i < lane->objectsQty;i++){
-            lane->objects[i] = frogger_game_create_object(map_position(0, 0), frogger_game_speed_resolution(lane->speed), lane->orientation, lane->type);
+            lane->objects[i] = frogger_game_create_object(map_position(0, 0), frogger_game_speed_resolution(lane->speed), lane->orientation, lane->type, vehiclesId);
         if( lane->objects[i] == NULL ){
             frogger_game_destroy_lane(lane);
             return false;
@@ -952,7 +954,7 @@ bool frogger_game_init(GAME_STAGE* stage){
     uint32_t i, ii;
 
     /* Inicializo los carriles */
-    if( !frogger_game_load_field(&field, FROGGER_FIELD_CFG) ){
+    if( !frogger_game_load_field(&field, FROGGER_FIELD_CFG, stage->vehiclesId) ){
         return false;
     }
 

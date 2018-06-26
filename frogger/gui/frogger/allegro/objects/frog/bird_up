@@ -1,0 +1,9 @@
+[attributes]
+id: FROG_UP
+orientation: VERTICAL_UP
+
+[frames]
+0: gui/frogger/allegro/objects/frog/sprites_up/bird_0.png
+1: gui/frogger/allegro/objects/frog/sprites_up/bird_1.png
+
+END

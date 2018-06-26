@@ -52,6 +52,9 @@ typedef struct{
     
     /* Selector de fondo*/
     uint16_t backgroundId;
+    
+    /* Selector de combinacion de vehiculos*/
+    uint16_t vehiclesId;
 
     /* Flags */
     bool hasChanged;
@@ -117,8 +120,9 @@ bool get_score_position(GAME_STAGE* stage, char* str, uint32_t pos);
  * username: Nombre del jugador
  * characterId: Indice para manejar seleccion de personaje
  * backgroundId: Indice para manejar seleccion de fondo
+ * vehiclesId: Indice para manejar seleccion de combinacion de vehiculos
  */
-GAME_STAGE stage_init(char* username, uint16_t characterId, uint16_t backgroundId);
+GAME_STAGE stage_init(char* username, uint16_t characterId, uint16_t backgroundId, uint16_t vehiclesId);
 
 /* change_stage
  * Permite modificar el estado del programa
