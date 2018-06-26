@@ -1,9 +1,0 @@
-[attributes]
-timedelta: 100
-spacedelta: 1
-orientation: HORIZONTAL_RIGHT
-quantity: 3
-[frames]
-0: test/heart_0.png
-1: test/heart_1.png
-2: test/heart_2.png

@@ -40,10 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/frogger/allegro/allegro_output.o \
 	${OBJECTDIR}/gui/frogger/allegro/allegro_physics.o \
 	${OBJECTDIR}/gui/frogger/frogger_physics.o \
-	${OBJECTDIR}/gui/frogger/rpi/rpi_init.o \
-	${OBJECTDIR}/gui/frogger/rpi/rpi_input.o \
-	${OBJECTDIR}/gui/frogger/rpi/rpi_output.o \
-	${OBJECTDIR}/gui/frogger/rpi/rpi_physics.o \
+	${OBJECTDIR}/gui/frogger/rpi/bitmaps.o \
 	${OBJECTDIR}/gui/gui_animation/gui_animation.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/gui/gui_files/gui_files.o \
@@ -102,25 +99,10 @@ ${OBJECTDIR}/gui/frogger/frogger_physics.o: gui/frogger/frogger_physics.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_physics.o gui/frogger/frogger_physics.c
 
-${OBJECTDIR}/gui/frogger/rpi/rpi_init.o: gui/frogger/rpi/rpi_init.c 
+${OBJECTDIR}/gui/frogger/rpi/bitmaps.o: gui/frogger/rpi/bitmaps.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/rpi_init.o gui/frogger/rpi/rpi_init.c
-
-${OBJECTDIR}/gui/frogger/rpi/rpi_input.o: gui/frogger/rpi/rpi_input.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/rpi_input.o gui/frogger/rpi/rpi_input.c
-
-${OBJECTDIR}/gui/frogger/rpi/rpi_output.o: gui/frogger/rpi/rpi_output.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/rpi_output.o gui/frogger/rpi/rpi_output.c
-
-${OBJECTDIR}/gui/frogger/rpi/rpi_physics.o: gui/frogger/rpi/rpi_physics.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/rpi_physics.o gui/frogger/rpi/rpi_physics.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/bitmaps.o gui/frogger/rpi/bitmaps.c
 
 ${OBJECTDIR}/gui/gui_animation/gui_animation.o: gui/gui_animation/gui_animation.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_animation

@@ -12,10 +12,10 @@
 /* Prototipo de funciones publicas */
 /***********************************/
 
-/* gui_init
+/* gui_graphics_init
  * Inicializa la interfaz IO
  */
-bool gui_init(void);
+bool gui_graphics_init(void);
 
 #endif /* GUI_INIT_H */
 

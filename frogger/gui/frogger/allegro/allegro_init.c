@@ -12,10 +12,10 @@
 /* Funciones publicas */
 /**********************/
 
-/* gui_init
+/* gui_graphics_init
  * Inicializa la interfaz IO
  */
-bool gui_init(void){
+bool gui_graphics_init(void){
     
     /* Inicializo el modulo general */
     if( !al_init() ){

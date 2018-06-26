@@ -12,6 +12,8 @@
 #include "gui/frogger/frogger_output.h"
 #include "gui/frogger/frogger_physics.h"
 
+#include "gui/frogger/rpi/bitmaps.h"
+
 /**************/
 /* Constantes */
 /**************/
@@ -134,10 +136,10 @@ int main(int argc, char** argv){
     GAME_STAGE stage = {
         .value = DEFAULT_GAME_STAGE,
         .hasChanged = false
-    };    
+    };
     
     /* Inicializo la interfaz */
-    if( !gui_init() ){
+    if( !gui_graphics_init() ){
         return 0;
     }
     
