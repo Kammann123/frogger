@@ -16,12 +16,10 @@
 /* Obstaculos del juego */
 #define TRASH_0_X 0
 #define TRASH_0_Y 400
-#define TRASH_1_X 80
-#define TRASH_1_Y 440
-#define PHONE_0_X 600
-#define PHONE_0_Y 400
-#define PHONE_1_X 640
-#define PHONE_1_Y 440
+#define TRASH_1_X 40
+#define TRASH_1_Y 400
+#define PHONE_X 600
+#define PHONE_Y 400
 
 /* Paths para acceder a animaciones */
 #define ALLEGRO_PATH_OBJECTS                "gui/frogger/allegro/objects/"
@@ -32,6 +30,43 @@
 #define ALLEGRO_TRUCK_OBJFILE               ALLEGRO_PATH_OBJECTS "truck/truck"
 #define ALLEGRO_BOAT_OBJFILE                ALLEGRO_PATH_OBJECTS "boat/boat"
 #define ALLEGRO_YACHT_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/yacht"
+
+/* map_collision */
+static bool map_collision(uint16_t input, int32_t x, int32_t y){
+    switch(input){
+        case MOVE_UP:
+            if( x == frog.object->pos.x ){
+                if( y == (frog.object->pos.y - ALLEGRO_DISPLAY_STEP) ){
+                    return true;
+                }
+            }
+            break;
+        case MOVE_DOWN:
+            if( x == frog.object->pos.x ){
+                if( y == (frog.object->pos.y + ALLEGRO_DISPLAY_STEP) ){
+                    return true;
+                }
+            }
+            break;
+        case MOVE_LEFT:
+            if( y == frog.object->pos.y ){
+                if( x == (frog.object->pos.x - ALLEGRO_DISPLAY_STEP) ){
+                    return true;
+                }
+            }
+            break;
+        case MOVE_RIGHT:
+            if( y == frog.object->pos.y ){
+                if( x == (frog.object->pos.x + ALLEGRO_DISPLAY_STEP) ){
+                    return true;
+                }
+            }
+            break;
+    }
+    
+    /* No hubo colision */
+    return false;
+}
 
 
 /**********************/
@@ -63,15 +98,16 @@ bool frogger_game_frog_init(FROG* frog){
 
 /* frogger_game_movement_valid */
 bool frogger_game_movement_valid(FROG frog, uint16_t input){
-    
     /* Me fijo que no haya colision con obstaculos */
-    if( gui_animation_map_collision(map_region(map_position(TRASH_0_X, TRASH_0_Y), map_position(TRASH_1_X, TRASH_1_Y)), frog.object) ){
+    if( map_collision(input, TRASH_0_X, TRASH_0_Y) ){
         return false;
     }
-    if( gui_animation_map_collision(map_region(map_position(PHONE_0_X, PHONE_0_Y), map_position(PHONE_1_X, PHONE_1_Y)), frog.object) ){
+    if( map_collision(input, TRASH_1_X, TRASH_1_Y) ){
         return false;
     }
-    
+    if( map_collision(input, PHONE_X, PHONE_Y) ){
+        return false;
+    }
     /* Me fijo que este en los limites */
     switch(input){
         case MOVE_UP:

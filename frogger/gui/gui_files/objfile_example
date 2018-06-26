@@ -1,9 +1,0 @@
-[attributes]
-timedelta: 500
-spacedelta: 10
-orientation: HORIZONTAL_RIGHT
-quantity: 3
-[frames]
-0: filename_0
-1: filename_1
-2: filename_2

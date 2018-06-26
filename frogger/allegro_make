@@ -1,0 +1,45 @@
+CC = gcc
+
+# Allegro link
+ALLEGRO_INC = -lpthread `pkg-config --libs allegro-5.0` `pkg-config --libs allegro_acodec-5.0` `pkg-config --libs\
+allegro_audio-5.0` `pkg-config --libs allegro_color-5.0` `pkg-config --libs allegro_dialog-5.0` `pkg-config --libs\
+ allegro_font-5.0` `pkg-config --libs allegro_image-5.0` `pkg-config --libs allegro_main-5.0` `pkg-config --libs\
+ allegro_memfile-5.0` `pkg-config --libs allegro_physfs-5.0` `pkg-config --libs allegro_primitives-5.0` `pkg-config --libs\
+ allegro_ttf-5.0`
+# Rpi link
+RPI_INC = gui/frogger/rpi/disdrv.o gui/frogger/rpi/joydrv.o
+
+# Game objects
+LOGIC = logic/frogger/frogger_kernel.o
+FROGGER = gui/frogger/frogger_physics.o
+GUI = gui/gui_types.o gui/gui_init.o gui/gui_animation/gui_animation.o gui/gui_timer/gui_timer.o gui/gui_events/gui_events.o gui/gui_files/gui_files.o
+
+# Allegro objects
+ALLEGRO = gui/frogger/allegro_init.o gui/frogger/allegro_input.o gui/frogger/allegro_output.o gui/frogger/allegro_physics.o
+
+# Rpi objects
+RPI = 
+ 
+# Cargo los objetos segun parametro
+ifeq ${PLATFORM} "allegro"
+OBJS = LOGIC FROGGER GUI ALLEGRO
+OPTIONS = -Wall ALLEGRO_INC
+else ${PLATFORM} "rpi
+OBJS = LOGIC FROGGER GUI RPI
+OPTIONS = -Wall RPI_INC
+else
+$(error Plataforma no valida)
+endif
+
+MAKES = ${OBJS:%.o=%_make}
+SRC = main.c
+HEADERS = 
+
+frogger: ${OBJS} ${HEADERS}
+	${CC} ${SRC} ${OBJS} -o frogger ${OPTIONS}
+	
+{OBJS}:
+	make -f ${MAKES}
+
+clean:
+	rm *.o
