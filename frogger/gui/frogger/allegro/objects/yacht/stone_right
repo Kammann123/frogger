@@ -1,0 +1,8 @@
+[attributes]
+id: YACHT_RIGHT
+orientation: HORIZONTAL_RIGHT
+
+[frames]
+0: gui/frogger/allegro/objects/yacht/sprites/stone_right.png
+
+END

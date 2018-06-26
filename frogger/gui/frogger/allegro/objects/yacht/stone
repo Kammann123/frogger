@@ -1,0 +1,11 @@
+[attributes]
+width: 110
+height: 40
+timedelta: 100
+spacedelta: 20
+
+[animations]
+0: gui/frogger/allegro/objects/yacht/stone_left
+1: gui/frogger/allegro/objects/yacht/stone_right
+
+END
