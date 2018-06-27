@@ -109,6 +109,11 @@ bool gui_timer_source(EVENT* event, void* timerQueue){
     /* Reviso todos los eventos */
     for(i = 0;i < queue->length;i++){
         
+        /* Si no esta habilitado para eventos, se saltea el timer */
+        if( !queue->timers[i].enableAsEvent ){
+            continue;
+        }
+        
         /* Configuracion de pausa , se saltea el timer */
         if( queue->timers[i].pause ){
             continue;
@@ -263,7 +268,7 @@ TIMER_QUEUE* gui_timer_create(void){
 }
 
 /* gui_timer_new_event */
-bool gui_timer_new_event(TIMER_QUEUE* timerQueue, uint32_t time, uint32_t id){
+bool gui_timer_new_event(TIMER_QUEUE* timerQueue, uint32_t time, uint32_t id, bool enable){
     
     /* Reasigo mas memoria */
     timerQueue->timers = realloc(timerQueue->timers, sizeof(TIMER) * (timerQueue->length+1));
@@ -277,6 +282,7 @@ bool gui_timer_new_event(TIMER_QUEUE* timerQueue, uint32_t time, uint32_t id){
     timerQueue->timers[timerQueue->length].timerMax = time;
     timerQueue->timers[timerQueue->length].timerOverflow = false;
     timerQueue->timers[timerQueue->length].pause = false;
+    timerQueue->timers[timerQueue->length].enableAsEvent = enable;
     
     /* Incremento contador */
     timerQueue->length++;

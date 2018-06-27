@@ -30,6 +30,7 @@ typedef struct{
     
     /* Habilitadores */
     bool pause;
+    bool enableAsEvent;
     
     /* Flag */
     bool timerOverflow;
@@ -140,8 +141,9 @@ void gui_timer_destroy(TIMER_QUEUE* timerQueue);
  * timerQueue: Cola de timers
  * time: Tiempo en milisegundos del evento
  * id: Id para reconocer el evento
+ * enable: Habilita su uso para la cola de eventos
  */
-bool gui_timer_new_event(TIMER_QUEUE* timerQueue, uint32_t time, uint32_t id); 
+bool gui_timer_new_event(TIMER_QUEUE* timerQueue, uint32_t time, uint32_t id, bool enable); 
 
 /* gui_timer_start 
  * Inicia un timer queue

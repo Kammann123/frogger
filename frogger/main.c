@@ -21,6 +21,11 @@
 
 /* Etapas del flujo del programa */
 
+typedef enum{
+    FROGGER_TASKS_INIT,
+    FROGGER_TASKS_OP,
+} FROGGER_TASKS_STAGES;
+
 typedef enum {
     MAINMENU_STAGE,
     RANKING_STAGE,
@@ -129,6 +134,28 @@ void switch_input_target(GAME_STAGE* stage, EVENT event);
  */
 void switch_update_target(GAME_STAGE* stage);
 
+/********************/
+/* FROGGER handlers */
+/********************/
+
+/* frogger_tasks 
+ * Maneja las tareas del juego que no sean I/O
+ *
+ * stage: Estado del juego
+ */
+void frogger_tasks(GAME_STAGE* stage);
+
+/* on_frogger_event
+ * Maneja eventos durante la partida
+ *
+ * stage: Estado
+ * event: Id
+ */
+bool on_frogger_event(GAME_STAGE* stage, uint32_t event);
+
+
+
+
 /* on_mainmenu_enter
  * Maneja la direccion del programa desde el menu
  * al seleccionar una opcion
@@ -146,14 +173,6 @@ void on_pausemenu_enter(GAME_STAGE* stage);
  * al apretar enter
  */
 void on_game_enter(GAME_STAGE* stage);
-
-/* on_frogger_event
- * Maneja eventos durante la partida
- *
- * stage: Estado
- * event: Id
- */
-void on_frogger_event(GAME_STAGE* stage, uint32_t event);
 
 /**************/
 /* :D MAIN :D */
@@ -193,9 +212,9 @@ int main(int argc, char** argv){
     }
 
     /* Agrego un evento de timer */
-    error = gui_timer_new_event(gui_timer_global_get(), REFRESH_TIME, REFRESH_DISPLAY);
-    error &= gui_timer_new_event(gui_timer_global_get(), GAME_TIME, GAME_COUNTER);
-    error &= gui_timer_new_event(gui_timer_global_get(), CHANGESCREEN_TIME, CHANGESCREEN_TIMER);
+    error = gui_timer_new_event(gui_timer_global_get(), REFRESH_TIME, REFRESH_DISPLAY, true);
+    error &= gui_timer_new_event(gui_timer_global_get(), GAME_TIME, GAME_COUNTER, false);
+    error &= gui_timer_new_event(gui_timer_global_get(), CHANGESCREEN_TIME, CHANGESCREEN_TIMER, true);
     if( !error ){
         testing_msg("No se pudo agregar eventos de timer");
         gui_timer_global_close();
@@ -242,10 +261,6 @@ int main(int argc, char** argv){
             }else if( event.source == TIMER_SOURCE ){
                 if( event.data == REFRESH_DISPLAY ){
                     switch_update_target(&stage);
-                }else if( event.data == GAME_COUNTER ){
-                    if( is_stage(&stage, FROGGER_STAGE) ){
-                        frogger_time_count();
-                    }
                 }else if( event.data == CHANGESCREEN_TIMER ){
                     if( is_stage(&stage, CHANGESCREEN_STAGE) ){
                         change_stage(&stage, FROGGER_STAGE);
@@ -342,7 +357,7 @@ bool is_stage(GAME_STAGE* stage, STAGE_VALUES value){
 void switch_tasks_target(GAME_STAGE* stage){
     switch(stage->value){
         case FROGGER_STAGE:
-            on_frogger_event(stage, frogger_flow());
+            frogger_tasks(stage);
             break;
         case DEAD_STAGE:
             if( frogger_game_is_frog_static() ){
@@ -423,12 +438,49 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
     }
 }
 
-/***************************/
-/* Definicion de funciones */
-/***************************/
+/********************/
+/* FROGGER handlers */
+/********************/
+
+/* frogger_tasks */
+void frogger_tasks(GAME_STAGE* stage){
+    static FROGGER_TASKS_STAGES state = FROGGER_TASKS_INIT;
+    
+    /* Manejo segun etapa */
+    switch( state ){
+        case FROGGER_TASKS_INIT:
+            /* Inicializo el timer */
+            gui_timer_clear(gui_timer_global_get(), GAME_COUNTER);
+            gui_timer_continue(gui_timer_global_get(), GAME_COUNTER);
+            
+            /* Paso al otro estado */
+            state = FROGGER_TASKS_OP;
+            break;
+        case FROGGER_TASKS_OP:
+            /* Verifico el timer */
+            if( gui_timer_overflow(gui_timer_global_get(), GAME_COUNTER)){
+                /* Cuento el tiempo */
+                frogger_time_count();
+                
+                /* Lo limpio */
+                gui_timer_clear(gui_timer_global_get(), GAME_COUNTER);
+            }
+            
+            /* Controlo el flujo del videojuego */
+            if( on_frogger_event(stage, frogger_flow()) ){
+                
+                /* Si hubo algun evento cambio de estado */
+                state = FROGGER_TASKS_INIT;
+                
+                /* Pauso por ahora el timer */
+                gui_timer_pause(gui_timer_global_get(), GAME_COUNTER);
+            }
+            break;
+    }
+}
 
 /* on_frogger_event */
-void on_frogger_event(GAME_STAGE* stage, uint32_t event){
+bool on_frogger_event(GAME_STAGE* stage, uint32_t event){
     switch( event ){
         case FROGGER_HAS_LOST:
             frogger_game_pause();
@@ -442,7 +494,11 @@ void on_frogger_event(GAME_STAGE* stage, uint32_t event){
             frogger_game_dead_animation();
             change_stage(stage, DEAD_STAGE);
             break;
+        default:
+            return false;
+            break;
     }
+    return true;
 }
 
 
