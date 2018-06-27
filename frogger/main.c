@@ -58,9 +58,24 @@ typedef enum{
 #define GAME_TIME       TIMER_DEFINITION
 #define CHANGESCREEN_TIME     TIMER_DEFINITION*2
 
-/**************/
-/* Prototipos */
-/**************/
+/***********************/
+/* GAME_STAGE handlers */
+/***********************/
+
+/* default_stage 
+ * Crea y devuelve una instancia de GAME_STAGE
+ * default, con parametros por defecto
+ */
+GAME_STAGE default_stage(void);
+
+/* change_stage
+ * Permite modificar el estado del programa
+ * y realizar tareas secundarias de limpieza
+ *
+ * stage: Estado del programa
+ * newStage: Nuevo estado del programa
+ */
+void change_stage(GAME_STAGE* stage, uint16_t newStage);
 
 /* switch_tasks_target
  * Maneja quien ejecuta tareas de forma concurrente
@@ -105,15 +120,6 @@ void on_pausemenu_enter(GAME_STAGE* stage);
  */
 void on_game_enter(GAME_STAGE* stage);
 
-/* change_stage
- * Permite modificar el estado del programa
- * y realizar tareas secundarias de limpieza
- *
- * stage: Estado del programa
- * newStage: Nuevo estado del programa
- */
-void change_stage(GAME_STAGE* stage, uint16_t newStage);
-
 /* on_frogger_event
  * Maneja eventos durante la partida
  *
@@ -122,10 +128,9 @@ void change_stage(GAME_STAGE* stage, uint16_t newStage);
  */
 void on_frogger_event(GAME_STAGE* stage, uint32_t event);
 
-/* *******************************
- * main
- * Funcion principal del programa.
- * *******************************/
+/**************/
+/* :D MAIN :D */
+/**************/
 int main(int argc, char** argv){
 
     /* Variables */
@@ -133,10 +138,7 @@ int main(int argc, char** argv){
     EVENT_QUEUE* queue;
     EVENT event;
     /* Game stage variable */
-    GAME_STAGE stage = {
-        .value = DEFAULT_GAME_STAGE,
-        .hasChanged = false
-    };
+    GAME_STAGE stage = default_stage();
 
     /* Inicializo la interfaz */
     if( !gui_graphics_init( ) ){
@@ -240,6 +242,29 @@ int main(int argc, char** argv){
     gui_timer_destroy(timer);
 }
 
+/***********************/
+/* GAME_STAGE handlers */
+/***********************/
+
+/* default_stage */
+GAME_STAGE default_stage(void){
+    GAME_STAGE stage = {
+        .value = DEFAULT_GAME_STAGE,
+        .hasChanged = false
+    };
+    
+    return stage;
+}
+
+/* change_stage */
+void change_stage(GAME_STAGE* stage, uint16_t newStage){
+    /* Cambio el valor del estado */
+    stage->value = newStage;
+
+    /* Activo flag */
+    stage->hasChanged = true;
+}
+
 /***************************/
 /* Definicion de funciones */
 /***************************/
@@ -262,14 +287,6 @@ void on_frogger_event(GAME_STAGE* stage, uint32_t event){
     }
 }
 
-/* change_stage */
-void change_stage(GAME_STAGE* stage, uint16_t newStage){
-    /* Cambio el valor del estado */
-    stage->value = newStage;
-
-    /* Activo flag */
-    stage->hasChanged = true;
-}
 
 /* on_pausemenu_enter */
 void on_pausemenu_enter(GAME_STAGE* stage){
