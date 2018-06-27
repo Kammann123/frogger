@@ -1,0 +1,11 @@
+[attributes]
+width: 3
+height: 1
+timedelta: 300
+spacedelta: 1
+
+[animations]
+0: gui/frogger/rpi/objects/car/car_right
+1: gui/frogger/rpi/objects/car/car_left
+
+END

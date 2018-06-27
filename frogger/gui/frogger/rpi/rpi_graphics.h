@@ -11,6 +11,8 @@
 #include "disdrv.h"
 #include "../../gui_types.h"
 
+#include <stdbool.h>
+
 /* Configuraciones del display */
 #define DISPLAY_WIDTH   16
 #define DISPLAY_HEIGHT  16
@@ -44,5 +46,10 @@ bool rpi_draw_bitmap(BITMAP* bitmap, POSITION pos);
  * Manda el backbuffer al display matricial de leds
  */
 bool rpi_display_update(void);
+
+/* rpi_display_clear
+ * Limpia el display matricial de leds
+ */
+bool rpi_display_clear(void);
 
 #endif /* RPI_GRAPHICS_H */

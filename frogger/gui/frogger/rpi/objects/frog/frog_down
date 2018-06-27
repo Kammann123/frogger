@@ -1,0 +1,8 @@
+[attributes]
+id: FROG_DOWN
+orientation: VERTICAL_DOWN
+
+[frames]
+0: gui/frogger/rpi/objects/frog/sprites/frog_down.bmp
+
+END

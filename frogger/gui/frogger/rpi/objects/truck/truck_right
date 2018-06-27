@@ -1,0 +1,8 @@
+[attributes]
+id: TRUCK_RIGHT
+orientation: HORIZONTAL_RIGHT
+
+[frames]
+0: gui/frogger/rpi/objects/truck/sprites/truck_right.bmp
+
+END

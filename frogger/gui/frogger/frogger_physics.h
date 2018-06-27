@@ -78,9 +78,9 @@
 #define LANE_ATT_ORIENTATION    "orientation"
 #define LANE_ATT_QUANTITY       "quantity"
 #define LANE_ATT_TIME           "timedelta"
-#define LANE_ATT_SPACE          "spacedelta"   
+#define LANE_ATT_SPACE          "spacedelta"
 #define LANE_ATT_ACCEL          "a_factor"
-    
+
 /* Tipos de objetos */
 #define FROGGER_CFG_MOTORBIKE   "MOTORBIKE"
 #define FROGGER_CFG_CAR         "CAR"
@@ -93,6 +93,7 @@
 #define FROGGER_SIZE_TRUCK       4
 #define FROGGER_SIZE_BOAT        2
 #define FROGGER_SIZE_YACHT       3
+#define FROGGER_SIZE_NONE        0
 
 typedef enum {
     FROGGER_MOTORBIKE,
@@ -123,7 +124,7 @@ typedef FROGGER_OBJECT YACHT;
 typedef struct{
     /* Archivo */
     char* file;
-    
+
     /* Inicializacion */
     bool init;
 } CFG;
@@ -132,30 +133,30 @@ typedef struct{
     /* Objetos del carril */
     FROGGER_OBJECT* objects;
     LENGTH objectsQty;
-    
+
     /* Atributos del carril */
     uint32_t laneNumber;
-    
+
     /* Movimiento del carril */
     uint32_t type;
     GUI_ANIMATION_ORIENTATION orientation;
     SPEED speed;
-    
+
     /* Factor de aceleracion */
     uint32_t aFactor;
-    
+
     /* Inicializacion */
     bool init;
 } LANE;
-        
+
 typedef struct{
     /* Carriles del campo */
     LANE* lanes;
     CFG* files;
-    
+
     /* Cantidad de carriles */
     LENGTH lanesQty;
-    
+
     /* Inicializacion */
     bool init;
 } FIELD;
@@ -181,13 +182,13 @@ uint32_t frogger_game_get_step(void);
  */
 uint32_t frogger_game_get_resolution(void);
 
-/* frogger_game_frog_init 
+/* frogger_game_frog_init
  * Inicializa la rana del juego para
  * su funcionamiento en allegro
  */
 bool frogger_game_frog_init(FROG* frog);
 
-/* frogger_game_movement_valid 
+/* frogger_game_movement_valid
  * Valida si el movimiento en dicha orientacion es valido
  *
  * frog: Ranita
@@ -195,7 +196,7 @@ bool frogger_game_frog_init(FROG* frog);
  */
 bool frogger_game_movement_valid(FROG frog, uint16_t input);
 
-/* frogger_game_create_object 
+/* frogger_game_create_object
  * Crea un objeto animado perteneciente a un carril
  *
  * pos: Posicion inicial
@@ -209,7 +210,7 @@ ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMA
 /* Prototipo de funciones publicas */
 /***********************************/
 
-/* frogger_game_dead_animation 
+/* frogger_game_dead_animation
  * Muestra la ranita muriendo
  */
 void frogger_game_dead_animation(void);
@@ -221,7 +222,7 @@ void frogger_game_dead_animation(void);
  */
 bool frogger_game_new_level(uint32_t level);
 
-/* frogger_game_has_won 
+/* frogger_game_has_won
  * Devuelve true si la ranita gano
  */
 bool frogger_game_has_won(void);
@@ -232,16 +233,16 @@ bool frogger_game_has_won(void);
 bool frogger_game_is_frog_static(void);
 
 /* frogger_game_is_water_region
- * Devuelve true si esta en la region de agua 
+ * Devuelve true si esta en la region de agua
  */
 bool frogger_game_is_water_region(void);
 
 /* frogger_game_is_street_region
- * Devuelve true si esta en la region de vehiculos 
+ * Devuelve true si esta en la region de vehiculos
  */
 bool frogger_game_is_street_region(void);
 
-/* frogger_game_transport_frog 
+/* frogger_game_transport_frog
  * Maneja el movimiento de la rana cuando esta
  * siendo transportada por un barco
  */
@@ -252,7 +253,7 @@ void frogger_game_transport_frog(void);
  * y lo configura
  */
 void frogger_game_is_transport(void);
-        
+
 /* frogger_game_drown
  * Devuelve true si la rana se cayo al agua
  */
@@ -276,7 +277,7 @@ void frogger_game_move_lanes(void);
 /* frogger_game_move_frog
  * Mueve el objeto frog en la direccion segun input
  *
- * input: Direccion ingresada por usuario 
+ * input: Direccion ingresada por usuario
  */
 bool frogger_game_move_frog(uint16_t input);
 
@@ -290,16 +291,15 @@ void frogger_game_pause(void);
  */
 void frogger_game_continue(void);
 
-/* frogger_game_close 
+/* frogger_game_close
  * Cierra y libera los objetos del juego creados
  */
 void frogger_game_close(void);
 
-/* frogger_game_init 
+/* frogger_game_init
  * Inicializa los objetos del juego
  */
 bool frogger_game_init(void);
 
 
 #endif /* FROGGER_PHYSICS_H */
-

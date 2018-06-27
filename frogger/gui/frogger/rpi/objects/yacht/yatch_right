@@ -1,0 +1,8 @@
+[attributes]
+id: YATCH_RIGHT
+orientation: HORIZONTAL_RIGHT
+
+[frames]
+0: gui/frogger/rpi/objects/yatch/sprites/yatch_right.bmp
+
+END

@@ -1,0 +1,8 @@
+[attributes]
+id: BOAT_RIGHT
+orientation: HORIZONTAL_RIGHT
+
+[frames]
+0: gui/frogger/rpi/objects/boat/sprites/boat_right.bmp
+
+END

@@ -12,6 +12,21 @@ static bool init = false;
 /* RPI_GRAPHICS handlers */
 /*************************/
 
+/* rpi_display_clear */
+bool rpi_display_clear(void){
+
+    /* Me fijo que este inicializado */
+    if( !init ){
+        return false;
+    }
+
+    /* Limpio el display */
+    display_clear();
+
+    /* Exito */
+    return true;
+}
+
 /* rpi_display_update */
 bool rpi_display_update(void){
 

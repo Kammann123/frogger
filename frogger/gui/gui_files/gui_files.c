@@ -8,11 +8,11 @@
 /***********************/
 
 typedef enum {
-    IS_SET_KEY, 
-    IS_SET_SPACE, 
-    IS_SET_VALUE, 
-    IS_SET_END, 
-    IS_SET_OK, 
+    IS_SET_KEY,
+    IS_SET_SPACE,
+    IS_SET_VALUE,
+    IS_SET_END,
+    IS_SET_OK,
     IS_SET_ERROR
 } is_set_states;
 
@@ -39,7 +39,7 @@ typedef enum {
  * Devuelve true si el string tiene el formato de una seccion
  * del archivo de configuracion: '[seccion]'
  *
- * str: String a evaluar 
+ * str: String a evaluar
  * section: String a guardar la seccion
  */
 static bool is_section(char* str, char* section);
@@ -53,10 +53,10 @@ static bool is_section(char* str, char* section);
  */
 static bool is_set(char* str, SET* set);
 
-/* strlen_end 
+/* strlen_end
  * Devuelve el largo de un string, medido
- * hasta el caracter pasado 
- * 
+ * hasta el caracter pasado
+ *
  * str: String
  * end: Caracter terminador
  */
@@ -73,16 +73,16 @@ static bool in_string(char* str, char character);
 
 /* destroy_set
  * Libera memoria de un set
- * 
- * set: Set 
+ *
+ * set: Set
  */
 static void destroy_set(SET* set);
 
 /* is_letter
  * Devuelve true si es el ascii de una letra
- * sin importar 
+ * sin importar
  *
- * letter: Letra a evaluar 
+ * letter: Letra a evaluar
  */
 static bool is_letter(char letter);
 
@@ -112,14 +112,14 @@ static bool read_section(FILE* file, char* name, SECTION* section);
 
 /* destroy_section
  * Libera memoria de una seccion
- * 
- * section: Seccion 
+ *
+ * section: Seccion
  */
 static void destroy_section(SECTION* section);
 
 /* is_empty_line
  * Devuelve true si la linea esta vacia
- * 
+ *
  * str: String
  */
 static bool is_empty_line(char* str);
@@ -133,15 +133,15 @@ static uint32_t count_section_lines(FILE* file);
 
 /* is_numeric_string
  * Verifica que sea un string numerico
- * 
+ *
  * str: String a comprobar
  */
 static bool is_numeric_string(char* str);
 
-/* count_section 
+/* count_section
  * Cuenta la cantidad de secciones que hay
  *
- * file:Archivo 
+ * file:Archivo
  */
 static uint32_t count_sections(FILE* file);
 
@@ -166,7 +166,7 @@ static SECTION* create_sections(uint32_t amount);
 /* gui_files_get_section_length */
 LENGTH gui_files_get_section_length(SETTING* setting, char* section){
     uint32_t i;
-    
+
     for(i = 0;i < setting->length;i++){
         if( !(strcmp(setting->sections[i].name, section)) ){
             return setting->sections[i].length;
@@ -178,7 +178,7 @@ LENGTH gui_files_get_section_length(SETTING* setting, char* section){
 /* gui_files_get_string */
 char* gui_files_get_string(SETTING* setting, char* section, char* key){
     uint32_t i, ii;
-    
+
     for(i = 0;i < setting->length;i++){
         if( !(strcmp(setting->sections[i].name, section)) ){
             for(ii = 0;ii < setting->sections[i].length;ii++){
@@ -194,7 +194,7 @@ char* gui_files_get_string(SETTING* setting, char* section, char* key){
 /* gui_files_get_int */
 bool gui_files_get_int(SETTING* setting, char* section, char* key, uint32_t* value){
     uint32_t i, ii;
-    
+
     for(i = 0;i < setting->length;i++){
         if( !(strcmp(setting->sections[i].name, section)) ){
             for(ii = 0;ii < setting->sections[i].length;ii++){
@@ -211,7 +211,7 @@ bool gui_files_get_int(SETTING* setting, char* section, char* key, uint32_t* val
 /* gui_files_get_bool */
 bool gui_files_get_bool(SETTING* setting, char* section, char* key, bool* value){
     uint32_t i, ii;
-    
+
     for(i = 0;i < setting->length;i++){
         if( !(strcmp(setting->sections[i].name, section)) ){
             for(ii = 0;ii < setting->sections[i].length;ii++){
@@ -228,48 +228,48 @@ bool gui_files_get_bool(SETTING* setting, char* section, char* key, bool* value)
 /* gui_files_destroy_setting */
 void gui_files_destroy_setting(SETTING* setting){
     uint32_t i;
-    
+
     /* Libero secciones */
     for(i = 0;i < setting->length;i++){
         destroy_section(setting->sections + i);
     }
-    
+
     /* Libero la lista */
     free( setting->sections );
-    
+
     /* Libero el setting */
     free( setting );
 }
 
 /* gui_files_load_setting */
-    SETTING* gui_files_load_setting(char* filename){
+SETTING* gui_files_load_setting(char* filename){
     char line[MAX_LINE];
     char sectionName[MAX_LINE];
-    
+
     /* Variables para archivo */
     FILE* file;
-    
+
     /* Variables del objeto setting */
     SETTING* setting;
     uint32_t settingLength;
     uint32_t i = 0;
-    
+
     /* Variable estado */
     uint16_t state = SETTING_WAIT;
-    
+
     /* Abro el archivo */
     file = fopen(filename, "r");
     if( file == NULL ){
         return NULL;
     }
-    
+
     /* Reservo memoria para el setting */
     setting = malloc( sizeof(SETTING) );
     if( setting == NULL ){
         fclose(file);
         return NULL;
     }
-    
+
     /* Resservo memoria para las secciones */
     settingLength = count_sections(file);
     if( !settingLength ){
@@ -283,10 +283,10 @@ void gui_files_destroy_setting(SETTING* setting){
         fclose(file);
         return NULL;
     }
-    
+
     /* Cargo largo */
     setting->length = settingLength;
-    
+
     /* Leo el archivo */
     while( state == SETTING_WAIT ){
         if( fgets(line, MAX_LINE, file) == NULL ){
@@ -306,16 +306,16 @@ void gui_files_destroy_setting(SETTING* setting){
             }
         }
     }
-    
+
     /* Cierro el archivo */
     fclose(file);
-    
+
     if( state == SETTING_OK ){
         return setting;
-    }else if( state == SETTING_ERROR ){
-        gui_files_destroy_setting(setting);
-        return NULL;
     }
+    
+    gui_files_destroy_setting(setting);
+    return NULL;
 }
 
 /************************************/
@@ -327,60 +327,60 @@ static uint32_t count_sections(FILE* file){
     char line[MAX_LINE];
     char section[MAX_LINE];
     bool found = false;
-    
+
     /* Leo todas las lineas hasta el final */
     while( (fgets(line, MAX_LINE, file) != NULL) && !found ){
-        
+
         if( is_section(line, section) ){
             length++;
         }else if( !(strcmp(line, SETTING_END)) ){
             found = true;
         }
-    }    
-    
+    }
+
     /* Rebobino el archivo */
     rewind(file);
-    
+
     if( !found ){
         length = 0;
     }
-    
+
     return length;
 }
 
 static SECTION* create_sections(uint32_t amount){
     uint32_t i;
     SECTION* sections;
-    
+
     /* Reservo memoria */
     sections = malloc( sizeof(SECTION) * amount );
     if( sections == NULL ){
         return NULL;
     }
-    
+
     /* Las inicializo */
     for(i = 0;i < amount;i++){
         sections[i].init = false;
     }
-    
+
     return sections;
 }
 
 static SET* create_sets(uint32_t amount){
     uint32_t i;
     SET* sets;
-    
+
     /* Reservo memoria */
     sets = malloc( sizeof(SET) * amount );
     if( sets == NULL ){
         return NULL;
     }
-    
+
     /* Inicializo */
     for(i = 0;i < amount;i++){
         sets[i].init = false;
     }
-    
+
     return sets;
 }
 
@@ -390,23 +390,23 @@ static bool read_section(FILE* file, char* name, SECTION* section){
     uint32_t i;
     uint32_t sectionLength;
     SET set;
-    
+
     /* Buffer de linea */
     char line[MAX_LINE];
-    
+
     /* Lectura previa para leer */
     sectionLength = count_section_lines(file);
     if( !sectionLength ){
         return false;
     }
-    
+
     /* Reservo memoria para sets */
     section->sets = create_sets(sectionLength);
     if(section->sets == NULL){
         free(section);
         return false;
     }
-    
+
     /* Reservo memoria para el nombre de la seccion */
     section->name = malloc( sizeof(char) * strlen(name) );
     if(section->name == NULL){
@@ -414,42 +414,42 @@ static bool read_section(FILE* file, char* name, SECTION* section){
         free(section);
         return false;
     }
-    
+
     /* Guardo el nombre */
     strcpy(section->name, name);
-    
+
     /* Inicialice, flag */
     section->init = true;
-    
+
     /* Leo las lineas */
     for(i = 0;i < sectionLength;i++){
         /* Leo la linea */
         fgets(line, MAX_LINE, file);
-        
+
         /* Leo el set */
         if( !is_set(line, &set) ){
             destroy_section(section);
             return false;
         }
-        
+
         /* Guardo el set */
         section->sets[i] = set;
-        
+
     }
-    
+
     /* Configuro largo */
     section->length = sectionLength;
-    
+
     /* Leo la linea de cierre */
     fgets(line, MAX_LINE, file);
-    
+
     return true;
 }
 
 /* destroy_section */
 static void destroy_section(SECTION* section){
     uint32_t i;
-    
+
     if( section->init ){
         /* Liberas memoria del nombre */
         free(section->name);
@@ -458,7 +458,7 @@ static void destroy_section(SECTION* section){
         for(i = 0;i < section->length;i++){
             destroy_set(section->sets + i);
         }
-        
+
         free(section->sets);
     }
 }
@@ -469,12 +469,12 @@ static uint32_t count_section_lines(FILE* file){
     fpos_t initPos;
     uint32_t length = 0;
     bool found = false;
-    
+
     /* Guardo posicion inicial */
     if( fgetpos(file, &initPos) ){
         return 0;
     }
-    
+
     /* Cuento lineas */
     while( (fgets(line, MAX_LINE-1, file) != NULL) && !found ){
         if( line[strlen(line)-1] != '\n' ){
@@ -485,16 +485,16 @@ static uint32_t count_section_lines(FILE* file){
             found = true;
         }
     }
-    
+
     /* Pongo posicion inicial */
     if( fsetpos(file, &initPos) ){
         return 0;
     }
-    
+
     if( !found ){
         length = 0;
     }
-    
+
     return length;
 }
 
@@ -502,7 +502,7 @@ static uint32_t count_section_lines(FILE* file){
 static bool is_section(char* str, char* section){
     uint16_t state = IS_SECTION_OPEN;
     uint16_t i = 0;
-    
+
     while( state != IS_SECTION_ERROR && state != IS_SECTION_OK ){
         switch(state){
             case IS_SECTION_OPEN:
@@ -543,13 +543,11 @@ static bool is_section(char* str, char* section){
         }
         str++;
     }
-    
+
     if( state == IS_SECTION_OK ){
         return true;
-    }else if( state == IS_SECTION_ERROR ){
-        return false;
     }
-    
+    return false;
 }
 
 /* is_number */
@@ -585,22 +583,22 @@ static bool is_set(char* str, SET* set){
     /* Variables para el set */
     uint32_t keyLength;
     uint32_t valueLength;
-    
+
     /* Estado de la maquina */
     uint16_t state = IS_SET_KEY;
-    
+
     /* Auxiliares */
     uint32_t i = 0;
-    
+
     /* Me fijo que este bien formateado */
     if( !in_string(str, ':') ){
         return false;
     }
-    
+
     /* Prelectura para saber largo */
     keyLength = strlen_end(str, ':');
     valueLength = strlen_end(str + keyLength, '\0');
-    
+
     /* Reservo memoria para el key */
     set->key = malloc( sizeof(char) * keyLength );
     if( set->key == NULL ){
@@ -613,10 +611,10 @@ static bool is_set(char* str, SET* set){
         free(set->key);
         return false;
     }
-        
+
     /* Inicialice, flag */
     set->init = true;
-    
+
     while( state != IS_SET_OK && state != IS_SET_ERROR ){
         switch( state ){
             case IS_SET_KEY:
@@ -637,11 +635,11 @@ static bool is_set(char* str, SET* set){
                     state = IS_SET_VALUE;
                 }else{
                     state = IS_SET_ERROR;
-                }             
+                }
                 break;
             case IS_SET_VALUE:
                 if( is_letter(*str) || is_number(*str) || is_valid_character(*str) ){
-                    set->value.string[i++] = *str; 
+                    set->value.string[i++] = *str;
                 }else if( *str == '\n' ){
                     set->value.string[i] = '\0';
                     state = IS_SET_OK;
@@ -650,12 +648,12 @@ static bool is_set(char* str, SET* set){
                 }
                 break;
         }
-        
+
         str++;
     }
-    
+
     if( state == IS_SET_OK ){
-        
+
         /* Interpreto el valor */
         if( is_numeric_string(set->value.string) ){
             set->value.integer = atoi( set->value.string );
@@ -664,13 +662,12 @@ static bool is_set(char* str, SET* set){
         }else if( !(strcmp(set->value.string, "true")) ){
             set->value.boolean = true;
         }
-        
+
         return true;
     }else if( state == IS_SET_ERROR ){
         destroy_set(set);
-        return false;
     }
-    
+    return false;
 }
 
 /* in_string */
@@ -695,7 +692,7 @@ static uint32_t strlen_end(char* str, char end){
 
 /* destroy_set */
 static void destroy_set(SET* set){
-    
+
     if( set->init ){
         /* Libero memoria del string */
         free(set->value.string);
@@ -703,7 +700,7 @@ static void destroy_set(SET* set){
         /* Libero memoria del key */
         free(set->key);
     }
-    
+
 }
 
 /* is_empty_line */

@@ -1,0 +1,8 @@
+[attributes]
+id: CAR_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/rpi/objects/car/sprites/car_left.bmp
+
+END

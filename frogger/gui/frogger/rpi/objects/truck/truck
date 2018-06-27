@@ -1,0 +1,11 @@
+[attributes]
+width: 4
+height: 1
+timedelta: 400
+spacedelta: 1
+
+[animations]
+0: gui/frogger/rpi/objects/truck/truck_right
+1: gui/frogger/rpi/objects/truck/truck_left
+
+END
