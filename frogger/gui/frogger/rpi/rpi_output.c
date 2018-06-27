@@ -496,7 +496,63 @@ void frogger_lostscreen_close(void){
 /* GAMESCREEN handler */
 /**********************/
 
+/* Configuraciones */
+#define RPI_PATH           "gui/frogger/rpi/"
+#define GAMESCREEN_PATH    RPI_PATH "gamescreen"
+#define GAMESCREEN_FIELD   GAMESCREEN_PATH "field.bmp"
+
 /* frogger_gamescreen */
 bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score){
-    return false;
+    BITMAP* bitmap;
+    LANE lane;
+    FROGGER_OBJECT object;
+
+    char text[MAX_STRING];
+    uint32_t i, ii;
+
+    /* Limpio la ventana */
+    bitmap = rpi_load_bitmap( GAMESCREEN_FIELD );
+    if( bitmap == NULL ){
+        return false;
+    }
+    if( !rpi_draw_bitmap(bitmap, map_position(0, 0)) ){
+        return false;
+    }
+    destroy_bitmap(bitmap);
+
+    /* Pongo los objetos */
+    for(i = 0;i < field.lanesQty;i++){
+        lane = field.lanes[i];
+
+        for(ii = 0;ii < lane.objectsQty;ii++){
+            object = lane.objects[ii];
+
+            if( object->pos.x < DISPLAY_WIDTH ){
+                bitmap = rpi_load_bitmap( gui_animation_get_frame(object) );
+                if( bitmap == NULL ){
+                  return false;
+                }
+                if( !rpi_draw_bitmap(bitmap, object->pos) ){
+                    return false;
+                }
+                destroy_bitmap(bitmap);
+            }
+
+        }
+    }
+
+    /* Pongo la ranita :) */
+    bitmap = rpi_load_bitmap( gui_animation_get_frame(frog.object) );
+    if( bitmap == NULL ){
+        return false;
+    }
+    if( !rpi_draw_bitmap(bitmap, frog.object->pos) ){
+        return false;
+    }
+    destroy_bitmap(bitmap);
+
+    /* Mando el buffer al display */
+    rpi_display_update();
+
+    return true;
 }

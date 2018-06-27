@@ -56,7 +56,7 @@ MAINMENU_OPTIONS mainmenuSelection = PLAY_OPTION;
 bool frogger_mainmenu(void){
     ALLEGRO_BITMAP* bitmap = NULL;
     char filename[MAX_STRING];
-    
+
     /* Inicializo el display */
     if( display == NULL ){
         display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -65,18 +65,18 @@ bool frogger_mainmenu(void){
         }
         al_set_window_position(display, DISPLAY_POS_X, DISPLAY_POS_Y);
     }
-    
+
     /* Cargo el bitmap */
     sprintf(filename, "%s%d.png", MAINMENU_IMAGE, mainmenuSelection);
     bitmap = al_load_bitmap(filename);
     if( bitmap == NULL ){
         return false;
     }
-    
+
     /* Pongo el fondo */
     al_draw_bitmap(bitmap, 0, 0, 0);
     al_flip_display();
-    
+
     return true;
 }
 
@@ -116,7 +116,7 @@ void frogger_pausemenu_tasks(GAME_STAGE* stage){
 bool frogger_pausemenu(void){
     ALLEGRO_BITMAP* bitmap = NULL;
     char filename[MAX_STRING];
-    
+
     /* Inicializo el display */
     if( display == NULL ){
         display = al_create_display(DISPLAY_WIDTH, DISPLAY_WIDTH);
@@ -125,18 +125,18 @@ bool frogger_pausemenu(void){
         }
         al_set_window_position(display, DISPLAY_POS_X, DISPLAY_POS_Y);
     }
-    
+
     /* Cargo el bitmap */
     sprintf(filename, "%s%d.png", PAUSEMENU_IMAGE, pausemenuSelection);
     bitmap = al_load_bitmap( filename );
     if( bitmap == NULL ){
         return false;
     }
-    
+
     /* Pongo el fondo */
     al_draw_bitmap(bitmap, 0, 40, 0);
     al_flip_display();
-    
+
     return true;
 }
 
@@ -153,7 +153,7 @@ void frogger_pausemenu_move(INPUT_VALUES input){
                 pausemenuSelection += 1;
             }
             break;
-    }    
+    }
 }
 
 /*************************/
@@ -177,29 +177,29 @@ void frogger_pausemenu_move(INPUT_VALUES input){
 void frogger_changescreen_tasks(GAME_STAGE *stage){
     static CHANGESCREEN_STAGES state = CHANGESCREEN_INIT;
     static uint32_t counter = 0;
-    
+
     /* Manejo segun etapa */
     switch( state ){
         case CHANGESCREEN_INIT:
-            
+
             /* Reinicio contador */
             counter = CHANGESCREEN_DIV;
-            
+
             /* Cambio de etapa */
             state = CHANGESCREEN_OP;
-            
+
             /* Limpio e inicializo el timer */
             gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
             gui_timer_continue(gui_timer_global_get(), CHANGESCREEN_TIMER);
             break;
         case CHANGESCREEN_OP:
-            
+
             /* Espero el timer */
             if( gui_timer_overflow(gui_timer_global_get(), CHANGESCREEN_TIMER) ){
 
                 /* Limpio el timer y lo pauso */
                 gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
-                
+
                 /* Cuento */
                 counter--;
                 if( !counter ){
@@ -224,7 +224,7 @@ bool frogger_changescreen(uint32_t level, uint32_t stage){
     ALLEGRO_BITMAP* bitmap;
     ALLEGRO_FONT* font;
     char text[MAX_STRING];
-    
+
     /* Abro la ventana */
     if( display == NULL ){
         display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -236,31 +236,31 @@ bool frogger_changescreen(uint32_t level, uint32_t stage){
 
     /* Limpio el fondo */
     al_clear_to_color( CLEAR_COLOR );
-    
+
     /* Cargo el bitmap */
     bitmap = al_load_bitmap( CHANGESCREEN_IMAGE );
     if( bitmap == NULL ){
         return false;
     }
     al_draw_bitmap(bitmap, 0, 0, 0);
-    
+
     /* Fuente */
     font = al_load_font(CHANGESCREEN_FONT, CHANGESCREEN_SIZE, 0);
     if( font == NULL ){
         return false;
     }
-    
+
     /* Nivel */
     sprintf(text, "%d", level);
     al_draw_text(font, LEVEL_COLOR, LEVEL_X, LEVEL_Y, 0, text);
-    
+
     /* Stage */
     sprintf(text, "%d", stage);
     al_draw_text(font, STAGE_COLOR, STAGE_X, STAGE_Y, 0, text);
-    
+
     /* Mando el buffer al display */
     al_flip_display();
-    
+
     return true;
 }
 
@@ -288,7 +288,7 @@ bool frogger_lostscreen(uint32_t score){
     ALLEGRO_BITMAP* bitmap;
     ALLEGRO_FONT* font;
     char text[MAX_STRING];
-    
+
     /* Abro la ventana */
     if( display == NULL ){
         display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -300,14 +300,14 @@ bool frogger_lostscreen(uint32_t score){
 
     /* Limpio el fondo */
     al_clear_to_color( CLEAR_COLOR );
-    
+
     /* Cargo el bitmap */
     bitmap = al_load_bitmap( LOSTSCREEN_IMAGE );
     if( bitmap == NULL ){
         return false;
     }
     al_draw_bitmap(bitmap, 0, 0, 0);
-    
+
     /* Puntuacion */
     font = al_load_ttf_font( LOSTSCREEN_FONT, LOSTSCREEN_SIZE, 0);
     if( font == NULL ){
@@ -315,10 +315,10 @@ bool frogger_lostscreen(uint32_t score){
     }
     sprintf(text, "%d", score);
     al_draw_text(font, SCORE_COLOR, SCORE_X, SCORE_Y, 0, text);
-    
+
     /* Mando el buffer al display */
     al_flip_display();
-    
+
     return true;
 }
 
@@ -351,10 +351,10 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     ALLEGRO_BITMAP* bitmap;
     LANE lane;
     FROGGER_OBJECT object;
+
     char text[MAX_STRING];
-    char* see;
     uint32_t i, ii;
-    
+
     /* Abro la ventana */
     if( display == NULL ){
         display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -363,10 +363,10 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
         }
         al_set_window_position(display, DISPLAY_POS_X, DISPLAY_POS_Y);
     }
-    
+
     /* Limpio la ventana */
     al_clear_to_color( CLEAR_COLOR );
-    
+
     /* Pongo el campo de juego */
     bitmap = al_load_bitmap( GAMESCREEN_IMAGE );
     if( bitmap == NULL ){
@@ -380,7 +380,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
         return false;
     }
     al_draw_bitmap(bitmap, GAME_DISPLAY_LIFES_X, GAME_DISPLAY_LIFES_Y, 0);
-    
+
     /* Pongo la info de score */
     font = al_load_ttf_font(GAMESCREEN_FONT, GAMESCREEN_SIZE, 0);
     if( font == NULL ){
@@ -388,7 +388,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     }
     sprintf(text, "%s %d", GAME_SCORE_MSG, score);
     al_draw_text(font, SCORE_COLOR, GAME_DISPLAY_SCORE_X, GAME_DISPLAY_SCORE_Y, 0, text);
-    
+
     /* Pongo la info de time */
     font = al_load_ttf_font(GAMESCREEN_FONT, GAMESCREEN_SIZE, 0);
     if( font == NULL ){
@@ -396,35 +396,34 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     }
     sprintf(text, "%s %d", GAME_TIME_MSG, time);
     al_draw_text(font, GAME_TIME_COLOR, GAME_DISPLAY_TIME_X, GAME_DISPLAY_TIME_Y, 0, text);
-   
+
     /* Pongo los objetos */
     for(i = 0;i < field.lanesQty;i++){
         lane = field.lanes[i];
-        
+
         for(ii = 0;ii < lane.objectsQty;ii++){
             object = lane.objects[ii];
-            
+
             if( object->pos.x < DISPLAY_WIDTH ){
-                see = gui_animation_get_frame(object);
-                bitmap = al_load_bitmap( see );
+                bitmap = al_load_bitmap( gui_animation_get_frame(object) );
                 if( bitmap == NULL ){
                   return false;
                 }
-                al_draw_bitmap(bitmap, object->pos.x, object->pos.y, 0);  
+                al_draw_bitmap(bitmap, object->pos.x, object->pos.y, 0);
             }
-            
+
         }
     }
-    
+
     /* Pongo la ranita :) */
     bitmap = al_load_bitmap( gui_animation_get_frame(frog.object) );
     if( bitmap == NULL ){
         return false;
     }
     al_draw_bitmap(bitmap, frog.object->pos.x, frog.object->pos.y, 0);
-    
+
     /* Mando el buffer al display */
     al_flip_display();
-    
+
     return true;
 }
