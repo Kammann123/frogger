@@ -86,6 +86,13 @@ void gui_timer_pause(TIMER_QUEUE* timerQueue, uint32_t id);
  */
 void gui_timer_continue(TIMER_QUEUE* timerQueue, uint32_t id);
 
+/* gui_timer_clear_all 
+ * Limpia todos los timers de la cola de timers
+ *
+ * timerQueue: Cola de timers
+ */
+void gui_timer_clear_all(TIMER_QUEUE* timerQueue);
+
 /* gui_timer_clear 
  * Limpia el timer despues de un overflow, avisando
  * que se leyo y uso el evento

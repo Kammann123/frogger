@@ -77,6 +77,10 @@ GAME_STAGE default_stage(void);
  */
 void change_stage(GAME_STAGE* stage, uint16_t newStage);
 
+/*******************/
+/* TARGET handlers */
+/*******************/
+
 /* switch_tasks_target
  * Maneja quien ejecuta tareas de forma concurrente
  * mientras se esperan entradas y eventos de la cola de eventos
@@ -261,87 +265,9 @@ void change_stage(GAME_STAGE* stage, uint16_t newStage){
     stage->hasChanged = true;
 }
 
-/***************************/
-/* Definicion de funciones */
-/***************************/
-
-/* on_frogger_event */
-void on_frogger_event(GAME_STAGE* stage, uint32_t event){
-    switch( event ){
-        case FROGGER_HAS_LOST:
-            frogger_game_close();
-            change_stage(stage, LOSTSCREEN_STAGE);
-            break;
-        case FROGGER_HAS_WON:
-            frogger_game_pause();
-            change_stage(stage, CHANGESCREEN_STAGE);
-            break;
-        case FROGGER_HAS_DIED: case FROGGER_HAS_DROWN:
-            frogger_game_dead_animation();
-            change_stage(stage, DEAD_STAGE);
-            break;
-    }
-}
-
-
-/* on_pausemenu_enter */
-void on_pausemenu_enter(GAME_STAGE* stage){
-    /* Cambio de etapa el juego */
-    switch( pausemenuSelection ){
-        case RESUME_OPTION:
-            frogger_game_continue();
-            change_stage(stage, FROGGER_STAGE);
-            break;
-        case RESTART_OPTION:
-            frogger_game_close();
-            frogger_restart();
-            if( !frogger_game_init() ){
-                change_stage(stage, MAINMENU_STAGE);
-            }else{
-                change_stage(stage, FROGGER_STAGE);
-            }
-            break;
-        case PAUSE_EXIT_OPTION:
-            frogger_game_close();
-            change_stage(stage, MAINMENU_STAGE);
-            break;
-    }
-}
-
-/* on_game_enter */
-void on_game_enter(GAME_STAGE* stage){
-    /* Cambio de etapa de juego */
-    change_stage(stage, PAUSEMENU_STAGE);
-
-    /* Pauso el juego */
-    frogger_game_pause();
-}
-
-/* on_mainmenu_enter */
-void on_mainmenu_enter(GAME_STAGE* stage){
-    /* Cambio de etapa el programa */
-    switch( mainmenuSelection ){
-        case PLAY_OPTION:
-            if( frogger_game_init() ){
-                frogger_restart();
-                change_stage(stage, FROGGER_STAGE);
-            }
-            break;
-        case RANK_OPTION:
-            change_stage(stage, RANKING_STAGE);
-            break;
-        case HOWTO_OPTION:
-            change_stage(stage, HOWTO_STAGE);
-            break;
-        case MAIN_EXIT_OPTION:
-            frogger_screen_close();
-            change_stage(stage, CLOSING_STAGE);
-            break;
-        default:
-            return;
-            break;
-    }
-}
+/*******************/
+/* TARGET handlers */
+/*******************/
 
 /* switch_tasks_target */
 void switch_tasks_target(GAME_STAGE* stage){
@@ -424,6 +350,88 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
                     change_stage(stage, MAINMENU_STAGE);
                 }
             }
+            break;
+    }
+}
+
+/***************************/
+/* Definicion de funciones */
+/***************************/
+
+/* on_frogger_event */
+void on_frogger_event(GAME_STAGE* stage, uint32_t event){
+    switch( event ){
+        case FROGGER_HAS_LOST:
+            frogger_game_close();
+            change_stage(stage, LOSTSCREEN_STAGE);
+            break;
+        case FROGGER_HAS_WON:
+            frogger_game_pause();
+            change_stage(stage, CHANGESCREEN_STAGE);
+            break;
+        case FROGGER_HAS_DIED: case FROGGER_HAS_DROWN:
+            frogger_game_dead_animation();
+            change_stage(stage, DEAD_STAGE);
+            break;
+    }
+}
+
+
+/* on_pausemenu_enter */
+void on_pausemenu_enter(GAME_STAGE* stage){
+    /* Cambio de etapa el juego */
+    switch( pausemenuSelection ){
+        case RESUME_OPTION:
+            frogger_game_continue();
+            change_stage(stage, FROGGER_STAGE);
+            break;
+        case RESTART_OPTION:
+            frogger_game_close();
+            frogger_restart();
+            if( !frogger_game_init() ){
+                change_stage(stage, MAINMENU_STAGE);
+            }else{
+                change_stage(stage, FROGGER_STAGE);
+            }
+            break;
+        case PAUSE_EXIT_OPTION:
+            frogger_game_close();
+            change_stage(stage, MAINMENU_STAGE);
+            break;
+    }
+}
+
+/* on_game_enter */
+void on_game_enter(GAME_STAGE* stage){
+    /* Cambio de etapa de juego */
+    change_stage(stage, PAUSEMENU_STAGE);
+
+    /* Pauso el juego */
+    frogger_game_pause();
+}
+
+/* on_mainmenu_enter */
+void on_mainmenu_enter(GAME_STAGE* stage){
+    /* Cambio de etapa el programa */
+    switch( mainmenuSelection ){
+        case PLAY_OPTION:
+            if( frogger_game_init() ){
+                frogger_restart();
+                change_stage(stage, FROGGER_STAGE);
+            }
+            break;
+        case RANK_OPTION:
+            change_stage(stage, RANKING_STAGE);
+            break;
+        case HOWTO_OPTION:
+            change_stage(stage, HOWTO_STAGE);
+            break;
+        case MAIN_EXIT_OPTION:
+            frogger_screen_close();
+            change_stage(stage, CLOSING_STAGE);
+            break;
+        default:
+            return;
             break;
     }
 }

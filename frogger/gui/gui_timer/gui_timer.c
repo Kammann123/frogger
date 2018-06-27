@@ -148,6 +148,19 @@ void gui_timer_continue(TIMER_QUEUE* timerQueue, uint32_t id){
     }
 }   
 
+/* gui_timer_clear_all  */
+void gui_timer_clear_all(TIMER_QUEUE* timerQueue){
+    uint32_t i;
+    
+    /* Busco el timer */
+    for(i = 0;i < timerQueue->length;i++){
+        pthread_mutex_lock(&timerQueue->timerMutex);
+        timerQueue->timers[i].timerOverflow = false;
+        timerQueue->timers[i].timerCounter = 0;
+        pthread_mutex_unlock(&timerQueue->timerMutex);
+    }
+}
+
 /* gui_timer_clear */
 void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id){
     uint32_t i;
