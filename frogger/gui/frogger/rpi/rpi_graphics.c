@@ -123,7 +123,7 @@ MOTION_TEXT* rpi_load_motion_text(char* text, POSITION pos){
         }
 
         /* Calculo largo total */
-        motion->width += motion->bitmaps[i]->header.width;
+        motion->width += motion->bitmaps[i]->header.width + 1;
     }
 
     /* Cargo posicion */
@@ -162,7 +162,7 @@ bool rpi_draw_motion_text(MOTION_TEXT* motion){
             return false;
         }
         /* Calculo largo */
-        x += motion->bitmaps[i]->header.width;
+        x += motion->bitmaps[i]->header.width + 1;
     }
 
     return true;
