@@ -15,6 +15,9 @@ BITMAP* read_bitmap(char* filename){
     /* Creo instancia de archivo */
     FILE* file;
     
+    uint32_t x, y;
+    BYTE nop;
+    
     /* Reservo memoria para el bitmap handler */
     bitmap = malloc( sizeof(BITMAP) );
     if( bitmap == NULL ){
@@ -22,7 +25,7 @@ BITMAP* read_bitmap(char* filename){
     }
     
     /* Abro el archivo */
-    file = fopen(filename, "r");
+    file = fopen(filename, "rb");
     if( file == NULL ){
         free(bitmap);
         return NULL;
@@ -68,7 +71,19 @@ BITMAP* read_bitmap(char* filename){
     fseek(file, bitmap->fileHeader.offset, SEEK_SET);
     
     /* Leo */
-    fread(bitmap->pixels, sizeof(BYTE), bitmap->header.imageSize, file);
+    for(y = 0;y < bitmap->header.height;y++){
+        
+        /* Leo cada pixel */
+        for(x = 0;x < bitmap->header.width;x++){
+            fread(&bitmap->pixels[y*bitmap->header.width+x], sizeof(BYTE), 1, file);
+        }
+        
+        /* Maldito padding */
+        while( x%4 ){
+            fread(&nop, sizeof(BYTE), 1, file);
+            x++;
+        }
+    }
     
     /* Cierro el archivo */
     fclose(file);

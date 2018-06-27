@@ -26,51 +26,15 @@ typedef enum{
     FROGGER_TASKS_OP,
 } FROGGER_TASKS_STAGES;
 
-typedef enum{
-    CHANGESCREEN_INIT,
-    CHANGESCREEN_OP
-} CHANGESCREEN_STAGES;
-
-typedef enum {
-    MAINMENU_STAGE,
-    RANKING_STAGE,
-    HOWTO_STAGE,
-    FROGGER_STAGE,
-    PAUSEMENU_STAGE,
-    LOSTSCREEN_STAGE,
-    CHANGESCREEN_STAGE,
-    DEAD_STAGE,
-    CLOSING_STAGE
-} STAGE_VALUES;
-
-typedef struct{
-    /* Valor del estado del juego */
-    STAGE_VALUES value;
-    
-    /* Flags */
-    bool hasChanged;    
-} GAME_STAGE;
-
-typedef struct{
-    GAME_STAGE* stage;
-    uint16_t newStage;
-} EXTERN_STAGE_DATA;
-
-#define DEFAULT_GAME_STAGE MAINMENU_STAGE
-
 /* Eventos del timer */
 #define TIMER_DEFINITION    1000
 #define REFRESH_FPS         100
 
-typedef enum{
-    REFRESH_DISPLAY,
-    GAME_COUNTER,
-    CHANGESCREEN_TIMER
-} TIMER_EVENT_IDS;
+#define REFRESH_DISPLAY     0
+#define GAME_COUNTER        1
 
 #define REFRESH_TIME    TIMER_DEFINITION/REFRESH_FPS
 #define GAME_TIME       TIMER_DEFINITION
-#define CHANGESCREEN_TIME     TIMER_DEFINITION*2
 
 /****************/
 /* TASKS thread */
@@ -82,33 +46,6 @@ typedef enum{
  * sin manejar I/O
  */
 void* tasks_thread(void* gameStage);
-
-/***********************/
-/* GAME_STAGE handlers */
-/***********************/
-
-/* stage_init 
- * Crea y devuelve una instancia de GAME_STAGE
- * default, con parametros por defecto
- */
-GAME_STAGE stage_init(void);
-
-/* change_stage
- * Permite modificar el estado del programa
- * y realizar tareas secundarias de limpieza
- *
- * stage: Estado del programa
- * newStage: Nuevo estado del programa
- */
-void change_stage(GAME_STAGE* stage, STAGE_VALUES value);
-
-/* is_stage
- * Compara y verifica si el estado del juego es ese.
- * 
- * stage: Instancia 
- * value: Estado de juego
- */
-bool is_stage(GAME_STAGE* stage, STAGE_VALUES value);
 
 /*******************/
 /* TARGET handlers */
@@ -158,18 +95,9 @@ void frogger_tasks(GAME_STAGE* stage);
  */
 bool on_frogger_event(GAME_STAGE* stage, uint32_t event);
 
-/*************************/
-/* CHANGESCREEN handlers */
-/*************************/
-
-/* changescreen_tasks 
- * Maneja las tareas de espera durante
- * el cambio de nivel 
- *
- * stage: Estado del juego
- */
-void changescreen_tasks(GAME_STAGE *stage);
-
+/******************/
+/* ENTER handlers */
+/******************/
 
 /* on_mainmenu_enter
  * Maneja la direccion del programa desde el menu
@@ -206,9 +134,9 @@ int main(int argc, char** argv){
     
     /* Error */
     bool error;
-
+    
     /* Inicializo la interfaz */
-    if( !gui_graphics_init( ) ){
+        if( !gui_graphics_init( ) ){
         testing_msg("No se pudo inicializar graficos.");
         return 0;
     }
@@ -230,6 +158,7 @@ int main(int argc, char** argv){
     error = gui_timer_new_event(gui_timer_global_get(), REFRESH_TIME, REFRESH_DISPLAY, true);
     error &= gui_timer_new_event(gui_timer_global_get(), GAME_TIME, GAME_COUNTER, false);
     error &= gui_timer_new_event(gui_timer_global_get(), CHANGESCREEN_TIME, CHANGESCREEN_TIMER, false);
+    error &= gui_timer_new_event(gui_timer_global_get(), PAUSEMENU_TIME, PAUSEMENU_TIMER, false);
     if( !error ){
         testing_msg("No se pudo agregar eventos de timer");
         gui_timer_global_close();
@@ -249,13 +178,13 @@ int main(int argc, char** argv){
     }
     
     /* Inicializo memoria de juego */
-    if( !frogger_game_init() ){
+    /*if( !frogger_game_init() ){
         testing_msg("No se pudo cargar en memoria objetos.");
         gui_timer_global_close();
         gui_input_close();
         queue_close(queue);
         return 0;
-    }
+    }*/
 
     /* Inicio el timer */
     gui_timer_start(gui_timer_global_get());
@@ -315,8 +244,8 @@ int main(int argc, char** argv){
 /* CHANGESCREEN handlers */
 /*************************/
 
-/* changescreen_tasks */
-void changescreen_tasks(GAME_STAGE *stage){
+/* frogger_changescreen_tasks */
+void frogger_changescreen_tasks(GAME_STAGE *stage){
     static CHANGESCREEN_STAGES state = CHANGESCREEN_INIT;
     
     /* Manejo segun etapa */
@@ -368,36 +297,6 @@ void* tasks_thread(void* gameStage){
     return NULL;
 }
 
-/***********************/
-/* GAME_STAGE handlers */
-/***********************/
-/* stage_init */
-GAME_STAGE stage_init(void){
-    GAME_STAGE stage = {
-        .value = DEFAULT_GAME_STAGE,
-        .hasChanged = false
-    };
-    
-    return stage;
-}
-
-/* change_stage */
-void change_stage(GAME_STAGE* stage, STAGE_VALUES value){
-    
-    /* Cambio el valor del estado */
-    stage->value = value;
-    stage->hasChanged = true;
-}
-
-/* is_stage */
-bool is_stage(GAME_STAGE* stage, STAGE_VALUES value){
-    
-    if( stage->value == value ){
-        return true;
-    }
-    return false;
-}
-
 /*******************/
 /* TARGET handlers */
 /*******************/
@@ -408,8 +307,11 @@ void switch_tasks_target(GAME_STAGE* stage){
         case FROGGER_STAGE:
             frogger_tasks(stage);
             break;
+        case PAUSEMENU_STAGE:
+            frogger_pausemenu_tasks(stage);
+            break;
         case CHANGESCREEN_STAGE:
-            changescreen_tasks(stage);
+            frogger_changescreen_tasks(stage);
             break;
         case DEAD_STAGE:
             if( frogger_game_is_frog_static() ){
@@ -554,6 +456,9 @@ bool on_frogger_event(GAME_STAGE* stage, uint32_t event){
     return true;
 }
 
+/******************/
+/* ENTER handlers */
+/******************/
 
 /* on_pausemenu_enter */
 void on_pausemenu_enter(GAME_STAGE* stage){
@@ -573,7 +478,13 @@ void on_pausemenu_enter(GAME_STAGE* stage){
         case PAUSE_EXIT_OPTION:
             change_stage(stage, MAINMENU_STAGE);
             break;
+        default:
+            return;
+            break;
     }
+    
+    /* Cierro la pantalla */
+    frogger_screen_close(stage);
 }
 
 /* on_game_enter */
@@ -601,7 +512,6 @@ void on_mainmenu_enter(GAME_STAGE* stage){
             change_stage(stage, HOWTO_STAGE);
             break;
         case MAIN_EXIT_OPTION:
-            frogger_screen_close();
             change_stage(stage, CLOSING_STAGE);
             break;
         default:

@@ -34,6 +34,9 @@ allegro: ${HEADERS} ${SRC} ${AL_SRC} ${OBJS} ${AL_OBJS}
 rpi: ${HEADERS} ${SRC} ${RPI_SRC} ${OBJS} ${RPI_OBJS} ${RPI_HEADERSs}
 	${CC} ${OBJS} ${RPI_OBJS} main.c -o frogger ${OPTIONS} ${RPI_INC}
 
+rpi_gdb: ${HEADERS} ${SRC} ${RPI_SRC} ${OBJS} ${RPI_OBJS} ${RPI_HEADERSs}
+	${CC} ${OBJS} ${RPI_OBJS} main.c -g -o frogger ${OPTIONS} ${RPI_INC}
+
 ${OBJS}: ${HEADERS} ${SRC}
 	${CC} ${OPTIONS} -c ${SRC}
 

@@ -34,7 +34,7 @@ static ALLEGRO_DISPLAY* display = NULL;
 /*******************/
 
 /* frogger_screen_close */
-void frogger_screen_close(void){
+void frogger_screen_close(GAME_STAGE* stage){
     if( display != NULL ){
         al_destroy_display( display );
         display = NULL;
@@ -106,6 +106,11 @@ void frogger_mainmenu_move(INPUT_VALUES input){
 
 /* Variable del menu de pausa */
 PAUSEMENU_OPTIONS pausemenuSelection = RESUME_OPTION;
+
+/* frogger_pausemenu_tasks */
+void frogger_pausemenu_tasks(GAME_STAGE* stage){
+    return;
+}
 
 /* frogger_pausemenu */
 bool frogger_pausemenu(void){

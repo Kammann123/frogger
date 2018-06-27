@@ -12,9 +12,20 @@
 
 #include "frogger_physics.h"
 
+/* Configuracion de timers de tasks */
+#define CHANGESCREEN_TIME       1500
+#define CHANGESCREEN_TIMER      2
+
+#define PAUSEMENU_TIME          100
+#define PAUSEMENU_TIMER         3
 /**************/
 /* Constantes */
 /**************/
+
+typedef enum {
+    PAUSEMENU_INIT,
+    PAUSEMENU_OP
+} PAUSEMENU_STAGES;
 
 typedef enum {
     PLAY_OPTION,
@@ -40,7 +51,7 @@ extern PAUSEMENU_OPTIONS pausemenuSelection;
 /* frogger_screen_close
  * Cierra aquello que use para la pantalla
  */
-void frogger_screen_close(void);
+void frogger_screen_close(GAME_STAGE* stage);
 
 /*********************/
 /* MAINMENU handlers */
@@ -62,6 +73,13 @@ void frogger_mainmenu_move(INPUT_VALUES input);
 /* PAUSEMENU handlers */
 /**********************/
 
+/* frogger_pausemenu_tasks 
+ * Maneja las tareas durante menu de pausa
+ *
+ * stage: Estado del juego
+ */
+void frogger_pausemenu_tasks(GAME_STAGE *stage);
+
 /* frogger_pausemenu
  * Menu pausa del juego
  */
@@ -77,6 +95,14 @@ void frogger_pausemenu_move(INPUT_VALUES input);
 /*************************/
 /* CHANGESCREEN handlers */
 /*************************/
+
+/* frogger_changescreen_tasks 
+ * Maneja las tareas de espera durante
+ * el cambio de nivel 
+ *
+ * stage: Estado del juego
+ */
+void frogger_changescreen_tasks(GAME_STAGE *stage);
 
 /* frogger_changescreen
  * Pantalla cambio de nivel y stage

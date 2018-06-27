@@ -66,7 +66,7 @@ void rpi_move_motion_bmp(MOTION_BMP* motion){
     motion->pos.x--;
 
     /* Verifico que no haya dado la vuelta */
-    if( (motion->pos.x + motion->bitmap.width) == 0 ){
+    if( (motion->pos.x + motion->bitmap->header.width) == 0 ){
         motion->pos.x = DISPLAY_WIDTH - 1;
     }
 }
@@ -74,6 +74,11 @@ void rpi_move_motion_bmp(MOTION_BMP* motion){
 /* rpi_draw_motion_bmp */
 bool rpi_draw_motion_bmp(MOTION_BMP* motion){
 
+    /* Verifico inicializacion */
+    if( !motion->init ){
+        return false;
+    }
+    
     /* Dibujo el bitmap */
     if( rpi_draw_bitmap(motion->bitmap, motion->pos) ){
         return true;
