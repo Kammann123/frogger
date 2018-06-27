@@ -57,6 +57,21 @@ typedef struct{
 /* Funciones publicas */
 /**********************/
 
+/* gui_timer_global_get
+ * Retorna el puntero a la cola de timers global
+ */
+TIMER_QUEUE* gui_timer_global_get(void);
+
+/* gui_timer_global_close
+ * Cierra y libera la cola de timers global
+ */
+void gui_timer_global_close(void);
+
+/* gui_timer_global_init
+ * Inicializa la cola de eventos global
+ */
+bool gui_timer_global_init(void);
+
 /* gui_timer_pause
  * Pausa un timer individual en la cola de timers
  *

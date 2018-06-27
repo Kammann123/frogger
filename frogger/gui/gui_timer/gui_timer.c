@@ -3,6 +3,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+/* Global queue */
+static TIMER_QUEUE* globalQueue;
+
 /**********************/
 /* Funciones privadas */
 /**********************/
@@ -18,6 +21,62 @@ static void* timer_thread(void* timerQueue);
 /************************************/
 /* Definicion de funciones privadas */
 /************************************/
+
+/* timer_thread */
+static void* timer_thread(void* timerQueue){
+    uint32_t i;
+    TIMER_QUEUE* queue = timerQueue;
+    
+    while( !queue->shutdown ){
+        /* Espera un milisegundo */
+        usleep(1000);
+        
+        /* Actualizo estado de eventos */
+        if( queue->enable ){
+            for(i = 0;i < queue->length;i++){
+                if(queue->timers[i].timerCounter < queue->timers[i].timerMax){
+                    pthread_mutex_lock(&queue->timerMutex);
+                    queue->timers[i].timerCounter++;
+                    pthread_mutex_unlock(&queue->timerMutex);
+                }
+            }
+        }
+    }
+    
+    return NULL;
+}
+
+/************************************/
+/* Definicion de funciones publicas */
+/************************************/
+
+/* gui_timer_global_get */
+TIMER_QUEUE* gui_timer_global_get(void){
+    return globalQueue;
+}
+
+/* gui_timer_global_close */
+void gui_timer_global_close(void){
+    
+    /* Cierro la cola de timers */
+    gui_timer_destroy(globalQueue);
+    
+    /* Dejo grabado el cierre */
+    globalQueue = NULL;
+}
+
+/* gui_timer_global_init */
+bool gui_timer_global_init(void){
+    
+    /* Creo la cola de timers */
+    globalQueue = gui_timer_create();
+    if( globalQueue == NULL ){
+        return false;
+    }
+    
+    /* Inicializada correctamente */
+    return true;
+}
 
 /* gui_timer_source */
 bool gui_timer_source(EVENT* event, void* timerQueue){
@@ -55,34 +114,6 @@ bool gui_timer_source(EVENT* event, void* timerQueue){
     return false;
 }
 
-/* timer_thread */
-static void* timer_thread(void* timerQueue){
-    uint32_t i;
-    TIMER_QUEUE* queue = timerQueue;
-    
-    while( !queue->shutdown ){
-        /* Espera un milisegundo */
-        usleep(1000);
-        
-        /* Actualizo estado de eventos */
-        if( queue->enable ){
-            for(i = 0;i < queue->length;i++){
-                if(queue->timers[i].timerCounter < queue->timers[i].timerMax){
-                    pthread_mutex_lock(&queue->timerMutex);
-                    queue->timers[i].timerCounter++;
-                    pthread_mutex_unlock(&queue->timerMutex);
-                }
-            }
-        }
-    }
-    
-    return NULL;
-}
-
-/************************************/
-/* Definicion de funciones publicas */
-/************************************/
-
 /* gui_timer_pause */
 void gui_timer_pause(TIMER_QUEUE* timerQueue, uint32_t id){
     uint32_t i;
@@ -115,7 +146,7 @@ void gui_timer_continue(TIMER_QUEUE* timerQueue, uint32_t id){
             break;
         }
     }
-}
+}   
 
 /* gui_timer_clear */
 void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id){
