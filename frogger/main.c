@@ -134,11 +134,14 @@ void on_frogger_event(GAME_STAGE* stage, uint32_t event);
 int main(int argc, char** argv){
 
     /* Variables */
-    TIMER_QUEUE* timer;
     EVENT_QUEUE* queue;
     EVENT event;
+    
     /* Game stage variable */
     GAME_STAGE stage = default_stage();
+    
+    /* Error */
+    bool error;
 
     /* Inicializo la interfaz */
     if( !gui_graphics_init( ) ){
@@ -153,38 +156,31 @@ int main(int argc, char** argv){
     }
 
     /* Inicializo el timer */
-    timer = gui_timer_create();
-    if( timer == NULL ){
+    if( !gui_timer_global_init() ){
+        testing_msg("No se pudo inicializar el timer.");
         return 0;
     }
 
     /* Agrego un evento de timer */
-    if( !gui_timer_new_event(timer, REFRESH_TIME, REFRESH_DISPLAY) ){
-        testing_msg("No se pudo inicializar timer.");
+    error = gui_timer_new_event(gui_timer_global_get(), REFRESH_TIME, REFRESH_DISPLAY);
+    error &= gui_timer_new_event(gui_timer_global_get(), GAME_TIME, GAME_COUNTER);
+    error &= gui_timer_new_event(gui_timer_global_get(), CHANGESCREEN_TIME, CHANGESCREEN_TIMER);
+    if( !error ){
+        testing_msg("No se pudo agregar eventos de timer");
         return 0;
     }
-    if( !gui_timer_new_event(timer, GAME_TIME, GAME_COUNTER) ){
-        testing_msg("No se pudo inicializar timer.");
-        return 0;
-    }
-    if( !gui_timer_new_event(timer, CHANGESCREEN_TIME, CHANGESCREEN_TIMER) ){
-        testing_msg("No se pudo inicializar timer.");
-        return 0;
-    }
-
+            
     /* Inicializo los eventos */
     queue = create_queue();
-    if( !register_source(queue, gui_input_source, NULL) ){
-        testing_msg("No se pudo inicializar cola de eventos.");
-        return 0;
-    }
-    if( !register_source(queue, gui_timer_source, timer) ){
-        testing_msg("No se pudo agregar a cola el timer.");
+    error = register_source(queue, gui_input_source, NULL);
+    error &= register_source(queue, gui_timer_source, gui_timer_global_get());
+    if( !error ){
+        testing_msg("No se pudo registrar el timer en la cola de eventos.");
         return 0;
     }
 
     /* Inicio el timer */
-    gui_timer_start(timer);
+    gui_timer_start(gui_timer_global_get());
 
     /* Inicio la cola de eventos */
     queue_start(queue);
@@ -210,7 +206,7 @@ int main(int argc, char** argv){
                     }
                 }
                 /* Limpio el timer */
-                gui_timer_clear(timer, event.data);
+                gui_timer_clear(gui_timer_global_get(), event.data);
             }
         }
 
@@ -226,9 +222,9 @@ int main(int argc, char** argv){
             queue_flush(queue);
 
             /* Limpio el timer */
-            gui_timer_clear(timer, REFRESH_DISPLAY);
-            gui_timer_clear(timer, GAME_COUNTER);
-            gui_timer_clear(timer, CHANGESCREEN_TIMER);
+            gui_timer_clear(gui_timer_global_get(), REFRESH_DISPLAY);
+            gui_timer_clear(gui_timer_global_get(), GAME_COUNTER);
+            gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
         }
     }
 
@@ -239,7 +235,7 @@ int main(int argc, char** argv){
     gui_input_close();
 
     /* Destruyo el timer */
-    gui_timer_destroy(timer);
+    gui_timer_global_close();
 }
 
 /***********************/
