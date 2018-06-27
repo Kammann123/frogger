@@ -9,9 +9,81 @@
 /* Objetos */
 static bool init = false;
 
-/*************************/
-/* RPI_GRAPHICS handlers */
-/*************************/
+/***********************/
+/* MOTION_BMP handlers */
+/***********************/
+
+/* rpi_create_motion_bmp */
+MOTION_BMP rpi_create_motion_bmp(void){
+    /* Creo la instancia */
+    MOTION_BMP motion;
+
+    /* Parametros por defecto */
+    motion.init = false;
+
+    /* Devuelvo instancia */
+    return motion;
+}
+
+/* rpi_init_motion_bmp */
+bool rpi_init_motion_bmp(MOTION_BMP* motion, char* file, POSITION pos){
+
+    /* Verifico que no este inicializado */
+    if( motion->init ){
+        return false;
+    }
+
+    /* Cargo el bitmap */
+    motion->bitmap = rpi_load_bitmap(file);
+    if( motion->bitmap == NULL ){
+        return false;
+    }
+
+    /* Inicializado!! */
+    motion->pos = pos;
+    motion->init = true;
+
+    /* Exito! */
+    return true;
+}
+
+/* rpi_destroy_motion_bmp */
+void rpi_destroy_motion_bmp(MOTION_BMP* motion){
+    /* Verifico inicializado */
+    if( motion->init ){
+
+        /* Libero el bitmap */
+        destroy_bitmap(motion->bitmap);
+    }
+
+    motion->init = false;
+}
+
+/* rpi_move_motion_bmp */
+void rpi_move_motion_bmp(MOTION_BMP* motion){
+
+    /* Muevo su posicion */
+    motion->pos.x--;
+
+    /* Verifico que no haya dado la vuelta */
+    if( (motion->pos.x + motion->bitmap.width) == 0 ){
+        motion->pos.x = DISPLAY_WIDTH - 1;
+    }
+}
+
+/* rpi_draw_motion_bmp */
+bool rpi_draw_motion_bmp(MOTION_BMP* motion){
+
+    /* Dibujo el bitmap */
+    if( rpi_draw_bitmap(motion->bitmap, motion->pos) ){
+        return true;
+    }
+    return false;
+}
+
+/************************/
+/* RPI_DISPLAY handlers */
+/************************/
 
 /* rpi_display_clear */
 bool rpi_display_clear(void){
@@ -56,6 +128,10 @@ bool gui_graphics_init(void){
 
     return true;
 }
+
+/********************/
+/* BITMAPS handlers */
+/********************/
 
 /* rpi_load_bitmap */
 BITMAP* rpi_load_bitmap(char* filename){
