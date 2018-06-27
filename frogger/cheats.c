@@ -13,26 +13,26 @@ uint8_t scan_cheat (int32_t * inputArray, cheat_t * firstCheat){
     if (got_key){
         
         key = get_key;
-        add_to_array (inputArray, key, get_array_large (inputArray));
+        add_to_array (inputArray, key, get_array_large (inputArray, NOTHING_VALUE));
 
-        if (cmp_partial_array (inputArray, firstCheat, get_array_large (inputArray))){
+        if (cmp_partial_array (inputArray, firstCheat, get_array_large (inputArray, NOTHING_VALUE))){
 
-            if ( cheatFound = cmp_absolute_array(&inputArray, firstCheat, get_array_large (inputArray)) != NULL){
-                *cheatFound->action();
+            if ( (cheatFound = cmp_absolute_array(inputArray, firstCheat, get_array_large (inputArray, NOTHING_VALUE))) != NULL){
+                cheatFound->pToActionFunc();
             }
 
         } else{
 
-            if (get_array_large (inputArray)>1){
+            if (get_array_large (inputArray, NOTHING_VALUE)>1){
                 
                 empty_array (inputArray, NOTHING_VALUE);
                 inputArray[0]= key;
                 
-                if (cmp_partial_array (inputArray, firstCheat, get_array_large (inputArray))){
+                if (cmp_partial_array (inputArray, firstCheat, get_array_large (inputArray, NOTHING_VALUE))){
 
-                    if ( cheatFound = cmp_absolute_array(inputArray, firstCheat, get_array_large (inputArray)) != NULL){
+                    if ( (cheatFound = cmp_absolute_array(inputArray, firstCheat, get_array_large (inputArray, NOTHING_VALUE))) != NULL){
 
-                        *cheatFound->action();
+                        cheatFound->pToActionFunc();
                     }
                 } else{
 
@@ -90,7 +90,7 @@ static bool cmp_partial_array (int32_t * inArray, cheat_t * firstCheat, uint8_t 
         
         if (currentCheat->cheatLarge >= inArrayLarge){
             
-            while ((currentCheat->cheatLarge[i] == inArray[i]) && (i<inArrayLarge)){
+            while ((currentCheat->cheatArray[i] == inArray[i]) && (i<inArrayLarge)){
                 i++;
             }
             
@@ -117,7 +117,7 @@ static cheat_t * cmp_absolute_array (int32_t * inArray, cheat_t * firstCheat, ui
         
         if (currentCheat->cheatLarge == inArrayLarge){
             
-            while ((currentCheat->cheatLarge[i] == inArray[i]) && (i<inArrayLarge)){
+            while ((currentCheat->cheatArray[i] == inArray[i]) && (i<inArrayLarge)){
                 i++;
             }
             
