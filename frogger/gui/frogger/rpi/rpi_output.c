@@ -6,6 +6,7 @@
 #include "../../gui_animation/gui_animation.h"
 #include "rpi_graphics.h"
 #include "../../gui_timer/gui_timer.h"
+#include "../../../logic/frogger/frogger_kernel.h"
 
 #include "../../gui_types.h"
 
@@ -24,6 +25,16 @@
  */
 void frogger_pausemenu_close(void);
 
+/* frogger_changescreen_close
+ * Cierra la pantalla de cambio de nivel
+ */
+void frogger_changescreen_close(void);
+
+/* frogger_lostscreen_close
+ * Cierra la pantalla de cambio de nivel
+ */
+void frogger_lostscreen_close(void);
+
 /*******************/
 /* SCREEN handlers */
 /*******************/
@@ -32,6 +43,10 @@ void frogger_pausemenu_close(void);
 void frogger_screen_close(GAME_STAGE* stage){
     if( is_stage(stage, PAUSEMENU_STAGE) ){
         frogger_pausemenu_close();
+    }else if( is_stage(stage, CHANGESCREEN_STAGE) ){
+        frogger_changescreen_close();
+    }else if( is_stage(stage, LOSTSCREEN_STAGE) ){
+        frogger_lostscreen_close();
     }
 }
 
@@ -220,9 +235,16 @@ void frogger_pausemenu_move(INPUT_VALUES input){
 /* frogger_pausemenu_close */
 void frogger_pausemenu_close(void){
     uint32_t i;
-
+    /* Recorro el menu */
     for(i = 0;i < 3;i++){
-        rpi_destroy_motion_bmp(options[i]);
+        /* Verifico inicializado */
+        if( options[i] != NULL ){
+            /* Destruyo instancia */
+            rpi_destroy_motion_bmp(options[i]);
+
+            /* Guardo */
+            options[i] = NULL;
+        }
     }
 }
 
@@ -230,18 +252,244 @@ void frogger_pausemenu_close(void){
 /* CHANGESCREEN handlers */
 /*************************/
 
+/* Configuracion */
+
+#define LEVEL_X     DISPLAY_WIDTH
+#define LEVEL_Y     2
+
+#define STAGE_X     DISPLAY_WIDTH
+#define STAGE_Y     9
+
+/* Motion texts */
+static MOTION_TEXT* levelText = NULL;
+static MOTION_TEXT* stageText = NULL;
+static LENGTH maxLength = 0;
+
+/* frogger_changescreen_tasks */
+void frogger_changescreen_tasks(GAME_STAGE *stage){
+    static CHANGESCREEN_STAGES state = CHANGESCREEN_INIT;
+    static uint32_t counter = 0;
+    char str[MAX_STRING];
+
+    /* Estados */
+    switch( state ){
+        case CHANGESCREEN_INIT:
+            /* Creo el motion text level */
+            sprintf(str, "LEVEL %d", frogger_get_level());
+            levelText = rpi_load_motion_text(str, map_position(LEVEL_X, LEVEL_Y));
+            if( levelText == NULL ){
+                return;
+            }
+            maxLength = strlen(str);
+
+            /* Creo el motion text level */
+            sprintf(str, "STAGE %d", frogger_get_stage());
+            stageText = rpi_load_motion_text(str, map_position(STAGE_X, STAGE_Y));
+            if( stageText == NULL ){
+                return;
+            }
+            if( strlen(str) > maxLength ){
+                maxLength = strlen(str);
+            }
+
+            /* Offset length */
+            maxLength *= 4 + DISPLAY_WIDTH/2    ;
+
+            /* Cambio de estado */
+            state = CHANGESCREEN_OP;
+            counter = 0;
+
+            /* Inicializo el timer */
+            gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
+            gui_timer_continue(gui_timer_global_get(), CHANGESCREEN_TIMER);
+            break;
+        case CHANGESCREEN_OP:
+            /* Verifico inicializacion */
+            if( levelText == NULL || stageText == NULL ){
+                state = CHANGESCREEN_INIT;
+                return;
+            }
+
+            /* Me fijo si hubo overflow */
+            if( gui_timer_overflow(gui_timer_global_get(), CHANGESCREEN_TIMER) ){
+                /* Muevo los motion texts */
+                rpi_move_motion_text(levelText);
+                rpi_move_motion_text(stageText);
+
+                /* Limpio el timer */
+                gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
+
+                counter++;
+                if( counter > maxLength ){
+                    /* Cambio al nuevo nivel */
+                    frogger_game_start();
+                    change_stage(stage, FROGGER_STAGE);
+                    /* Cierro ventana actual */
+                    frogger_screen_close(stage);
+                    /* Pauso el timer */
+                    gui_timer_pause(gui_timer_global_get(), CHANGESCREEN_TIMER);
+                    /* Reset variables */
+                    maxLength = 0;
+                    counter = 0;
+                }
+            }
+            break;
+    }
+}
+
 /* frogger_changescreen */
 bool frogger_changescreen(uint32_t level, uint32_t stage){
-    return false;
+
+    /* Verifico objetos */
+    if( levelText == NULL ){
+        return false;
+    }
+
+    if( stageText == NULL ){
+        return false;
+    }
+
+    /* Limpio el display */
+    rpi_display_clear();
+
+    /* Imprimo objetos */
+    rpi_draw_motion_text( levelText );
+    rpi_draw_motion_text( stageText );
+
+    /* Actualizo el display */
+    rpi_display_update();
+
+    /* Exito */
+    return true;
+}
+
+/* frogger_changescreen_close */
+void frogger_changescreen_close(void){
+    /* Verifico level */
+    if( levelText != NULL ){
+        /* Destruyo la instancia */
+        rpi_destroy_motion_text(levelText);
+
+        /* Guardo */
+        levelText = NULL;
+    }
+
+    /* Verifico stage */
+    if( stageText != NULL ){
+        /* Destruyo la instancia */
+        rpi_destroy_motion_text(stageText);
+
+        /* Guardo */
+        stageText = NULL;
+    }
 }
 
 /***********************/
 /* LOSTSCREEN handlers */
 /***********************/
 
+/* Configuraciones */
+#define GAME_OVER_POS   map_position(DISPLAY_WIDTH, 2)
+#define SCORE_POS       map_position(DISPLAY_WIDTH, 9)
+
+/* Objetos motion text */
+static MOTION_TEXT* gameOver = NULL;
+static MOTION_TEXT* scoreText = NULL;
+
+/* frogger_lostscreen_tasks */
+void frogger_lostscreen_tasks(GAME_STAGE *stage){
+    static LOSTSCREEN_STAGES state = LOSTSCREEN_INIT;
+    char str[MAX_STRING];
+
+    /* Estados */
+    switch( state ){
+        case LOSTSCREEN_INIT:
+            /* Creo los objetos MOTION TEXT */
+            gameOver = rpi_load_motion_text("GAME OVER", GAME_OVER_POS);
+            if( gameOver == NULL ){
+                return;
+            }
+
+            sprintf(str, "SCORE %d", frogger_get_score());
+            scoreText = rpi_load_motion_text(str, SCORE_POS);
+            if( scoreText == NULL ){
+                return;
+            }
+
+            /* Cambio de estado */
+            state = LOSTSCREEN_OP;
+
+            /* Inicializo el timer */
+            gui_timer_clear(gui_timer_global_get(), LOSTSCREEN_TIMER);
+            gui_timer_continue(gui_timer_global_get(), LOSTSCREEN_TIMER);
+            break;
+        case LOSTSCREEN_OP:
+            /* Verifico inicializacion */
+            if( gameOver == NULL || scoreText == NULL ){
+                state = LOSTSCREEN_INIT;
+                return;
+            }
+
+            /* Verifico overflow */
+            if( gui_timer_overflow(gui_timer_global_get(), LOSTSCREEN_TIMER) ){
+
+                /* Muevo los motion texts */
+                rpi_move_motion_text(gameOver);
+                rpi_move_motion_text(scoreText);
+
+                /* Reinicio el timer */
+                gui_timer_clear(gui_timer_global_get(), LOSTSCREEN_TIMER);
+            }
+            break;
+    }
+}
+
 /* frogger_lostscreen */
 bool frogger_lostscreen(uint32_t score){
-    return false;
+
+    /* Verifico objetos */
+    if( scoreText == NULL || gameOver == NULL ){
+        return false;
+    }
+
+    /* Limpio la pantalla */
+    if( !rpi_display_clear() ){
+        return false;
+    }
+
+    /* Imprimo los motions */
+    if( !rpi_draw_motion_text(gameOver) ){
+        return false;
+    }
+    if( !rpi_draw_motion_text(scoreText) ){
+        return false;
+    }
+
+    /* Actualizo display */
+    rpi_display_update();
+
+    return true;
+}
+
+/* frogger_lostscreen_close */
+void frogger_lostscreen_close(void){
+    /* Verifico gameOver */
+    if( gameOver != NULL ){
+        /* Destruyo la instancia */
+        rpi_destroy_motion_text(gameOver);
+
+        /* Guardo */
+        gameOver = NULL;
+    }
+
+    /* Verifico score */
+    if( scoreText != NULL ){
+        /* Destruyo la instancia */
+        rpi_destroy_motion_text(scoreText);
+
+        /* Guardo */
+        scoreText = NULL;
+    }
 }
 
 /**********************/

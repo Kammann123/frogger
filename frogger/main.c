@@ -159,6 +159,7 @@ int main(int argc, char** argv){
     error &= gui_timer_new_event(gui_timer_global_get(), GAME_TIME, GAME_COUNTER, false);
     error &= gui_timer_new_event(gui_timer_global_get(), CHANGESCREEN_TIME, CHANGESCREEN_TIMER, false);
     error &= gui_timer_new_event(gui_timer_global_get(), PAUSEMENU_TIME, PAUSEMENU_TIMER, false);
+    error &= gui_timer_new_event(gui_timer_global_get(), LOSTSCREEN_TIME, LOSTSCREEN_TIMER, false);
     if( !error ){
         testing_msg("No se pudo agregar eventos de timer");
         gui_timer_global_close();
@@ -240,45 +241,6 @@ int main(int argc, char** argv){
     frogger_game_close();
 }
 
-/*************************/
-/* CHANGESCREEN handlers */
-/*************************/
-
-/* frogger_changescreen_tasks */
-void frogger_changescreen_tasks(GAME_STAGE *stage){
-    static CHANGESCREEN_STAGES state = CHANGESCREEN_INIT;
-    
-    /* Manejo segun etapa */
-    switch( state ){
-        case CHANGESCREEN_INIT:
-            
-            /* Limpio e inicializo el timer */
-            gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
-            gui_timer_continue(gui_timer_global_get(), CHANGESCREEN_TIMER);
-            
-            /* Cambio de etapa */
-            state = CHANGESCREEN_OP;
-            break;
-        case CHANGESCREEN_OP:
-            
-            /* Espero el timer */
-            if( gui_timer_overflow(gui_timer_global_get(), CHANGESCREEN_TIMER) ){
-                
-                /* Cambio al nuevo nivel */
-                frogger_game_start();
-                change_stage(stage, FROGGER_STAGE);
-                
-                /* Limpio el timer y lo pauso */
-                gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
-                gui_timer_pause(gui_timer_global_get(), CHANGESCREEN_TIMER);
-                
-                /* Restauro estado init */
-                state = CHANGESCREEN_INIT;
-            }
-            break;
-    }
-}
-
 /****************/
 /* TASKS thread */
 /****************/
@@ -312,6 +274,9 @@ void switch_tasks_target(GAME_STAGE* stage){
             break;
         case CHANGESCREEN_STAGE:
             frogger_changescreen_tasks(stage);
+            break;
+        case LOSTSCREEN_STAGE:
+            frogger_lostscreen_tasks(stage);
             break;
         case DEAD_STAGE:
             if( frogger_game_is_frog_static() ){
@@ -384,7 +349,7 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
         case LOSTSCREEN_STAGE:
             if( event.type == ACTION_EVENT ){
                 if( event.data == ENTER ){
-                    frogger_lostscreen(frogger_get_score());
+                    frogger_screen_close(stage);
                     change_stage(stage, MAINMENU_STAGE);
                 }
             }

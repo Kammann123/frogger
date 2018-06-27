@@ -13,14 +13,30 @@
 #include "frogger_physics.h"
 
 /* Configuracion de timers de tasks */
-#define CHANGESCREEN_TIME       1500
+#define CHANGESCREEN_TIME       200
 #define CHANGESCREEN_TIMER      2
 
-#define PAUSEMENU_TIME          100
+#define PAUSEMENU_TIME          200
 #define PAUSEMENU_TIMER         3
+
+#define LOSTSCREEN_TIME         200
+#define LOSTSCREEN_TIMER        4
+
+#define MAX_STRING      512
+
 /**************/
 /* Constantes */
 /**************/
+
+typedef enum{
+    LOSTSCREEN_INIT,
+    LOSTSCREEN_OP
+} LOSTSCREEN_STAGES;
+
+typedef enum{
+    CHANGESCREEN_INIT,
+    CHANGESCREEN_OP
+} CHANGESCREEN_STAGES;
 
 typedef enum {
     PAUSEMENU_INIT,
@@ -64,7 +80,7 @@ bool frogger_mainmenu(void);
 
 /* frogger_mainmenu_move
  * Mueve el menu principal
- * 
+ *
  * input: Entrada de usuario
  *  */
 void frogger_mainmenu_move(INPUT_VALUES input);
@@ -73,7 +89,7 @@ void frogger_mainmenu_move(INPUT_VALUES input);
 /* PAUSEMENU handlers */
 /**********************/
 
-/* frogger_pausemenu_tasks 
+/* frogger_pausemenu_tasks
  * Maneja las tareas durante menu de pausa
  *
  * stage: Estado del juego
@@ -87,7 +103,7 @@ bool frogger_pausemenu(void);
 
 /* frogger_pausemenu_move
  * Mueve el menu de pausa
- * 
+ *
  * input: Entrada de usuario
  *  */
 void frogger_pausemenu_move(INPUT_VALUES input);
@@ -96,9 +112,9 @@ void frogger_pausemenu_move(INPUT_VALUES input);
 /* CHANGESCREEN handlers */
 /*************************/
 
-/* frogger_changescreen_tasks 
+/* frogger_changescreen_tasks
  * Maneja las tareas de espera durante
- * el cambio de nivel 
+ * el cambio de nivel
  *
  * stage: Estado del juego
  */
@@ -116,10 +132,17 @@ bool frogger_changescreen(uint32_t level, uint32_t stage);
 /* LOSTSCREEN handlers */
 /***********************/
 
+/* frogger_lostscreen_tasks
+ * Maneja las tareas al perder
+ *
+ * stage: Estado del juego
+ */
+void frogger_lostscreen_tasks(GAME_STAGE *stage);
+
 /* frogger_lostscreen
  * Pantalla final con puntaje
  *
- * score: Puntaje 
+ * score: Puntaje
  */
 bool frogger_lostscreen(uint32_t score);
 

@@ -3,10 +3,12 @@
 
 #include "../../gui_init.h"
 #include "rpi_graphics.h"
+#include "../frogger_output.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /* Objetos */
 static bool init = false;
@@ -90,7 +92,7 @@ MOTION_TEXT* rpi_load_motion_text(char* text, POSITION pos){
     char str[MAX_STRING];
 
     /* Creo la instancia */
-    motion = rpi_create_motion_bmp();
+    motion = rpi_create_motion_text();
     if( motion == NULL ){
         return NULL;
     }
@@ -110,6 +112,8 @@ MOTION_TEXT* rpi_load_motion_text(char* text, POSITION pos){
             sprintf(str, "%s%c.BMP", FONTS_FOLDER, text[i] - 'a' + 'A');
         }else if( text[i] >= '0' && text[i] <= '9' ){
             sprintf(str, "%s%c.bmp", FONTS_FOLDER, text[i]);
+        }else if( text[i] == ' ' ){
+            sprintf(str, "%sspace.bmp", FONTS_FOLDER);
         }else{
             rpi_destroy_motion_text(motion);
             return NULL;
@@ -140,7 +144,7 @@ void rpi_move_motion_text(MOTION_TEXT* motion){
     motion->pos.x--;
 
     /* Verifico que no haya dado la vuelta */
-    if( (motion->pos.x + motion->.width) == 0 ){
+    if( (motion->pos.x + motion->width) == 0 ){
         motion->pos.x = DISPLAY_WIDTH - 1;
     }
 }
@@ -260,6 +264,7 @@ bool rpi_draw_motion_bmp(MOTION_BMP* motion){
 
 /* rpi_display_clear */
 bool rpi_display_clear(void){
+    BITMAP* bitmap;
 
     /* Me fijo que este inicializado */
     if( !init ){
@@ -267,9 +272,16 @@ bool rpi_display_clear(void){
     }
 
     /* Limpio el display */
-    display_clear();
+    bitmap = rpi_load_bitmap(CLEAR_BMP);
+    if( bitmap == NULL ){
+        return false;
+    }
+    if( !rpi_draw_bitmap(bitmap, map_position(0, 0)) ){
+        return false;
+    }
 
     /* Exito */
+    destroy_bitmap(bitmap);
     return true;
 }
 

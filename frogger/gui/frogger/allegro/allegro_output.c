@@ -9,6 +9,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
+#include "../../gui_timer/gui_timer.h"
+
 #include <stdio.h>
 
 /* Configuraciones generales */
@@ -17,8 +19,6 @@
 #define DISPLAY_HEIGHT  480
 #define DISPLAY_POS_X   300
 #define DISPLAY_POS_Y   100
-
-#define MAX_STRING      512
 
 #define CLEAR_COLOR     al_map_rgb(0, 0, 0)
 
@@ -173,6 +173,52 @@ void frogger_pausemenu_move(INPUT_VALUES input){
 #define STAGE_X         340
 #define STAGE_Y         360
 
+/* frogger_changescreen_tasks */
+void frogger_changescreen_tasks(GAME_STAGE *stage){
+    static CHANGESCREEN_STAGES state = CHANGESCREEN_INIT;
+    static uint32_t counter = 0;
+    
+    /* Manejo segun etapa */
+    switch( state ){
+        case CHANGESCREEN_INIT:
+            
+            /* Limpio e inicializo el timer */
+            gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
+            gui_timer_continue(gui_timer_global_get(), CHANGESCREEN_TIMER);
+            
+            /* Reinicio contador */
+            counter = 0;
+            
+            /* Cambio de etapa */
+            state = CHANGESCREEN_OP;
+            break;
+        case CHANGESCREEN_OP:
+            
+            /* Espero el timer */
+            if( gui_timer_overflow(gui_timer_global_get(), CHANGESCREEN_TIMER) ){
+                
+                /* Cuento */
+                counter++;
+                if( counter >= 15 ){
+                    /* Cambio al nuevo nivel */
+                    frogger_game_start();
+                    change_stage(stage, FROGGER_STAGE);
+
+                    /* Reinicio */
+                    counter = 0;
+
+                    /* Limpio el timer y lo pauso */
+                    gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
+                    gui_timer_pause(gui_timer_global_get(), CHANGESCREEN_TIMER);
+
+                    /* Restauro estado init */
+                    state = CHANGESCREEN_INIT;
+                }
+            }
+            break;
+    }
+}
+
 /* frogger_changescreen */
 bool frogger_changescreen(uint32_t level, uint32_t stage){
     ALLEGRO_BITMAP* bitmap;
@@ -231,6 +277,11 @@ bool frogger_changescreen(uint32_t level, uint32_t stage){
 #define SCORE_COLOR     al_map_rgb(255, 255, 255)
 #define SCORE_X         380
 #define SCORE_Y         300
+
+/* frogger_lostscreen_tasks */
+void frogger_lostscreen_tasks(GAME_STAGE *stage){
+    return;
+}
 
 /* frogger_lostscreen */
 bool frogger_lostscreen(uint32_t score){

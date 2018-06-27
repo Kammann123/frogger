@@ -21,6 +21,7 @@
 #define WHITE_COLOR     0xFF
 
 #define FONTS_FOLDER    "gui/frogger/rpi/fonts/"
+#define CLEAR_BMP       FONTS_FOLDER "clear.bmp"
 
 /* Tipos de datos */
 

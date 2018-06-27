@@ -16,11 +16,6 @@
 /* Tipos de datos */
 /******************/
 
-typedef enum{
-    CHANGESCREEN_INIT,
-    CHANGESCREEN_OP
-} CHANGESCREEN_STAGES;
-
 typedef enum {
     MAINMENU_STAGE,
     RANKING_STAGE,
@@ -41,7 +36,7 @@ typedef struct{
     bool hasChanged;    
 } GAME_STAGE;
 
-#define DEFAULT_GAME_STAGE PAUSEMENU_STAGE
+#define DEFAULT_GAME_STAGE LOSTSCREEN_STAGE
 
 typedef struct{
     int32_t x;
