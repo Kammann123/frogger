@@ -286,10 +286,15 @@ bool frogger_game_move_frog(uint16_t input);
  */
 void frogger_game_pause(void);
 
-/* frogger_game_continue
- * Reanuda el juego
+/* frogger_game_restart
+ * Reinicia variables del programa
  */
-void frogger_game_continue(void);
+bool frogger_game_restart(void);
+
+/* frogger_game_start
+ * Empieza el juego
+ */
+void frogger_game_start(void);
 
 /* frogger_game_close
  * Cierra y libera los objetos del juego creados

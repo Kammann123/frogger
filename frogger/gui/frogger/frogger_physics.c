@@ -1,6 +1,7 @@
 /* FROGGER_PHYSICS
  */
 
+#include "../../logic/frogger/frogger_kernel.h"
 #include "frogger_physics.h"
 #include "../gui_input.h"
 #include "../gui_files/gui_files.h"
@@ -643,6 +644,24 @@ static SPEED frogger_game_speed_resolution(SPEED speed){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* frogger_game_restart */
+bool frogger_game_restart(void){
+    
+    /* Reinicio parametros */
+    frogger_restart();
+    
+    /* Creo posiciones de carriles */
+    if( !frogger_game_new_level(frogger_get_level()) ){
+        return false;
+    }
+    
+    /* Inicio el motor */
+    frogger_game_start();
+    
+    /* Exito! */
+    return true;
+}
+
 /* frogger_game_new_level */
 bool frogger_game_new_level(uint32_t level){
     uint32_t i, ii;
@@ -934,9 +953,9 @@ bool frogger_game_move_frog(uint16_t input){
     return true;
 }
 
-/* frogger_game_continue */
-void frogger_game_continue(void){
-    gui_animation_continue_engine(engine);
+/* frogger_game_start */
+void frogger_game_start(void){
+    gui_animation_start_engine(engine);
 }
 
 /* frogger_game_pause */

@@ -315,13 +315,6 @@ ANIMATION_ENGINE* gui_animation_create_engine(void);
  */
 void gui_animation_pause_engine(ANIMATION_ENGINE* engine);
 
-/* gui_animation_continue_engine
- * Reanuda el motor de animaciones
- *
- * engine: Motor de animaciones 
- */
-void gui_animation_continue_engine(ANIMATION_ENGINE* engine);
-
 /**********************/
 /* Funciones publicas */
 /**********************/

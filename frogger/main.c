@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include <unistd.h>
 
 #include "gui/gui_init.h"
@@ -20,16 +21,6 @@
 
 /* Etapas del flujo del programa */
 
-typedef struct{
-    uint16_t value;
-    bool hasChanged;
-} GAME_STAGE;
-
-typedef struct{
-    GAME_STAGE* stage;
-    uint16_t newStage;
-} EXTERN_STAGE_DATA;
-
 typedef enum {
     MAINMENU_STAGE,
     RANKING_STAGE,
@@ -41,6 +32,19 @@ typedef enum {
     DEAD_STAGE,
     CLOSING_STAGE
 } STAGE_VALUES;
+
+typedef struct{
+    /* Valor del estado del juego */
+    STAGE_VALUES value;
+    
+    /* Flags */
+    bool hasChanged;
+} GAME_STAGE;
+
+typedef struct{
+    GAME_STAGE* stage;
+    uint16_t newStage;
+} EXTERN_STAGE_DATA;
 
 #define DEFAULT_GAME_STAGE MAINMENU_STAGE
 
@@ -58,15 +62,26 @@ typedef enum{
 #define GAME_TIME       TIMER_DEFINITION
 #define CHANGESCREEN_TIME     TIMER_DEFINITION*2
 
+/****************/
+/* TASKS thread */
+/****************/
+
+/* tasks_thread
+ * Thread encargado de manejar las tareas
+ * de cada etapa del programa, de caracter logicas,
+ * sin manejar I/O
+ */
+void* tasks_thread(void* gameStage);
+
 /***********************/
 /* GAME_STAGE handlers */
 /***********************/
 
-/* default_stage 
+/* stage_init 
  * Crea y devuelve una instancia de GAME_STAGE
  * default, con parametros por defecto
  */
-GAME_STAGE default_stage(void);
+GAME_STAGE stage_init(void);
 
 /* change_stage
  * Permite modificar el estado del programa
@@ -75,7 +90,15 @@ GAME_STAGE default_stage(void);
  * stage: Estado del programa
  * newStage: Nuevo estado del programa
  */
-void change_stage(GAME_STAGE* stage, uint16_t newStage);
+void change_stage(GAME_STAGE* stage, STAGE_VALUES value);
+
+/* is_stage
+ * Compara y verifica si el estado del juego es ese.
+ * 
+ * stage: Instancia 
+ * value: Estado de juego
+ */
+bool is_stage(GAME_STAGE* stage, STAGE_VALUES value);
 
 /*******************/
 /* TARGET handlers */
@@ -136,13 +159,16 @@ void on_frogger_event(GAME_STAGE* stage, uint32_t event);
 /* :D MAIN :D */
 /**************/
 int main(int argc, char** argv){
+    
+    /* Tasks thread */
+    pthread_t tasksThread;
 
     /* Variables */
     EVENT_QUEUE* queue;
     EVENT event;
     
     /* Game stage variable */
-    GAME_STAGE stage = default_stage();
+    GAME_STAGE stage = stage_init();
     
     /* Error */
     bool error;
@@ -162,6 +188,7 @@ int main(int argc, char** argv){
     /* Inicializo el timer */
     if( !gui_timer_global_init() ){
         testing_msg("No se pudo inicializar el timer.");
+        gui_input_close();
         return 0;
     }
 
@@ -171,6 +198,8 @@ int main(int argc, char** argv){
     error &= gui_timer_new_event(gui_timer_global_get(), CHANGESCREEN_TIME, CHANGESCREEN_TIMER);
     if( !error ){
         testing_msg("No se pudo agregar eventos de timer");
+        gui_timer_global_close();
+        gui_input_close();
         return 0;
     }
             
@@ -180,6 +209,17 @@ int main(int argc, char** argv){
     error &= register_source(queue, gui_timer_source, gui_timer_global_get());
     if( !error ){
         testing_msg("No se pudo registrar el timer en la cola de eventos.");
+        gui_timer_global_close();
+        gui_input_close();
+        return 0;
+    }
+    
+    /* Inicializo memoria de juego */
+    if( !frogger_game_init() ){
+        testing_msg("No se pudo cargar en memoria objetos.");
+        gui_timer_global_close();
+        gui_input_close();
+        queue_close(queue);
         return 0;
     }
 
@@ -188,9 +228,12 @@ int main(int argc, char** argv){
 
     /* Inicio la cola de eventos */
     queue_start(queue);
+    
+    /* Inicio el thread de tareas */
+    pthread_create(&tasksThread, NULL, tasks_thread, &stage);
 
     /* Main loop */
-    while( stage.value != CLOSING_STAGE ){
+    while( !is_stage(&stage, CLOSING_STAGE) ){
         /* Pregunto por eventos en la queue */
         if( queue_next_event(queue, &event) ){
             if( event.source == ALLEGRO_INPUT_SOURCE || event.source == RPI_INPUT_SOURCE ){
@@ -200,22 +243,19 @@ int main(int argc, char** argv){
                 if( event.data == REFRESH_DISPLAY ){
                     switch_update_target(&stage);
                 }else if( event.data == GAME_COUNTER ){
-                    if( stage.value == FROGGER_STAGE ){
+                    if( is_stage(&stage, FROGGER_STAGE) ){
                         frogger_time_count();
                     }
                 }else if( event.data == CHANGESCREEN_TIMER ){
-                    if( stage.value == CHANGESCREEN_STAGE ){
+                    if( is_stage(&stage, CHANGESCREEN_STAGE) ){
                         change_stage(&stage, FROGGER_STAGE);
-                        frogger_game_continue();
+                        frogger_game_start();
                     }
                 }
                 /* Limpio el timer */
                 gui_timer_clear(gui_timer_global_get(), event.data);
             }
         }
-
-        /* Algunos controles mientras */
-        switch_tasks_target(&stage);
 
         /* Hago una limpieza si hubo un cambio */
         if( stage.hasChanged ){
@@ -226,11 +266,12 @@ int main(int argc, char** argv){
             queue_flush(queue);
 
             /* Limpio el timer */
-            gui_timer_clear(gui_timer_global_get(), REFRESH_DISPLAY);
-            gui_timer_clear(gui_timer_global_get(), GAME_COUNTER);
-            gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
+            gui_timer_clear_all(gui_timer_global_get());
         }
     }
+    
+    /* Antes de empezar a cerrar espero al thread */
+    pthread_join(tasksThread, NULL);
 
     /* Cierro la cola de eventos */
     queue_close(queue);
@@ -240,14 +281,34 @@ int main(int argc, char** argv){
 
     /* Destruyo el timer */
     gui_timer_global_close();
+    
+    /* Libero memoria de objetos */
+    frogger_game_close();
+}
+
+/****************/
+/* TASKS thread */
+/****************/
+
+/* tasks_thread */
+void* tasks_thread(void* gameStage){
+    GAME_STAGE* stage = gameStage;
+    
+    /* Mientras no se este cerrando el juego */
+    while( stage->value != CLOSING_STAGE ){
+        
+        /* Ejecuto tareas */
+        switch_tasks_target(stage);
+    }
+    
+    return NULL;
 }
 
 /***********************/
 /* GAME_STAGE handlers */
 /***********************/
-
-/* default_stage */
-GAME_STAGE default_stage(void){
+/* stage_init */
+GAME_STAGE stage_init(void){
     GAME_STAGE stage = {
         .value = DEFAULT_GAME_STAGE,
         .hasChanged = false
@@ -257,12 +318,20 @@ GAME_STAGE default_stage(void){
 }
 
 /* change_stage */
-void change_stage(GAME_STAGE* stage, uint16_t newStage){
+void change_stage(GAME_STAGE* stage, STAGE_VALUES value){
+    
     /* Cambio el valor del estado */
-    stage->value = newStage;
-
-    /* Activo flag */
+    stage->value = value;
     stage->hasChanged = true;
+}
+
+/* is_stage */
+bool is_stage(GAME_STAGE* stage, STAGE_VALUES value){
+    
+    if( stage->value == value ){
+        return true;
+    }
+    return false;
 }
 
 /*******************/
@@ -362,7 +431,7 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
 void on_frogger_event(GAME_STAGE* stage, uint32_t event){
     switch( event ){
         case FROGGER_HAS_LOST:
-            frogger_game_close();
+            frogger_game_pause();
             change_stage(stage, LOSTSCREEN_STAGE);
             break;
         case FROGGER_HAS_WON:
@@ -382,20 +451,17 @@ void on_pausemenu_enter(GAME_STAGE* stage){
     /* Cambio de etapa el juego */
     switch( pausemenuSelection ){
         case RESUME_OPTION:
-            frogger_game_continue();
+            frogger_game_start();
             change_stage(stage, FROGGER_STAGE);
             break;
         case RESTART_OPTION:
-            frogger_game_close();
-            frogger_restart();
-            if( !frogger_game_init() ){
-                change_stage(stage, MAINMENU_STAGE);
+            if( frogger_game_restart() ){
+                change_stage(stage, FROGGER_STAGE);
             }else{
                 change_stage(stage, FROGGER_STAGE);
             }
             break;
         case PAUSE_EXIT_OPTION:
-            frogger_game_close();
             change_stage(stage, MAINMENU_STAGE);
             break;
     }
@@ -403,11 +469,11 @@ void on_pausemenu_enter(GAME_STAGE* stage){
 
 /* on_game_enter */
 void on_game_enter(GAME_STAGE* stage){
-    /* Cambio de etapa de juego */
-    change_stage(stage, PAUSEMENU_STAGE);
-
     /* Pauso el juego */
     frogger_game_pause();
+
+    /* Cambio de etapa de juego */
+    change_stage(stage, PAUSEMENU_STAGE);
 }
 
 /* on_mainmenu_enter */
@@ -415,8 +481,7 @@ void on_mainmenu_enter(GAME_STAGE* stage){
     /* Cambio de etapa el programa */
     switch( mainmenuSelection ){
         case PLAY_OPTION:
-            if( frogger_game_init() ){
-                frogger_restart();
+            if( frogger_game_restart() ){
                 change_stage(stage, FROGGER_STAGE);
             }
             break;

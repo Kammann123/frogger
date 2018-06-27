@@ -106,7 +106,7 @@ uint32_t frogger_flow(void){
             }
 
             /* Continuo el juego */
-            frogger_game_continue();
+            frogger_game_start();
         }
 
         /* Reseteo posicion */

@@ -794,7 +794,7 @@ ANIMATION_ENGINE* gui_animation_create_engine(void){
     }
 
     /* Inicializo atributos */
-    engine->shutdown = false;
+    engine->shutdown = true;
     engine->pause = false;
     engine->length = 0;
 
@@ -827,31 +827,22 @@ void gui_animation_destroy_engine(ANIMATION_ENGINE* engine){
 /* gui_animation_pause_engine */
 void gui_animation_pause_engine(ANIMATION_ENGINE* engine){
     pthread_mutex_lock(&engine->engineMutex);
-    if( !engine->pause ){
-        engine->pause = true;
-    }
-    pthread_mutex_unlock(&engine->engineMutex);
-}
-
-/* gui_animation_continue_engine */
-void gui_animation_continue_engine(ANIMATION_ENGINE* engine){
-    pthread_mutex_lock(&engine->engineMutex);
-    if( engine->pause ){
-        engine->pause = false;
-    }
+    engine->pause = true;
     pthread_mutex_unlock(&engine->engineMutex);
 }
 
 /* gui_animation_start_engine */
 void gui_animation_start_engine(ANIMATION_ENGINE* engine){
 
-    if( !engine->pause ){
+    if( engine->shutdown ){
         /* Habilito el thread */
         engine->shutdown = false;
 
         /* Inicio el thread */
         pthread_create(&(engine->engineThread), NULL, gui_animation_engine_thread, engine);
     }
+    
+    engine->pause = false;
 }
 
 /* gui_animation_attach_engine */

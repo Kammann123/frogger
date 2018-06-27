@@ -1,6 +1,8 @@
 #include "gui_types.h"
 
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 /*************************/
 /* Definiciones publicas */
