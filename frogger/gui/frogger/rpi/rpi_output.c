@@ -114,7 +114,7 @@ void frogger_mainmenu_move(INPUT_VALUES input){
 PAUSEMENU_OPTIONS pausemenuSelection = RESUME_OPTION;
 
 /* Mensajes desplazables */
-static MOTION_BMP options[3] = { {.init=false}, {.init=false}, {.init=false} };
+static MOTION_BMP* options[3] = { NULL, NULL, NULL };
 static POSITION initPos[] = {
     { .x=RESUME_X, .y=RESUME_Y },
     { .x=RESTART_X, .y=RESTART_Y },
@@ -137,7 +137,7 @@ void frogger_pausemenu_tasks(GAME_STAGE *stage){
                 /* Creo el motion bmp */
                 options[i] = rpi_create_motion_bmp();
                 /* Inicializo */
-                rpi_init_motion_bmp(&options[i], str, initPos[i]);
+                rpi_init_motion_bmp(options[i], str, initPos[i]);
             }
 
             /* Paso al otro estado */
@@ -149,7 +149,7 @@ void frogger_pausemenu_tasks(GAME_STAGE *stage){
             break;
         case PAUSEMENU_OP:
             /* Me fijo que esten inicializados los objetos */
-            if( !options[0].init ){
+            if( options[0] == NULL ){
                 state = PAUSEMENU_INIT;
                 return;
             }
@@ -157,7 +157,7 @@ void frogger_pausemenu_tasks(GAME_STAGE *stage){
             /* Espero el overflow */
             if( gui_timer_overflow(gui_timer_global_get(), PAUSEMENU_TIMER) ){
                 /* Muevo los mensajes */
-                rpi_move_motion_bmp(&options[pausemenuSelection]);
+                rpi_move_motion_bmp(options[pausemenuSelection]);
 
                 /* Limpio el timer */
                 gui_timer_clear(gui_timer_global_get(), PAUSEMENU_TIMER);
@@ -186,7 +186,7 @@ bool frogger_pausemenu(void){
     }
 
     /* Imprimo la opcion */
-    if( !rpi_draw_motion_bmp(&options[pausemenuSelection]) ){
+    if( !rpi_draw_motion_bmp(options[pausemenuSelection]) ){
         destroy_bitmap(bitmap);
         return false;
     }
@@ -222,10 +222,8 @@ void frogger_pausemenu_close(void){
     uint32_t i;
 
     for(i = 0;i < 3;i++){
-        rpi_destroy_motion_bmp(&options[i]);
+        rpi_destroy_motion_bmp(options[i]);
     }
-
-
 }
 
 /*************************/

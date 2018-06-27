@@ -5,21 +5,186 @@
 #include "rpi_graphics.h"
 
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 /* Objetos */
 static bool init = false;
+
+/***************/
+/* MOTION_TEXT */
+/***************/
+
+/* rpi_create_motion_text */
+MOTION_TEXT* rpi_create_motion_text(void){
+    MOTION_TEXT* motion;
+
+    /* Reservo memoria para la instancia */
+    motion = malloc( sizeof(MOTION_TEXT) );
+    if( motion == NULL ){
+        return NULL;
+    }
+
+    /* Parametros default */
+    motion->init = false;
+
+    /* Devuelvo instancia */
+    return motion;
+}
+
+/* rpi_init_motion_text */
+bool rpi_init_motion_text(MOTION_TEXT* motion, LENGTH length){
+    LENGTH i;
+
+    /* Me fijo que haya una instancia */
+    if( motion == NULL ){
+        return false;
+    }
+
+    /* Reservo memoria para el contenido del MOTION TEXT */
+    motion->bitmaps = malloc( sizeof(BMP_POINTER) * length );
+    if( motion->bitmaps == NULL ){
+        return false;
+    }
+    /* Inicializo contenido */
+    for(i = 0;i < length;i++){
+        motion->bitmaps[i] = NULL;
+    }
+
+    /* Inicializado!! */
+    motion->length = length;
+    motion->width = 0;
+    motion->init = true;
+
+    /* Exito! */
+    return true;
+}
+
+/* rpi_destroy_motion_text */
+void rpi_destroy_motion_text(MOTION_TEXT* motion){
+    LENGTH i;
+    /* Verifico la instancia */
+    if( motion == NULL ){
+        return;
+    }
+
+    /* Verifico inicializacion */
+    if( motion->init ){
+
+        /* Libero memoria de sus elementos */
+        for(i = 0;i < motion->length;i++){
+            if( motion->bitmaps[i] != NULL ){
+                destroy_bitmap(motion->bitmaps[i]);
+            }
+        }
+    }
+
+    /* Libero memoria de instancia */
+    free(motion);
+}
+
+/* rpi_load_motion_text */
+MOTION_TEXT* rpi_load_motion_text(char* text, POSITION pos){
+    MOTION_TEXT* motion;
+    LENGTH i;
+    char str[MAX_STRING];
+
+    /* Creo la instancia */
+    motion = rpi_create_motion_bmp();
+    if( motion == NULL ){
+        return NULL;
+    }
+
+    /* Inicializo memoria para su contenido */
+    if( !rpi_init_motion_text(motion, strlen(text)) ){
+        free(motion);
+        return NULL;
+    }
+
+    /* Cargo cada caracter */
+    for(i = 0;i < strlen(text);i++){
+        /* Armo el string filename */
+        if( text[i] >= 'A' && text[i] <= 'Z' ){
+            sprintf(str, "%s%c.bmp", FONTS_FOLDER, text[i]);
+        }else if( text[i] >= 'a' && text[i] <= 'z' ){
+            sprintf(str, "%s%c.BMP", FONTS_FOLDER, text[i] - 'a' + 'A');
+        }else if( text[i] >= '0' && text[i] <= '9' ){
+            sprintf(str, "%s%c.bmp", FONTS_FOLDER, text[i]);
+        }else{
+            rpi_destroy_motion_text(motion);
+            return NULL;
+        }
+
+        /* Cargo el bitmap */
+        motion->bitmaps[i] = rpi_load_bitmap(str);
+        if( motion->bitmaps[i] == NULL ){
+            rpi_destroy_motion_text(motion);
+            return NULL;
+        }
+
+        /* Calculo largo total */
+        motion->width += motion->bitmaps[i]->header.width;
+    }
+
+    /* Cargo posicion */
+    motion->pos = pos;
+
+    /* Exito */
+    return motion;
+}
+
+/* rpi_move_motion_text */
+void rpi_move_motion_text(MOTION_TEXT* motion){
+
+    /* Muevo su posicion */
+    motion->pos.x--;
+
+    /* Verifico que no haya dado la vuelta */
+    if( (motion->pos.x + motion->.width) == 0 ){
+        motion->pos.x = DISPLAY_WIDTH - 1;
+    }
+}
+
+/* rpi_draw_motion_text */
+bool rpi_draw_motion_text(MOTION_TEXT* motion){
+    LENGTH i;
+    int32_t x = 0;
+
+    /* Verifico inicializacion */
+    if( !motion->init ){
+        return false;
+    }
+
+    /* Me muevo entre los bitmaps */
+    for(i = 0;i < motion->length;i++){
+        /* Dibujo el bitmap */
+        if( !rpi_draw_bitmap(motion->bitmaps[i], map_position(motion->pos.x + x, motion->pos.y)) ){
+            return false;
+        }
+        /* Calculo largo */
+        x += motion->bitmaps[i]->header.width;
+    }
+
+    return true;
+}
 
 /***********************/
 /* MOTION_BMP handlers */
 /***********************/
 
 /* rpi_create_motion_bmp */
-MOTION_BMP rpi_create_motion_bmp(void){
+MOTION_BMP* rpi_create_motion_bmp(void){
     /* Creo la instancia */
-    MOTION_BMP motion;
+    MOTION_BMP* motion;
+
+    /* Reservo memoria para el motion */
+    motion = malloc( sizeof(MOTION_BMP) );
+    if( motion == NULL ){
+        return NULL;
+    }
 
     /* Parametros por defecto */
-    motion.init = false;
+    motion->init = false;
 
     /* Devuelvo instancia */
     return motion;
@@ -50,13 +215,16 @@ bool rpi_init_motion_bmp(MOTION_BMP* motion, char* file, POSITION pos){
 /* rpi_destroy_motion_bmp */
 void rpi_destroy_motion_bmp(MOTION_BMP* motion){
     /* Verifico inicializado */
-    if( motion->init ){
+    if( motion == NULL ){
+        return;
+    }
 
+    if( motion->init ){
         /* Libero el bitmap */
         destroy_bitmap(motion->bitmap);
     }
 
-    motion->init = false;
+    free(motion);
 }
 
 /* rpi_move_motion_bmp */
@@ -78,7 +246,7 @@ bool rpi_draw_motion_bmp(MOTION_BMP* motion){
     if( !motion->init ){
         return false;
     }
-    
+
     /* Dibujo el bitmap */
     if( rpi_draw_bitmap(motion->bitmap, motion->pos) ){
         return true;

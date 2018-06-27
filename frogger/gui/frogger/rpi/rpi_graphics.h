@@ -20,11 +20,15 @@
 #define BLACK_COLOR     0x00
 #define WHITE_COLOR     0xFF
 
+#define FONTS_FOLDER    "gui/frogger/rpi/fonts/"
+
 /* Tipos de datos */
+
+typedef BITMAP* BMP_POINTER;
 
 typedef struct{
     /* Imagen bitmap a procesar */
-    BITMAP* bitmap;
+    BMP_POINTER bitmap;
 
     /* Posicion */
     POSITION pos;
@@ -33,6 +37,68 @@ typedef struct{
     bool init;
 } MOTION_BMP;
 
+typedef struct{
+    /* Arreglo de bitmaps */
+    BMP_POINTER* bitmaps;
+    LENGTH length;
+
+    /* Ancho de todo el texto */
+    uint32_t width;
+
+    /* Posicion */
+    POSITION pos;
+
+    /* Inicializacion */
+    bool init;
+} MOTION_TEXT;
+
+/***************/
+/* MOTION_TEXT */
+/***************/
+
+/* rpi_create_motion_text
+ * Crea una instancia de un MOTION TEXT
+ */
+MOTION_TEXT* rpi_create_motion_text(void);
+
+/* rpi_init_motion_text
+ * Inicializa la memoria necesaria para los BITMAPS del MOTION TEXT
+ *
+ * motion: Instancia a inicializar
+ * length: Cantidad de bitmaps del texto
+ */
+bool rpi_init_motion_text(MOTION_TEXT* motion, LENGTH length);
+
+/* rpi_destroy_motion_text
+ * Destruye y libera memoria utilizada por el motion text
+ *
+ * motion: Instancia
+ */
+void rpi_destroy_motion_text(MOTION_TEXT* motion);
+
+/* rpi_load_motion_text
+ * Carga una instancia MOTION TEXT con el texto indicado
+ * y tiene por posicion inicial, la indicada.
+ *
+ * text: Texto del MOTION TEXT
+ * pos: Posicion inicial
+ */
+MOTION_TEXT* rpi_load_motion_text(char* text, POSITION pos);
+
+/* rpi_move_motion_text
+ * Mueve un objeto MOTION TEXT en el display
+ *
+ * motion: instancia
+ */
+void rpi_move_motion_text(MOTION_TEXT* motion);
+
+/* rpi_draw_motion_text
+ * Manda al display matricial de leds el MOTION TEXT
+ *
+ * motion: Instancia
+ */
+bool rpi_draw_motion_text(MOTION_TEXT* motion);
+
 /***********************/
 /* MOTION_BMP handlers */
 /***********************/
@@ -40,7 +106,7 @@ typedef struct{
 /* rpi_create_motion_bmp
  * Crea una instancia default de un MOTION MOTION_BMP
  */
-MOTION_BMP rpi_create_motion_bmp(void);
+MOTION_BMP* rpi_create_motion_bmp(void);
 
 /* rpi_init_motion_bmp
  * Inicializa memoria para la instancia
