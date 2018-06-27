@@ -5,7 +5,6 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>gui/frogger/rpi/bitmaps.h</itemPath>
-      <itemPath>display.h</itemPath>
       <itemPath>logic/frogger/frogger_kernel.h</itemPath>
       <itemPath>gui/frogger/frogger_output.h</itemPath>
       <itemPath>gui/frogger/frogger_physics.h</itemPath>
@@ -16,7 +15,6 @@
       <itemPath>gui/gui_input.h</itemPath>
       <itemPath>gui/gui_timer/gui_timer.h</itemPath>
       <itemPath>gui/gui_types.h</itemPath>
-      <itemPath>settings.h</itemPath>
       <itemPath>gui/gui_events/source_codes.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -79,8 +77,6 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="display.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="gui/frogger/allegro/allegro_init.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/frogger/allegro/allegro_input.c"
@@ -139,8 +135,6 @@
       <item path="logic/frogger/frogger_kernel.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="settings.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -163,8 +157,6 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="display.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="gui/frogger/allegro/allegro_init.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/frogger/allegro/allegro_input.c"
@@ -223,8 +215,6 @@
       <item path="logic/frogger/frogger_kernel.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="settings.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

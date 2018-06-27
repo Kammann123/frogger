@@ -30,6 +30,11 @@ bool gui_timer_source(EVENT* event, void* timerQueue){
     /* Reviso todos los eventos */
     for(i = 0;i < queue->length;i++){
         
+        /* Configuracion de pausa , se saltea el timer */
+        if( queue->timers[i].pause ){
+            continue;
+        }
+        
         /* Compruebo timer overflow */
         if( queue->timers[i].timerCounter >= queue->timers[i].timerMax && !(queue->timers[i].timerOverflow) ){
             
@@ -78,6 +83,40 @@ static void* timer_thread(void* timerQueue){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* gui_timer_pause */
+void gui_timer_pause(TIMER_QUEUE* timerQueue, uint32_t id){
+    uint32_t i;
+    
+    /* Busco entre la cola de timers */
+    for(i = 0;i < timerQueue->length;i++){
+        
+        /* Encuentro el timer */
+        if( timerQueue->timers[i].id == id ){
+            
+            /* Lo pongo pausado */
+            timerQueue->timers[i].pause = true;
+            break;
+        }
+    }
+}
+
+/* gui_timer_continue */
+void gui_timer_continue(TIMER_QUEUE* timerQueue, uint32_t id){
+    uint32_t i;
+    
+    /* Busco entre la cola de timers */
+    for(i = 0;i < timerQueue->length;i++){
+        
+        /* Encuentro el timer */
+        if( timerQueue->timers[i].id == id ){
+            
+            /* Lo pongo pausado */
+            timerQueue->timers[i].pause = false;
+            break;
+        }
+    }
+}
+
 /* gui_timer_clear */
 void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id){
     uint32_t i;
@@ -94,14 +133,14 @@ void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id){
     }
 }
 
-/* gui_timer_pause */
-void gui_timer_pause(TIMER_QUEUE* timerQueue){
+/* gui_timer_queue_pause */
+void gui_timer_queue_pause(TIMER_QUEUE* timerQueue){
     /* Deshabilito el thread */
     timerQueue->enable = false;
 }
 
-/* gui_timer_continue */
-void gui_timer_continue(TIMER_QUEUE* timerQueue){
+/* gui_timer_queue_continue */
+void gui_timer_queue_continue(TIMER_QUEUE* timerQueue){
     /* Habilito el thread */
     timerQueue->enable = true;
 }
@@ -173,6 +212,7 @@ bool gui_timer_new_event(TIMER_QUEUE* timerQueue, uint32_t time, uint32_t id){
     timerQueue->timers[timerQueue->length].timerCounter = 0;
     timerQueue->timers[timerQueue->length].timerMax = time;
     timerQueue->timers[timerQueue->length].timerOverflow = false;
+    timerQueue->timers[timerQueue->length].pause = false;
     
     /* Incremento contador */
     timerQueue->length++;

@@ -28,6 +28,9 @@ typedef struct{
     uint32_t timerCounter;
     uint32_t timerMax;
     
+    /* Habilitadores */
+    bool pause;
+    
     /* Flag */
     bool timerOverflow;
 } TIMER;
@@ -54,6 +57,20 @@ typedef struct{
 /* Funciones publicas */
 /**********************/
 
+/* gui_timer_pause
+ * Pausa un timer individual en la cola de timers
+ *
+ * id: Identificador del timer
+ */
+void gui_timer_pause(TIMER_QUEUE* timerQueue, uint32_t id);
+
+/* gui_timer_continue
+ * Reanuda un timer individual pausado en la cola de timers
+ *
+ * id: Identificador del timer
+ */
+void gui_timer_continue(TIMER_QUEUE* timerQueue, uint32_t id);
+
 /* gui_timer_clear 
  * Limpia el timer despues de un overflow, avisando
  * que se leyo y uso el evento
@@ -63,19 +80,19 @@ typedef struct{
  */
 void gui_timer_clear(TIMER_QUEUE* timerQueue, uint32_t id);
 
-/* gui_timer_pause
+/* gui_timer_queue_pause
  * Pausa el funcionamiento del timer queue
  * 
  * timerQueue: Cola de timers 
  */
-void gui_timer_pause(TIMER_QUEUE* timerQueue);
+void gui_timer_queue_pause(TIMER_QUEUE* timerQueue);
 
-/* gui_timer_continue
+/* gui_timer_queue_continue
  * Reanuda el funcionamiento de la cola de timers
  * 
  * timerQueue: Cola de timers
  */
-void gui_timer_continue(TIMER_QUEUE* timerQueue);
+void gui_timer_queue_continue(TIMER_QUEUE* timerQueue);
 
 /* gui_timer_init 
  * Inicializa la queue del timer 
