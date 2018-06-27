@@ -1,6 +1,7 @@
 /* RPI_GRAPHICS
  */
 
+#include "../../gui_init.h"
 #include "rpi_graphics.h"
 
 #include <stdbool.h>
@@ -43,7 +44,7 @@ bool rpi_display_update(void){
 }
 
 /* gui_graphics_init */
-void gui_graphics_init(void){
+bool gui_graphics_init(void){
     /* Inicializo el display */
     display_init();
 
@@ -52,6 +53,8 @@ void gui_graphics_init(void){
 
     /* Inicializa */
     init = true;
+
+    return true;
 }
 
 /* rpi_load_bitmap */
@@ -93,15 +96,15 @@ bool rpi_draw_bitmap(BITMAP* bitmap, POSITION pos){
             yScreen = pos.y + y;
 
             /* Compruebo que esta en el display la posicion del led */
-            if( (xScreen > 0 && xScreen < DISPLAY_WIDTH) && (yScreen > 0 && yScreen < DISPLAY_HEIGHT) ){
+            if( (xScreen >= 0 && xScreen < DISPLAY_WIDTH) && (yScreen >= 0 && yScreen < DISPLAY_HEIGHT) ){
 
                 /* Verifico que este prendido */
-                if( bitmap->pixels[y * bitmap->header.width + x] == BLACK_COLOR ){
+                if( bitmap->pixels[(bitmap->header.height - y - 1) * bitmap->header.width + x] == BLACK_COLOR ){
                     /* Prendo el led */
-                    display_write(xScreen, yScreen, D_ON);
+                    display_write(yScreen, xScreen, D_ON);
                 }else{
                     /* Apago el led */
-                    display_write(xScreen, yScreen, D_OFF);
+                    display_write(yScreen, xScreen, D_OFF);
                 }
             }
         }

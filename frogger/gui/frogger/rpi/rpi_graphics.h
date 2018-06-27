@@ -23,11 +23,6 @@
 /* RPI_GRAPHICS handlers */
 /*************************/
 
-/* gui_graphics_init
- * Inicializa el display matricial de leds
- */
-void gui_graphics_init(void);
-
 /* rpi_load_bitmap
  * Carga un bitmap en memoria
  *

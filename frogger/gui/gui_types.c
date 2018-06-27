@@ -12,6 +12,13 @@ POSITION map_position(int32_t x, int32_t y){
         .x = x,
         .y = y
     };
-    
+
     return pos;
+}
+
+/* testing_msg */
+void testing_msg(char *str){
+#ifdef TESTING
+    printf("[MONITOR] %s\n", str);
+#endif
 }

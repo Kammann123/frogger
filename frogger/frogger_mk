@@ -26,7 +26,7 @@ allegro_audio-5.0` `pkg-config --libs allegro_color-5.0` `pkg-config --libs alle
 
 RPI_INC = gui/frogger/rpi/disdrv.o gui/frogger/rpi/joydrv.o gui/frogger/rpi/termlib.o
 
-OPTIONS = -Wall -pthread
+OPTIONS = -pthread
 
 allegro: ${HEADERS} ${SRC} ${AL_SRC} ${OBJS} ${AL_OBJS}
 	${CC} ${OBJS} ${AL_OBJS} main.c -o frogger ${OPTIONS} ${AL_INC} 

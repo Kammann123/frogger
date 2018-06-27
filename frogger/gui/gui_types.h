@@ -9,6 +9,8 @@
 /* Librerias utilizadas */
 #include <stdint.h>
 
+#define TESTING
+
 /******************/
 /* Tipos de datos */
 /******************/
@@ -32,5 +34,10 @@ typedef uint32_t LENGTH;
  */
 POSITION map_position(int32_t x, int32_t y);
 
-#endif /* GUI_TYPES_H */
+/* testing_msg
+ * Muestra un mensaje en la consola para informar durante
+ * el proceso de pruebas
+ */
+void testing_msg(char *str);
 
+#endif /* GUI_TYPES_H */

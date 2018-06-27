@@ -20,45 +20,61 @@
 bool gui_input_init(void){
     /* Inicializo el joystick */
     joy_init();
-    
+
     /* Configuro joystick */
     set_joy_axis(JOY_NORMAL);
+
+    return true;
 }
 
 /* gui_input_close */
-void gui_input_close(void);
+void gui_input_close(void){
+    return;
+}
 
 /* gui_input_source */
 bool gui_input_source(EVENT* event, void* none){
+    /* Variables de control */
+    static EVENT previousEvent;
+
     /* Variables temporales */
     jcoord_t coords;
     jswitch_t click;
-    
+
     /* Actualizo los datos del joystick */
     joystick_update();
-    
+
+    testing_msg("Leyendo el joystick.");
+
     /* Preparo el evento */
     event->source = RPI_INPUT_SOURCE;
-    
+
+    /* Busco los datos */
+    coords = joystick_get_coord();
+    click = joystick_get_switch_value();
+
     /* Si hubo click del joystick */
     if( click == J_PRESS ){
-        
+        testing_msg("Detectado el ENTER.");
+
         /* Mando evento */
         event->type = ACTION_EVENT;
         event->data = ENTER;
-        return true;
     }else{
-        
+
         /* Verifico estados */
         if( (abs(coords.x) > JOYSTICK_PRESET) && (abs(coords.y) > JOYSTICK_PRESET) ){
+            previousEvent.data = MOVE_NONE;
             return false;
         }else if( (abs(coords.x) < JOYSTICK_PRESET) && (abs(coords.y) < JOYSTICK_PRESET) ){
+            previousEvent.data = MOVE_NONE;
             return false;
         }else{
-            
+
+            testing_msg("Detectado el MOVIMIENTO");
             /* Armo el evento */
             event->type = MOVEMENT_EVENT;
-            
+
             /* Seteo la direccion */
             if( coords.x > JOYSTICK_PRESET ){
                 event->data = MOVE_RIGHT;
@@ -69,8 +85,17 @@ bool gui_input_source(EVENT* event, void* none){
             }else{
                 event->data = MOVE_DOWN;
             }
-            
-            return true;
+        }
+
+        /* Compruebo que no se repita el evento */
+        if( !memcmp(event, &previousEvent, sizeof(EVENT)) ){
+            return false;
         }
     }
+
+    /* Me guardo el evento */
+    previousEvent = *event;
+
+    /* Mandar el evento */
+    return true;
 }

@@ -19,7 +19,9 @@
 /*******************/
 
 /* frogger_screen_close */
-void frogger_screen_close(void);
+void frogger_screen_close(void){
+    return;
+}
 
 /*********************/
 /* MAINMENU handlers */
@@ -45,9 +47,6 @@ bool frogger_mainmenu(void){
     if( bitmap == NULL ){
         return false;
     }
-
-    /* Limpio el display */
-    rpi_display_clear();
 
     /* Imprimo el menu */
     if( !rpi_draw_bitmap(bitmap, map_position(0, 0)) ){
@@ -77,6 +76,8 @@ void frogger_mainmenu_move(INPUT_VALUES input){
             if( mainmenuSelection != MAIN_EXIT_OPTION ){
                 mainmenuSelection += 1;
             }
+            break;
+        default:
             break;
     }
 }
@@ -146,6 +147,8 @@ void frogger_pausemenu_move(INPUT_VALUES input){
                 pausemenuSelection += 1;
             }
             break;
+        default:
+            break;
     }
 }
 
@@ -154,18 +157,24 @@ void frogger_pausemenu_move(INPUT_VALUES input){
 /*************************/
 
 /* frogger_changescreen */
-bool frogger_changescreen(uint32_t level, uint32_t stage);
+bool frogger_changescreen(uint32_t level, uint32_t stage){
+    return false;
+}
 
 /***********************/
 /* LOSTSCREEN handlers */
 /***********************/
 
 /* frogger_lostscreen */
-bool frogger_lostscreen(uint32_t score);
+bool frogger_lostscreen(uint32_t score){
+    return false;
+}
 
 /**********************/
 /* GAMESCREEN handler */
 /**********************/
 
 /* frogger_gamescreen */
-bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score);
+bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score){
+    return false;
+}

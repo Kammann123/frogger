@@ -31,9 +31,9 @@ typedef struct{
 } EXTERN_STAGE_DATA;
 
 typedef enum {
-    MAINMENU_STAGE, 
+    MAINMENU_STAGE,
     RANKING_STAGE,
-    HOWTO_STAGE, 
+    HOWTO_STAGE,
     FROGGER_STAGE,
     PAUSEMENU_STAGE,
     LOSTSCREEN_STAGE,
@@ -46,7 +46,7 @@ typedef enum {
 
 /* Eventos del timer */
 #define TIMER_DEFINITION    1000
-#define REFRESH_FPS         60
+#define REFRESH_FPS         100
 
 typedef enum{
     REFRESH_DISPLAY,
@@ -65,12 +65,12 @@ typedef enum{
 /* switch_tasks_target
  * Maneja quien ejecuta tareas de forma concurrente
  * mientras se esperan entradas y eventos de la cola de eventos
- * 
+ *
  * stage: Etapa del programa
  */
 void switch_tasks_target(GAME_STAGE* stage);
 
-/* switch_input_target 
+/* switch_input_target
  * Maneja quien recibe un evento de entrada
  * segun la etapa del flujo del juego
  *
@@ -82,12 +82,12 @@ void switch_input_target(GAME_STAGE* stage, EVENT event);
 /* switch_update_target
  * Maneja quien maneja la actualizacion de la pantalla
  * segun la etapa del juego
- * 
+ *
  * stage: Etapa del programa
  */
 void switch_update_target(GAME_STAGE* stage);
 
-/* on_mainmenu_enter 
+/* on_mainmenu_enter
  * Maneja la direccion del programa desde el menu
  * al seleccionar una opcion
  */
@@ -95,7 +95,7 @@ void on_mainmenu_enter(GAME_STAGE* stage);
 
 /* on_pausemenu_Enter
  * Maneja la direccion del programa desde
- * el menu de pausa segun la opcion elegida 
+ * el menu de pausa segun la opcion elegida
  */
 void on_pausemenu_enter(GAME_STAGE* stage);
 
@@ -127,7 +127,7 @@ void on_frogger_event(GAME_STAGE* stage, uint32_t event);
  * Funcion principal del programa.
  * *******************************/
 int main(int argc, char** argv){
-    
+
     /* Variables */
     TIMER_QUEUE* timer;
     EVENT_QUEUE* queue;
@@ -137,54 +137,62 @@ int main(int argc, char** argv){
         .value = DEFAULT_GAME_STAGE,
         .hasChanged = false
     };
-    
+
     /* Inicializo la interfaz */
-    if( !gui_graphics_init() ){
+    if( !gui_graphics_init( ) ){
+        testing_msg("No se pudo inicializar graficos.");
         return 0;
     }
-    
+
     /* Inicializo las entradas */
     if( !gui_input_init() ){
+        testing_msg("No se pudo inicializar entradas.");
         return 0;
     }
-    
+
     /* Inicializo el timer */
     timer = gui_timer_create();
     if( timer == NULL ){
         return 0;
     }
-    
+
     /* Agrego un evento de timer */
     if( !gui_timer_new_event(timer, REFRESH_TIME, REFRESH_DISPLAY) ){
+        testing_msg("No se pudo inicializar timer.");
         return 0;
     }
     if( !gui_timer_new_event(timer, GAME_TIME, GAME_COUNTER) ){
+        testing_msg("No se pudo inicializar timer.");
         return 0;
     }
     if( !gui_timer_new_event(timer, CHANGESCREEN_TIME, CHANGESCREEN_TIMER) ){
+        testing_msg("No se pudo inicializar timer.");
         return 0;
     }
-    
+
     /* Inicializo los eventos */
     queue = create_queue();
     if( !register_source(queue, gui_input_source, NULL) ){
+        testing_msg("No se pudo inicializar cola de eventos.");
         return 0;
     }
     if( !register_source(queue, gui_timer_source, timer) ){
+        testing_msg("No se pudo agregar a cola el timer.");
         return 0;
     }
-    
+
     /* Inicio el timer */
     gui_timer_start(timer);
-    
+
     /* Inicio la cola de eventos */
     queue_start(queue);
-    
+
     /* Main loop */
     while( stage.value != CLOSING_STAGE ){
         /* Pregunto por eventos en la queue */
         if( queue_next_event(queue, &event) ){
-            if( event.source == ALLEGRO_INPUT_SOURCE ){
+            if( event.source == ALLEGRO_INPUT_SOURCE || event.source == RPI_INPUT_SOURCE ){
+                testing_msg("Evento de entrada recibido.");
                 switch_input_target(&stage, event);
             }else if( event.source == TIMER_SOURCE ){
                 if( event.data == REFRESH_DISPLAY ){
@@ -203,31 +211,31 @@ int main(int argc, char** argv){
                 gui_timer_clear(timer, event.data);
             }
         }
-        
+
         /* Algunos controles mientras */
         switch_tasks_target(&stage);
-        
+
         /* Hago una limpieza si hubo un cambio */
         if( stage.hasChanged ){
             /* Limpio el flag */
             stage.hasChanged = false;
-        
+
             /* Limpio la cola de eventos */
             queue_flush(queue);
-            
+
             /* Limpio el timer */
             gui_timer_clear(timer, REFRESH_DISPLAY);
             gui_timer_clear(timer, GAME_COUNTER);
             gui_timer_clear(timer, CHANGESCREEN_TIMER);
         }
     }
-    
+
     /* Cierro la cola de eventos */
     queue_close(queue);
-    
+
     /* Cierro las entradas */
     gui_input_close();
-    
+
     /* Destruyo el timer */
     gui_timer_destroy(timer);
 }
@@ -258,7 +266,7 @@ void on_frogger_event(GAME_STAGE* stage, uint32_t event){
 void change_stage(GAME_STAGE* stage, uint16_t newStage){
     /* Cambio el valor del estado */
     stage->value = newStage;
-    
+
     /* Activo flag */
     stage->hasChanged = true;
 }
@@ -291,7 +299,7 @@ void on_pausemenu_enter(GAME_STAGE* stage){
 void on_game_enter(GAME_STAGE* stage){
     /* Cambio de etapa de juego */
     change_stage(stage, PAUSEMENU_STAGE);
-    
+
     /* Pauso el juego */
     frogger_game_pause();
 }
@@ -334,7 +342,7 @@ void switch_tasks_target(GAME_STAGE* stage){
                 change_stage(stage, FROGGER_STAGE);
             }
             break;
-    }    
+    }
 }
 
 /* switch_update_target */
@@ -370,7 +378,7 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
                 frogger_mainmenu_move(event.data);
             }else if( event.type == ACTION_EVENT ){
                 if( event.data == ENTER ){
-                    on_mainmenu_enter(stage);                    
+                    on_mainmenu_enter(stage);
                 }
             }
             break;

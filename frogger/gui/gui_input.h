@@ -1,5 +1,5 @@
 /* GUI_INPUT
- * Este modulo maneja las entradas del usuario al programa 
+ * Este modulo maneja las entradas del usuario al programa
  */
 
 #ifndef GUI_INPUT_H
@@ -26,14 +26,15 @@ typedef enum{
     MOVE_RIGHT,
     MOVE_UP,
     MOVE_DOWN,
-    ENTER
+    ENTER,
+    MOVE_NONE
 } INPUT_VALUES;
 
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
 
-/* gui_input_init 
+/* gui_input_init
  * Inicializa la interfaz grafica que corresponda
  */
 bool gui_input_init(void);
