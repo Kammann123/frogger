@@ -655,6 +655,9 @@ bool frogger_game_restart(void){
         return false;
     }
     
+    /* Posicion inicial */
+    frogger_game_reset_frog_position();
+    
     /* Inicio el motor */
     frogger_game_start();
     

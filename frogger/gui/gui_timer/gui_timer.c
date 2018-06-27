@@ -50,6 +50,26 @@ static void* timer_thread(void* timerQueue){
 /* Definicion de funciones publicas */
 /************************************/
 
+/* gui_timer_overflow */
+bool gui_timer_overflow(TIMER_QUEUE* timerQueue, uint32_t id){
+    uint32_t i;
+    
+    /* Busco el timer */
+    for(i = 0;i < timerQueue->length;i++){
+        
+        /* Encuentro el timer */
+        if( timerQueue->timers[i].id == id ){
+            
+            /* Verifico estado */
+            if( timerQueue->timers[i].timerCounter >= timerQueue->timers[i].timerMax ){
+                
+                return true;
+            }
+            return false;
+        }
+    }
+}
+
 /* gui_timer_global_get */
 TIMER_QUEUE* gui_timer_global_get(void){
     return globalQueue;

@@ -57,6 +57,14 @@ typedef struct{
 /* Funciones publicas */
 /**********************/
 
+/* gui_timer_overflow
+ * Devuelve si el timer hizo overflow
+ *
+ * timerQueue: Cola de timers
+ * id: Identificador del timer
+ */
+bool gui_timer_overflow(TIMER_QUEUE* timerQueue, uint32_t id);
+
 /* gui_timer_global_get
  * Retorna el puntero a la cola de timers global
  */
