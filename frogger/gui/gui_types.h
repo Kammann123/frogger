@@ -36,7 +36,7 @@ typedef struct{
     bool hasChanged;    
 } GAME_STAGE;
 
-#define DEFAULT_GAME_STAGE LOSTSCREEN_STAGE
+#define DEFAULT_GAME_STAGE MAINMENU_STAGE
 
 typedef struct{
     int32_t x;

@@ -182,33 +182,33 @@ void frogger_changescreen_tasks(GAME_STAGE *stage){
     switch( state ){
         case CHANGESCREEN_INIT:
             
-            /* Limpio e inicializo el timer */
-            gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
-            gui_timer_continue(gui_timer_global_get(), CHANGESCREEN_TIMER);
-            
             /* Reinicio contador */
-            counter = 0;
+            counter = CHANGESCREEN_DIV;
             
             /* Cambio de etapa */
             state = CHANGESCREEN_OP;
+            
+            /* Limpio e inicializo el timer */
+            gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
+            gui_timer_continue(gui_timer_global_get(), CHANGESCREEN_TIMER);
             break;
         case CHANGESCREEN_OP:
             
             /* Espero el timer */
             if( gui_timer_overflow(gui_timer_global_get(), CHANGESCREEN_TIMER) ){
+
+                /* Limpio el timer y lo pauso */
+                gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
                 
                 /* Cuento */
-                counter++;
-                if( counter >= 15 ){
+                counter--;
+                if( !counter ){
                     /* Cambio al nuevo nivel */
                     frogger_game_start();
                     change_stage(stage, FROGGER_STAGE);
 
                     /* Reinicio */
-                    counter = 0;
-
-                    /* Limpio el timer y lo pauso */
-                    gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
+                    counter = CHANGESCREEN_DIV;
                     gui_timer_pause(gui_timer_global_get(), CHANGESCREEN_TIMER);
 
                     /* Restauro estado init */

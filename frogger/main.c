@@ -179,13 +179,13 @@ int main(int argc, char** argv){
     }
     
     /* Inicializo memoria de juego */
-    /*if( !frogger_game_init() ){
+    if( !frogger_game_init() ){
         testing_msg("No se pudo cargar en memoria objetos.");
         gui_timer_global_close();
         gui_input_close();
         queue_close(queue);
         return 0;
-    }*/
+    }
 
     /* Inicio el timer */
     gui_timer_start(gui_timer_global_get());

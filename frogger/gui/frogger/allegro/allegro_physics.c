@@ -5,7 +5,7 @@
 #include "../frogger_physics.h"
 
 /* Configuracion */
-#define ALLEGRO_DISPLAY_BORDER_UP       0  
+#define ALLEGRO_DISPLAY_BORDER_UP       0
 #define ALLEGRO_DISPLAY_BORDER_DOWN     400
 #define ALLEGRO_DISPLAY_BORDER_LEFT     0
 #define ALLEGRO_DISPLAY_BORDER_RIGHT    600
@@ -63,7 +63,7 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y){
             }
             break;
     }
-    
+
     /* No hubo colision */
     return false;
 }
@@ -91,7 +91,7 @@ bool frogger_game_frog_init(FROG* frog){
     if( frog->object == NULL ){
         return false;
     }
-    
+
     /* Frog inicializada correctamente */
     return true;
 }
@@ -131,7 +131,7 @@ bool frogger_game_movement_valid(FROG frog, uint16_t input){
             }
             break;
     }
-    
+
     /* No hubo caso invalido */
     return true;
 }
@@ -139,10 +139,10 @@ bool frogger_game_movement_valid(FROG frog, uint16_t input){
 /* frogger_game_create_object */
 ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type){
     ANIMATED_OBJECT* object;
-    
+
     pos.x *= ALLEGRO_DISPLAY_STEP;
     pos.y *= ALLEGRO_DISPLAY_STEP;
-    
+
     /* Cargo el object file */
     switch( type ){
         case FROGGER_MOTORBIKE:
@@ -161,18 +161,18 @@ ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMA
             object = gui_animation_load_object( ALLEGRO_YACHT_OBJFILE, pos, "" );
             break;
     }
-    
+
     /* Valido */
     if( object == NULL ){
         return NULL;
     }
-    
+
     /* Cargo la velocidad */
     object->speed = speed;
-    
+
     /* Cargo orientacion */
     gui_animation_set_animation(object, gui_animation_seek_animation(object, orientation));
-    
+
     /* Devuelvo la creacion */
     return object;
 }

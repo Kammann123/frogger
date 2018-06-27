@@ -13,13 +13,14 @@
 #include "frogger_physics.h"
 
 /* Configuracion de timers de tasks */
-#define CHANGESCREEN_TIME       200
+#define CHANGESCREEN_TIME       120
 #define CHANGESCREEN_TIMER      2
+#define CHANGESCREEN_DIV        10
 
-#define PAUSEMENU_TIME          200
+#define PAUSEMENU_TIME          120
 #define PAUSEMENU_TIMER         3
 
-#define LOSTSCREEN_TIME         200
+#define LOSTSCREEN_TIME         120
 #define LOSTSCREEN_TIMER        4
 
 #define MAX_STRING      512
