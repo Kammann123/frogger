@@ -147,6 +147,7 @@ void frogger_howscreen_move(GAME_STAGE* stage, EVENT input){
         if( input.data == ENTER ){
             if( tutoStep == HOWTO_OK ){
                 change_stage(stage, MAINMENU_STAGE);
+                tutorial->status = GUI_ANIMATION_STATE_STATIC;
                 gui_animation_pause_engine(frogger_get_engine());
             }
         }

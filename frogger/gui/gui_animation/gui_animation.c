@@ -185,7 +185,7 @@ LENGTH gui_animation_get_frame_length(ANIMATED_OBJECT* object, ANIMATION_ID id){
 GUI_ANIMATION_ORIENTATION gui_animation_get_orientation(ANIMATED_OBJECT* object){
     LENGTH i;
     ANIMATION animation;
-    
+
     if( object == NULL ){
         return GUI_ORIENTATION_NULL;
     }
@@ -880,7 +880,7 @@ bool gui_animation_attach_engine(ANIMATION_ENGINE* engine, ANIMATED_OBJECT* obje
 
 /* gui_animation_start_static_movement */
 void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t distance){
-    
+
     if(object->width == 40){
         testing_msg("Muevase RANA!");
     }

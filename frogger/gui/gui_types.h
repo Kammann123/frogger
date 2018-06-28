@@ -11,9 +11,9 @@
 #include <stdbool.h>
 
 #include "../score_board/score_board.h"
-    
-/* Habilita impresiones de modo prueba */
 
+/* Habilita impresiones de modo prueba */
+#define TESTING
 #define MAX_STRING 512
 
 #define DEFAULT_USERNAME    "player"

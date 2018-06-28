@@ -117,7 +117,6 @@ bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
         return false;
     }
 
-    printf("%d %d\n", frog.object->pos.x, ALLEGRO_DISPLAY_BORDER_LEFT);
     /* Me fijo que este en los limites */
     switch(input){
         case MOVE_UP:
