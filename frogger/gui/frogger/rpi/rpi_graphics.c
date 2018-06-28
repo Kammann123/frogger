@@ -109,7 +109,7 @@ MOTION_TEXT* rpi_load_motion_text(char* text, POSITION pos){
         if( text[i] >= 'A' && text[i] <= 'Z' ){
             sprintf(str, "%s%c.bmp", FONTS_FOLDER, text[i]);
         }else if( text[i] >= 'a' && text[i] <= 'z' ){
-            sprintf(str, "%s%c.BMP", FONTS_FOLDER, text[i] - 'a' + 'A');
+            sprintf(str, "%s%c.bmp", FONTS_FOLDER, text[i] - 'a' + 'A');
         }else if( text[i] >= '0' && text[i] <= '9' ){
             sprintf(str, "%s%c.bmp", FONTS_FOLDER, text[i]);
         }else if( text[i] == ' ' ){

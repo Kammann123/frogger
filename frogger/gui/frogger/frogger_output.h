@@ -24,7 +24,7 @@
 #define LOSTSCREEN_TIME         120
 #define LOSTSCREEN_TIMER        4
 
-#define TOPSCREEN_TIME          120
+#define TOPSCREEN_TIME          100
 #define TOPSCREEN_TIMER         5
 
 /**************/
@@ -87,7 +87,7 @@ PAUSEMENU_OPTIONS frogger_get_pausemenu_selection(void);
 /* frogger_topscreen
  * Actualiza la salida
  *
- * stage: Instancia 
+ * stage: Instancia
  */
 bool frogger_topscreen(GAME_STAGE* stage);
 
@@ -100,7 +100,7 @@ void frogger_topscreen_tasks(GAME_STAGE* stage);
 
 /* frogger_topscreen_move
  * Mueve entre el menu de top score
- * 
+ *
  * stage: Instancia
  * input: Entrada del usuario
  */

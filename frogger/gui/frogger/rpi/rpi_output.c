@@ -38,6 +38,11 @@ static void frogger_changescreen_close(void);
  */
 static void frogger_lostscreen_close(void);
 
+/* frogger_topscreen_close
+ * Cerra la ventana de top score
+ */
+static void frogger_topscreen_close(void);
+
 /*******************/
 /* SCREEN handlers */
 /*******************/
@@ -75,18 +80,17 @@ static bool posChanged = false;
 void frogger_topscreen_tasks(GAME_STAGE* stage){
     static TOPSCREEN_STAGES state = TOPSCREEN_INIT;
     STRING str;
-
+    
     /* Estados */
     switch(state){
         case TOPSCREEN_INIT:
-            /* Inicializo el titulo */
+            /* Inicial  izo el titulo */
             topText = rpi_load_motion_text("TOP SCORE", TOP_POS);
             if( topText == NULL ){
                 return;
             }
-
             /* Inicializo posicion de score */
-            if( !get_score_position(stage, str, scorePos) ){
+            if( !get_score_position(stage, str, scorePos-1) ){
                 rpi_destroy_motion_text(topText);
                 topText = NULL;
                 return;
@@ -109,19 +113,30 @@ void frogger_topscreen_tasks(GAME_STAGE* stage){
             /* Verifico existencia */
             if( topText == NULL || posText == NULL ){
                 state = TOPSCREEN_INIT;
+                return;
             }
 
             /* Verifico cambio */
             if( posChanged ){
+                /* Reinicio */
                 posChanged = false;
                 stage = TOPSCREEN_INIT;
+
+                /* Los borro para crear otra vez */
+                rpi_destroy_motion_text(topText);
+                rpi_destroy_motion_text(posText);
+                topText = NULL;
+                posText = NULL;
+
+                /* Salgo */
+                return;
             }
-            
+
             /* Verifico overflow de timer */
             if( gui_timer_overflow(gui_timer_global_get(), TOPSCREEN_TIMER) ){
                 /* Muevo los objetos */
                 rpi_move_motion_text(topText);
-                rpi_move_motion_bmp(posText);
+                rpi_move_motion_text(posText);
 
                 /* Reinicio el timer */
                 gui_timer_clear(gui_timer_global_get(), TOPSCREEN_TIMER);
@@ -183,7 +198,7 @@ void frogger_topscreen_move(GAME_STAGE* stage, INPUT_VALUES input){
 }
 
 /* frogger_topscreen_close */
-void frogger_topscreen_close(void){
+static void frogger_topscreen_close(void){
     /* Verifico existencia */
     if( topText != NULL ){
 

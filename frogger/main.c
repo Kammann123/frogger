@@ -339,7 +339,7 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
                     change_stage(stage, MAINMENU_STAGE);
                 }
             }else if( event.type == MOVEMENT_EVENT ){
-                frogger_topscreen_move(stage, event.data );
+                frogger_topscreen_move(stage, event.data);
             }
             break;
         case HOWTO_STAGE:
