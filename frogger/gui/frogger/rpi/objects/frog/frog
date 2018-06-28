@@ -1,11 +1,17 @@
 [attributes]
-width: 4
+width: 1
 height: 1
-timedelta: 400
+timedelta: 100
 spacedelta: 1
 
 [animations]
-0: gui/frogger/rpi/objects/yatch/yatch_right
-1: gui/frogger/rpi/objects/yatch/yatch_left
+0: gui/frogger/rpi/objects/frog/frog_down
+1: gui/frogger/rpi/objects/frog/frog_up
+2: gui/frogger/rpi/objects/frog/frog_left
+3: gui/frogger/rpi/objects/frog/frog_right
+4: gui/frogger/rpi/objects/frog/death_down
+5: gui/frogger/rpi/objects/frog/death_up
+6: gui/frogger/rpi/objects/frog/death_left
+7: gui/frogger/rpi/objects/frog/death_right
 
 END

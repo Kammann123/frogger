@@ -841,7 +841,7 @@ void gui_animation_start_engine(ANIMATION_ENGINE* engine){
         /* Inicio el thread */
         pthread_create(&(engine->engineThread), NULL, gui_animation_engine_thread, engine);
     }
-    
+
     engine->pause = false;
 }
 
@@ -953,10 +953,10 @@ bool gui_animation_map_collision(REGION a, ANIMATED_OBJECT* obj){
 bool gui_animation_region_collision(REGION a, REGION b){
     bool x_overlap, y_overlap, region_overlap;
     /* Veo si x se solapa */
-    x_overlap = (a.iCorner.x < b.fCorner.x) && (a.fCorner.x > b.iCorner.x);
+    x_overlap = (a.iCorner.x <= b.fCorner.x) && (a.fCorner.x >= b.iCorner.x);
 
     /* Veo si x se solapa */
-    y_overlap = (a.iCorner.y < b.fCorner.y) && (a.fCorner.y > b.iCorner.y);
+    y_overlap = (a.iCorner.y <= b.fCorner.y) && (a.fCorner.y >= b.iCorner.y);
 
     /* Ambas se solapan*/
     region_overlap = x_overlap && y_overlap;

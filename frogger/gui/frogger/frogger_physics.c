@@ -129,13 +129,6 @@ static OBJECT_TYPES frogger_game_type_conv(char* str);
  */
 static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uint32_t y, POSITION* positions);
 
-/* frogger_game_object_size }
- * Largo de un objeto
- *
- * type: Tipo del objeto
- */
-static uint32_t frogger_game_object_size(uint32_t type);
-
 /* frogger_game_speed_resolution
  * Recalcula velocidad con la resolucion elegida por la interfaz
  *
@@ -358,7 +351,6 @@ static void frogger_game_destroy_lane(LANE* lane){
 /* frogger_game_load_lane */
 static bool frogger_game_load_lane(LANE* lane, char* filename){
     SETTING* settings;
-    POSITION* positions;
     LENGTH i;
     char* str;
 
@@ -426,21 +418,9 @@ static bool frogger_game_load_lane(LANE* lane, char* filename){
     /* Cierro el setting */
     gui_files_destroy_setting(settings);
 
-    /* Creo la secuencia */
-    positions = malloc( sizeof(POSITION) * lane->objectsQty );
-    if(positions == NULL){
-        frogger_game_destroy_lane(lane);
-        return false;
-    }
-    if( !frogger_game_lane_sequence(lane->objectsQty, frogger_game_object_size(lane->type), lane->laneNumber, positions)){
-        free(positions);
-        frogger_game_destroy_lane(lane);
-        return false;
-    }
-
     /* Cargo objetos */
     for(i = 0;i < lane->objectsQty;i++){
-            lane->objects[i] = frogger_game_create_object(positions[i], frogger_game_speed_resolution(lane->speed), lane->orientation, lane->type);
+            lane->objects[i] = frogger_game_create_object(map_position(0, 0), frogger_game_speed_resolution(lane->speed), lane->orientation, lane->type);
         if( lane->objects[i] == NULL ){
             frogger_game_destroy_lane(lane);
             return false;
@@ -594,28 +574,6 @@ static bool frogger_game_lane_sequence(uint32_t amount, uint32_t objectSize, uin
     return true;
 }
 
-/* frogger_game_object_size */
-static uint32_t frogger_game_object_size(uint32_t type){
-    switch(type){
-        case FROGGER_MOTORBIKE:
-            return FROGGER_SIZE_MOTORBIKE;
-            break;
-        case FROGGER_CAR:
-            return FROGGER_SIZE_CAR;
-            break;
-        case FROGGER_TRUCK:
-            return FROGGER_SIZE_TRUCK;
-            break;
-        case FROGGER_BOAT:
-            return FROGGER_SIZE_BOAT;
-            break;
-        case FROGGER_YACHT:
-            return FROGGER_SIZE_YACHT;
-            break;
-    }
-    return FROGGER_SIZE_NONE;
-}
-
 /* frogger_game_speed_resolution
  * Recalcula velocidad con la resolucion elegida por la interfaz
  *
@@ -646,21 +604,21 @@ static SPEED frogger_game_speed_resolution(SPEED speed){
 
 /* frogger_game_restart */
 bool frogger_game_restart(void){
-    
+
     /* Reinicio parametros */
     frogger_restart();
-    
+
     /* Creo posiciones de carriles */
     if( !frogger_game_new_level(frogger_get_level()) ){
         return false;
     }
-    
+
     /* Posicion inicial */
     frogger_game_reset_frog_position();
-    
+
     /* Inicio el motor */
     frogger_game_start();
-    
+
     /* Exito! */
     return true;
 }
@@ -672,35 +630,41 @@ bool frogger_game_new_level(uint32_t level){
     uint32_t step;
     SPEED speed;
 
+    LANE lane;
+    FROGGER_OBJECT object;
+
     /* Cargo el desplazamiento */
     step = frogger_game_get_step();
 
     /* Me muevo entre los carriles */
     for(i = 0;i < field.lanesQty;i++){
 
+        lane = field.lanes[i];
+
         /* Creo en memoria lista con nuevas posicione */
-        positions = malloc( sizeof(POSITION) * field.lanes[i].objectsQty);
+        positions = malloc( sizeof(POSITION) * lane.objectsQty);
         if( positions == NULL ){
             return false;
         }
 
         /* Cargo nuevas posiciones */
-        if( !frogger_game_lane_sequence(field.lanes[i].objectsQty, frogger_game_object_size(field.lanes[i].type), field.lanes[i].laneNumber, positions)){
+        if( !frogger_game_lane_sequence(lane.objectsQty, lane.objects[0]->width/step, lane.laneNumber, positions)){
             free(positions);
             return false;
         }
 
         /* Nueva velocidad */
-        speed = frogger_game_new_speed(field.lanes[i].speed, field.lanes[i].aFactor, level-1);
+        speed = frogger_game_new_speed(lane.speed, lane.aFactor, level-1);
 
         /* Me muevo entre los objetos */
-        for(ii = 0;ii < field.lanes[i].objectsQty;ii++){
+        for(ii = 0;ii < lane.objectsQty;ii++){
+            object = lane.objects[ii];
 
             /* Cargo nueva velocidad */
-            field.lanes[i].objects[ii]->speed = frogger_game_speed_resolution(speed);
+            object->speed = frogger_game_speed_resolution(speed);
 
             /* Cargo nueva posicion */
-            field.lanes[i].objects[ii]->pos = map_position(positions[ii].x * step, positions[ii].y * step);
+            object->pos = map_position(positions[ii].x * step, positions[ii].y * step);
         }
     }
 
@@ -710,7 +674,6 @@ bool frogger_game_new_level(uint32_t level){
 }
 
 /* frogger_game_has_won */
-
 bool frogger_game_has_won(void){
     /* Objeto posicion */
     if( frog.object->pos.y == 0 ){
@@ -847,6 +810,9 @@ void frogger_game_transport_frog(void){
                     /* Inicio el movimiento */
                     gui_animation_start_static_movement(frog.object, step);
                 }
+
+                /* Sincronizo con el transporte */
+                frog.object->timeCounter = frog.transport->timeCounter;
             }
         }
     }

@@ -20,20 +20,27 @@
 /* Funciones privadas */
 /**********************/
 
+/* frogger_convert_position
+ * Convierte la posicion para adaptarla al tablero o matriz de leds
+ *
+ * pos: Posicion a adaptarla
+ */
+static POSITION frogger_convert_position(POSITION pos);
+
 /* frogger_pausemenu_close
  * Cierra el menu de pause
  */
-void frogger_pausemenu_close(void);
+static void frogger_pausemenu_close(void);
 
 /* frogger_changescreen_close
  * Cierra la pantalla de cambio de nivel
  */
-void frogger_changescreen_close(void);
+static void frogger_changescreen_close(void);
 
 /* frogger_lostscreen_close
  * Cierra la pantalla de cambio de nivel
  */
-void frogger_lostscreen_close(void);
+static void frogger_lostscreen_close(void);
 
 /*******************/
 /* SCREEN handlers */
@@ -233,7 +240,7 @@ void frogger_pausemenu_move(INPUT_VALUES input){
 }
 
 /* frogger_pausemenu_close */
-void frogger_pausemenu_close(void){
+static void frogger_pausemenu_close(void){
     uint32_t i;
     /* Recorro el menu */
     for(i = 0;i < 3;i++){
@@ -293,7 +300,7 @@ void frogger_changescreen_tasks(GAME_STAGE *stage){
             }
 
             /* Offset length */
-            maxLength *= 4 + DISPLAY_WIDTH/2    ;
+            maxLength = maxLength * 4 + DISPLAY_WIDTH / 2;
 
             /* Cambio de estado */
             state = CHANGESCREEN_OP;
@@ -321,16 +328,17 @@ void frogger_changescreen_tasks(GAME_STAGE *stage){
 
                 counter++;
                 if( counter > maxLength ){
-                    /* Cambio al nuevo nivel */
-                    frogger_game_start();
-                    change_stage(stage, FROGGER_STAGE);
-                    /* Cierro ventana actual */
-                    frogger_screen_close(stage);
-                    /* Pauso el timer */
-                    gui_timer_pause(gui_timer_global_get(), CHANGESCREEN_TIMER);
                     /* Reset variables */
                     maxLength = 0;
                     counter = 0;
+                    /* Cambio al nuevo nivel */
+                    frogger_game_start();
+                    /* Cierro ventana actual */
+                    frogger_screen_close(stage);
+                    /* Cambio la etapa */
+                    change_stage(stage, FROGGER_STAGE);
+                    /* Pauso el timer */
+                    gui_timer_pause(gui_timer_global_get(), CHANGESCREEN_TIMER);
                 }
             }
             break;
@@ -364,7 +372,7 @@ bool frogger_changescreen(uint32_t level, uint32_t stage){
 }
 
 /* frogger_changescreen_close */
-void frogger_changescreen_close(void){
+static void frogger_changescreen_close(void){
     /* Verifico level */
     if( levelText != NULL ){
         /* Destruyo la instancia */
@@ -472,7 +480,7 @@ bool frogger_lostscreen(uint32_t score){
 }
 
 /* frogger_lostscreen_close */
-void frogger_lostscreen_close(void){
+static void frogger_lostscreen_close(void){
     /* Verifico gameOver */
     if( gameOver != NULL ){
         /* Destruyo la instancia */
@@ -498,7 +506,7 @@ void frogger_lostscreen_close(void){
 
 /* Configuraciones */
 #define RPI_PATH           "gui/frogger/rpi/"
-#define GAMESCREEN_PATH    RPI_PATH "gamescreen"
+#define GAMESCREEN_PATH    RPI_PATH "gamescreen/"
 #define GAMESCREEN_FIELD   GAMESCREEN_PATH "field.bmp"
 
 /* frogger_gamescreen */
@@ -506,7 +514,6 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     BITMAP* bitmap;
     LANE lane;
     FROGGER_OBJECT object;
-
     char text[MAX_STRING];
     uint32_t i, ii;
 
@@ -532,7 +539,8 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
                 if( bitmap == NULL ){
                   return false;
                 }
-                if( !rpi_draw_bitmap(bitmap, object->pos) ){
+
+                if( !rpi_draw_bitmap(bitmap, frogger_convert_position(object->pos)) ){
                     return false;
                 }
                 destroy_bitmap(bitmap);
@@ -546,7 +554,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     if( bitmap == NULL ){
         return false;
     }
-    if( !rpi_draw_bitmap(bitmap, frog.object->pos) ){
+    if( !rpi_draw_bitmap(bitmap, frogger_convert_position(frog.object->pos)) ){
         return false;
     }
     destroy_bitmap(bitmap);
@@ -555,4 +563,25 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     rpi_display_update();
 
     return true;
+}
+
+/**********************/
+/* Funciones privadas */
+/**********************/
+
+/* frogger_convert_position */
+static POSITION frogger_convert_position(POSITION pos){
+    POSITION newPos;
+
+    /* Guardo posicion */
+    newPos = pos;
+
+    /* Adapto */
+    if( newPos.y < 6 ){
+        newPos.y *= 2;
+    }else{
+        newPos.y += 5;
+    }
+
+    return newPos;
 }

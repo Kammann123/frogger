@@ -44,8 +44,6 @@ bool gui_input_source(EVENT* event, void* none){
     /* Actualizo los datos del joystick */
     joystick_update();
 
-    testing_msg("Leyendo el joystick.");
-
     /* Preparo el evento */
     event->source = RPI_INPUT_SOURCE;
 
@@ -55,7 +53,6 @@ bool gui_input_source(EVENT* event, void* none){
 
     /* Si hubo click del joystick */
     if( click == J_PRESS ){
-        testing_msg("Detectado el ENTER.");
 
         /* Mando evento */
         event->type = ACTION_EVENT;
@@ -70,8 +67,6 @@ bool gui_input_source(EVENT* event, void* none){
             previousEvent.data = MOVE_NONE;
             return false;
         }else{
-
-            testing_msg("Detectado el MOVIMIENTO");
             /* Armo el evento */
             event->type = MOVEMENT_EVENT;
 
@@ -86,11 +81,11 @@ bool gui_input_source(EVENT* event, void* none){
                 event->data = MOVE_DOWN;
             }
         }
+    }
 
-        /* Compruebo que no se repita el evento */
-        if( !memcmp(event, &previousEvent, sizeof(EVENT)) ){
-            return false;
-        }
+    /* Compruebo que no se repita el evento */
+    if( !memcmp(event, &previousEvent, sizeof(EVENT)) ){
+        return false;
     }
 
     /* Me guardo el evento */

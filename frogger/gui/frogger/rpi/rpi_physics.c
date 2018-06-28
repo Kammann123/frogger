@@ -13,10 +13,10 @@
 #define RPI_PATH_OBJECTS                "gui/frogger/rpi/objects/"
 
 /* Configuracion */
-#define ALLEGRO_DISPLAY_BORDER_UP       0
-#define ALLEGRO_DISPLAY_BORDER_DOWN     15
-#define ALLEGRO_DISPLAY_BORDER_LEFT     0
-#define ALLEGRO_DISPLAY_BORDER_RIGHT    15
+#define RPI_DISPLAY_BORDER_UP       0
+#define RPI_DISPLAY_BORDER_DOWN     10
+#define RPI_DISPLAY_BORDER_LEFT     0
+#define RPI_DISPLAY_BORDER_RIGHT    15
 
 #define RPI_FROG_OBJFILE                RPI_PATH_OBJECTS "frog/frog"
 #define RPI_MOTORBIKE_OBJFILE           RPI_PATH_OBJECTS "motorbike/motorbike"
@@ -54,31 +54,31 @@ bool frogger_game_frog_init(FROG* frog){
 /* frogger_game_movement_valid */
 bool frogger_game_movement_valid(FROG frog, uint16_t input){
 /* Me fijo que este en los limites */
-switch(input){
-    case MOVE_UP:
-        if( frog.object->pos.y == RPI_DISPLAY_BORDER_UP ){
-            return false;
-        }
-        break;
-    case MOVE_DOWN:
-        if( frog.object->pos.y == RPI_DISPLAY_BORDER_DOWN ){
-            return false;
-        }
-        break;
-    case MOVE_LEFT:
-        if( frog.object->pos.x == RPI_DISPLAY_BORDER_LEFT ){
-            return false;
-        }
-        break;
-    case MOVE_RIGHT:
-        if( frog.object->pos.x == RPI_DISPLAY_BORDER_RIGHT ){
-            return false;
-        }
-        break;
-}
+    switch(input){
+        case MOVE_UP:
+            if( frog.object->pos.y == RPI_DISPLAY_BORDER_UP ){
+                return false;
+            }
+            break;
+        case MOVE_DOWN:
+            if( frog.object->pos.y == RPI_DISPLAY_BORDER_DOWN ){
+                return false;
+            }
+            break;
+        case MOVE_LEFT:
+            if( frog.object->pos.x == RPI_DISPLAY_BORDER_LEFT ){
+                return false;
+            }
+            break;
+        case MOVE_RIGHT:
+            if( frog.object->pos.x == RPI_DISPLAY_BORDER_RIGHT ){
+                return false;
+            }
+            break;
+    }
 
-/* No hubo caso invalido */
-return true;
+    /* No hubo caso invalido */
+    return true;
 }
 
 /* frogger_game_create_object */

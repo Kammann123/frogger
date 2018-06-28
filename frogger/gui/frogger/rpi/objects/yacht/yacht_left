@@ -1,0 +1,8 @@
+[attributes]
+id: YACHT_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/rpi/objects/yacht/sprites/yacht_left.bmp
+
+END

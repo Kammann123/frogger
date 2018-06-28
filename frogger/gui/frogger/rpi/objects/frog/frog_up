@@ -3,6 +3,6 @@ id: FROG_UP
 orientation: VERTICAL_UP
 
 [frames]
-0: gui/frogger/rpi/objects/frog/sprites/frog_up.bmp
+0: gui/frogger/rpi/objects/frog/sprites/frog.bmp
 
 END

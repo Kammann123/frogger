@@ -3,6 +3,6 @@ id: FROG_RIGHT
 orientation: HORIZONTAL_RIGHT
 
 [frames]
-0: gui/frogger/rpi/objects/frog/sprites/frog_right.bmp
+0: gui/frogger/rpi/objects/frog/sprites/frog.bmp
 
 END

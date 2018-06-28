@@ -3,7 +3,7 @@ lanenumber: 6
 type: MOTORBIKE
 orientation: HORIZONTAL_RIGHT
 quantity: 3
-timedelta: 120
+timedelta: 140
 spacedelta: 1
 a_factor: 5
 

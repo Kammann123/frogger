@@ -1,0 +1,8 @@
+[attributes]
+id: MOTORBIKE_LEFT
+orientation: HORIZONTAL_LEFT
+
+[frames]
+0: gui/frogger/rpi/objects/motorbike/sprites/motorbike_left.bmp
+
+END
