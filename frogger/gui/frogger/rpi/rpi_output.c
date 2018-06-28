@@ -222,16 +222,25 @@ void frogger_topscreen_tasks(GAME_STAGE* stage){
                 return;
             }
             /* Inicializo posicion de score */
-            if( !get_score_position(stage, str, scorePos-1) ){
-                rpi_destroy_motion_text(topText);
-                topText = NULL;
-                return;
-            }
-            posText = rpi_load_motion_text(str, SCORE_POS);
-            if( posText == NULL ){
-                rpi_destroy_motion_text(topText);
-                topText = NULL;
-                return;
+            if( stage->topLength ){
+                if( !get_score_position(stage, str, scorePos-1) ){
+                    rpi_destroy_motion_text(topText);
+                    topText = NULL;
+                    return;
+                }
+                posText = rpi_load_motion_text(str, SCORE_POS);
+                if( posText == NULL ){
+                    rpi_destroy_motion_text(topText);
+                    topText = NULL;
+                    return;
+                }
+            }else{
+                posText = rpi_load_motion_text("EMPTY", SCORE_POS);
+                if( posText == NULL ){
+                    rpi_destroy_motion_text(topText);
+                    topText = NULL;
+                    return;
+                }
             }
 
             /* Cambio de estado */
@@ -814,11 +823,13 @@ static void frogger_lostscreen_close(void){
 #define GAMESCREEN_PATH    RPI_PATH "gamescreen/"
 #define GAMESCREEN_FIELD   GAMESCREEN_PATH "field.bmp"
 
-#define BLINK_VALUE        2
+#define BLINK_VALUE        3
 
 /* gui_graphics_close */
 void gui_graphics_close(void){
     frogger_howscreen_close();
+    rpi_display_clear();
+    rpi_display_update();
 }
 
 /* frogger_gamescreen */

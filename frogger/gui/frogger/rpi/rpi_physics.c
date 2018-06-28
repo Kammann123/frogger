@@ -75,6 +75,8 @@ bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
                 return false;
             }
             break;
+        default:
+            break;
     }
 
     /* No hubo caso invalido */

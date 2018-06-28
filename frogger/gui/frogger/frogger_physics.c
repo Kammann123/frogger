@@ -145,14 +145,6 @@ static SPEED frogger_game_speed_resolution(SPEED speed);
  */
 static SPEED frogger_game_new_speed(SPEED speed, uint32_t factor, uint32_t var);
 
-/* frogger_game_get_norm_pos
- * Devuelve una posicion normalizada del objeto desde la referencia marcada
- *
- * reference: Referencia
- * obj: Objeto
- */
-static POSITION frogger_game_get_norm_pos(POSITION reference, POSITION obj);
-
 /******************/
 /* FIELD handlers */
 /******************/
@@ -509,31 +501,6 @@ static OBJECT_TYPES frogger_game_type_conv(char* str){
     return FROGGER_NONE;
 }
 
-/* frogger_game_get_norm_pos */
-static POSITION frogger_game_get_norm_pos(POSITION reference, POSITION obj){
-    uint32_t step;
-    POSITION newPos = {
-        .y = reference.y
-    };
-
-    /* Cargo el desplazamiento */
-    step = frogger_game_get_step();
-
-    /* Busco la pos */
-    for(newPos.x = reference.x;newPos.x <= (obj.x + step);newPos.x += step){
-
-        /* Verifico que es valida */
-        if( obj.x < newPos.x ){
-            newPos.x -= step;
-            return newPos;
-        }
-    }
-
-    newPos.x = obj.x;
-
-    return newPos;
-}
-
 /* frogger_game_new_speed */
 static SPEED frogger_game_new_speed(SPEED speed, uint32_t factor, uint32_t var){
     SPEED newSpeed;
@@ -734,6 +701,8 @@ void frogger_game_is_transport(void){
         /* Que este quieto... */
         if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
 
+            testing_msg("Estas quieto en el AGUA.");
+
             /* Veo cada carril en busca de transportes */
             for(i = 0;i < field.lanesQty && !found;i++){
                 lane = field.lanes[i];
@@ -747,8 +716,9 @@ void frogger_game_is_transport(void){
 
                         /* Me fijo si esta en el */
                         if( gui_animation_collision(frog.object, object) ){
-                            if( frog.transport == NULL ){
                                 /* Modo transporte */
+                            if( frog.transport == NULL ){
+                                testing_msg("Modo transporte ACTIVADO");
                                 frog.transport = object;
                                 found = true;
                                 /* Normalizo la posicion */
@@ -757,6 +727,7 @@ void frogger_game_is_transport(void){
                             if( frog.transport != NULL ){
                                 /* Salgo de modo transporte? */
                                 if( frog.transport == object ){
+                                    testing_msg("Modo transporte DESACTIVADO");
                                     frog.transport = NULL;
                                     found = true;
                                 }
@@ -766,6 +737,10 @@ void frogger_game_is_transport(void){
                 }
             }
         }
+    }
+
+    if( found ){
+        testing_msg("Salida forzada. Cambio de estado.");
     }
 }
 
@@ -784,6 +759,7 @@ void frogger_game_transport_frog(void){
 
             /* Me fijo si esta quieto */
             if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
+                testing_msg("Tranportando a nueva locacion.");
 
                 /* Configuro parametros de movimiento */
                 if( gui_animation_get_orientation(frog.transport) == GUI_HORIZONTAL_LEFT ){
@@ -794,7 +770,7 @@ void frogger_game_transport_frog(void){
                 }
 
                 /* Valido posicion */
-                if( x >= 0  && x <= (DISPLAY_DIVISIONS_X - 1)*step ){
+                if( x >= 0  && x <= ((DISPLAY_DIVISIONS_X)*step) ){
 
                     /* Configuro velocidad */
                     frog.object->speed = frog.transport->speed;
@@ -809,10 +785,12 @@ void frogger_game_transport_frog(void){
 
                     /* Inicio el movimiento */
                     gui_animation_start_static_movement(frog.object, step);
-                }
 
-                /* Sincronizo con el transporte */
-                frog.object->timeCounter = frog.transport->timeCounter;
+                    /* Sincronizo con el transporte */
+                    frog.object->timeCounter = frog.transport->timeCounter;
+                }else{
+                    testing_msg("FUERA del campo");
+                }
             }
         }
     }
@@ -845,10 +823,14 @@ void frogger_game_reset_frog_position(void){
     /* Cargo el desplazamiento */
     step = frogger_game_get_step();
 
+    /* Reload */
+    if( !gui_animation_reload_object(frog.object) ){
+        return;
+    }
+
     /* Seteo posicion y orientacion de rana */
     frog.object->pos = map_position(DEFAULT_FROG_X * step, DEFAULT_FROG_Y * step);
     gui_animation_set_animation(frog.object, DEFAULT_FROG_ANIMATION);
-
 }
 
 /* frogger_game_collisions */
@@ -909,16 +891,18 @@ bool frogger_game_move_frog(INPUT_VALUES input){
                 gui_animation_start_movement(frog.object, FROG_RIGHT, step);
                 break;
             default:
-                return;
+                return false;
                 break;
         }
 
         /* Finalizo tranporte */
         if( frog.transport != NULL ){
+            testing_msg("Modo transporte DESACTIVADO");
             frog.transport = NULL;
             if( !gui_animation_reload_object(frog.object) ){
                 return false;
             }
+            testing_msg("Velocidad reset.");
         }
     }
 

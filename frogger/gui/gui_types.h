@@ -11,7 +11,7 @@
 #include <stdbool.h>
 
 #include "../score_board/score_board.h"
-
+    
 /* Habilita impresiones de modo prueba */
 
 #define MAX_STRING 512

@@ -105,6 +105,7 @@ bool frogger_game_frog_init(FROG* frog){
 
 /* frogger_game_movement_valid */
 bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
+    int32_t step = frogger_game_get_step();
     /* Me fijo que no haya colision con obstaculos */
     if( map_collision(input, TRASH_0_X, TRASH_0_Y) ){
         return false;
@@ -115,25 +116,27 @@ bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
     if( map_collision(input, PHONE_X, PHONE_Y) ){
         return false;
     }
+
+    printf("%d %d\n", frog.object->pos.x, ALLEGRO_DISPLAY_BORDER_LEFT);
     /* Me fijo que este en los limites */
     switch(input){
         case MOVE_UP:
-            if( frog.object->pos.y == ALLEGRO_DISPLAY_BORDER_UP ){
+            if( (frog.object->pos.y - step) < ALLEGRO_DISPLAY_BORDER_UP ){
                 return false;
             }
             break;
         case MOVE_DOWN:
-            if( frog.object->pos.y == ALLEGRO_DISPLAY_BORDER_DOWN ){
+            if( (frog.object->pos.y + step) > ALLEGRO_DISPLAY_BORDER_DOWN ){
                 return false;
             }
             break;
         case MOVE_LEFT:
-            if( frog.object->pos.x == ALLEGRO_DISPLAY_BORDER_LEFT ){
+            if( ((frog.object->pos.x) - step) < ALLEGRO_DISPLAY_BORDER_LEFT ){
                 return false;
             }
             break;
         case MOVE_RIGHT:
-            if( frog.object->pos.x == ALLEGRO_DISPLAY_BORDER_RIGHT ){
+            if( (frog.object->pos.x + step) > ALLEGRO_DISPLAY_BORDER_RIGHT ){
                 return false;
             }
             break;

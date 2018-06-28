@@ -185,6 +185,10 @@ LENGTH gui_animation_get_frame_length(ANIMATED_OBJECT* object, ANIMATION_ID id){
 GUI_ANIMATION_ORIENTATION gui_animation_get_orientation(ANIMATED_OBJECT* object){
     LENGTH i;
     ANIMATION animation;
+    
+    if( object == NULL ){
+        return GUI_ORIENTATION_NULL;
+    }
 
     /* Busco entre las animaciones */
     for(i = 0;i < object->animQty;i++){
@@ -197,6 +201,8 @@ GUI_ANIMATION_ORIENTATION gui_animation_get_orientation(ANIMATED_OBJECT* object)
             return animation.orientation;
         }
     }
+
+    return GUI_ORIENTATION_NULL;
 }
 
 /* gui_animation_seek_animation */
@@ -299,6 +305,7 @@ static uint32_t gui_animation_nextframe_object(OBJECT_POINTER object){
             return object->frameIndex;
         }
     }
+    return 0;
 }
 
 /* gui_animation_create_object */
@@ -396,8 +403,8 @@ void gui_animation_destroy_object(OBJECT_POINTER object){
 OBJECT_POINTER gui_animation_load_object(char* filename, POSITION pos, ANIMATION_ID id){
     OBJECT_POINTER object;
     SETTING* settings;
-    LENGTH length;
-    char* str, i;
+    LENGTH length, i;
+    char* str;
     char ai[10];
 
     /* Creo el objeto por primera vez */
@@ -759,14 +766,19 @@ static void* gui_animation_engine_thread(void* thisEngine){
                                     object->status = GUI_ANIMATION_STATE_STATIC;
                                 }
                                 break;
+                            default:
+                                break;
                         }
 
                         /* Me fijo si ya llego */
-                        if( object->status == GUI_ANIMATION_STATE_STATIC_MOVE || object->status == GUI_ANIMATION_STATE_MOVE ){
-                            object->distance -= (object->speed.spaceDelta / gui_animation_get_frame_length(object, object->currentAnimation));
+                        if( (object->status == GUI_ANIMATION_STATE_STATIC_MOVE) || (object->status == GUI_ANIMATION_STATE_MOVE) ){
+                            if( object->status == GUI_ANIMATION_STATE_MOVE ){
+                                object->distance -= (object->speed.spaceDelta / gui_animation_get_frame_length(object, object->currentAnimation));
+                            }else{
+                                object->distance -= object->speed.spaceDelta;
+                            }
                             if( object->distance <= 0 ){
                                 object->status = GUI_ANIMATION_STATE_STATIC;
-                                object->frameIndex = 0;
                             }
                         }
                     }
@@ -774,6 +786,8 @@ static void* gui_animation_engine_thread(void* thisEngine){
             }
         }
     }
+
+    return NULL;
 }
 
 /* gui_animation_create_engine */
@@ -866,6 +880,10 @@ bool gui_animation_attach_engine(ANIMATION_ENGINE* engine, ANIMATED_OBJECT* obje
 
 /* gui_animation_start_static_movement */
 void gui_animation_start_static_movement(ANIMATED_OBJECT* object, int32_t distance){
+    
+    if(object->width == 40){
+        testing_msg("Muevase RANA!");
+    }
     /* Configuro posicion final */
     object->distance = distance;
 

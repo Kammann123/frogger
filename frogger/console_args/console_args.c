@@ -24,7 +24,7 @@ static bool is_letter(char str);
 /* is_numeric_string
  * Devuelve TRUE si el string es solamente numerico
  *
- * str: String 
+ * str: String
  */
 static bool is_numeric_string(char* str);
 
@@ -41,9 +41,9 @@ static bool is_boolean_string(char* str, bool* value);
 /********************/
 
 /* entries_get_int */
-bool entries_get_int(ENTRIES* entries, char* command, uint32_t* integer){    
+bool entries_get_int(ENTRIES* entries, char* command, uint32_t* integer){
     LENGTH i;
-    
+
     /* Recorro las entradas */
     for(i = 0;i < entries->length;i++){
         /* Busco el comando */
@@ -58,7 +58,7 @@ bool entries_get_int(ENTRIES* entries, char* command, uint32_t* integer){
 /* entries_get_string */
 char* entries_get_string(ENTRIES* entries, char* command){
     LENGTH i;
-    
+
     /* Recorro las entradas */
     for(i = 0;i < entries->length;i++){
         /* Busco el comando */
@@ -72,25 +72,25 @@ char* entries_get_string(ENTRIES* entries, char* command){
 /* read_entries */
 bool read_entries(ENTRIES* entries, char** str, LENGTH length){
     LENGTH i;
-    
+
     /* Creo la instancia */
     *entries = entries_create();
-    
+
     /* Inicializo */
     if( !entries_init(entries, length) ){
         return false;
     }
-    
+
     /* Leo cada una */
     for(i = 0;i < length;i++){
-        
+
         /* Verifico ok */
         if( !read_entry(&entries->entryList[i], str[i]) ){
             entries_destroy(entries);
             return false;
         }
     }
-    
+
     /* Exito */
     return true;
 }
@@ -98,12 +98,12 @@ bool read_entries(ENTRIES* entries, char** str, LENGTH length){
 /* entries_create */
 ENTRIES entries_create(void){
     ENTRIES entries;
-    
+
     /* Parametros por defecto */
     entries.entryList = NULL;
     entries.length = 0;
     entries.init = false;
-    
+
     /* Devuelvo */
     return entries;
 }
@@ -111,22 +111,22 @@ ENTRIES entries_create(void){
 /* entries_init */
 bool entries_init(ENTRIES* entries, LENGTH length){
     LENGTH i;
-    
+
     /* Reservo memoria */
     entries->entryList = malloc( sizeof(ENTRY) * length );
     if( entries->entryList == NULL ){
         return false;
     }
-    
+
     /* Set to NULL */
     for(i = 0;i < length;i++){
         entries->entryList[i] = entry_create();
     }
-    
+
     /* Inicializado!! */
     entries->init = true;
     entries->length = length;
-    
+
     /* OK! */
     return true;
 }
@@ -134,25 +134,25 @@ bool entries_init(ENTRIES* entries, LENGTH length){
 /* entries_destroy */
 void entries_destroy(ENTRIES* entries){
     LENGTH i;
-    
+
     /* Verifico inicializacion */
     if( entries->init ){
-        
+
         /* Verificacion */
         if( entries->entryList == NULL ){
             return;
         }
-        
+
         /* Libero memoria de entries */
         for(i = 0;i < entries->length;i++){
             /* Libero y destruyo entradas */
             entry_destroy( &entries->entryList[i] );
         }
-        
+
         /* Libero arreglo */
         free( entries->entryList );
     }
-    
+
     /* Apago */
     entries->init = false;
 }
@@ -164,11 +164,11 @@ void entries_destroy(ENTRIES* entries){
 /* read_entry */
 bool read_entry(ENTRY* entry, char* str){
     READ_ENTRY_FSM  state = ENTRY_FSM_OPEN;
-    
+
     STRING command = "";
     STRING value = "";
     LENGTH i = 0;
-    
+
     /* Creo la instancia */
     *entry = entry_create();
 
@@ -208,18 +208,20 @@ bool read_entry(ENTRY* entry, char* str){
                     }
                 }else if( *str == '\0' ){
                     value[i++] = '\0';
-                    i = 0;                    
+                    i = 0;
                     state = ENTRY_FSM_OK;
                 }else{
                     state = ENTRY_FSM_ERROR;
                 }
                 break;
-                
+            default:
+                break;
+
         }
         /* Muevo la cadena */
         str++;
     }
-    
+
     /* Manejo resultados */
     if( state == ENTRY_FSM_OK ){
         if( !entry_init(entry, command) ){
@@ -232,19 +234,19 @@ bool read_entry(ENTRY* entry, char* str){
         }
         return true;
     }
-    
+
     return false;
 }
 
 /* entry_create */
 ENTRY entry_create(void){
     ENTRY entry;
-    
+
     /* Parametros por defecto */
     entry.init = false;
     entry.command = NULL;
     entry.hasValue = false;
-    
+
     /* Devuelvo */
     return entry;
 }
@@ -252,20 +254,20 @@ ENTRY entry_create(void){
 /* entry_init */
 bool entry_init(ENTRY* entry, char* command){
     LENGTH length;
-    
+
     /* Calculo cantidad de memoria */
     length = strlen(command) + 1;
-    
+
     /* Reservo memoria */
     entry->command = malloc( sizeof(char) * length );
     if( entry->command == NULL ){
         return false;
     }
-    
+
     /* Guardo e inicializo */
     strcpy(entry->command, command);
     entry->init = true;
-    
+
     /* Exito */
     return true;
 }
@@ -274,44 +276,44 @@ bool entry_init(ENTRY* entry, char* command){
 void entry_destroy(ENTRY* entry){
     /* Verifico inicializacion */
     if( entry->init ){
-        
+
         /* Libero memoria */
         if( entry->command != NULL ){
             free( entry->command );
         }
-        
+
         /* Destruyo contenido */
         entry_value_destroy(&entry->value);
     }
-    
+
     /* Apago */
     entry->init = false;
 }
 
 /* entry_set_value */
 bool entry_set_value(ENTRY* entry, char* value){
-    
+
     /* Verifico el entry */
     if( entry == NULL ){
         return false;
     }
-    
+
     if( value == NULL ){
         return false;
     }
-    
+
     /* Creo la instancia */
     entry->value = entry_value_create();
-    
+
     /* Inicializo */
     if( !entry_value_init(&entry->value, value) ){
         return false;
     }
-    
+
     if( strcmp(value, "") ){
         entry->hasValue = true;
     }
-    
+
     /* Exito */
     return true;
 }
@@ -323,11 +325,11 @@ bool entry_set_value(ENTRY* entry, char* value){
 /* entry_value_create */
 ENTRY_VALUE entry_value_create(void){
     ENTRY_VALUE entry;
-    
+
     /* Parametros por defecto */
     entry.init = false;
     entry.string = NULL;
-    
+
     /* Devuelvo instancia */
     return entry;
 }
@@ -335,27 +337,27 @@ ENTRY_VALUE entry_value_create(void){
 /* entry_value_init */
 bool entry_value_init(ENTRY_VALUE* entry, char* value){
     LENGTH length;
-    
+
     /* Calculo cantidad de memoria */
     length = strlen(value) + 1;
-    
+
     /* Reservo memoria para la entry */
     entry->string = malloc( sizeof(char) * length );
     if( entry->string == NULL ){
         return false;
     }
-    
+
     /* Guardo e inicializo */
     strcpy(entry->string, value);
     entry->init = true;
-    
+
     /* Completo otros campos si es necesario */
     if( !is_boolean_string(value, &entry->boolean) ){
         if( is_numeric_string(value) ){
             entry->integer = atoi(value);
         }
     }
-    
+
     /* Exito */
     return true;
 }
@@ -369,7 +371,7 @@ void entry_value_destroy(ENTRY_VALUE* entry){
             free(entry->string);
         }
     }
-    
+
     /* Apago */
     entry->init = false;
 }

@@ -10,7 +10,7 @@
 
 /* Configuracion */
 
-#define JOYSTICK_PRESET 70
+#define JOYSTICK_PRESET 40
 
 /****************/
 /* Definiciones */
