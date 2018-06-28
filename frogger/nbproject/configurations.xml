@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>gui/frogger/rpi/bitmaps.h</itemPath>
+      <itemPath>console_args/console_args.h</itemPath>
       <itemPath>logic/frogger/frogger_kernel.h</itemPath>
       <itemPath>gui/frogger/frogger_output.h</itemPath>
       <itemPath>gui/frogger/frogger_physics.h</itemPath>
@@ -30,6 +31,7 @@
       <itemPath>gui/frogger/allegro/allegro_output.c</itemPath>
       <itemPath>gui/frogger/allegro/allegro_physics.c</itemPath>
       <itemPath>gui/frogger/rpi/bitmaps.c</itemPath>
+      <itemPath>console_args/console_args.c</itemPath>
       <itemPath>logic/frogger/frogger_kernel.c</itemPath>
       <itemPath>gui/frogger/frogger_physics.c</itemPath>
       <itemPath>gui/gui_animation/gui_animation.c</itemPath>
@@ -79,6 +81,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="console_args/console_args.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="console_args/console_args.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="gui/frogger/allegro/allegro_init.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/frogger/allegro/allegro_input.c"
@@ -163,6 +169,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="console_args/console_args.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="console_args/console_args.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="gui/frogger/allegro/allegro_init.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="gui/frogger/allegro/allegro_input.c"

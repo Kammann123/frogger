@@ -1,0 +1,9 @@
+[attributes]
+id: OK
+orientation: ORIENTATION_NULL
+
+[frames]
+0: gui/frogger/rpi/howto/ok/ok_0.bmp
+1: gui/frogger/rpi/howto/ok/ok_1.bmp
+
+END

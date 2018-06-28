@@ -43,6 +43,11 @@ static void frogger_lostscreen_close(void);
  */
 static void frogger_topscreen_close(void);
 
+/* frogger_howscreen_close
+ * Cierra la ventana de howto
+ */
+static void frogger_howscreen_close(void);
+
 /*******************/
 /* SCREEN handlers */
 /*******************/
@@ -57,6 +62,133 @@ void frogger_screen_close(GAME_STAGE* stage){
         frogger_lostscreen_close();
     }else if( is_stage(stage, RANKING_STAGE) ){
         frogger_topscreen_close();
+    }else if( is_stage(stage, HOWTO_STAGE) ){
+        frogger_howscreen_close();
+    }
+}
+
+/******************/
+/* HOWTO handlers */
+/******************/
+
+/* Configuracion */
+#define HOWSCREEN_PATH  "gui/frogger/rpi/howto/"
+#define TUTO_OBJFILE    HOWSCREEN_PATH "howto"
+
+#define TUTO_POS        map_position(0, 0)
+#define AVOID_ANIM      "AVOID"
+#define ENTER_ANIM      "ENTER"
+#define OK_ANIM         "OK"
+
+/* Estados del tutorial */
+typedef enum{
+    HOWTO_AVOID,
+    HOWTO_ENTER,
+    HOWTO_OK
+} TUTO_STEPS;
+
+/* Objetos */
+static ANIMATED_OBJECT* tutorial = NULL;
+static TUTO_STEPS tutoStep = HOWTO_AVOID;
+
+/* frogger_howscreen */
+bool frogger_howscreen(GAME_STAGE* stage){
+    BITMAP* bitmap;
+
+    /* Verifico inicializacion */
+    if( tutorial == NULL ){
+        tutorial = gui_animation_load_object(TUTO_OBJFILE, TUTO_POS, AVOID_ANIM);
+        if( tutorial == NULL ){
+            return false;
+        }
+        testing_msg("Cargo el objeto.");
+
+        /* Inicializo etapa */
+        tutoStep = HOWTO_AVOID;
+
+        /* Lo agrego al motor */
+        if( !gui_animation_attach_engine(frogger_get_engine(), tutorial) ){
+            return false;
+        }
+        testing_msg("Agrego objeto al motor.");
+    }
+
+    /* Verifico estado del movimiento */
+    if( tutorial->status == GUI_ANIMATION_STATE_STATIC ){
+
+        /* Prendo el motor */
+        gui_animation_start_engine(frogger_get_engine());
+        testing_msg("Inicio el motor");
+
+        /* Arranco la animacion */
+        gui_animation_start_loop(tutorial, AVOID_ANIM);
+        testing_msg("Inicio el objeto.");
+    }
+
+    /* Cargo el bitmap */
+    bitmap = rpi_load_bitmap( gui_animation_get_frame(tutorial) );
+    if( bitmap == NULL ){
+        return false;
+    }
+    rpi_draw_bitmap(bitmap, tutorial->pos);
+    destroy_bitmap(bitmap);
+
+    testing_msg("Manda objetos al display");
+
+    /* Flip update */
+    rpi_display_update();
+
+    return true;
+}
+
+/* frogger_howscreen_move */
+void frogger_howscreen_move(GAME_STAGE* stage, EVENT input){
+    if( input.type == ACTION_EVENT ){
+        if( input.data == ENTER ){
+            if( tutoStep == HOWTO_OK ){
+                change_stage(stage, MAINMENU_STAGE);
+                gui_animation_pause_engine(frogger_get_engine());
+            }
+        }
+        return;
+    }else if( input.type == MOVEMENT_EVENT ){
+        if( input.data == MOVE_LEFT ){
+            if( tutoStep > HOWTO_AVOID ){
+                tutoStep--;
+            }else{
+                return;
+            }
+        }else if( input.data == MOVE_RIGHT ){
+            if( tutoStep < HOWTO_OK ){
+                tutoStep++;
+            }else{
+                return;
+            }
+        }else{
+            return;
+        }
+    }else{
+        return;
+    }
+
+    /* Cambio animacion */
+    switch( tutoStep ){
+        case HOWTO_AVOID:
+            gui_animation_set_animation(tutorial, AVOID_ANIM);
+            break;
+        case HOWTO_ENTER:
+            gui_animation_set_animation(tutorial, ENTER_ANIM);
+            break;
+        case HOWTO_OK:
+            gui_animation_set_animation(tutorial, OK_ANIM);
+            break;
+    }
+}
+
+/* frogger_howscreen_close */
+static void frogger_howscreen_close(void){
+    if( tutorial != NULL ){
+        gui_animation_destroy_object( tutorial );
     }
 }
 
@@ -80,7 +212,7 @@ static bool posChanged = false;
 void frogger_topscreen_tasks(GAME_STAGE* stage){
     static TOPSCREEN_STAGES state = TOPSCREEN_INIT;
     STRING str;
-    
+
     /* Estados */
     switch(state){
         case TOPSCREEN_INIT:
@@ -682,8 +814,16 @@ static void frogger_lostscreen_close(void){
 #define GAMESCREEN_PATH    RPI_PATH "gamescreen/"
 #define GAMESCREEN_FIELD   GAMESCREEN_PATH "field.bmp"
 
+#define BLINK_VALUE        2
+
+/* gui_graphics_close */
+void gui_graphics_close(void){
+    frogger_howscreen_close();
+}
+
 /* frogger_gamescreen */
 bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score){
+    static LENGTH frogBlink = BLINK_VALUE;
     BITMAP* bitmap;
     LANE lane;
     FROGGER_OBJECT object;
@@ -721,15 +861,20 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
         }
     }
 
-    /* Pongo la ranita :) */
-    bitmap = rpi_load_bitmap( gui_animation_get_frame(frog.object) );
-    if( bitmap == NULL ){
-        return false;
+    frogBlink--;
+    if( !frogBlink ){
+        /* Pongo la ranita :) */
+        bitmap = rpi_load_bitmap( gui_animation_get_frame(frog.object) );
+        if( bitmap == NULL ){
+            return false;
+        }
+        if( !rpi_draw_bitmap(bitmap, frogger_convert_position(frog.object->pos)) ){
+            return false;
+        }
+        destroy_bitmap(bitmap);
+        /* Reincio */
+        frogBlink = BLINK_VALUE;
     }
-    if( !rpi_draw_bitmap(bitmap, frogger_convert_position(frog.object->pos)) ){
-        return false;
-    }
-    destroy_bitmap(bitmap);
 
     /* Mando el buffer al display */
     rpi_display_update();

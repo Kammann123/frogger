@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#include "../gui_input.h"
+
 #include "../gui_animation/gui_animation.h"
 
 /**************/
@@ -168,6 +170,11 @@ FROG frogger_get_frog(void);
  */
 FIELD frogger_get_field(void);
 
+/* frogger_get_engine
+ * Devuelve la instancia del motor de animacion del juego
+ */
+ANIMATION_ENGINE* frogger_get_engine(void);
+
 /****************************/
 /* Funciones segun interfaz */
 /****************************/
@@ -197,7 +204,7 @@ bool frogger_game_frog_init(FROG* frog);
  * frog: Ranita
  * input: Entrada del usuario
  */
-bool frogger_game_movement_valid(FROG frog, uint16_t input);
+bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input);
 
 /* frogger_game_create_object
  * Crea un objeto animado perteneciente a un carril
@@ -282,7 +289,7 @@ void frogger_game_move_lanes(void);
  *
  * input: Direccion ingresada por usuario
  */
-bool frogger_game_move_frog(uint16_t input);
+bool frogger_game_move_frog(INPUT_VALUES input);
 
 /* frogger_game_pause
  * Pausa el juego

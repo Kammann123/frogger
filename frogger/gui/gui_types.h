@@ -13,7 +13,6 @@
 #include "../score_board/score_board.h"
 
 /* Habilita impresiones de modo prueba */
-#define TESTING
 
 #define MAX_STRING 512
 

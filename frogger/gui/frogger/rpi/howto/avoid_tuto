@@ -1,0 +1,13 @@
+[attributes]
+id: AVOID
+orientation: ORIENTATION_NULL
+
+[frames]
+0: gui/frogger/rpi/howto/avoid/avoid_0.bmp
+1: gui/frogger/rpi/howto/avoid/avoid_1.bmp
+2: gui/frogger/rpi/howto/avoid/avoid_2.bmp
+3: gui/frogger/rpi/howto/avoid/avoid_3.bmp
+4: gui/frogger/rpi/howto/avoid/avoid_4.bmp
+5: gui/frogger/rpi/howto/avoid/avoid_5.bmp
+
+END

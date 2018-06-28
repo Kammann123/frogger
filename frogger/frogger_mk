@@ -1,10 +1,10 @@
 CC = gcc
 
 HEADERS = logic/frogger/frogger_kernel.h gui/gui_types.h gui/gui_input.h gui/gui_init.h gui/gui_timer/gui_timer.h gui/gui_files/gui_files.h\
- gui/gui_events/gui_events.h gui/gui_animation/gui_animation.h gui/frogger/frogger_output.h gui/frogger/frogger_physics.h gui/frogger/rpi/bitmaps.h score_board/score_board.h
+ gui/gui_events/gui_events.h gui/gui_animation/gui_animation.h gui/frogger/frogger_output.h gui/frogger/frogger_physics.h gui/frogger/rpi/bitmaps.h score_board/score_board.h console_args/console_args.h
 
 SRC = logic/frogger/frogger_kernel.c gui/gui_types.c gui/gui_timer/gui_timer.c gui/gui_files/gui_files.c gui/gui_events/gui_events.c\
- gui/gui_animation/gui_animation.c gui/frogger/frogger_physics.c score_board/score_board.c
+ gui/gui_animation/gui_animation.c gui/frogger/frogger_physics.c score_board/score_board.c console_args/console_args.c
 
 AL_SRC = gui/frogger/allegro/allegro_input.c gui/frogger/allegro/allegro_init.c gui/frogger/allegro/allegro_output.c\
  gui/frogger/allegro/allegro_physics.c
@@ -12,7 +12,7 @@ AL_SRC = gui/frogger/allegro/allegro_input.c gui/frogger/allegro/allegro_init.c 
 RPI_SRC = gui/frogger/rpi/bitmaps.c gui/frogger/rpi/rpi_graphics.c gui/frogger/rpi/rpi_input.c gui/frogger/rpi/rpi_output.c gui/frogger/rpi/rpi_physics.c
 RPI_HEADERS = gui/frogger/rpi/rpi_graphics.h
 
-OBJS = frogger_kernel.o gui_types.o gui_timer.o gui_files.o gui_events.o gui_animation.o frogger_physics.o score_board.o
+OBJS = frogger_kernel.o gui_types.o gui_timer.o gui_files.o gui_events.o gui_animation.o frogger_physics.o score_board.o console_args.o
 
 AL_OBJS = allegro_input.o allegro_init.o allegro_output.o allegro_physics.o
 
@@ -26,7 +26,7 @@ allegro_audio-5.0` `pkg-config --libs allegro_color-5.0` `pkg-config --libs alle
 
 RPI_INC = gui/frogger/rpi/disdrv.o gui/frogger/rpi/joydrv.o gui/frogger/rpi/termlib.o
 
-OPTIONS = -pthread
+OPTIONS = -pthread -Wall
 
 allegro: ${HEADERS} ${SRC} ${AL_SRC} ${OBJS} ${AL_OBJS}
 	${CC} ${OBJS} ${AL_OBJS} main.c -o frogger ${OPTIONS} ${AL_INC} 

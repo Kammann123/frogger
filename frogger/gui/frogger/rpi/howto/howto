@@ -1,0 +1,12 @@
+[attributes]
+width: 16
+height: 16
+timedelta: 250
+spacedelta: 1
+
+[animations]
+0: gui/frogger/rpi/howto/avoid_tuto
+1: gui/frogger/rpi/howto/enter_tuto
+2: gui/frogger/rpi/howto/ok_tuto
+
+END

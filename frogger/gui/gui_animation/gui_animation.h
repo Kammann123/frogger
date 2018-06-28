@@ -268,7 +268,7 @@ void gui_animation_stop_movement(ANIMATED_OBJECT* object);
  * Para la animacion del objeto 
  *
  * object: Objeto
- */
+ */ 
 void gui_animation_stop_loop(ANIMATED_OBJECT* object);
 
 /* gui_animation_start_loop 

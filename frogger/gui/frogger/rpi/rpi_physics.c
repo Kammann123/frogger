@@ -52,7 +52,7 @@ bool frogger_game_frog_init(FROG* frog){
 }
 
 /* frogger_game_movement_valid */
-bool frogger_game_movement_valid(FROG frog, uint16_t input){
+bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
 /* Me fijo que este en los limites */
     switch(input){
         case MOVE_UP:

@@ -1,0 +1,15 @@
+[attributes]
+id: ENTER
+orientation: ORIENTATION_NULL
+
+[frames]
+0: gui/frogger/rpi/howto/enter/enter_0.bmp
+1: gui/frogger/rpi/howto/enter/enter_1.bmp
+2: gui/frogger/rpi/howto/enter/enter_2.bmp
+3: gui/frogger/rpi/howto/enter/enter_3.bmp
+4: gui/frogger/rpi/howto/enter/enter_4.bmp
+5: gui/frogger/rpi/howto/enter/enter_5.bmp
+6: gui/frogger/rpi/howto/enter/enter_6.bmp
+7: gui/frogger/rpi/howto/enter/enter_7.bmp
+
+END

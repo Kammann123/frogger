@@ -41,6 +41,50 @@ void frogger_screen_close(GAME_STAGE* stage){
     }
 }
 
+/******************/
+/* HOWTO handlers */
+/******************/
+
+/* Configuracion */
+#define HOWSCREEN_PATH  "gui/frogger/allegro/howtoscreen/"
+#define HOWSCREEN_IMAGE HOWSCREEN_PATH "background.png"
+
+/* frogger_howscreen */
+bool frogger_howscreen(GAME_STAGE* stage){
+    ALLEGRO_BITMAP* bitmap;
+
+    /* Abro el display si no lo esta */
+    if( display == NULL ){
+        display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        if( display == NULL ){
+            return false;
+        }
+        al_set_window_position(display, DISPLAY_POS_X, DISPLAY_POS_Y);
+    }
+
+    /* Cargo el bitmap */
+    bitmap = al_load_bitmap(HOWSCREEN_IMAGE);
+    if( bitmap == NULL ){
+        return false;
+    }
+    /* Lo imprimo */
+    al_draw_bitmap(bitmap, 0, 0, 0);
+    al_destroy_bitmap(bitmap);
+    /* Flip display */
+    al_flip_display();
+
+    return true;
+}
+
+/* frogger_howscreen_move */
+void frogger_howscreen_move(GAME_STAGE* stage, EVENT input){
+    if( input.type == ACTION_EVENT ){
+        if( input.data == ENTER ){
+            change_stage(stage, MAINMENU_STAGE);
+        }
+    }
+}
+
 /**********************/
 /* TOPSCREEN handlers */
 /**********************/
@@ -61,31 +105,32 @@ bool frogger_topscreen(GAME_STAGE* stage){
     ALLEGRO_FONT* font;
     LENGTH i;
     STRING str;
-    
+
     /* Abro ventana si no lo esta */
     if( display == NULL ){
         display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         if( display == NULL ){
             return false;
         }
+        al_set_window_position(display, DISPLAY_POS_X, DISPLAY_POS_Y);
     }
-    
+
     /* Cargo el fondo */
     bitmap = al_load_bitmap(TOPSCREEN_BACK);
     if( bitmap == NULL ){
         return false;
     }
-    
+
     /* Lo imprimo */
     al_draw_bitmap(bitmap, 0, 0, 0);
-    
+
     /* Cargo fuente */
     font = al_load_ttf_font(TOPSCREEN_FONT, TOPSCREEN_SIZE, 0);
     if( font == NULL ){
         al_destroy_bitmap(bitmap);
         return false;
     }
-    
+
     /* Imprimo los textos */
     for(i = 0;i < stage->topLength;i++){
         /* Cargo la posicion */
@@ -94,14 +139,14 @@ bool frogger_topscreen(GAME_STAGE* stage){
             al_destroy_bitmap(bitmap);
             return false;
         }
-        
+
         /* Imprimo */
         al_draw_text(font, HIGH_COLOR, HIGH_X, HIGH_Y + HIGH_DY * i, 0, str);
     }
-    
+
     /* Flip display */
     al_flip_display();
-    
+
     /* Exito */
     al_destroy_font(font);
     al_destroy_bitmap(bitmap);
@@ -171,6 +216,8 @@ void frogger_mainmenu_move(INPUT_VALUES input){
                 mainmenuSelection += 1;
             }
             break;
+        default:
+            break;
     }
 }
 
@@ -231,6 +278,8 @@ void frogger_pausemenu_move(INPUT_VALUES input){
             if( pausemenuSelection != PAUSE_EXIT_OPTION ){
                 pausemenuSelection += 1;
             }
+            break;
+        default:
             break;
     }
 }
@@ -294,6 +343,8 @@ void frogger_changescreen_tasks(GAME_STAGE *stage){
                     state = CHANGESCREEN_INIT;
                 }
             }
+            break;
+        default:
             break;
     }
 }
@@ -460,7 +511,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     }
     al_draw_bitmap(bitmap, 0, 0, 0);
     al_destroy_bitmap(bitmap);
-    
+
     /* Pongo las vidas */
     sprintf(text, "%s%d.png", GAMESCREEN_LIFES, lifes);
     bitmap = al_load_bitmap( text );
@@ -478,7 +529,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     sprintf(text, "%s %d", GAME_SCORE_MSG, score);
     al_draw_text(font, SCORE_COLOR, GAME_DISPLAY_SCORE_X, GAME_DISPLAY_SCORE_Y, 0, text);
     al_destroy_font(font);
-    
+
     /* Pongo la info de time */
     font = al_load_ttf_font(GAMESCREEN_FONT, GAMESCREEN_SIZE, 0);
     if( font == NULL ){

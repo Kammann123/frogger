@@ -12,32 +12,35 @@
 /* Funciones publicas */
 /**********************/
 
-/* gui_graphics_init
- * Inicializa la interfaz IO
- */
+/* gui_graphics_init */
 bool gui_graphics_init(void){
-    
+
     /* Inicializo el modulo general */
     if( !al_init() ){
         return false;
     }
-    
+
     if( !al_init_image_addon() ){
         return false;
     }
-    
+
     al_init_font_addon();
-    
+
     if( !al_init_ttf_addon() ){
         return false;
     }
-    
+
     /* Instalo el teclado */
     if( !al_install_keyboard() ){
         return false;
     }
-    
+
     /* Inicializacion exitosa */
     return true;
-    
+
+}
+
+/* gui_graphics_close */
+void gui_graphics_close(void){
+    return;
 }

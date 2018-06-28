@@ -16,6 +16,8 @@
 #include "gui/frogger/rpi/bitmaps.h"
 #include "score_board.h"
 
+#include "console_args/console_args.h"
+
 /**************/
 /* Constantes */
 /**************/
@@ -131,10 +133,20 @@ int main(int argc, char** argv){
     EVENT event;
 
     /* Game stage variable */
-    GAME_STAGE stage = stage_init("player");
+    GAME_STAGE stage;
 
-    /* Error */
+    /* Interprete de comandos consola */
+    ENTRIES entries;
+
+    char* str;
     bool error;
+
+    /* Leo las entradas de consola */
+    read_entries(&entries, &argv[1], argc-1);
+
+    /* Cargo nombre del usuario si esta */
+    str = entries_get_string(&entries, "name");
+    stage = stage_init(str);
 
     /* Inicializo la interfaz */
         if( !gui_graphics_init( ) ){
@@ -241,6 +253,9 @@ int main(int argc, char** argv){
 
     /* Libero memoria de objetos */
     frogger_game_close();
+
+    /* Cierro interfaz */
+    gui_graphics_close();
 }
 
 /****************/
@@ -289,6 +304,9 @@ void switch_tasks_target(GAME_STAGE* stage){
                 change_stage(stage, FROGGER_STAGE);
             }
             break;
+        default:
+            return;
+            break;
     }
 }
 
@@ -306,6 +324,7 @@ void switch_update_target(GAME_STAGE* stage){
             frogger_topscreen(stage);
             break;
         case HOWTO_STAGE:
+            frogger_howscreen(stage);
             break;
         case FROGGER_STAGE: case DEAD_STAGE:
             frogger_gamescreen(frogger_get_field(), frogger_get_frog(), frogger_get_lifes(), frogger_get_time(), frogger_get_score());
@@ -315,6 +334,9 @@ void switch_update_target(GAME_STAGE* stage){
             break;
         case LOSTSCREEN_STAGE:
             frogger_lostscreen(frogger_get_score());
+            break;
+        default:
+            return;
             break;
     }
 }
@@ -343,6 +365,7 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
             }
             break;
         case HOWTO_STAGE:
+            frogger_howscreen_move(stage, event);
             break;
         case FROGGER_STAGE:
             if( event.type == ACTION_EVENT ){
@@ -370,6 +393,9 @@ void switch_input_target(GAME_STAGE* stage, EVENT event){
                     save_score(stage, frogger_get_score());
                 }
             }
+            break;
+        default:
+            return;
             break;
     }
 }

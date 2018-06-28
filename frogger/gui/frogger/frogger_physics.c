@@ -880,7 +880,7 @@ bool frogger_game_collisions(void){
 }
 
 /* frogger_game_move_frog */
-bool frogger_game_move_frog(uint16_t input){
+bool frogger_game_move_frog(INPUT_VALUES input){
     uint32_t step;
 
     /* Verifico que este quieta */
@@ -907,6 +907,9 @@ bool frogger_game_move_frog(uint16_t input){
                 break;
             case MOVE_RIGHT:
                 gui_animation_start_movement(frog.object, FROG_RIGHT, step);
+                break;
+            default:
+                return;
                 break;
         }
 
@@ -1061,4 +1064,9 @@ FROG frogger_get_frog(void){
 /* frogger_get_field */
 FIELD frogger_get_field(void){
     return field;
+}
+
+/* frogger_get_engine */
+ANIMATION_ENGINE* frogger_get_engine(void){
+    return engine;
 }

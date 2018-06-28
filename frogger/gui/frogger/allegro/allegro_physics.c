@@ -34,10 +34,10 @@
 /* map_collision */
 static bool map_collision(uint16_t input, int32_t x, int32_t y){
     FROG frog;
-    
+
     /* Obtengo el objeto */
     frog = frogger_get_frog();
-    
+
     switch(input){
         case MOVE_UP:
             if( x == frog.object->pos.x ){
@@ -66,6 +66,8 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y){
                     return true;
                 }
             }
+            break;
+        default:
             break;
     }
 
@@ -102,7 +104,7 @@ bool frogger_game_frog_init(FROG* frog){
 }
 
 /* frogger_game_movement_valid */
-bool frogger_game_movement_valid(FROG frog, uint16_t input){
+bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
     /* Me fijo que no haya colision con obstaculos */
     if( map_collision(input, TRASH_0_X, TRASH_0_Y) ){
         return false;
@@ -135,6 +137,8 @@ bool frogger_game_movement_valid(FROG frog, uint16_t input){
                 return false;
             }
             break;
+        default:
+            break;
     }
 
     /* No hubo caso invalido */
@@ -164,6 +168,8 @@ ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMA
             break;
         case FROGGER_YACHT:
             object = gui_animation_load_object( ALLEGRO_YACHT_OBJFILE, pos, "" );
+            break;
+        default:
             break;
     }
 

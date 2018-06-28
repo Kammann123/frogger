@@ -7,9 +7,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/logic/frogger/frogger_kernel.c</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/gui_types.c</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/console_args/console_args.c</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/main.c</file>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/score_board.c</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/gui_types.h</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/console_args/console_args.h</file>
         </group>
     </open-files>
 </project-private>

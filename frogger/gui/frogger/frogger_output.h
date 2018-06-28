@@ -80,6 +80,25 @@ MAINMENU_OPTIONS frogger_get_mainmenu_selection(void);
  */
 PAUSEMENU_OPTIONS frogger_get_pausemenu_selection(void);
 
+/******************/
+/* HOWTO handlers */
+/******************/
+
+/* frogger_howscreen
+ * Maneja la actualizacion de pantalla del modo 
+ * de tutorial
+ */
+bool frogger_howscreen(GAME_STAGE* stage);
+
+/* frogger_howscreen_move
+ * Controla el movimiento dentro del menu
+ * de tutorial
+ *
+ * stage: Instancia
+ * input: Entrada del usuario
+ */
+void frogger_howscreen_move(GAME_STAGE* stage, EVENT input);
+
 /****************/
 /* TOP handlers */
 /****************/

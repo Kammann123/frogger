@@ -17,5 +17,9 @@
  */
 bool gui_graphics_init(void);
 
-#endif /* GUI_INIT_H */
+/* gui_graphics_close
+ * Cierra y libera memoria de interfaces
+ */
+void gui_graphics_close(void);
 
+#endif /* GUI_INIT_H */
