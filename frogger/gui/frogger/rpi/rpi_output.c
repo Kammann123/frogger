@@ -50,7 +50,163 @@ void frogger_screen_close(GAME_STAGE* stage){
         frogger_changescreen_close();
     }else if( is_stage(stage, LOSTSCREEN_STAGE) ){
         frogger_lostscreen_close();
+    }else if( is_stage(stage, RANKING_STAGE) ){
+        frogger_topscreen_close();
     }
+}
+
+/**********************/
+/* TOPSCREEN handlers */
+/**********************/
+
+/* Configuracion */
+#define TOP_POS       map_position(DISPLAY_WIDTH, 2)
+#define SCORE_POS     map_position(DISPLAY_WIDTH, 9)
+
+/* Motion text objects */
+static MOTION_TEXT* topText = NULL;
+static MOTION_TEXT* posText = NULL;
+
+/* Posicion del top */
+static LENGTH scorePos = 1;
+static bool posChanged = false;
+
+/* frogger_topscreen_tasks */
+void frogger_topscreen_tasks(GAME_STAGE* stage){
+    static TOPSCREEN_STAGES state = TOPSCREEN_INIT;
+    STRING str;
+
+    /* Estados */
+    switch(state){
+        case TOPSCREEN_INIT:
+            /* Inicializo el titulo */
+            topText = rpi_load_motion_text("TOP SCORE", TOP_POS);
+            if( topText == NULL ){
+                return;
+            }
+
+            /* Inicializo posicion de score */
+            if( !get_score_position(stage, str, scorePos) ){
+                rpi_destroy_motion_text(topText);
+                topText = NULL;
+                return;
+            }
+            posText = rpi_load_motion_text(str, SCORE_POS);
+            if( posText == NULL ){
+                rpi_destroy_motion_text(topText);
+                topText = NULL;
+                return;
+            }
+
+            /* Cambio de estado */
+            state = TOPSCREEN_OP;
+
+            /* Reinicio el timer */
+            gui_timer_clear(gui_timer_global_get(), TOPSCREEN_TIMER);
+            gui_timer_continue(gui_timer_global_get(), TOPSCREEN_TIMER);
+            break;
+        case TOPSCREEN_OP:
+            /* Verifico existencia */
+            if( topText == NULL || posText == NULL ){
+                state = TOPSCREEN_INIT;
+            }
+
+            /* Verifico cambio */
+            if( posChanged ){
+                posChanged = false;
+                stage = TOPSCREEN_INIT;
+            }
+            
+            /* Verifico overflow de timer */
+            if( gui_timer_overflow(gui_timer_global_get(), TOPSCREEN_TIMER) ){
+                /* Muevo los objetos */
+                rpi_move_motion_text(topText);
+                rpi_move_motion_bmp(posText);
+
+                /* Reinicio el timer */
+                gui_timer_clear(gui_timer_global_get(), TOPSCREEN_TIMER);
+            }
+            break;
+    }
+}
+
+/* frogger_topscreen */
+bool frogger_topscreen(GAME_STAGE* stage){
+
+    /* Verifico objetos */
+    if( topText == NULL || posText == NULL ){
+        return false;
+    }
+
+    /* Limpio la pantalla */
+    if( !rpi_display_clear() ){
+        return false;
+    }
+
+    /* Imprimo los motions */
+    if( !rpi_draw_motion_text(topText) ){
+        return false;
+    }
+    if( !rpi_draw_motion_text(posText) ){
+        return false;
+    }
+
+    /* Actualizo display */
+    rpi_display_update();
+
+    return true;
+}
+
+/* frogger_topscreen_move */
+void frogger_topscreen_move(GAME_STAGE* stage, INPUT_VALUES input){
+    switch( input ){
+        case MOVE_UP:
+            if( scorePos > 1 ){
+                scorePos--;
+            }else{
+                return;
+            }
+            break;
+        case MOVE_DOWN:
+            if( scorePos < stage->topLength ){
+                scorePos++;
+            }else{
+                return;
+            }
+            break;
+        default:
+            return;
+            break;
+    }
+    /* Flag */
+    posChanged = true;
+}
+
+/* frogger_topscreen_close */
+void frogger_topscreen_close(void){
+    /* Verifico existencia */
+    if( topText != NULL ){
+
+        /* Destruyo */
+        rpi_destroy_motion_text(topText);
+
+        /* Guardo */
+        topText = NULL;
+    }
+    /* Verifico existencia */
+    if( posText != NULL ){
+
+        /* Destruyo */
+        rpi_destroy_motion_text(posText);
+
+        /* Guardo */
+        posText = NULL;
+    }
+    /* Pauso el timer */
+    gui_timer_pause(gui_timer_global_get(), TOPSCREEN_TIMER);
+
+    /* Reinicio pos */
+    scorePos = 1;
 }
 
 /*********************/
@@ -250,6 +406,9 @@ static void frogger_pausemenu_close(void){
             options[i] = NULL;
         }
     }
+
+    /* Pauso el timer */
+    gui_timer_pause(gui_timer_global_get(), PAUSEMENU_TIMER);
 }
 
 /*************************/
@@ -495,6 +654,8 @@ static void frogger_lostscreen_close(void){
         /* Guardo */
         scoreText = NULL;
     }
+    /* Pauso el timer */
+    gui_timer_pause(gui_timer_global_get(), LOSTSCREEN_TIMER);
 }
 
 /**********************/

@@ -114,6 +114,8 @@ MOTION_TEXT* rpi_load_motion_text(char* text, POSITION pos){
             sprintf(str, "%s%c.bmp", FONTS_FOLDER, text[i]);
         }else if( text[i] == ' ' ){
             sprintf(str, "%sspace.bmp", FONTS_FOLDER);
+        }else if( text[i] == '.' ){
+            sprintf(str, "%sdot.bmp", FONTS_FOLDER);
         }else{
             rpi_destroy_motion_text(motion);
             return NULL;

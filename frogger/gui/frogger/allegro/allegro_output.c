@@ -41,6 +41,83 @@ void frogger_screen_close(GAME_STAGE* stage){
     }
 }
 
+/**********************/
+/* TOPSCREEN handlers */
+/**********************/
+
+/* Configuracion */
+#define TOPSCREEN_PATH  "gui/frogger/allegro/topscreen/"
+#define TOPSCREEN_BACK  TOPSCREEN_PATH "background.png"
+#define TOPSCREEN_FONT  TOPSCREEN_PATH "Neon.ttf"
+#define TOPSCREEN_SIZE  15
+#define HIGH_COLOR      al_map_rgb(0, 0, 0)
+#define HIGH_X          230
+#define HIGH_Y          160
+#define HIGH_DY         20
+
+/* frogger_topscreen */
+bool frogger_topscreen(GAME_STAGE* stage){
+    ALLEGRO_BITMAP* bitmap;
+    ALLEGRO_FONT* font;
+    LENGTH i;
+    STRING str;
+    
+    /* Abro ventana si no lo esta */
+    if( display == NULL ){
+        display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        if( display == NULL ){
+            return false;
+        }
+    }
+    
+    /* Cargo el fondo */
+    bitmap = al_load_bitmap(TOPSCREEN_BACK);
+    if( bitmap == NULL ){
+        return false;
+    }
+    
+    /* Lo imprimo */
+    al_draw_bitmap(bitmap, 0, 0, 0);
+    
+    /* Cargo fuente */
+    font = al_load_ttf_font(TOPSCREEN_FONT, TOPSCREEN_SIZE, 0);
+    if( font == NULL ){
+        al_destroy_bitmap(bitmap);
+        return false;
+    }
+    
+    /* Imprimo los textos */
+    for(i = 0;i < stage->topLength;i++){
+        /* Cargo la posicion */
+        if( !get_score_position(stage, str, i) ){
+            al_destroy_font(font);
+            al_destroy_bitmap(bitmap);
+            return false;
+        }
+        
+        /* Imprimo */
+        al_draw_text(font, HIGH_COLOR, HIGH_X, HIGH_Y + HIGH_DY * i, 0, str);
+    }
+    
+    /* Flip display */
+    al_flip_display();
+    
+    /* Exito */
+    al_destroy_font(font);
+    al_destroy_bitmap(bitmap);
+    return true;
+}
+
+/* frogger_topscreen_tasks */
+void frogger_topscreen_tasks(GAME_STAGE* stage){
+    return;
+}
+
+/* frogger_topscreen_move */
+void frogger_topscreen_move(GAME_STAGE* stage, INPUT_VALUES input){
+    return;
+}
+
 /*********************/
 /* MAINMENU handlers */
 /*********************/
@@ -77,6 +154,7 @@ bool frogger_mainmenu(void){
     al_draw_bitmap(bitmap, 0, 0, 0);
     al_flip_display();
 
+    al_destroy_bitmap(bitmap);
     return true;
 }
 
@@ -137,6 +215,7 @@ bool frogger_pausemenu(void){
     al_draw_bitmap(bitmap, 0, 40, 0);
     al_flip_display();
 
+    al_destroy_bitmap(bitmap);
     return true;
 }
 
@@ -247,6 +326,7 @@ bool frogger_changescreen(uint32_t level, uint32_t stage){
     /* Fuente */
     font = al_load_font(CHANGESCREEN_FONT, CHANGESCREEN_SIZE, 0);
     if( font == NULL ){
+        al_destroy_bitmap(bitmap);
         return false;
     }
 
@@ -260,6 +340,9 @@ bool frogger_changescreen(uint32_t level, uint32_t stage){
 
     /* Mando el buffer al display */
     al_flip_display();
+
+    al_destroy_bitmap(bitmap);
+    al_destroy_font(font);
 
     return true;
 }
@@ -311,6 +394,7 @@ bool frogger_lostscreen(uint32_t score){
     /* Puntuacion */
     font = al_load_ttf_font( LOSTSCREEN_FONT, LOSTSCREEN_SIZE, 0);
     if( font == NULL ){
+        al_destroy_bitmap(bitmap);
         return false;
     }
     sprintf(text, "%d", score);
@@ -318,6 +402,9 @@ bool frogger_lostscreen(uint32_t score){
 
     /* Mando el buffer al display */
     al_flip_display();
+
+    al_destroy_bitmap(bitmap);
+    al_destroy_font(font);
 
     return true;
 }
@@ -372,6 +459,8 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
         return false;
     }
     al_draw_bitmap(bitmap, 0, 0, 0);
+    al_destroy_bitmap(bitmap);
+    
     /* Pongo las vidas */
     sprintf(text, "%s%d.png", GAMESCREEN_LIFES, lifes);
     bitmap = al_load_bitmap( text );
@@ -379,6 +468,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
         return false;
     }
     al_draw_bitmap(bitmap, GAME_DISPLAY_LIFES_X, GAME_DISPLAY_LIFES_Y, 0);
+    al_destroy_bitmap(bitmap);
 
     /* Pongo la info de score */
     font = al_load_ttf_font(GAMESCREEN_FONT, GAMESCREEN_SIZE, 0);
@@ -387,7 +477,8 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     }
     sprintf(text, "%s %d", GAME_SCORE_MSG, score);
     al_draw_text(font, SCORE_COLOR, GAME_DISPLAY_SCORE_X, GAME_DISPLAY_SCORE_Y, 0, text);
-
+    al_destroy_font(font);
+    
     /* Pongo la info de time */
     font = al_load_ttf_font(GAMESCREEN_FONT, GAMESCREEN_SIZE, 0);
     if( font == NULL ){
@@ -395,6 +486,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     }
     sprintf(text, "%s %d", GAME_TIME_MSG, time);
     al_draw_text(font, GAME_TIME_COLOR, GAME_DISPLAY_TIME_X, GAME_DISPLAY_TIME_Y, 0, text);
+    al_destroy_font(font);
 
     /* Pongo los objetos */
     for(i = 0;i < field.lanesQty;i++){
@@ -409,6 +501,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
                   return false;
                 }
                 al_draw_bitmap(bitmap, object->pos.x, object->pos.y, 0);
+                al_destroy_bitmap(bitmap);
             }
 
         }
@@ -420,6 +513,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
         return false;
     }
     al_draw_bitmap(bitmap, frog.object->pos.x, frog.object->pos.y, 0);
+    al_destroy_bitmap(bitmap);
 
     /* Mando el buffer al display */
     al_flip_display();

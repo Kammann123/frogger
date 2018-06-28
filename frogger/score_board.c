@@ -40,15 +40,13 @@ uint8_t get_score_array (scores_t * scoresToInit, char * file){
 
 
     if (scoreBoardFile == NULL){
-        return 0;
+        return -1;
     } else{
         for (i=0; i<=MAX_SCORES; i++){
-            if( fread(&scoresToInit[i], sizeof(scores_t), 1, scoreBoardFile) < sizeof(scores_t) ){
-                break;
-            }
+            fread(&scoresToInit[i], sizeof(scores_t), 1, scoreBoardFile);
         }
         fclose (scoreBoardFile);
-        return i;
+        return 0;
     }
 }
 

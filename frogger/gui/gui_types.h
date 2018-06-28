@@ -89,6 +89,13 @@ void testing_msg(char *str);
  */
 void save_score(GAME_STAGE* stage, uint32_t score);
 
+/* load_score
+ * Carga el score
+ *
+ * stage: Instancia
+ */
+void load_score(GAME_STAGE* stage);
+
 /* get_score_position
  * Devuelve un string formateado con el puntaje de la posicion
  *

@@ -24,9 +24,17 @@
 #define LOSTSCREEN_TIME         120
 #define LOSTSCREEN_TIMER        4
 
+#define TOPSCREEN_TIME          120
+#define TOPSCREEN_TIMER         5
+
 /**************/
 /* Constantes */
 /**************/
+
+typedef enum{
+    TOPSCREEN_INIT,
+    TOPSCREEN_OP
+} TOPSCREEN_STAGES;
 
 typedef enum{
     LOSTSCREEN_INIT,
@@ -75,6 +83,28 @@ PAUSEMENU_OPTIONS frogger_get_pausemenu_selection(void);
 /****************/
 /* TOP handlers */
 /****************/
+
+/* frogger_topscreen
+ * Actualiza la salida
+ *
+ * stage: Instancia 
+ */
+bool frogger_topscreen(GAME_STAGE* stage);
+
+/* frogger_topscreen_tasks
+ * Tareas realizadas durante el topscreen stage
+ *
+ * stage: Instancia
+ */
+void frogger_topscreen_tasks(GAME_STAGE* stage);
+
+/* frogger_topscreen_move
+ * Mueve entre el menu de top score
+ * 
+ * stage: Instancia
+ * input: Entrada del usuario
+ */
+void frogger_topscreen_move(GAME_STAGE* stage, INPUT_VALUES input);
 
 /*******************/
 /* SCREEN handlers */
