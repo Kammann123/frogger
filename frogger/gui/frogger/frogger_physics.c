@@ -16,10 +16,10 @@
 static ANIMATION_ENGINE* engine = NULL;
 
 /* Frog del jugador */
-FROG frog = { .object=NULL, .transport=NULL };
+static FROG frog = { .object=NULL, .transport=NULL };
 
 /* Carriles del juego */
-FIELD field;
+static FIELD field;
 
 /******************/
 /* FIELD handlers */
@@ -1047,4 +1047,18 @@ void frogger_game_dead_animation(void){
     }else if( gui_animation_is_animation(frog.object, FROG_DOWN) ){
         gui_animation_start_one_time(frog.object, DEATH_DOWN);
     }
+}
+
+/*******************/
+/* ACCESS handlers */
+/*******************/
+
+/* frogger_get_frog */
+FROG frogger_get_frog(void){
+    return frog;
+}
+
+/* frogger_get_field */
+FIELD frogger_get_field(void){
+    return field;
 }

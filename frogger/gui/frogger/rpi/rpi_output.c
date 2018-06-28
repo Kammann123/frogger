@@ -12,10 +12,6 @@
 
 #include "disdrv.h"
 
-/* Configuraciones generales */
-
-#define MAX_STRING      512
-
 /**********************/
 /* Funciones privadas */
 /**********************/
@@ -71,7 +67,7 @@ MAINMENU_OPTIONS mainmenuSelection = PLAY_OPTION;
 /* frogger_mainmenu */
 bool frogger_mainmenu(void){
     BITMAP* bitmap;
-    char text[MAX_STRING];
+    STRING text;
 
     /* Armo el nombre del archivo a cargar */
     sprintf(text, "%s%d.bmp", MAINMENU_IMAGE, mainmenuSelection);
@@ -146,8 +142,8 @@ static POSITION initPos[] = {
 /* frogger_pausemenu_tasks */
 void frogger_pausemenu_tasks(GAME_STAGE *stage){
     static PAUSEMENU_STAGES state = PAUSEMENU_INIT;
+    STRING str;
     uint32_t i;
-    char str[MAX_STRING];
 
     /* Segun la etapa */
     switch( state ){
@@ -190,7 +186,7 @@ void frogger_pausemenu_tasks(GAME_STAGE *stage){
 
 /* frogger_pausemenu */
 bool frogger_pausemenu(void){
-    char str[MAX_STRING];
+    STRING str;
     BITMAP* bitmap;
 
     /* Cargo el nombre del bitmap del fondo */
@@ -242,6 +238,7 @@ void frogger_pausemenu_move(INPUT_VALUES input){
 /* frogger_pausemenu_close */
 static void frogger_pausemenu_close(void){
     uint32_t i;
+
     /* Recorro el menu */
     for(i = 0;i < 3;i++){
         /* Verifico inicializado */
@@ -275,8 +272,8 @@ static LENGTH maxLength = 0;
 /* frogger_changescreen_tasks */
 void frogger_changescreen_tasks(GAME_STAGE *stage){
     static CHANGESCREEN_STAGES state = CHANGESCREEN_INIT;
-    static uint32_t counter = 0;
-    char str[MAX_STRING];
+    static LENGTH counter = 0;
+    STRING str;
 
     /* Estados */
     switch( state ){
@@ -407,7 +404,7 @@ static MOTION_TEXT* scoreText = NULL;
 /* frogger_lostscreen_tasks */
 void frogger_lostscreen_tasks(GAME_STAGE *stage){
     static LOSTSCREEN_STAGES state = LOSTSCREEN_INIT;
-    char str[MAX_STRING];
+    STRING str;
 
     /* Estados */
     switch( state ){
@@ -514,7 +511,6 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     BITMAP* bitmap;
     LANE lane;
     FROGGER_OBJECT object;
-    char text[MAX_STRING];
     uint32_t i, ii;
 
     /* Limpio la ventana */
@@ -576,7 +572,7 @@ static POSITION frogger_convert_position(POSITION pos){
     /* Guardo posicion */
     newPos = pos;
 
-    /* Adapto */
+    /* Adapto la posicion a la estructura de la matriz de leds */
     if( newPos.y < 6 ){
         newPos.y *= 2;
     }else{
@@ -584,4 +580,18 @@ static POSITION frogger_convert_position(POSITION pos){
     }
 
     return newPos;
+}
+
+/*******************/
+/* ACCESS handlers */
+/*******************/
+
+/* frogger_get_mainmenu_selection */
+MAINMENU_OPTIONS frogger_get_mainmenu_selection(void){
+    return mainmenuSelection;
+}
+
+/* frogger_get_pausemenu_selection */
+PAUSEMENU_OPTIONS frogger_get_pausemenu_selection(void){
+    return pausemenuSelection;
 }

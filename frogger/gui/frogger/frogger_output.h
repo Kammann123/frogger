@@ -11,6 +11,7 @@
 #include "../gui_input.h"
 
 #include "frogger_physics.h"
+#include "../gui_types.h"
 
 /* Configuracion de timers de tasks */
 #define CHANGESCREEN_TIME       120
@@ -22,8 +23,6 @@
 
 #define LOSTSCREEN_TIME         120
 #define LOSTSCREEN_TIMER        4
-
-#define MAX_STRING      512
 
 /**************/
 /* Constantes */
@@ -57,9 +56,25 @@ typedef enum {
     PAUSE_EXIT_OPTION
 } PAUSEMENU_OPTIONS;
 
-/* Variables externas para acceso */
-extern MAINMENU_OPTIONS mainmenuSelection;
-extern PAUSEMENU_OPTIONS pausemenuSelection;
+/*******************/
+/* ACCESS handlers */
+/*******************/
+
+/* frogger_get_mainmenu_selection
+ * Devuelve la opcion actualmente elegida del
+ * menu principal
+ */
+MAINMENU_OPTIONS frogger_get_mainmenu_selection(void);
+
+/* frogger_get_pausemenu_selection
+ * Devuelve la opcion actualmente elegida del
+ * menu de pausa
+ */
+PAUSEMENU_OPTIONS frogger_get_pausemenu_selection(void);
+
+/****************/
+/* TOP handlers */
+/****************/
 
 /*******************/
 /* SCREEN handlers */

@@ -115,7 +115,7 @@ void frogger_pausemenu_tasks(GAME_STAGE* stage){
 /* frogger_pausemenu */
 bool frogger_pausemenu(void){
     ALLEGRO_BITMAP* bitmap = NULL;
-    char filename[MAX_STRING];
+    STRING filename;
 
     /* Inicializo el display */
     if( display == NULL ){
@@ -223,7 +223,7 @@ void frogger_changescreen_tasks(GAME_STAGE *stage){
 bool frogger_changescreen(uint32_t level, uint32_t stage){
     ALLEGRO_BITMAP* bitmap;
     ALLEGRO_FONT* font;
-    char text[MAX_STRING];
+    STRING text;
 
     /* Abro la ventana */
     if( display == NULL ){
@@ -287,7 +287,7 @@ void frogger_lostscreen_tasks(GAME_STAGE *stage){
 bool frogger_lostscreen(uint32_t score){
     ALLEGRO_BITMAP* bitmap;
     ALLEGRO_FONT* font;
-    char text[MAX_STRING];
+    STRING text;
 
     /* Abro la ventana */
     if( display == NULL ){
@@ -351,8 +351,7 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     ALLEGRO_BITMAP* bitmap;
     LANE lane;
     FROGGER_OBJECT object;
-
-    char text[MAX_STRING];
+    STRING text;
     uint32_t i, ii;
 
     /* Abro la ventana */
@@ -426,4 +425,18 @@ bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, u
     al_flip_display();
 
     return true;
+}
+
+/*******************/
+/* ACCESS handlers */
+/*******************/
+
+/* frogger_get_mainmenu_selection */
+MAINMENU_OPTIONS frogger_get_mainmenu_selection(void){
+    return mainmenuSelection;
+}
+
+/* frogger_get_pausemenu_selection */
+PAUSEMENU_OPTIONS frogger_get_pausemenu_selection(void){
+    return pausemenuSelection;
 }

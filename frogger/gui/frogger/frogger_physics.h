@@ -154,9 +154,19 @@ typedef struct{
     bool init;
 } FIELD;
 
-/* Acceso externo */
-extern FROG frog;
-extern FIELD field;
+/*******************/
+/* ACCESS handlers */
+/*******************/
+
+/* frogger_get_frog
+ * Devuelve la instancia del objeto ranita
+ */
+FROG frogger_get_frog(void);
+
+/* frogger_get_field
+ * Devuelve la instancia del campo de juego
+ */
+FIELD frogger_get_field(void);
 
 /****************************/
 /* Funciones segun interfaz */

@@ -33,6 +33,11 @@
 
 /* map_collision */
 static bool map_collision(uint16_t input, int32_t x, int32_t y){
+    FROG frog;
+    
+    /* Obtengo el objeto */
+    frog = frogger_get_frog();
+    
     switch(input){
         case MOVE_UP:
             if( x == frog.object->pos.x ){

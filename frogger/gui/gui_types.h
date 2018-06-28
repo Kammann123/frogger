@@ -10,11 +10,22 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../score_board/score_board.h"
+
+/* Habilita impresiones de modo prueba */
 #define TESTING
+
+#define MAX_STRING 512
+
+#define DEFAULT_USERNAME    "player"
 
 /******************/
 /* Tipos de datos */
 /******************/
+
+typedef uint32_t LENGTH;
+
+typedef char STRING[MAX_STRING];
 
 typedef enum {
     MAINMENU_STAGE,
@@ -31,9 +42,14 @@ typedef enum {
 typedef struct{
     /* Valor del estado del juego */
     STAGE_VALUES value;
-    
+
+    /* Nombre del jugador */
+    STRING username;
+    scores_t topScore[MAX_SCORES + 1];
+    LENGTH topLength;
+
     /* Flags */
-    bool hasChanged;    
+    bool hasChanged;
 } GAME_STAGE;
 
 #define DEFAULT_GAME_STAGE MAINMENU_STAGE
@@ -42,8 +58,6 @@ typedef struct{
     int32_t x;
     int32_t y;
 } POSITION;
-
-typedef uint32_t LENGTH;
 
 /**************/
 /* Prototipos */
@@ -67,11 +81,30 @@ void testing_msg(char *str);
 /* GAME_STAGE handlers */
 /***********************/
 
-/* stage_init 
+/* save_score
+ * Guarda un nuevo puntaje del usuario en el top score
+ *
+ * stage: Instancia
+ * score: Puntaje
+ */
+void save_score(GAME_STAGE* stage, uint32_t score);
+
+/* get_score_position
+ * Devuelve un string formateado con el puntaje de la posicion
+ *
+ * stage: Instancia
+ * str: String donde se guarda el resultado
+ * pos: Posicion de la tabla
+ */
+bool get_score_position(GAME_STAGE* stage, char* str, uint32_t pos);
+
+/* stage_init
  * Crea y devuelve una instancia de GAME_STAGE
  * default, con parametros por defecto
+ *
+ * username: Nombre del jugador
  */
-GAME_STAGE stage_init(void);
+GAME_STAGE stage_init(char* username);
 
 /* change_stage
  * Permite modificar el estado del programa
@@ -84,8 +117,8 @@ void change_stage(GAME_STAGE* stage, STAGE_VALUES value);
 
 /* is_stage
  * Compara y verifica si el estado del juego es ese.
- * 
- * stage: Instancia 
+ *
+ * stage: Instancia
  * value: Estado de juego
  */
 bool is_stage(GAME_STAGE* stage, STAGE_VALUES value);
