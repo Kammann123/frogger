@@ -638,15 +638,20 @@ bool frogger_game_new_level(uint32_t level){
         }
     }
 
-    free(positions);
+    free(positions); 
 
     return true;
 }
 
 /* frogger_game_has_won */
 bool frogger_game_has_won(void){
+    uint32_t step;
+    
+    /* Cargo el step de cada interfaz */
+    step = frogger_game_get_step();
+    
     /* Objeto posicion */
-    if( frog.object->pos.y >= 0 && frog.object->pos.y <= 20 ){
+    if( frog.object->pos.y >= 0 && frog.object->pos.y < step ){
         return true;
     }
     return false;
