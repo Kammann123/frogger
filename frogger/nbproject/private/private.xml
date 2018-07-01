@@ -9,6 +9,7 @@
         <group>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/allegro/allegro_physics.c</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/frogger_physics.c</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/logic/frogger/frogger_kernel.c</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/gui_types.c</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/frogger_physics.h</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/console_args/console_args.c</file>

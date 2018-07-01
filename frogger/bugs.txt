@@ -5,4 +5,5 @@
  o de personajes que tenes...
 - Estaria bueno comandos que modifiquen los sets de juegos, ponene mas vidas
 - Me ahogue y me tiro segmentation core...
-
+- Hacer diagrama de archivos
+- Hacer manual de juego
