@@ -593,6 +593,8 @@ bool frogger_game_restart(void){
 /* frogger_game_new_level */
 bool frogger_game_new_level(uint32_t level){
     uint32_t i, ii;
+    int32_t cal;
+    
     POSITION* positions;
     uint32_t step;
     SPEED speed;
@@ -615,7 +617,8 @@ bool frogger_game_new_level(uint32_t level){
         }
 
         /* Cargo nuevas posiciones */
-        if( !frogger_game_lane_sequence(lane.objectsQty, lane.objects[0]->width/step, lane.laneNumber, positions)){
+        cal = (lane.objects[0]->width % step)? 1 : 0;
+        if( !frogger_game_lane_sequence(lane.objectsQty, lane.objects[0]->width / step + cal, lane.laneNumber, positions)){
             free(positions);
             return false;
         }
@@ -643,7 +646,7 @@ bool frogger_game_new_level(uint32_t level){
 /* frogger_game_has_won */
 bool frogger_game_has_won(void){
     /* Objeto posicion */
-    if( frog.object->pos.y == 0 ){
+    if( frog.object->pos.y >= 0 && frog.object->pos.y <= 20 ){
         return true;
     }
     return false;

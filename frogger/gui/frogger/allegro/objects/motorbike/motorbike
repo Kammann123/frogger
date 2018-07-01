@@ -1,6 +1,6 @@
 [attributes]
-width: 80
-height: 40
+width: 65
+height: 30
 timedelta: 100
 spacedelta: 20
 

@@ -779,6 +779,7 @@ static void* gui_animation_engine_thread(void* thisEngine){
                             }
                             if( object->distance <= 0 ){
                                 object->status = GUI_ANIMATION_STATE_STATIC;
+                                object->frameIndex = 0;
                             }
                         }
                     }
