@@ -1,6 +1,6 @@
 # frogger
 
-Frogger game for Ubuntu and RaspberryPi
+Frogger game for Ubuntu and RaspberryPi, developed in C language
 
 # Requirements:
 
@@ -27,9 +27,9 @@ So far, Frogger supports these commands:
 
 
 
-This work has been presented as a final work for the course "Programacion I" at the ITBA University.
-Team members:
-  Davidov, Gonzalo
-  Kammann, Lucas
-  Scheinfeld, Pablo
-  Tondi, Federico
+This work has been presented as a final work for the course "Programacion I" at the ITBA University.  
+Team members:  
+ -Davidov, Gonzalo  
+ -Kammann, Lucas  
+ -Scheinfeld, Pablo  
+ -Tondi, Federico  
