@@ -23,8 +23,9 @@
 
 /* Paths para acceder a animaciones */
 #define ALLEGRO_PATH_OBJECTS                "gui/frogger/allegro/objects/"
-
+    
 #define ALLEGRO_FROG_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/frog"
+#define ALLEGRO_FROGGY_OBJFILE              ALLEGRO_PATH_OBJECTS "frog/froggy"
 #define ALLEGRO_MOTORBIKE_OBJFILE           ALLEGRO_PATH_OBJECTS "motorbike/motorbike"
 #define ALLEGRO_CAR_OBJFILE                 ALLEGRO_PATH_OBJECTS "car/car"
 #define ALLEGRO_TRUCK_OBJFILE               ALLEGRO_PATH_OBJECTS "truck/truck"
@@ -75,10 +76,22 @@ static bool map_collision(uint16_t input, int32_t x, int32_t y){
     return false;
 }
 
-
 /**********************/
 /* Funciones publicas */
 /**********************/
+
+
+/* frogger_frog_selector */
+char* frogger_frog_selector(uint16_t index){
+    switch(index){
+        case 1:
+            return ALLEGRO_FROGGY_OBJFILE;
+            break;
+        default:
+            return ALLEGRO_FROG_OBJFILE;
+            break;
+    }
+}
 
 /* frogger_game_get_step */
 uint32_t frogger_game_get_step(void){
@@ -92,9 +105,9 @@ uint32_t frogger_game_get_resolution(void){
 }
 
 /* frogger_game_frog_init */
-bool frogger_game_frog_init(FROG* frog){
+bool frogger_game_frog_init(FROG* frog, uint16_t characterId){
     /* Cargo la ranita :D */
-    frog->object = gui_animation_load_object(ALLEGRO_FROG_OBJFILE, map_position(DEFAULT_FROG_X * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_Y * ALLEGRO_DISPLAY_STEP), DEFAULT_FROG_ANIMATION);
+    frog->object = gui_animation_load_object(frogger_frog_selector(characterId), map_position(DEFAULT_FROG_X * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_Y * ALLEGRO_DISPLAY_STEP), DEFAULT_FROG_ANIMATION);
     if( frog->object == NULL ){
         return false;
     }

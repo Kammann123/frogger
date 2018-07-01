@@ -15,7 +15,7 @@
 #include <time.h>
 
 #include "../gui_input.h"
-
+#include "../gui_types.h"
 #include "../gui_animation/gui_animation.h"
 
 /**************/
@@ -195,8 +195,11 @@ uint32_t frogger_game_get_resolution(void);
 /* frogger_game_frog_init
  * Inicializa la rana del juego para
  * su funcionamiento en allegro
+ * 
+ * frog: Instancia de la ranita
+ * characterId: Indice del personaje escogido
  */
-bool frogger_game_frog_init(FROG* frog);
+bool frogger_game_frog_init(FROG* frog, uint16_t characterId);
 
 /* frogger_game_movement_valid
  * Valida si el movimiento en dicha orientacion es valido
@@ -219,6 +222,14 @@ ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMA
 /***********************************/
 /* Prototipo de funciones publicas */
 /***********************************/
+
+/* frogger_frog_selector
+ * Devuelve un string con el path del object file del personaje
+ * elegido segun el indice, cada interfaz lo maneja a su manera
+ *
+ * index: Indice
+ */
+char* frogger_frog_selector(uint16_t index);
 
 /* frogger_game_dead_animation
  * Muestra la ranita muriendo
@@ -313,8 +324,10 @@ void frogger_game_close(void);
 
 /* frogger_game_init
  * Inicializa los objetos del juego
+ * 
+ * stage: Informacion del juego
  */
-bool frogger_game_init(void);
+bool frogger_game_init(GAME_STAGE* stage);
 
 
 #endif /* FROGGER_PHYSICS_H */

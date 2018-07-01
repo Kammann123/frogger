@@ -29,6 +29,11 @@
 /* Funciones publicas */
 /**********************/
 
+/* frogger_frog_selector */
+char* frogger_frog_selector(uint16_t index){
+    return NULL;
+}
+
 /* frogger_game_get_step */
 uint32_t frogger_game_get_step(void){
     return RPI_DISPLAY_STEP;

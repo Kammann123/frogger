@@ -13,7 +13,6 @@
 #include "../score_board/score_board.h"
 
 /* Habilita impresiones de modo prueba */
-#define TESTING
 #define MAX_STRING 512
 
 #define DEFAULT_USERNAME    "player"
@@ -46,6 +45,9 @@ typedef struct{
     STRING username;
     scores_t topScore[MAX_SCORES + 1];
     LENGTH topLength;
+    
+    /* Selector de personaje */
+    uint16_t characterId;
 
     /* Flags */
     bool hasChanged;
@@ -109,8 +111,9 @@ bool get_score_position(GAME_STAGE* stage, char* str, uint32_t pos);
  * default, con parametros por defecto
  *
  * username: Nombre del jugador
+ * characterId: Indice para manejar seleccion de personaje
  */
-GAME_STAGE stage_init(char* username);
+GAME_STAGE stage_init(char* username, uint16_t characterId);
 
 /* change_stage
  * Permite modificar el estado del programa

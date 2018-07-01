@@ -139,16 +139,18 @@ int main(int argc, char** argv){
     ENTRIES entries;
 
     char* username = NULL;
+    uint32_t characterId = 1;
     bool error;
 
     /* Leo las entradas de consola */
     if( read_entries(&entries, &argv[1], argc-1) ){
         /* Si no hubo error de sintaxis y se cargaron los comandos */
         username = entries_get_string(&entries, "name");
+        entries_get_int(&entries, "character", &characterId);
     }
     
     /* Inicializo estructura estado del juego */
-    stage = stage_init(username);
+    stage = stage_init(username, characterId);
 
     /* Inicializo la interfaz */
         if( !gui_graphics_init( ) ){
@@ -195,7 +197,7 @@ int main(int argc, char** argv){
     }
 
     /* Inicializo memoria de juego */
-    if( !frogger_game_init() ){
+    if( !frogger_game_init(&stage) ){
         testing_msg("No se pudo cargar en memoria objetos.");
         gui_timer_global_close();
         gui_input_close();

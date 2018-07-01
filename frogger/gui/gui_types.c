@@ -63,12 +63,13 @@ bool get_score_position(GAME_STAGE* stage, char* str, uint32_t pos){
 }
 
 /* stage_init */
-GAME_STAGE stage_init(char* username){
+GAME_STAGE stage_init(char* username, uint16_t characterId){
     
     /* Inicializacion de instancia */
     GAME_STAGE stage = {
         .value = DEFAULT_GAME_STAGE,
-        .hasChanged = false
+        .hasChanged = false,
+        .characterId = characterId
     };
     
     /* Cargo el score */

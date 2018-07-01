@@ -3,8 +3,13 @@ id: DEATH_UP
 orientation: ORIENTATION_NULL
 
 [frames]
-0: gui/frogger/allegro/objects/frog/sprites_death/death_up/froggy_0.png
-1: gui/frogger/allegro/objects/frog/sprites_death/death_up/froggy_1.png
-2: gui/frogger/allegro/objects/frog/sprites_death/death_up/froggy_2.png
+0: gui/frogger/allegro/objects/frog/sprites_death/froggy_0.png
+1: gui/frogger/allegro/objects/frog/sprites_death/froggy_1.png
+2: gui/frogger/allegro/objects/frog/sprites_death/froggy_2.png
+3: gui/frogger/allegro/objects/frog/sprites_death/froggy_3.png
+4: gui/frogger/allegro/objects/frog/sprites_death/froggy_4.png
+5: gui/frogger/allegro/objects/frog/sprites_death/froggy_5.png
+6: gui/frogger/allegro/objects/frog/sprites_death/froggy_6.png
+7: gui/frogger/allegro/objects/frog/sprites_death/froggy_7.png
 
 END

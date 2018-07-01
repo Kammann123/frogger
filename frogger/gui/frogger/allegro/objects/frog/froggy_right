@@ -1,0 +1,15 @@
+[attributes]
+id: FROG_RIGHT
+orientation: HORIZONTAL_RIGHT
+
+[frames]
+0: gui/frogger/allegro/objects/frog/sprites_right/froggy_0.png
+1: gui/frogger/allegro/objects/frog/sprites_right/froggy_1.png
+2: gui/frogger/allegro/objects/frog/sprites_right/froggy_2.png
+3: gui/frogger/allegro/objects/frog/sprites_right/froggy_3.png
+4: gui/frogger/allegro/objects/frog/sprites_right/froggy_4.png
+5: gui/frogger/allegro/objects/frog/sprites_right/froggy_5.png
+6: gui/frogger/allegro/objects/frog/sprites_right/froggy_6.png
+7: gui/frogger/allegro/objects/frog/sprites_right/froggy_7.png
+
+END

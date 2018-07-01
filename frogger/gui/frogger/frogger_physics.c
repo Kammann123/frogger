@@ -935,7 +935,7 @@ void frogger_game_close(void){
 }
 
 /* frogger_game_init */
-bool frogger_game_init(void){
+bool frogger_game_init(GAME_STAGE* stage){
     uint32_t i, ii;
 
     /* Inicializo los carriles */
@@ -944,7 +944,7 @@ bool frogger_game_init(void){
     }
 
     /* Inicializo la rana */
-    if( !frogger_game_frog_init(&frog) ){
+    if( !frogger_game_frog_init(&frog, stage->characterId) ){
         return false;
     }
 
