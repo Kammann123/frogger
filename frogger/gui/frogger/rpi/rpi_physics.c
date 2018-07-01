@@ -31,7 +31,7 @@
 
 /* frogger_frog_selector */
 char* frogger_frog_selector(uint16_t index){
-    return NULL;
+    return RPI_FROG_OBJFILE;
 }
 
 /* frogger_game_get_step */
@@ -45,9 +45,9 @@ uint32_t frogger_game_get_resolution(void){
 }
 
 /* frogger_game_frog_init */
-bool frogger_game_frog_init(FROG* frog){
+bool frogger_game_frog_init(FROG* frog, uint16_t characterId){
     /* Cargo la ranita :D */
-    frog->object = gui_animation_load_object(RPI_FROG_OBJFILE, map_position(DEFAULT_FROG_X * RPI_DISPLAY_STEP, DEFAULT_FROG_Y * RPI_DISPLAY_STEP), DEFAULT_FROG_ANIMATION);
+    frog->object = gui_animation_load_object(frogger_frog_selector(characterId), map_position(DEFAULT_FROG_X * RPI_DISPLAY_STEP, DEFAULT_FROG_Y * RPI_DISPLAY_STEP), DEFAULT_FROG_ANIMATION);
     if( frog->object == NULL ){
         return false;
     }
