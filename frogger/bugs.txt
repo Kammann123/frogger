@@ -1,0 +1,12 @@
+- Cuando mandas comandos por consola con otro formato SEGMENTATION FAULT
+- A veces cuando te moves entre barcos, caes en la mitad de un barco y moris
+- Las colisiones son demasiado bruscas, 40x40 hace que a veces quedes volando
+- Podrias agregar bonus track, comida u hongos, algo para agarrar y MAS PUNTSO
+- Poder elegir el personaje con un comando de consola
+- Comando para cambiar de mapa
+- Comando para entrar en modo configuracion, que te tire las opciones de mapas
+ o de personajes que tenes...
+- Quitar los mensajes de prueba
+- Mejorar el sistema de score
+- Me ahogue y me tiro segmentation core...
+

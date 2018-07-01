@@ -138,15 +138,17 @@ int main(int argc, char** argv){
     /* Interprete de comandos consola */
     ENTRIES entries;
 
-    char* str;
+    char* username = NULL;
     bool error;
 
     /* Leo las entradas de consola */
-    read_entries(&entries, &argv[1], argc-1);
-
-    /* Cargo nombre del usuario si esta */
-    str = entries_get_string(&entries, "name");
-    stage = stage_init(str);
+    if( read_entries(&entries, &argv[1], argc-1) ){
+        /* Si no hubo error de sintaxis y se cargaron los comandos */
+        username = entries_get_string(&entries, "name");
+    }
+    
+    /* Inicializo estructura estado del juego */
+    stage = stage_init(username);
 
     /* Inicializo la interfaz */
         if( !gui_graphics_init( ) ){
