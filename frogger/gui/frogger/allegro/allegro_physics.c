@@ -106,11 +106,22 @@ uint32_t frogger_game_get_resolution(void){
 
 /* frogger_game_frog_init */
 bool frogger_game_frog_init(FROG* frog, uint16_t characterId){
+    int32_t dx, dy;
+    
     /* Cargo la ranita :D */
     frog->object = gui_animation_load_object(frogger_frog_selector(characterId), map_position(DEFAULT_FROG_X * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_Y * ALLEGRO_DISPLAY_STEP), DEFAULT_FROG_ANIMATION);
+
+    /* Verifico error de carga */
     if( frog->object == NULL ){
         return false;
-    }
+    }    
+    
+    /* Calculo desfasaje para posicion */
+    dx = (ALLEGRO_DISPLAY_STEP - frog->object->width) / 2;
+    dy = (ALLEGRO_DISPLAY_STEP - frog->object->height) / 2;
+
+    /* Recalibro posicion para centrar en division */
+    frog->object->pos = map_position(frog->object->pos.x + dx, frog->object->pos.y + dy); 
 
     /* Frog inicializada correctamente */
     return true;

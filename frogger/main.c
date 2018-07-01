@@ -139,7 +139,7 @@ int main(int argc, char** argv){
     ENTRIES entries;
 
     char* username = NULL;
-    uint32_t characterId = 1;
+    uint32_t characterId = 0;
     bool error;
 
     /* Leo las entradas de consola */

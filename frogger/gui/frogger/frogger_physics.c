@@ -819,6 +819,7 @@ bool frogger_game_drown(void){
 /* frogger_game_reset_frog_position */
 void frogger_game_reset_frog_position(void){
     uint32_t step;
+    int32_t dx, dy;
 
     /* Cargo el desplazamiento */
     step = frogger_game_get_step();
@@ -827,9 +828,13 @@ void frogger_game_reset_frog_position(void){
     if( !gui_animation_reload_object(frog.object) ){
         return;
     }
-
+    
+    /* Calculo desfasaje */
+    dx = (step - frog.object->width) / 2;
+    dy = (step - frog.object->height) / 2;
+    
     /* Seteo posicion y orientacion de rana */
-    frog.object->pos = map_position(DEFAULT_FROG_X * step, DEFAULT_FROG_Y * step);
+    frog.object->pos = map_position(DEFAULT_FROG_X * step + dx, DEFAULT_FROG_Y * step + dy);
     gui_animation_set_animation(frog.object, DEFAULT_FROG_ANIMATION);
 }
 
