@@ -41,6 +41,21 @@ void frogger_screen_close(GAME_STAGE* stage){
     }
 }
 
+/*****************/
+/* INFO handlers */
+/*****************/
+
+/* frogger_infoscreen */
+bool frogger_infoscreen(GAME_STAGE* stage){
+    return true;
+}
+
+/* frogger_infoscreen_tasks */
+void frogger_infoscreen_tasks(GAME_STAGE* stage){
+    change_stage(stage, FROGGER_STAGE);
+    return;
+}
+
 /******************/
 /* HOWTO handlers */
 /******************/
