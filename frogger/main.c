@@ -305,8 +305,11 @@ void switch_tasks_target(GAME_STAGE* stage){
         case DEAD_STAGE:
             if( frogger_game_is_frog_static() ){
                 frogger_game_reset_frog_position();
-                change_stage(stage, FROGGER_STAGE);
+                change_stage(stage, INFO_STAGE);
             }
+            break;
+        case INFO_STAGE:
+            frogger_infoscreen_tasks(stage);
             break;
         default:
             return;
@@ -339,6 +342,8 @@ void switch_update_target(GAME_STAGE* stage){
         case LOSTSCREEN_STAGE:
             frogger_lostscreen(frogger_get_score());
             break;
+        case INFO_STAGE:
+            frogger_infoscreen(stage);
         default:
             return;
             break;
