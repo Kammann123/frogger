@@ -3,7 +3,7 @@ lanenumber: 7
 type: TRUCK
 orientation: HORIZONTAL_LEFT
 quantity: 2
-timedelta: 360
+timedelta: 720
 spacedelta: 1
 a_factor: 5
 

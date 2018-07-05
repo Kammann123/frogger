@@ -372,7 +372,7 @@ static void frogger_topscreen_close(void){
 
 /* Configuracion */
 #define MAINMENU_PATH   "gui/frogger/rpi/mainmenu/"
-#define MAINMENU_IMAGE  MAINMENU_PATH "mainmenu_"
+#define MAINMENU_IMAGE  MAINMENU_PATH "mainmenu2_"
 
 /* Variable del menu principal */
 MAINMENU_OPTIONS mainmenuSelection = PLAY_OPTION;

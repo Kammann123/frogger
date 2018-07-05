@@ -1,3 +1,4 @@
+- Lo de las vidas para raspberry
 - ESTA EL ARCHIVO DE CHEATS!! USARLO O SACARLO!!!
 - Fijate de hacer los PUTOS DIAGRAMAS!!!
 - EN RASPBERRY LAS VIDAS Y EL TIEMPO CAPOOOOO
@@ -10,3 +11,5 @@
 - Me ahogue y me tiro segmentation core...
 - Hacer diagrama de archivos
 - Hacer manual de juego
+- Pisa el tacho y no va en la ultima division
+- A veces tiras para arriba y despues va para abajo
