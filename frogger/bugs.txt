@@ -1,3 +1,5 @@
+- Fijate de hacer los PUTOS DIAGRAMAS!!!
+- EN RASPBERRY LAS VIDAS Y EL TIEMPO CAPOOOOO
 - A veces cuando te moves entre barcos, caes en la mitad de un barco y moris
 - Podrias agregar bonus track, comida u hongos, algo para agarrar y MAS PUNTSO
 - Comando para cambiar de mapa
