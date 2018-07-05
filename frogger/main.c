@@ -178,6 +178,7 @@ int main(int argc, char** argv){
     error &= gui_timer_new_event(gui_timer_global_get(), PAUSEMENU_TIME, PAUSEMENU_TIMER, false);
     error &= gui_timer_new_event(gui_timer_global_get(), LOSTSCREEN_TIME, LOSTSCREEN_TIMER, false);
     error &= gui_timer_new_event(gui_timer_global_get(), TOPSCREEN_TIME, TOPSCREEN_TIMER, false);
+    error &= gui_timer_new_event(gui_timer_global_get(), INFOSCREEN_TIME, INFOSCREEN_TIMER, false);
     if( !error ){
         testing_msg("No se pudo agregar eventos de timer");
         gui_timer_global_close();
@@ -294,7 +295,7 @@ void switch_tasks_target(GAME_STAGE* stage){
             frogger_topscreen_tasks(stage);
             break;
         case PAUSEMENU_STAGE:
-            frogger_pausemenu_tasks(stage);
+            frogger_pausemenu_tasks(stage );
             break;
         case CHANGESCREEN_STAGE:
             frogger_changescreen_tasks(stage);

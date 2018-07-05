@@ -27,10 +27,16 @@
 #define TOPSCREEN_TIME          100
 #define TOPSCREEN_TIMER         5
 
+#define INFOSCREEN_TIME         800
+#define INFOSCREEN_TIMER        6
+
 /**************/
 /* Constantes */
 /**************/
 
+/* Etapas de cada pantalla, para todas las interfaces,
+ * por inicializacion y luego operacion.
+ */
 typedef enum{
     TOPSCREEN_INIT,
     TOPSCREEN_OP
@@ -50,6 +56,13 @@ typedef enum {
     PAUSEMENU_INIT,
     PAUSEMENU_OP
 } PAUSEMENU_STAGES;
+
+typedef enum {
+    INFOSCREEN_INIT,
+    INFOSCREEN_OP
+} INFOSCREEN_STAGES;
+
+/* Opciones genericas de los menus */
 
 typedef enum {
     PLAY_OPTION,

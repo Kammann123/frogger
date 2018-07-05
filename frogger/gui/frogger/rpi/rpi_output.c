@@ -67,6 +67,78 @@ void frogger_screen_close(GAME_STAGE* stage){
     }
 }
 
+/*****************/
+/* INFO handlers */
+/*****************/
+
+/* Configuracion */
+#define INFOSCREEN_PATH "gui/frogger/rpi/infoscreen/"
+#define LIFES_IMAGE     INFOSCREEN_PATH "lifes_"
+
+/* frogger_infoscreen */
+bool frogger_infoscreen(GAME_STAGE* stage){
+    BITMAP* bitmap:
+    STRING text;
+
+    /* Cargo el string con el archivo y vidas */
+    sprintf(text, "%s%d.bmp", LIFES_IMAGE, frogger_get_lifes());
+
+    /* Cargo el bitmap */
+    bitmap = rpi_load_bitmap(text);
+    if( bitmap == NULL ){
+        return false;
+    }
+
+    /* Imprimo en pantalla para actualizar */
+    if( !rpi_draw_bitmap(bitmap, map_position(0, 0)) ){
+        destroy_bitmap(bitmap);
+        return false;
+    }
+
+    /* Actualizo */
+    rpi_display_update();
+
+    /* Cierro */
+    destroy_bitmap(bitmap);
+
+    /* OK! */
+    return true;
+}
+
+/* frogger_infoscreen_tasks */
+void frogger_infoscreen_tasks(GAME_STAGE* stage){
+    static INFOSCREEN_STAGES state = INFOSCREEN_INIT;
+
+    /* Manejo de estados de las tareas */
+    switch(state){
+        case INFOSCREEN_INIT:
+
+            /* Inicializo el timer */
+            gui_timer_clear(gui_timer_global_get(), INFOSCREEN_TIMER);
+            gui_timer_continue(gui_timer_global_get(), INFOSCREEN_TIMER);
+
+            /* Cambio de estado */
+            state = INFOSCREEN_OP;
+            break;
+        case INFOSCREEN_OP:
+
+            /* Me fijo si hubo timer overflow */
+            if( gui_timer_overflow(gui_timer_global_get(), INFOSCREEN_TIMER) ){
+
+                /* Limpio el timer y lo apago */
+                gui_timer_clear(gui_timer_global_get(), INFOSCREEN_TIMER);
+                gui_timer_pause(gui_timer_global_get(), INFOSCREEN_TIMER);
+
+                /* Luego vuelvo a etapa anterior */
+                state = INFOSCREEN_INIT;
+
+                /* Cierro la ventana */
+                change_stage(stage, FROGGER_STAGE);
+            }
+            break;
+    }
+}
+
 /******************/
 /* HOWTO handlers */
 /******************/
