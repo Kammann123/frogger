@@ -80,12 +80,32 @@ MAINMENU_OPTIONS frogger_get_mainmenu_selection(void);
  */
 PAUSEMENU_OPTIONS frogger_get_pausemenu_selection(void);
 
+/*****************/
+/* INFO handlers */
+/*****************/
+
+/* frogger_infoscreen
+ * Maneja la pantalla con informacion del estado del videojuego
+ * entre muertes.
+ *
+ * stage: Etapa e info del videojuego
+ */
+bool frogger_infoscreen(GAME_STAGE* stage);
+
+/* frogger_infoscreen_tasks
+ * Maneja las tareas durante el muestreo en Pantalla
+ * de la informacion del juego
+ *
+ * stage: Etapa e info del videojuego
+ */
+void frogger_infoscreen_tasks(GAME_STAGE* stage);
+
 /******************/
 /* HOWTO handlers */
 /******************/
 
 /* frogger_howscreen
- * Maneja la actualizacion de pantalla del modo 
+ * Maneja la actualizacion de pantalla del modo
  * de tutorial
  */
 bool frogger_howscreen(GAME_STAGE* stage);

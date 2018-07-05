@@ -34,6 +34,7 @@ typedef enum {
     LOSTSCREEN_STAGE,
     CHANGESCREEN_STAGE,
     DEAD_STAGE,
+    INFO_STAGE,
     CLOSING_STAGE
 } STAGE_VALUES;
 
@@ -45,7 +46,7 @@ typedef struct{
     STRING username;
     scores_t topScore[MAX_SCORES + 1];
     LENGTH topLength;
-    
+
     /* Selector de personaje */
     uint16_t characterId;
 
