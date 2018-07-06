@@ -148,7 +148,7 @@ int main(int argc, char** argv){
         username = entries_get_string(&entries, "name");
         entries_get_int(&entries, "character", &characterId);
     }
-    
+
     /* Inicializo estructura estado del juego */
     stage = stage_init(username, characterId);
 
@@ -261,6 +261,8 @@ int main(int argc, char** argv){
 
     /* Cierro interfaz */
     gui_graphics_close();
+
+    return 0;
 }
 
 /****************/

@@ -4,13 +4,15 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "../../gui_input.h"
 #include "joydrv.h"
 
 /* Configuracion */
 
-#define JOYSTICK_PRESET 40
+#define JOYSTICK_PRESET 20
 
 /****************/
 /* Definiciones */
@@ -71,11 +73,11 @@ bool gui_input_source(EVENT* event, void* none){
             event->type = MOVEMENT_EVENT;
 
             /* Seteo la direccion */
-            if( coords.x > JOYSTICK_PRESET ){
+            if( coords.x >= JOYSTICK_PRESET ){
                 event->data = MOVE_RIGHT;
-            }else if( coords.x < (-JOYSTICK_PRESET) ){
+            }else if( coords.x <= (-JOYSTICK_PRESET) ){
                 event->data = MOVE_LEFT;
-            }else if( coords.y > JOYSTICK_PRESET ){
+            }else if( coords.y >= JOYSTICK_PRESET ){
                 event->data = MOVE_UP;
             }else{
                 event->data = MOVE_DOWN;

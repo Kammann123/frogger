@@ -13,13 +13,13 @@
 #define ALLEGRO_DISPLAY_STEP            40
 #define ALLEGRO_STEP_RESOLUTION         10
 
-/* Obstaculos del juego */
-#define TRASH_0_X 0
-#define TRASH_0_Y 400
-#define TRASH_1_X 40
-#define TRASH_1_Y 400
-#define PHONE_X 600
-#define PHONE_Y 400
+/* Obstaculos del juego */ 
+#define TRASH           map_region( map_position(0, 400), map_position(80, 440) )
+#define PHONE           map_region( map_position(600, 400), map_position(640, 440) )
+#define BORDER_LEFT     map_region( map_position(-40, 0), map_position(0, 480) )
+#define BORDER_RIGHT    map_region( map_position(640, 0), map_position(680, 480) )
+#define BORDER_UP       map_region( map_position(0, -40), map_position(0, 480) )
+#define BORDER_DOWN     map_region( map_position(0, 440), map_position(640, 480) )
 
 /* Paths para acceder a animaciones */
 #define ALLEGRO_PATH_OBJECTS                "gui/frogger/allegro/objects/"
@@ -31,50 +31,6 @@
 #define ALLEGRO_TRUCK_OBJFILE               ALLEGRO_PATH_OBJECTS "truck/truck"
 #define ALLEGRO_BOAT_OBJFILE                ALLEGRO_PATH_OBJECTS "boat/boat"
 #define ALLEGRO_YACHT_OBJFILE               ALLEGRO_PATH_OBJECTS "yacht/yacht"
-
-/* map_collision */
-static bool map_collision(uint16_t input, int32_t x, int32_t y){
-    FROG frog;
-
-    /* Obtengo el objeto */
-    frog = frogger_get_frog();
-
-    switch(input){
-        case MOVE_UP:
-            if( x == frog.object->pos.x ){
-                if( y == (frog.object->pos.y - ALLEGRO_DISPLAY_STEP) ){
-                    return true;
-                }
-            }
-            break;
-        case MOVE_DOWN:
-            if( x == frog.object->pos.x ){
-                if( y == (frog.object->pos.y + ALLEGRO_DISPLAY_STEP) ){
-                    return true;
-                }
-            }
-            break;
-        case MOVE_LEFT:
-            if( y == frog.object->pos.y ){
-                if( x == (frog.object->pos.x - ALLEGRO_DISPLAY_STEP) ){
-                    return true;
-                }
-            }
-            break;
-        case MOVE_RIGHT:
-            if( y == frog.object->pos.y ){
-                if( x == (frog.object->pos.x + ALLEGRO_DISPLAY_STEP) ){
-                    return true;
-                }
-            }
-            break;
-        default:
-            break;
-    }
-
-    /* No hubo colision */
-    return false;
-}
 
 /**********************/
 /* Funciones publicas */
@@ -129,42 +85,50 @@ bool frogger_game_frog_init(FROG* frog, uint16_t characterId){
 
 /* frogger_game_movement_valid */
 bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
+    POSITION frogPos = frog.object->pos;
+    REGION frogRegion;
     int32_t step = frogger_game_get_step();
-    /* Me fijo que no haya colision con obstaculos */
-    if( map_collision(input, TRASH_0_X, TRASH_0_Y) ){
-        return false;
-    }
-    if( map_collision(input, TRASH_1_X, TRASH_1_Y) ){
-        return false;
-    }
-    if( map_collision(input, PHONE_X, PHONE_Y) ){
-        return false;
-    }
-
-    /* Me fijo que este en los limites */
+    
     switch(input){
         case MOVE_UP:
-            if( (frog.object->pos.y - step) < ALLEGRO_DISPLAY_BORDER_UP ){
-                return false;
-            }
+            frogPos.y -= step;
             break;
         case MOVE_DOWN:
-            if( (frog.object->pos.y + step) > ALLEGRO_DISPLAY_BORDER_DOWN ){
-                return false;
-            }
+            frogPos.y += step;
             break;
         case MOVE_LEFT:
-            if( ((frog.object->pos.x) - step) < ALLEGRO_DISPLAY_BORDER_LEFT ){
-                return false;
-            }
+            frogPos.x -= step;
             break;
         case MOVE_RIGHT:
-            if( (frog.object->pos.x + step) > ALLEGRO_DISPLAY_BORDER_RIGHT ){
-                return false;
-            }
+            frogPos.x += step;
             break;
-        default:
-            break;
+    }
+    
+    frogRegion = map_region(frogPos, map_position(frogPos.x + frog.object->width, frogPos.y + frog.object->height));
+    
+    /* Me fijo que no haya colision con obstaculos */
+    if( gui_animation_region_collision(TRASH, frogRegion) ){
+        return false;
+    }
+    
+    /* Me fijo que no haya colision con obstaculos */
+    if( gui_animation_region_collision(PHONE, frogRegion) ){
+        return false;
+    }
+    
+    
+    /* Me fijo que este en los limites */
+    if( gui_animation_region_collision(BORDER_LEFT, frogRegion) ){
+        return false;
+    }
+    if( gui_animation_region_collision(BORDER_RIGHT, frogRegion) ){
+        return false;
+    }
+    if( gui_animation_region_collision(BORDER_UP, frogRegion) ){
+        return false;
+    }
+    if( gui_animation_region_collision(BORDER_DOWN, frogRegion) ){
+        return false;
     }
 
     /* No hubo caso invalido */
