@@ -1,7 +1,7 @@
 CC = gcc
 
 HEADERS = logic/frogger/frogger_kernel.h gui/gui_types.h gui/gui_input.h gui/gui_init.h gui/gui_timer/gui_timer.h gui/gui_files/gui_files.h\
- gui/gui_events/gui_events.h gui/gui_animation/gui_animation.h gui/frogger/frogger_output.h gui/frogger/frogger_physics.h gui/frogger/rpi/bitmaps.h score_board/score_board.h console_args/console_args.h
+ gui/gui_events/gui_events.h gui/gui_animation/gui_animation.h gui/frogger/frogger_output.h gui/frogger/frogger_physics.h score_board/score_board.h console_args/console_args.h
 
 SRC = logic/frogger/frogger_kernel.c gui/gui_types.c gui/gui_timer/gui_timer.c gui/gui_files/gui_files.c gui/gui_events/gui_events.c\
  gui/gui_animation/gui_animation.c gui/frogger/frogger_physics.c score_board/score_board.c console_args/console_args.c
