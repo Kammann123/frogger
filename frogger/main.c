@@ -337,7 +337,7 @@ void switch_update_target(GAME_STAGE* stage){
             frogger_howscreen(stage);
             break;
         case FROGGER_STAGE: case DEAD_STAGE:
-            frogger_gamescreen(frogger_get_field(), frogger_get_frog(), frogger_get_lifes(), frogger_get_time(), frogger_get_score());
+            frogger_gamescreen(stage, frogger_get_field(), frogger_get_frog(), frogger_get_lifes(), frogger_get_time(), frogger_get_score());
             break;
         case PAUSEMENU_STAGE:
             frogger_pausemenu();
