@@ -778,7 +778,7 @@ void frogger_game_transport_frog(void){
                 }
 
                 /* Valido posicion */
-                if( x >= 0  && x <= ((DISPLAY_DIVISIONS_X)*step) ){
+                if( x >= 0  && (x + frog.object->width - 1) < ((DISPLAY_DIVISIONS_X)*step) ){
 
                     /* Configuro velocidad */
                     frog.object->speed = frog.transport->speed;
