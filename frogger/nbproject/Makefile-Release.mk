@@ -41,7 +41,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/frogger/allegro/allegro_output.o \
 	${OBJECTDIR}/gui/frogger/allegro/allegro_physics.o \
 	${OBJECTDIR}/gui/frogger/frogger_physics.o \
-	${OBJECTDIR}/gui/frogger/rpi/bitmaps.o \
 	${OBJECTDIR}/gui/gui_animation/gui_animation.o \
 	${OBJECTDIR}/gui/gui_events/gui_events.o \
 	${OBJECTDIR}/gui/gui_files/gui_files.o \
@@ -49,7 +48,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gui/gui_types.o \
 	${OBJECTDIR}/logic/frogger/frogger_kernel.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/score_board.o
+	${OBJECTDIR}/score_board/score_board.o
 
 
 # C Compiler Flags
@@ -106,11 +105,6 @@ ${OBJECTDIR}/gui/frogger/frogger_physics.o: gui/frogger/frogger_physics.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/frogger_physics.o gui/frogger/frogger_physics.c
 
-${OBJECTDIR}/gui/frogger/rpi/bitmaps.o: gui/frogger/rpi/bitmaps.c 
-	${MKDIR} -p ${OBJECTDIR}/gui/frogger/rpi
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gui/frogger/rpi/bitmaps.o gui/frogger/rpi/bitmaps.c
-
 ${OBJECTDIR}/gui/gui_animation/gui_animation.o: gui/gui_animation/gui_animation.c 
 	${MKDIR} -p ${OBJECTDIR}/gui/gui_animation
 	${RM} "$@.d"
@@ -146,10 +140,10 @@ ${OBJECTDIR}/main.o: main.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
 
-${OBJECTDIR}/score_board.o: score_board.c 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/score_board/score_board.o: score_board/score_board.c 
+	${MKDIR} -p ${OBJECTDIR}/score_board
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/score_board.o score_board.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/score_board/score_board.o score_board/score_board.c
 
 # Subprojects
 .build-subprojects:

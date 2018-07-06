@@ -13,8 +13,8 @@
 #include "gui/frogger/frogger_output.h"
 #include "gui/frogger/frogger_physics.h"
 
-#include "gui/frogger/rpi/bitmaps.h"
-#include "score_board.h"
+#include "bitmaps/bitmaps.h"
+#include "score_board/score_board.h"
 
 #include "console_args/console_args.h"
 
