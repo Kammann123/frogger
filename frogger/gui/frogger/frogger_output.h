@@ -251,12 +251,13 @@ bool frogger_lostscreen(uint32_t score);
 /* frogger_gamescreen
  * Pantalla del juego
  *
+ * stage: Estado e info 
  * field: Campo de juego
  * frog: Ranita
  * lifes: Vidas
  * time: Tiempo jugado
  * score: Puntaje
  */
-bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score);
+bool frogger_gamescreen(GAME_STAGE* stage, FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score);
 
 #endif /* FROGGER_OUTPUT_H */

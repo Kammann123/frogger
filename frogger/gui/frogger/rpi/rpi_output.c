@@ -910,7 +910,7 @@ void gui_graphics_close(void){
 }
 
 /* frogger_gamescreen */
-bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score){
+bool frogger_gamescreen(GAME_STAGE* stage, FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score){
     static LENGTH frogBlink = BLINK_VALUE;
     BITMAP* bitmap;
     LANE lane;

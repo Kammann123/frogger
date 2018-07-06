@@ -499,7 +499,7 @@ bool frogger_lostscreen(uint32_t score){
 #define GAME_DISPLAY_TIME_Y      445
 
 /* frogger_gamescreen */
-bool frogger_gamescreen(FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score){
+bool frogger_gamescreen(GAME_STAGE* stage, FIELD field, FROG frog, uint32_t lifes, uint32_t time, uint32_t score){
     ALLEGRO_FONT* font;
     ALLEGRO_BITMAP* bitmap;
     LANE lane;
