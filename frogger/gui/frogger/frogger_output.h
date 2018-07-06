@@ -27,7 +27,7 @@
 #define TOPSCREEN_TIME          100
 #define TOPSCREEN_TIMER         5
 
-#define INFOSCREEN_TIME         800
+#define INFOSCREEN_TIME         1100
 #define INFOSCREEN_TIMER        6
 
 /**************/

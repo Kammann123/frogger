@@ -77,23 +77,27 @@ void frogger_screen_close(GAME_STAGE* stage){
 
 /* frogger_infoscreen */
 bool frogger_infoscreen(GAME_STAGE* stage){
-    BITMAP* bitmap:
+    BITMAP* bitmap;
     STRING text;
 
     /* Cargo el string con el archivo y vidas */
     sprintf(text, "%s%d.bmp", LIFES_IMAGE, frogger_get_lifes());
+    testing_msg("Cargando imagen...");
 
     /* Cargo el bitmap */
     bitmap = rpi_load_bitmap(text);
     if( bitmap == NULL ){
+        testing_msg("Problema al cargar :(");
         return false;
     }
+    testing_msg("Imagen cargada OK!.");
 
     /* Imprimo en pantalla para actualizar */
     if( !rpi_draw_bitmap(bitmap, map_position(0, 0)) ){
         destroy_bitmap(bitmap);
         return false;
     }
+    testing_msg("Imagen dibujada!");
 
     /* Actualizo */
     rpi_display_update();
@@ -444,7 +448,7 @@ static void frogger_topscreen_close(void){
 
 /* Configuracion */
 #define MAINMENU_PATH   "gui/frogger/rpi/mainmenu/"
-#define MAINMENU_IMAGE  MAINMENU_PATH "mainmenu2_"
+#define MAINMENU_IMAGE  MAINMENU_PATH "mainmenu_"
 
 /* Variable del menu principal */
 MAINMENU_OPTIONS mainmenuSelection = PLAY_OPTION;

@@ -520,7 +520,7 @@ void on_mainmenu_enter(GAME_STAGE* stage){
     switch( frogger_get_mainmenu_selection() ){
         case PLAY_OPTION:
             if( frogger_game_restart() ){
-                change_stage(stage, FROGGER_STAGE);
+                change_stage(stage, INFO_STAGE);
             }
             break;
         case RANK_OPTION:
