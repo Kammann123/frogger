@@ -5,6 +5,6 @@ orientation: HORIZONTAL_LEFT
 quantity: 2
 timedelta: 720
 spacedelta: 1
-a_factor: 5
+a_factor: 20
 
 END
