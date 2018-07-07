@@ -29,6 +29,15 @@
 /* Ventana de allegro */
 static ALLEGRO_DISPLAY* display = NULL;
 
+/* Funciones privadas */
+
+/* frogger_back_selector 
+ * Selecciona el archivo de fondo del juego
+ * 
+ * index: Numero de fondo
+ */
+static char* frogger_back_selector(uint16_t index);
+
 /*******************/
 /* SCREEN handlers */
 /*******************/

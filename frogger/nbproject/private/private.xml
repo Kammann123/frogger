@@ -9,12 +9,12 @@
         <group>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/allegro/allegro_physics.c</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/frogger_physics.c</file>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/logic/frogger/frogger_kernel.c</file>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/gui_types.c</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/frogger_physics.h</file>
-            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/console_args/console_args.c</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/main.c</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/gui_animation/gui_animation.h</file>
             <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/allegro/allegro_output.c</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/gui/frogger/frogger_output.h</file>
+            <file>file:/home/lucas/Documents/Proyectos/frogger/frogger/score_board/score_board.c</file>
         </group>
     </open-files>
 </project-private>
