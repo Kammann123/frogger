@@ -7,7 +7,7 @@
 #define RPI_GRAPHICS_H
 
 /* Librerias utilizadas */
-#include "bitmaps/bitmaps.h"
+#include "../../../bitmaps/bitmaps.h"
 #include "disdrv.h"
 #include "../../gui_types.h"
 
