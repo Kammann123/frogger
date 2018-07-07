@@ -1,0 +1,9 @@
+[attributes]
+id: FROG_RIGHT
+orientation: HORIZONTAL_RIGHT
+
+[frames]
+0: gui/frogger/allegro/objects/frog/sprites_right/bird_0.png
+1: gui/frogger/allegro/objects/frog/sprites_right/bird_1.png
+
+END

@@ -140,6 +140,8 @@ int main(int argc, char** argv){
 
     char* username = NULL;
     uint32_t characterId = 0;
+    uint32_t backgroundId = 0;
+    uint32_t vehiclesId = 0;
     bool error;
 
     /* Leo las entradas de consola */
@@ -147,10 +149,12 @@ int main(int argc, char** argv){
         /* Si no hubo error de sintaxis y se cargaron los comandos */
         username = entries_get_string(&entries, "name");
         entries_get_int(&entries, "character", &characterId);
+        entries_get_int(&entries, "background", &backgroundId);
+        entries_get_int(&entries, "vehicles", &vehiclesId);
     }
 
     /* Inicializo estructura estado del juego */
-    stage = stage_init(username, characterId);
+    stage = stage_init(username, characterId, backgroundId, vehiclesId);
 
     /* Inicializo la interfaz */
         if( !gui_graphics_init( ) ){

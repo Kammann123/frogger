@@ -1,0 +1,17 @@
+[attributes]
+width: 25
+height: 25
+timedelta: 150
+spacedelta: 40
+
+[animations]
+0: gui/frogger/allegro/objects/frog/bird_down
+1: gui/frogger/allegro/objects/frog/bird_up
+2: gui/frogger/allegro/objects/frog/bird_left
+3: gui/frogger/allegro/objects/frog/bird_right
+4: gui/frogger/allegro/objects/frog/death_left
+5: gui/frogger/allegro/objects/frog/death_right
+6: gui/frogger/allegro/objects/frog/death_up
+7: gui/frogger/allegro/objects/frog/death_down
+
+END
