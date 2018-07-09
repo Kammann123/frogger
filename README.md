@@ -23,7 +23,7 @@ with the following syntax:
 So far, Frogger supports these commands:
   1. -name=HereGoesUsersName : It allows the user to set username to save it's score in the top score table.
   2. -character=characterIndex : It allows the user to change the game character, it depends on how many options there are.
- 
+  3. -map=mapIndex : It allows the user to change the game map being used, it depends on how many options available there are.
 
 
 
