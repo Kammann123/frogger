@@ -35,7 +35,8 @@ typedef enum{
     FROGGER_HAS_LOST,
     FROGGER_HAS_WON,
     FROGGER_ERROR,
-    FROGGER_NOTHING
+    FROGGER_NOTHING,
+    FROGGER_LEVEL_UP
 } FLOW_EVENTS;
 
 /******************/

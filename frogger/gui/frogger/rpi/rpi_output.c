@@ -285,6 +285,8 @@ static MOTION_TEXT* posText = NULL;
 static LENGTH scorePos = 1;
 static bool posChanged = false;
 
+static pthread_mutex_t topMutex;
+
 /* frogger_topscreen_tasks */
 void frogger_topscreen_tasks(GAME_STAGE* stage){
     static TOPSCREEN_STAGES state = TOPSCREEN_INIT;
@@ -320,6 +322,11 @@ void frogger_topscreen_tasks(GAME_STAGE* stage){
                 }
             }
 
+            testing_msg("Objetos cargados");
+
+            /* Inicializo el mutex */
+            pthread_mutex_init(&topMutex, NULL);
+
             /* Cambio de estado */
             state = TOPSCREEN_OP;
 
@@ -340,11 +347,17 @@ void frogger_topscreen_tasks(GAME_STAGE* stage){
                 posChanged = false;
                 stage = TOPSCREEN_INIT;
 
+                testing_msg("Entrando en cambio DETECTADO!.");
+
+                pthread_mutex_lock(&topMutex);
                 /* Los borro para crear otra vez */
                 rpi_destroy_motion_text(topText);
                 rpi_destroy_motion_text(posText);
                 topText = NULL;
                 posText = NULL;
+                pthread_mutex_unlock(&topMutex);
+
+                testing_msg("Destruyendo objetos previos");
 
                 /* Salgo */
                 return;
@@ -366,27 +379,31 @@ void frogger_topscreen_tasks(GAME_STAGE* stage){
 /* frogger_topscreen */
 bool frogger_topscreen(GAME_STAGE* stage){
 
-    /* Verifico objetos */
-    if( topText == NULL || posText == NULL ){
-        return false;
-    }
-
     /* Limpio la pantalla */
     if( !rpi_display_clear() ){
         return false;
     }
 
+    pthread_mutex_lock(&topMutex);
+    /* Verifico objetos */
+    if( topText == NULL || posText == NULL ){
+        pthread_mutex_unlock(&topMutex);
+        return false;
+    }
     /* Imprimo los motions */
     if( !rpi_draw_motion_text(topText) ){
+        pthread_mutex_unlock(&topMutex);
         return false;
     }
     if( !rpi_draw_motion_text(posText) ){
+        pthread_mutex_unlock(&topMutex);
         return false;
     }
 
     /* Actualizo display */
     rpi_display_update();
 
+    pthread_mutex_unlock(&topMutex);
     return true;
 }
 
@@ -396,6 +413,7 @@ void frogger_topscreen_move(GAME_STAGE* stage, INPUT_VALUES input){
         case MOVE_UP:
             if( scorePos > 1 ){
                 scorePos--;
+                testing_msg("Cambiando posicion.");
             }else{
                 return;
             }
@@ -403,6 +421,7 @@ void frogger_topscreen_move(GAME_STAGE* stage, INPUT_VALUES input){
         case MOVE_DOWN:
             if( scorePos < stage->topLength ){
                 scorePos++;
+                testing_msg("Cambiando posicion.");
             }else{
                 return;
             }
@@ -437,6 +456,9 @@ static void frogger_topscreen_close(void){
     }
     /* Pauso el timer */
     gui_timer_pause(gui_timer_global_get(), TOPSCREEN_TIMER);
+
+    /* Elimino el mutex */
+    pthread_mutex_destroy(&topMutex);
 
     /* Reinicio pos */
     scorePos = 1;

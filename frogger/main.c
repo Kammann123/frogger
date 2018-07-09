@@ -487,6 +487,19 @@ bool on_frogger_event(GAME_STAGE* stage, uint32_t event){
             frogger_game_dead_animation();
             change_stage(stage, DEAD_STAGE);
             break;
+        case FROGGER_LEVEL_UP:
+            /* Cambio de etapa */
+            change_stage(stage, CHANGESCREEN_STAGE);
+            
+            /* Pauso el juego */
+            frogger_game_pause();
+
+            /* Subo el nivel */
+            frogger_level_up();
+
+            /* Continuo el juego */
+            frogger_game_start();
+            break;
         default:
             return false;
             break;

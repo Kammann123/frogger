@@ -96,16 +96,11 @@ uint32_t frogger_flow(void){
 
         /* Me fijo si termino el nivel */
         if( froggerGame.stage == STAGE_MAX_VALUE ){
-            /* Pauso el juego */
-            frogger_game_pause();
 
-            /* Subo el nivel */
-            if( !frogger_level_up() ){
-                return FROGGER_ERROR;
-            }
-
-            /* Continuo el juego */
-            frogger_game_start();
+            /* Reseteo posicion */
+            frogger_reset();
+            
+            return FROGGER_LEVEL_UP;
         }
 
         /* Reseteo posicion */
