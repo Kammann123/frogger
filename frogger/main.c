@@ -140,8 +140,8 @@ int main(int argc, char** argv){
     ENTRIES entries;
 
     char* username = NULL;
-    uint32_t mapId = 0;
-    uint32_t characterId = 0;
+    MAP_OPTIONS mapId = STANDARD_MAP;
+    CHARACTER_OPTIONS characterId = FROG_CHAR;
     uint32_t backgroundId = 0;
     uint32_t vehiclesId = 0;
     bool error;
@@ -153,34 +153,16 @@ int main(int argc, char** argv){
         entries_get_int(&entries, "map", &mapId);
         entries_get_int(&entries, "character", &characterId);
         
+        /* Configuracion del mapa */
         switch( mapId ){
-            case 0:
-                backgroundId = 0;
-                vehiclesId = 0;
+            case SKY_MAP:
+                characterId = BIRD_CHAR;
+                backgroundId = SKY_MAP;
+                vehiclesId = SKY_MAP;
                 break;
-            case 1:
-                characterId = 2;
-                backgroundId = 2;
-                vehiclesId = 1;
-                break;
-            case 2:
-                characterId = 2;
-                backgroundId = 3;
-                vehiclesId = 2;
-                break;
-            case 3:
-                characterId = 1;
-                backgroundId = 1;
-                vehiclesId = 3;
-                break;
-            case 4:
-                characterId = 3;
-                backgroundId = 4;
-                vehiclesId = 4;
-                break;
-            default:
-                backgroundId = 0;
-                vehiclesId = 0;
+            case STANDARD_MAP: default:
+                backgroundId = STANDARD_MAP;
+                vehiclesId = STANDARD_MAP;
                 break;
         }  
     }

@@ -344,6 +344,7 @@ void frogger_changescreen_tasks(GAME_STAGE *stage){
             gui_timer_clear(gui_timer_global_get(), CHANGESCREEN_TIMER);
             gui_timer_continue(gui_timer_global_get(), CHANGESCREEN_TIMER);
             break;
+            
         case CHANGESCREEN_OP:
 
             /* Espero el timer */
@@ -493,7 +494,6 @@ bool frogger_lostscreen(uint32_t score){
 #define GAMESCREEN_LIFES            GAMESCREEN_PATH "lifes_"
 #define GAMESCREEN_IMAGE_FIELD      GAMESCREEN_PATH "field.png"
 #define GAMESCREEN_IMAGE_LAVA       GAMESCREEN_PATH "lava.png"
-#define GAMESCREEN_IMAGE_SKY        GAMESCREEN_PATH "sky.png"
 #define GAMESCREEN_IMAGE_FULL_SKY   GAMESCREEN_PATH "full_sky.png"
 #define GAMESCREEN_IMAGE_STAR_WARS  GAMESCREEN_PATH "field_star.png"
 #define GAMESCREEN_FONT             GAMESCREEN_PATH "Bubblegum.ttf"
@@ -511,22 +511,13 @@ bool frogger_lostscreen(uint32_t score){
 #define GAME_DISPLAY_TIME_X      510
 #define GAME_DISPLAY_TIME_Y      445
 
-
+/* frogger_back_selector */
 static char* frogger_back_selector(uint16_t index){
     switch(index){
-        case 1:
-            return GAMESCREEN_IMAGE_LAVA;
-            break;
-        case 2:
-            return GAMESCREEN_IMAGE_SKY;
-            break;
-        case 3:
+        case SKY_MAP:
             return GAMESCREEN_IMAGE_FULL_SKY;
             break;
-        case 4:
-            return GAMESCREEN_IMAGE_STAR_WARS;
-            break;
-        default:
+        case STANDARD_MAP: default:
             return GAMESCREEN_IMAGE_FIELD;
             break;
     }

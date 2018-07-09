@@ -54,16 +54,13 @@
 /* frogger_frog_selector */
 char* frogger_frog_selector(uint16_t index){
     switch(index){
-        case 1:
+        case FROGGY_CHAR:
             return ALLEGRO_FROGGY_OBJFILE;
             break;
-        case 2:
+        case BIRD_CHAR:
             return ALLEGRO_BIRD_OBJFILE;
             break;
-        case 3:
-            return ALLEGRO_R2D2_OBJFILE;
-            break;
-        default:
+        case FROG_CHAR: default:
             return ALLEGRO_FROG_OBJFILE;
             break;
     }
@@ -72,16 +69,10 @@ char* frogger_frog_selector(uint16_t index){
 /* frogger_yatch_selector */
 char* frogger_yatch_selector(uint16_t index){
     switch(index){
-        case 1: case 2:
+        case SKY_MAP:
             return ALLEGRO_CLOUD_OBJFILE;
             break;
-        case 3:
-            return ALLEGRO_STONE_OBJFILE;
-            break;
-        case 4:
-            return ALLEGRO_DESTROYER_OBJFILE;
-            break;
-        default:
+        case STANDARD_MAP: default:
             return ALLEGRO_YACHT_OBJFILE;
             break;
     }
@@ -90,16 +81,10 @@ char* frogger_yatch_selector(uint16_t index){
 /* frogger_boat_selector */
 char* frogger_boat_selector(uint16_t index){
     switch(index){
-        case 1: case 2:
+        case SKY_MAP:
             return ALLEGRO_SMALL_CLOUD_OBJFILE;
             break;
-        case 3:
-            return ALLEGRO_SMALL_STONE_OBJFILE;
-            break;
-        case 4:
-            return ALLEGRO_ALCONMIL_OBJFILE;
-            break;
-        default:
+        case STANDARD_MAP: default:
             return ALLEGRO_BOAT_OBJFILE;
             break;
     }
@@ -108,13 +93,10 @@ char* frogger_boat_selector(uint16_t index){
 /* frogger_car_selector */
 char* frogger_car_selector(uint16_t index){
     switch(index){
-        case 2:
+        case SKY_MAP:
             return ALLEGRO_PLANE_OBJFILE;
             break;
-        case 4:
-            return ALLEGRO_ATT_OBJFILE;
-            break;
-        default:
+        case STANDARD_MAP: default:
             return ALLEGRO_CAR_OBJFILE;
             break;
     }
@@ -123,13 +105,10 @@ char* frogger_car_selector(uint16_t index){
 /* frogger_motorbike_selector */
 char* frogger_motorbike_selector(uint16_t index){
     switch(index){
-        case 2:
+        case SKY_MAP:
             return ALLEGRO_ROCKET_OBJFILE;
             break;
-        case 4:
-            return ALLEGRO_BARC_OBJFILE;
-            break;
-        default:
+        case STANDARD_MAP: default:
             return ALLEGRO_MOTORBIKE_OBJFILE;
             break;
     }
@@ -138,13 +117,10 @@ char* frogger_motorbike_selector(uint16_t index){
 /* frogger_truck_selector */
 char* frogger_truck_selector(uint16_t index){
     switch(index){
-        case 2:
+        case SKY_MAP:
             return ALLEGRO_HELICOPTER_OBJFILE;
             break;
-        case 4:
-            return ALLEGRO_HAVWA6_OBJFILE;
-            break;
-        default:
+        case STANDARD_MAP: default:
             return ALLEGRO_TRUCK_OBJFILE;
             break;
     }

@@ -38,6 +38,17 @@ typedef enum {
     CLOSING_STAGE
 } STAGE_VALUES;
 
+typedef enum {
+    STANDARD_MAP,
+    SKY_MAP
+} MAP_OPTIONS;
+
+typedef enum {
+    FROG_CHAR,
+    FROGGY_CHAR,
+    BIRD_CHAR
+} CHARACTER_OPTIONS;
+
 typedef struct{
     /* Valor del estado del juego */
     STAGE_VALUES value;
@@ -48,7 +59,7 @@ typedef struct{
     LENGTH topLength;
 
     /* Selector de personaje */
-    uint16_t characterId;
+    CHARACTER_OPTIONS characterId;
     
     /* Selector de fondo*/
     uint16_t backgroundId;
