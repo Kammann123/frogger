@@ -4,5 +4,6 @@ orientation: HORIZONTAL_RIGHT
 
 [frames]
 0: gui/frogger/allegro/objects/truck/sprites/heli_right.png
+1: gui/frogger/allegro/objects/truck/sprites/heli_right_2.png
 
 END

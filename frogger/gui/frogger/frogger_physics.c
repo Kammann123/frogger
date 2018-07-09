@@ -1032,7 +1032,7 @@ void frogger_game_move_lanes(void){
                 }
 
                 /* Si esta quieto, lo desplazo */
-                gui_animation_start_static_movement(object, step);
+                gui_animation_start_movement(object, gui_animation_seek_animation(object, lane.orientation), step);
             }
         }
     }

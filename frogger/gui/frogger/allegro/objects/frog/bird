@@ -1,7 +1,7 @@
 [attributes]
 width: 25
 height: 25
-timedelta: 150
+timedelta: 70
 spacedelta: 40
 
 [animations]
