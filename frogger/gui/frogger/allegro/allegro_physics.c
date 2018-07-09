@@ -13,7 +13,7 @@
 #define ALLEGRO_DISPLAY_STEP            40
 #define ALLEGRO_STEP_RESOLUTION         10
 
-/* Obstaculos del juego */ 
+/* Obstaculos del juego */
 #define TRASH           map_region( map_position(0, 400), map_position(80, 440) )
 #define PHONE           map_region( map_position(600, 400), map_position(640, 440) )
 #define BORDER_LEFT     map_region( map_position(-40, 0), map_position(0, 480) )
@@ -23,7 +23,7 @@
 
 /* Paths para acceder a animaciones */
 #define ALLEGRO_PATH_OBJECTS                "gui/frogger/allegro/objects/"
-    
+
 #define ALLEGRO_FROG_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/frog"
 #define ALLEGRO_FROGGY_OBJFILE              ALLEGRO_PATH_OBJECTS "frog/froggy"
 #define ALLEGRO_BIRD_OBJFILE                ALLEGRO_PATH_OBJECTS "frog/bird"
@@ -60,7 +60,7 @@ char* frogger_frog_selector(uint16_t index){
         case 2:
             return ALLEGRO_BIRD_OBJFILE;
             break;
-        case 3: 
+        case 3:
             return ALLEGRO_R2D2_OBJFILE;
             break;
         default:
@@ -164,21 +164,21 @@ uint32_t frogger_game_get_resolution(void){
 /* frogger_game_frog_init */
 bool frogger_game_frog_init(FROG* frog, uint16_t characterId){
     int32_t dx, dy;
-    
+
     /* Cargo la ranita :D */
     frog->object = gui_animation_load_object(frogger_frog_selector(characterId), map_position(DEFAULT_FROG_X * ALLEGRO_DISPLAY_STEP, DEFAULT_FROG_Y * ALLEGRO_DISPLAY_STEP), DEFAULT_FROG_ANIMATION);
 
     /* Verifico error de carga */
     if( frog->object == NULL ){
         return false;
-    }    
-    
+    }
+
     /* Calculo desfasaje para posicion */
     dx = (ALLEGRO_DISPLAY_STEP - frog->object->width) / 2;
     dy = (ALLEGRO_DISPLAY_STEP - frog->object->height) / 2;
 
     /* Recalibro posicion para centrar en division */
-    frog->object->pos = map_position(frog->object->pos.x + dx, frog->object->pos.y + dy); 
+    frog->object->pos = map_position(frog->object->pos.x + dx, frog->object->pos.y + dy);
 
     /* Frog inicializada correctamente */
     return true;
@@ -189,7 +189,7 @@ bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
     POSITION frogPos = frog.object->pos;
     REGION frogRegion;
     int32_t step = frogger_game_get_step();
-    
+
     switch(input){
         case MOVE_UP:
             frogPos.y -= step;
@@ -203,21 +203,23 @@ bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
         case MOVE_RIGHT:
             frogPos.x += step;
             break;
+        default:
+            break;
     }
-    
+
     frogRegion = map_region(frogPos, map_position(frogPos.x + frog.object->width, frogPos.y + frog.object->height));
-    
+
     /* Me fijo que no haya colision con obstaculos */
     if( gui_animation_region_collision(TRASH, frogRegion) ){
         return false;
     }
-    
+
     /* Me fijo que no haya colision con obstaculos */
     if( gui_animation_region_collision(PHONE, frogRegion) ){
         return false;
     }
-    
-    
+
+
     /* Me fijo que este en los limites */
     if( gui_animation_region_collision(BORDER_LEFT, frogRegion) ){
         return false;
