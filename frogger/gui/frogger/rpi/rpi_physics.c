@@ -89,7 +89,7 @@ bool frogger_game_movement_valid(FROG frog, INPUT_VALUES input){
 }
 
 /* frogger_game_create_object */
-ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type){
+ANIMATED_OBJECT* frogger_game_create_object(POSITION pos, SPEED speed, GUI_ANIMATION_ORIENTATION orientation, uint32_t type, uint16_t vehiclesId){
     ANIMATED_OBJECT* object;
 
     pos.x *= RPI_DISPLAY_STEP;

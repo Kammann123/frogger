@@ -63,9 +63,6 @@ uint32_t frogger_flow(void){
         }
     }else if( frogger_game_is_water_region() ){
 
-        /* Me fijo si no se subio a transporte */
-        frogger_game_is_transport();
-
         /* Me fijo si no se cayo al agua */
         if( frogger_game_drown() ){
             testing_msg("Se detecto que se ahogo.");

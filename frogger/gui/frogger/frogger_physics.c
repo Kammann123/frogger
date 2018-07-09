@@ -815,6 +815,9 @@ bool frogger_game_drown(void){
         /* Me fijo que este quieto */
         if( frog.object->status == GUI_ANIMATION_STATE_STATIC ){
 
+            /* Me fijo si no se subio a transporte */
+            frogger_game_is_transport();
+
             /* Me fijo que no este en transporte */
             if( frog.transport == NULL ){
 
