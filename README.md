@@ -2,7 +2,7 @@
 
 Frogger game for Ubuntu and RaspberryPi, developed in C language
 
-# Requirements:
+# Requirements
 
 For Ubuntu: installing Allegro C Library
 
