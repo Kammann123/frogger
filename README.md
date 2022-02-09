@@ -1,6 +1,15 @@
 # frogger
 
-Frogger game for Ubuntu and RaspberryPi, developed in C language
+Frogger game for Ubuntu and Raspberry Pi, developed in C language.
+
+## Main menu screen
+<img src="./screenshots/mainmenu.png">
+
+## Game screen
+<img src="./screenshots/gamescreen.png">
+
+## Pause menu screen
+<img src="./screenshots/pausemenu.png">
 
 # Requirements
 
@@ -24,12 +33,3 @@ So far, Frogger supports these commands:
   1. -name=HereGoesUsersName : It allows the user to set username to save it's score in the top score table.
   2. -character=characterIndex : It allows the user to change the game character, it depends on how many options there are.
   3. -map=mapIndex : It allows the user to change the game map being used, it depends on how many options available there are.
-
-
-
-This work has been presented as a final work for the course "Programacion I" at the ITBA University.  
-Team members:  
- -Davidov, Gonzalo  
- -Kammann, Lucas  
- -Scheinfeld, Pablo  
- -Tondi, Federico  
